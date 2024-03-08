@@ -2,14 +2,17 @@
 #define HEADER
 // *----------------------------------------------------------------*
 class Person {
-
+    Health health;
+    Damage damage;
+    string name;
 };
 
 class Human : public Person {
-
+    
 };
 class Player : public Human {
-
+    Stamina stamina;
+    BankAccount bankAccount;
 };
 class SmartZombie : public Human {
     
