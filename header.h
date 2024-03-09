@@ -10,21 +10,22 @@ class Person {
 class Human : public Person {
     
 };
+
 class Player : public Human {
     Stamina stamina;
     BankAccount bankAccount;
 };
-class SmartZombie : public Human {
+class SmartZumbi : public Human {
     
 };
 
-class Zombie : public Person {
+class Zumbi : public Person {
 
 };
-class BaseZombie : public Zombie {
+class BaseZumbi : public Zumbi {
 
 };
-class AdvZombie : public Zombie {
+class AdvZumbie : public Zumbi {
     
 };
 
