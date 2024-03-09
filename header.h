@@ -85,18 +85,6 @@ public :
     void increaseHealth (int amount);
 };
 
-class Experience {
-    private:
-        int maximum;
-        int currentValue;
-        int level;
-
-    public:
-        Experience(int);
-        void setMaximum();
-        void setCurrentValue(int,int,int);
-};
-
 class Stamina {
 private :
     int value;
@@ -109,6 +97,18 @@ public :
     void increase(int amount);
     int getMaximum() const;
 
+};
+
+class Experience {
+    private:
+        int maximum;
+        int currentValue;
+        int level;
+
+    public:
+        Experience(int);
+        void setMaximum();
+        void setCurrentValue(int,int,int);
 };
 
 class Skills {
