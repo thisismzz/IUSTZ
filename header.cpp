@@ -6,7 +6,6 @@
 #include "header.h"
 using namespace std;
 
-<<<<<<< HEAD
 // Function And Class Method Decleration
 
 
@@ -26,11 +25,8 @@ using namespace std;
         currentHealth = min(maxHealth,currentHealth); 
     }
 
-Experience::Experience(int Level):level(Level),maximum(100+(Level*50)),currentValue(0){};
 
-void Experience::setMaximum(){
-    maximum=100+(level*50);
-=======
+
 Stamina ::Stamina(int val , int max) : value(val) , maximum(max) {}
 int Stamina ::getValue() const {
     return value;
@@ -50,5 +46,16 @@ void Stamina ::increase(int amount) {
 }
 int Stamina ::getMaximum() const {
     return maximum;
->>>>>>> 9dbc8b9391765a30b5d754c8ce52d8b3a056a58f
 }
+
+Experience::Experience(int Level):level(Level),maximum(100+(Level*50)),currentValue(0){};
+
+void Experience::setMaximum(){
+    maximum=100+(level*50);
+}
+void Experience::setCurrentValue(int selfDamage,int enemyDamage,int usedStamina){
+    currentValue+=(0.5*selfDamage)+(0.2*enemyDamage)+(0.3*usedStamina);
+    if(currentValue>=maximum){
+        currentValue=0;
+    }
+}    

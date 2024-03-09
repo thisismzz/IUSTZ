@@ -109,8 +109,6 @@ public :
     void increase(int amount);
     int getMaximum() const;
 
-
-
 };
 
 class Skills {
