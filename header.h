@@ -66,6 +66,17 @@ class Damage {
 };
 
 class Stamina {
+private :
+    int value;
+    int maximum;
+public :
+    Stamina(int val , int max);
+    int getValue() const;
+    void setValue(int val);
+    void decrease(int amount);
+    void increase(int amount);
+    int getMaximum() const;
+
 
 };
 
