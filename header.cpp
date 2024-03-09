@@ -47,7 +47,7 @@ int Stamina ::getMaximum() const {
 }
     
 
-Experience::Experience(int Level):level(Level),maximum(100+(Level*50)),currentValue(0){};
+Experience::Experience(int Level) : level(Level),maximum(100+(Level*50)),currentValue(0){};
 
 void Experience::setMaximum(){
     maximum=100+(level*50);
@@ -58,4 +58,18 @@ void Experience::setCurrentValue(int selfDamage,int enemyDamage,int usedStamina)
     if(currentValue>=maximum){
         currentValue=0;
     }
+}
+
+BankAccount::BankAccount() : balance(0.0) {}
+double BankAccount::getBalance() {
+    return balance;
+}
+void BankAccount::deposit(double amount) { 
+    balance += amount;
+}
+void BankAccount::withdraw(double amount) {
+    if (balance >= amount)
+        balance -= amount;
+    else
+        std::cout << "Insufficient funds" << std::endl;
 }

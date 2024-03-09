@@ -137,7 +137,13 @@ class Backpack {
 };
 
 class BankAccount {
-
+private:
+    double balance;
+public:
+    BankAccount();
+    double getBalance();
+    void deposit(double amount);
+    void withdraw(double amount);
 };
 // *----------------------------------------------------------------*
 #endif
