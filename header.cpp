@@ -25,7 +25,7 @@ using namespace std;
             currentHealth = maxHealth;
     }
 
-Stamina ::Stamina(int val , int max) : value(val) , maximum(max) {}
+Stamina ::Stamina(int Level) : level(Level), maximum(100*level),value(100*level) {}
 int Stamina ::getValue() const {
     return value;
 }

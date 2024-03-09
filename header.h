@@ -6,10 +6,14 @@ class Person {
         Health hp;
         string name;
         int level;
+    public:
+        Person(string n) : name(n), level(1), hp(100) {}
 };
 
 class Human : public Person {
     private:
+        int age;
+        string gender;
         Experience exp;
         Stamina stamina;
         WarmWeaponAbility WarmAbility;
@@ -17,15 +21,15 @@ class Human : public Person {
         Backpack backpack;
 
     public:
-        friend class Experience;
+        Human(string n,string g,int a):Person(n,1,100),age(a),gender(g),exp(??),stamina(??),WarmAbility(??),ColdAbility(??),backpack(??){}
 };
 
 class Player : public Human {
     private:
         BankAccount bankAccount;
     public:
+        Player(string n,string g,int a):Human(n,1,100,a,g,??,??,??,??,??),bankAccount(??){}
         
-
 };
 
 class SmartZombie : public Human {
@@ -44,10 +48,15 @@ class AdvZombiee : public Zombie {
 
 // *----------------------------------------------------------------*
 class Items {
-
+private:
+    string name;
+    double price;
+public:
+    Items
 };
 
 class Permanent : public Items {
+
 
 };
 class WarmWeapon : public Permanent {
@@ -89,8 +98,9 @@ class Stamina {
 private :
     int value;
     int maximum;
+    int level;
 public :
-    Stamina(int val , int max);
+    Stamina(int level);
     int getValue() const;
     void setValue(int val);
     void decrease(int amount);
@@ -104,7 +114,6 @@ class Experience {
         int maximum;
         int currentValue;
         int level;
-
     public:
         Experience(int);
         void setMaximum();
