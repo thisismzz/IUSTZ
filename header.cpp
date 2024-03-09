@@ -25,7 +25,7 @@ using namespace std;
             currentHealth = maxHealth;
     }
 
-Stamina ::Stamina(int Level) : level(Level), maximum(100*level),value(100*level) {}
+
 int Stamina ::getValue() const {
     return value;
 }
@@ -45,17 +45,21 @@ void Stamina ::increase(int amount) {
 int Stamina ::getMaximum() const {
     return maximum;
 }
-    
 
-Experience::Experience(int Level):level(Level),maximum(100+(Level*50)),currentValue(0){};
+void Stamina ::updateMaximumStamina(){
+        maximum+=100;
+}
 
-void Experience::setMaximum(){
-    maximum=100+(level*50);
+void Experience::updateMaximum(){
+    maximum+=50;
 }
 
 void Experience::setCurrentValue(int selfDamage,int enemyDamage,int usedStamina){
     currentValue+=(0.5*selfDamage)+(0.2*enemyDamage)+(0.3*usedStamina);
     if(currentValue>=maximum){
         currentValue=0;
+        updateMaximum();
+        humanObj->updateLevel();
+        humanObj->stamina.updateMaximumStamina();
     }
 }
