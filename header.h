@@ -141,7 +141,16 @@ class ColdWeaponAbility : public Skills {
 };
 
 class Backpack {
-
+private:
+    std::vector<std::pair<std::string, int>> items;
+    std::vector<std::string> singleUseItems;
+public:
+    void addItem(const std::string& itemName, int quantity);
+    void removeItem(const std::string& itemName, int quantity);
+    int getItemCount(const std::string& itemName) const;
+    int getTotalItemsCount() const;
+    void clear();
+    void useItem(const std::string& itemName);
 };
 
 class BankAccount {

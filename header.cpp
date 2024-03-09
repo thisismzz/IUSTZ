@@ -63,3 +63,59 @@ void Experience::setCurrentValue(int selfDamage,int enemyDamage,int usedStamina)
         humanObj->stamina.updateMaximumStamina();
     }
 }
+
+void Backpack::removeItem(const std::string& itemName, int quantity) {
+    for (auto& item : items) {
+        if (item.first == itemName) {
+            item.second -= quantity;
+            if (item.second <= 0) {
+                items.erase(std::remove_if(items.begin(), items.end(),
+                                           [&](const auto& pair) { return pair.first == itemName; }), items.end());
+            }
+            break;
+        }
+    }
+
+    if (std::find(singleUseItems.begin(), singleUseItems.end(), itemName) != singleUseItems.end()) {
+        singleUseItems.erase(std::remove(singleUseItems.begin(), singleUseItems.end(), itemName), singleUseItems.end());
+    }
+}
+
+
+int Backpack::getItemCount(const std::string& itemName) const {
+    for (const auto& item : items) {
+        if (item.first == itemName) {
+            return item.second;
+        }
+    }
+    return 0;
+}
+void Backpack::addItem(const std::string& itemName, int quantity) {
+    for (auto &item: items) {
+        if (item.first == itemName) {
+            item.second += quantity;
+            return;
+        }
+    }
+}
+int Backpack::getTotalItemsCount() const {
+    int totalCount = 0;
+    for (const auto& item : items) {
+        totalCount += item.second;
+    }
+    return totalCount;
+}
+
+void Backpack::clear() {
+    items.clear();
+    singleUseItems.clear();
+}
+void Backpack::useItem(const std::string& itemName) {
+
+    if (std::find(singleUseItems.begin(), singleUseItems.end(), itemName) != singleUseItems.end()) {
+        removeItem(itemName, 1);
+    }
+    else {
+        removeItem(itemName, 1);
+    }
+}
