@@ -7,7 +7,7 @@ using namespace std;
 
 // Function And Class Method Decleration
 
-    Health ::Health(int maxHP) : maxHealth(maxHP),currentHealth(maxHP){}
+
     int Health::getCurrentHealth(){
         return currentHealth;
     }
