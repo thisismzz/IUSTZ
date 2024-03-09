@@ -81,23 +81,12 @@ class Experience {
     private:
         int maximum;
         int currentValue;
+        int level;
+
     public:
-        void setMaximum(){
-            maximum=100+(*50);
-        }
-
-        void setCurrentValue(int selfDamage,int enemyDamage,int usedStamina){
-            currentValue+=(0.5*selfDamage)+(0.2*enemyDamage)+(0.3*usedStamina);
-            if(currentValue>=maximum){
-                currentValue=0;
-
-            }
-        }
-
-
-
-
-
+        Experience(int);
+        void setMaximum();
+        void setCurrentValue(int,int,int);
 };
 
 class Stamina {
