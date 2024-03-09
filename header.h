@@ -58,7 +58,15 @@ class Throwable : public Shop {
 };
 // *----------------------------------------------------------------*
 class Health {
-
+private :
+    int currentHealth;
+    int maxHealth;
+public :
+    Health();
+    int getCurrentHealth();
+    int getMaxHealth();
+    void decreaseHealth(int damage);
+    void increaseHealth (int amount);
 };
 
 class Damage {
@@ -66,6 +74,7 @@ class Damage {
 };
 
 class Stamina {
+
 
 };
 
