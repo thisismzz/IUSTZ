@@ -3,92 +3,8 @@
 #include<iostream>
 #include<string>
 #include<vector>
+
 using namespace std;
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class Person {
-    protected:
-        string name;
-        int level = 1;
-        Health health = 100;
-        Experience exp;
-    public:
-        Person(string name);
-        void updateLevel();
-};
-
-class Human : public Person {
-    protected:
-        WarmWeaponAbility WarmAbility;
-        ColdWeaponAbility ColdAbility;
-        ThrowableWeaponAbility throwableWeaponAbility;
-        Backpack backpack;
-        Stamina stamina;
-    public:
-        Human();
-        
-};
-class Player : public Human {
-    protected:
-        int age;
-        string gender;
-        BankAccount bankAccount;
-    public:
-        Player(string n,string g,int a):Human(n,a,g,this,this,??,??,??),bankAccount(??){}
-        
-};
-
-class SmartZombie : public Human {
-    
-};
-
-class Zombie : public Person {
-
-};
-class BaseZombie : public Zombie {
-
-};
-class AdvZombiee : public Zombie {
-    
-};
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class Items {
-    protected:
-        string name;
-        double price;
-    public:
-        Items
-};
-
-class Permanent : public Items {
-
-
-};
-class WarmWeapon : public Permanent {
-    
-};
-class ColdWeapon : public Permanent {
-
-};
-
-class Consumption : public Items {
-
-};
-class Medicine : public Consumption {
-
-};
-class Food : public Consumption {
-
-};
-
-class Throwable : public Items {
-
-};
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -96,72 +12,87 @@ class Health {
     protected:
         int currentHealth;
         int maxHealth;
+        Human* humanObj;
     public:
-        Health();
-        int getCurrentHealth();
-        int getMaxHealth();
-        void decreaseHealth(int damage);
-        void increaseHealth (int amount);
+        Health(Human &human);
+        int getCurrentHealth() const;
+        int getMaxHealth() const;
+        void setHealth(int newHealth);
+        void decrease(int damage);
+        void increase(int amount);
 };
-
+// *----------------------------------------------------------------*
 class Stamina {
     protected:
-        int value;
+        int currentValue;
         int maximum;
-        Human *humanObj;
+        Human* humanObj;
     public:
-        Stamina(Human *h):humanObj(h),maximum(100),value(100){}
+        Stamina(Human &human);
         int getValue() const;
-        void setValue(int val);
+        int getMaximum() const;
+        void setValue(int newVal);
         void decrease(int amount);
         void increase(int amount);
-        int getMaximum() const;
         void updateMaximumStamina();
-
 };
-
+// *----------------------------------------------------------------*
 class Experience {
     protected:
         int maximum;
         int currentValue;
-        Human *humanObj;
+        Human* humanObj;
     public:
-        Experience(Human *h):humanObj(h),maximum(100),currentValue(0){}
-
-        void updateMaximum();
-
+        Experience(Human &human);
+        int getValue() const;
+        int getMaximum() const;
+        void updateMaximumExperience();
         void setCurrentValue(int,int,int);
 };
-
-class Skills {
-
-};
-
-class WarmWeaponAbility : public Skills {
-
-};
-
-class ColdWeaponAbility : public Skills {
-
-};
-
-class ThrowableWeaponAbility : public Skills {
-
-};
-
+// *----------------------------------------------------------------*
+class Skills {};
+// *----------------------------------------------------------------*
+class WarmWeaponAbility : public Skills {};
+// *----------------------------------------------------------------*
+class ColdWeaponAbility : public Skills {};
+// *----------------------------------------------------------------*
+class ThrowableWeaponAbility : public Skills {};
+// *----------------------------------------------------------------*
 class Backpack {
     protected:
-        vector<pair<string, int>> items;
-        vector<string> singleUseItems;
+        vector<pair<Food , int>> FoodItems;
+        vector<pair<Medicine , int>> MedicineItems;
+        vector<pair<Throwable , int>> ThrowableItems;
+        vector<Permanent> PermanentItems;
     public:
-        void addItem(const string& itemName, int quantity);
-        void removeItem(const string& itemName, int quantity);
-        int getItemCount(const string& itemName) const;
-        int getTotalItemsCount() const;
-        void clear();
+        void addFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, int quantity);
+        void addMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medicine& medicineItem, int quantity);
+        void addThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const Throwable& throwableItem, int quantity);
+        void addPermanentItems(vector<Permanent>& PermanentItems ,const Permanent& permanentItem);
+
+        void removeFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, int quantity);
+        void removeMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medicine& medicineItem, int quantity);
+        void removeThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const Throwable& throwableItem, int quantity);
+        void removePermanentItems(vector<Permanent>& PermanentItems ,const Permanent& permanentItem);
+
+        int getFoodItemsCount(vector<pair<Food , int>>& FoodItems);
+        int getMedicineItemsCount(vector<pair<Medicine , int>>& MedicineItems);
+        int getThrowableItemsCount(vector<pair<Throwable , int>>& ThrowableItems);
+        int getPermanentItemsCount(vector<Permanent>& PermanentItems);
+
+        int getSpecificFoodItemCount(vector<pair<Food , int>>& FoodItems, const Food& specificItem) const;
+        int getSpecificMedicineItemCount(vector<pair<Medicine , int>>& MedicineItems, const Medicine& specificItem) const;
+        int getSpecificThrowableItemCount(vector<pair<Throwable , int>>& ThrowableItems, const Throwable& specificItem) const;
+        int getSpecificPermanentItemCount(vector<Permanent>& PermanentItems, const Permanent& specificItem) const;
+        
+        void clearFoodItems(vector<pair<Food , int>>& FoodItems);
+        void clearMedicineItems(vector<pair<Medicine , int>>& MedicineItems);
+        void clearThrowableItems(vector<pair<Throwable , int>>& ThrowableItems);
+        void clearPermanentItems(vector<Permanent>& PermanentItems);
+
         void useItem(const string& itemName);
 };
-
+// *----------------------------------------------------------------*
 class BankAccount {
     protected:
         int balance;
@@ -171,6 +102,71 @@ class BankAccount {
         void deposit(int amount);
         void withdraw(int amount);
 };
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class Person {
+    protected:
+        string name;
+        int level;
+        Health health;
+        Experience exp;
+    public:
+        Person(string name);
+};
+// *----------------------------------------------------------------*
+class Human : public Person {
+    protected:
+        WarmWeaponAbility WarmAbility;
+        ColdWeaponAbility ColdAbility;
+        ThrowableWeaponAbility throwableWeaponAbility;
+        Backpack backpack;
+        Stamina stamina;
+    public:
+        Human();
+};
+// *----------------------------------------------------------------*
+class Player : public Human {
+    protected:
+        int age;
+        string userName;
+        string gender;
+        BankAccount bankAccount;
+    public:
+        Player(int age , string userName , string gender);
+        void updateLevel();
+};
+// *----------------------------------------------------------------*
+class SmartZombie : public Human {};
+// *----------------------------------------------------------------*
+class Zombie : public Person {};
+// *----------------------------------------------------------------*
+class BaseZombie : public Zombie {};
+// *----------------------------------------------------------------*
+class AdvZombiee : public Zombie {};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class Items {
+    protected:
+        string name;
+        int price;
+    public:
+};
+// *----------------------------------------------------------------*
+class Permanent : public Items {};
+// *----------------------------------------------------------------*
+class WarmWeapon : public Permanent {};
+// *----------------------------------------------------------------*
+class ColdWeapon : public Permanent {};
+// *----------------------------------------------------------------*
+class Consumption : public Items {};
+// *----------------------------------------------------------------*
+class Medicine : public Consumption {};
+// *----------------------------------------------------------------*
+class Food : public Consumption {};
+// *----------------------------------------------------------------*
+class Throwable : public Items {};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
