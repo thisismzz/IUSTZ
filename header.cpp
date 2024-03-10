@@ -17,7 +17,9 @@ Person :: Person(string name){
     this-> level = 1;
 }
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 Human :: Human(){}
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 Player :: Player(int age , string userName , string gender){
     this-> age = age;
@@ -190,7 +192,7 @@ void Backpack :: addPermanentItems(vector<Permanent>& PermanentItems, const Perm
     }
 }
 // *----------------------------------------------------------------*
-void removeFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, int quantity) {
+void Backpack :: removeFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, int quantity) {
     for (auto it = FoodItems.begin(); it != FoodItems.end(); ) {
         if (it->first == foodItem && it->second == quantity) {
             it = FoodItems.erase(it);
@@ -199,7 +201,7 @@ void removeFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, 
         }
     }
 }
-void removeMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medicine& medicineItem, int quantity) {
+void Backpack :: removeMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medicine& medicineItem, int quantity) {
     for (auto it = MedicineItems.begin(); it != MedicineItems.end(); ) {
         if (it->first == medicineItem && it->second == quantity) {
             it = MedicineItems.erase(it);
@@ -208,7 +210,7 @@ void removeMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medi
         }
     }
 }
-void removeThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const Throwable& throwableItem, int quantity) {
+void Backpack :: removeThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const Throwable& throwableItem, int quantity) {
     for (auto it = ThrowableItems.begin(); it != ThrowableItems.end(); ) {
         if (it->first == throwableItem && it->second == quantity) {
             it = ThrowableItems.erase(it);
@@ -217,18 +219,18 @@ void removeThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const T
         }
     }
 }
-void removePermanentItems(vector<Permanent>& PermanentItems ,const Permanent& permanentItem){
+void Backpack :: removePermanentItems(vector<Permanent>& PermanentItems ,const Permanent& permanentItem){
     PermanentItems.erase(remove(PermanentItems.begin(), PermanentItems.end(), permanentItem), PermanentItems.end());
 }
 // *----------------------------------------------------------------*
-int getFoodItemsCount(vector<pair<Food , int>>& FoodItems) {
+int Backpack :: getFoodItemsCount(vector<pair<Food , int>>& FoodItems) {
     int total = 0;
     for (const auto& item : FoodItems) {
         total += item.second;
     }
     return total;
 }
-int getMedicineItemsCount(vector<pair<Medicine , int>>& MedicineItems) {
+int Backpack :: getMedicineItemsCount(vector<pair<Medicine , int>>& MedicineItems) {
     int total = 0;
     for (const auto& item : MedicineItems) {
         total += item.second;
@@ -236,7 +238,7 @@ int getMedicineItemsCount(vector<pair<Medicine , int>>& MedicineItems) {
     return total;
 }
 
-int getThrowableItemsCount(vector<pair<Throwable , int>>& ThrowableItems) {
+int Backpack :: getThrowableItemsCount(vector<pair<Throwable , int>>& ThrowableItems) {
     int total = 0;
     for (const auto& item : ThrowableItems) {
         total += item.second;
@@ -244,23 +246,23 @@ int getThrowableItemsCount(vector<pair<Throwable , int>>& ThrowableItems) {
     return total;
 }
 
-int getPermanentItemsCount(vector<Permanent>& PermanentItems) {
+int Backpack :: getPermanentItemsCount(vector<Permanent>& PermanentItems) {
     return PermanentItems.size();
 }
 // *----------------------------------------------------------------*
-void clearFoodItems(vector<pair<Food , int>>& FoodItems) {
+void Backpack :: clearFoodItems(vector<pair<Food , int>>& FoodItems) {
     FoodItems.clear();
 }
 
-void clearMedicineItems(vector<pair<Medicine , int>>& MedicineItems) {
+void Backpack :: clearMedicineItems(vector<pair<Medicine , int>>& MedicineItems) {
     MedicineItems.clear();
 }
 
-void clearThrowableItems(vector<pair<Throwable , int>>& ThrowableItems) {
+void Backpack :: clearThrowableItems(vector<pair<Throwable , int>>& ThrowableItems) {
     ThrowableItems.clear();
 }
 
-void clearPermanentItems(vector<Permanent>& PermanentItems) {
+void Backpack :: clearPermanentItems(vector<Permanent>& PermanentItems) {
     PermanentItems.clear();
 }
 // *----------------------------------------------------------------*
