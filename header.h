@@ -3,32 +3,37 @@
 // *----------------------------------------------------------------*
 class Person {
     private:
-        Health hp;
         string name;
         int level;
     public:
-        Person(string n) : name(n), level(1), hp(100) {}
+        Health hp;
+        Person(string n) : name(n), level(1){}
+
+        void updateLevel(){
+            level++;
+        }
 };
 
 class Human : public Person {
     private:
         int age;
         string gender;
-        Experience exp;
-        Stamina stamina;
         WarmWeaponAbility WarmAbility;
         ColdWeaponAbility ColdAbility;
         Backpack backpack;
 
     public:
-        Human(string n,string g,int a):Person(n,1,100),age(a),gender(g),exp(??),stamina(??),WarmAbility(??),ColdAbility(??),backpack(??){}
+        Experience exp;
+        Stamina stamina;
+        Human(string n,string g,int a):Person(n),age(a),gender(g),exp(this),stamina(this),WarmAbility(??),ColdAbility(??),backpack(??){}
+        
 };
 
 class Player : public Human {
     private:
         BankAccount bankAccount;
     public:
-        Player(string n,string g,int a):Human(n,1,100,a,g,??,??,??,??,??),bankAccount(??){}
+        Player(string n,string g,int a):Human(n,a,g,this,this,??,??,??),bankAccount(??){}
         
 };
 
@@ -98,14 +103,15 @@ class Stamina {
 private :
     int value;
     int maximum;
-    int level;
+    Human *humanObj;
 public :
-    Stamina(int level);
+    Stamina(Human *h):humanObj(h),maximum(100),value(100){}
     int getValue() const;
     void setValue(int val);
     void decrease(int amount);
     void increase(int amount);
     int getMaximum() const;
+    void updateMaximumStamina();
 
 };
 
@@ -113,10 +119,12 @@ class Experience {
     private:
         int maximum;
         int currentValue;
-        int level;
+        Human *humanObj;
     public:
-        Experience(int);
-        void setMaximum();
+        Experience(Human *h):humanObj(h),maximum(100),currentValue(0){}
+
+        void updateMaximum();
+
         void setCurrentValue(int,int,int);
 };
 
@@ -133,7 +141,16 @@ class ColdWeaponAbility : public Skills {
 };
 
 class Backpack {
-
+private:
+    std::vector<std::pair<std::string, int>> items;
+    std::vector<std::string> singleUseItems;
+public:
+    void addItem(const std::string& itemName, int quantity);
+    void removeItem(const std::string& itemName, int quantity);
+    int getItemCount(const std::string& itemName) const;
+    int getTotalItemsCount() const;
+    void clear();
+    void useItem(const std::string& itemName);
 };
 
 class BankAccount {
