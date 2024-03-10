@@ -1,36 +1,38 @@
 #ifndef HEADER
 #define HEADER
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class Person {
-    private:
+    protected:
         string name;
-        int level;
+        int level = 1;
+        Health health = 100;
+        Experience exp;
     public:
-        Health hp;
-        Person(string n) : name(n), level(1){}
-
-        void updateLevel(){
-            level++;
-        }
+        Person(string name);
+        void updateLevel();
 };
 
 class Human : public Person {
-    private:
-        int age;
-        string gender;
+    protected:
         WarmWeaponAbility WarmAbility;
         ColdWeaponAbility ColdAbility;
+        ThrowableWeaponAbility throwableWeaponAbility;
         Backpack backpack;
-
-    public:
-        Experience exp;
         Stamina stamina;
-        Human(string n,string g,int a):Person(n),age(a),gender(g),exp(this),stamina(this),WarmAbility(??),ColdAbility(??),backpack(??){}
+    public:
+        Human();
         
 };
-
 class Player : public Human {
-    private:
+    protected:
+        int age;
+        string gender;
         BankAccount bankAccount;
     public:
         Player(string n,string g,int a):Human(n,a,g,this,this,??,??,??),bankAccount(??){}
@@ -52,12 +54,14 @@ class AdvZombiee : public Zombie {
 };
 
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 class Items {
-private:
-    string name;
-    double price;
-public:
-    Items
+    protected:
+        string name;
+        double price;
+    public:
+        Items
 };
 
 class Permanent : public Items {
@@ -86,37 +90,38 @@ class Throwable : public Items {
 };
 
 // *----------------------------------------------------------------*
-
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 class Health {
-private :
-    int currentHealth;
-    int maxHealth;
-public :
-    Health();
-    int getCurrentHealth();
-    int getMaxHealth();
-    void decreaseHealth(int damage);
-    void increaseHealth (int amount);
+    protected:
+        int currentHealth;
+        int maxHealth;
+    public:
+        Health();
+        int getCurrentHealth();
+        int getMaxHealth();
+        void decreaseHealth(int damage);
+        void increaseHealth (int amount);
 };
 
 class Stamina {
-private :
-    int value;
-    int maximum;
-    Human *humanObj;
-public :
-    Stamina(Human *h):humanObj(h),maximum(100),value(100){}
-    int getValue() const;
-    void setValue(int val);
-    void decrease(int amount);
-    void increase(int amount);
-    int getMaximum() const;
-    void updateMaximumStamina();
+    protected:
+        int value;
+        int maximum;
+        Human *humanObj;
+    public:
+        Stamina(Human *h):humanObj(h),maximum(100),value(100){}
+        int getValue() const;
+        void setValue(int val);
+        void decrease(int amount);
+        void increase(int amount);
+        int getMaximum() const;
+        void updateMaximumStamina();
 
 };
 
 class Experience {
-    private:
+    protected:
         int maximum;
         int currentValue;
         Human *humanObj;
@@ -140,27 +145,33 @@ class ColdWeaponAbility : public Skills {
 
 };
 
+class ThrowableWeaponAbility : public Skills {
+
+};
+
 class Backpack {
-private:
-    std::vector<std::pair<std::string, int>> items;
-    std::vector<std::string> singleUseItems;
-public:
-    void addItem(const std::string& itemName, int quantity);
-    void removeItem(const std::string& itemName, int quantity);
-    int getItemCount(const std::string& itemName) const;
-    int getTotalItemsCount() const;
-    void clear();
-    void useItem(const std::string& itemName);
+    protected:
+        vector<pair<string, int>> items;
+        vector<string> singleUseItems;
+    public:
+        void addItem(const string& itemName, int quantity);
+        void removeItem(const string& itemName, int quantity);
+        int getItemCount(const string& itemName) const;
+        int getTotalItemsCount() const;
+        void clear();
+        void useItem(const string& itemName);
 };
 
 class BankAccount {
-private:
-    double balance;
-public:
-    BankAccount();
-    double getBalance();
-    void deposit(double amount);
-    void withdraw(double amount);
+    protected:
+        int balance;
+    public:
+        BankAccount();
+        int getBalance();
+        void deposit(int amount);
+        void withdraw(int amount);
 };
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 #endif

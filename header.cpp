@@ -6,6 +6,12 @@
 using namespace std;
 
 // Function And Class Method Decleration
+Person :: Person(string name){
+    this-> name = name;
+}
+Person :: updateLevel(){
+    this->level ++;
+}
 
 Health ::Health() : maxHealth(100),currentHealth(100){}
 int Health::getCurrentHealth(){
