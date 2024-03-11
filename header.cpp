@@ -12,27 +12,27 @@ using namespace std;
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Person::Person(string n) : hp(this),name(n), level(1){}
+Person::Person(string n) : name(n), level(1){}
+
 void Person :: updateLevel(){
     level++;
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Human :: Human(){}
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-Player :: Player(int age , string userName , string gender){
-    this-> age = age;
-    this-> userName = userName;
-    this-> gender = gender;
+
+BankAccount* Player::getBankAccount(){
+    BankAccount* p=&bankAccount;
+    return p;
 }
-void Player :: updateLevel(){
-    this->level = this->level + 1;
-}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Health :: Health(Person *h) : humanObj(h),maxHealth(100),currentHealth(100){}
+Health :: Health() : maxHealth(100),currentHealth(100){}
 void Health::decreaseHealth(int damage){
     currentHealth -= damage;
     if(currentHealth <= 0)
@@ -45,7 +45,7 @@ void Health::increaseHealth (int amount){
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Stamina :: Stamina(Human *h):humanObj(h),maximum(100),currentStamina(100){}
+Stamina :: Stamina():maximum(100),currentStamina(100){}
 void Stamina ::decreaseStamina(int amount) {
     currentStamina -= amount;
     if (currentStamina < 0)
@@ -62,6 +62,7 @@ void Stamina::updateMaximumStamina(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 Experience :: Experience(Human *h):humanObj(h),maximum(100),currentExp(0){}
+
 void Experience::updateMaximum(){
     maximum+=50;
 }
@@ -69,7 +70,7 @@ void Experience::setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
     currentExp+=(0.5*selfDamage)+(0.2*enemyDamage)+(0.3*usedStamina);
     if(currentExp>=maximum){
         currentExp=0;
-        humanObj->exp.updateMaximum();
+        updateMaximum();
         humanObj->updateLevel();
         humanObj->stamina.updateMaximumStamina();
     }
@@ -85,6 +86,76 @@ void Experience::increaseExp(int amount){
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+Skills::Skills(int n):maximum(5),currentSkill(n),upgradePrice(n*10){}
+
+void Skills::setUpgradePrice(){
+    upgradePrice+=10;
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+void WarmWeaponAbility::upgradeSkill(BankAccount* creditcard) {
+    try{
+        if(creditcard->getBalance()>=upgradePrice){
+            creditcard->withdraw(upgradePrice);
+            setUpgradePrice();
+        }
+        else{
+            throw 0;
+        }
+    }
+    catch(int temp){
+        cout<<"not enough money!\n";
+    }
+    
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+void ColdWeaponAbility::upgradeSkill(BankAccount* creditcard) {
+    try{
+        if(creditcard->getBalance()>=upgradePrice){
+            creditcard->withdraw(upgradePrice);
+            setUpgradePrice();
+        }
+        else{
+            throw 0;
+        }
+    }
+    catch(int temp){
+        cout<<"not enough money!\n";
+    }
+    
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+void ThrowableWeaponAbility::upgradeSkill(BankAccount* creditcard) {
+    try{
+        if(creditcard->getBalance()>=upgradePrice){
+            creditcard->withdraw(upgradePrice);
+            setUpgradePrice();
+        }
+        else{
+            throw 0;
+        }
+    }
+    catch(int temp){
+        cout<<"not enough money!\n";
+    }
+    
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+
+
+
 BankAccount :: BankAccount(){
     this->balance = 500;
 }
@@ -102,7 +173,7 @@ void BankAccount::withdraw(int amount) {
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-int Backpack :: getSpecificFoodItemCount(vector<pair<Food , int>>& FoodItems, const Food& specificItem) const {
+int Backpack :: getSpecificFoodItemCount(const Food& specificItem) const {
     int count = 0;
     for (const auto& item : FoodItems) {
         if (item.first == specificItem) {

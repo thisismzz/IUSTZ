@@ -22,23 +22,22 @@ class Person {
 // *----------------------------------------------------------------*
 class Human : public Person {
     private:
-        int age;
-        string gender;
-        WarmWeaponAbility WarmAbility;
-        ColdWeaponAbility ColdAbility;
         Backpack backpack;
     public:
         Experience exp;
         Stamina stamina;
-        Human(string n,string g,int a):Person(n),age(a),gender(g),exp(this),stamina(this),WarmAbility(??),ColdAbility(??),backpack(??){}
+        Human(string n):Person(n),exp(this),backpack(??){}
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class Player : public Human {
     private:
+        int age;
+        string gender;
         BankAccount bankAccount;
     public:
-        Player(string n,string g,int a):Human(n,a,g,this,this,??,??,??),bankAccount(??){}
+        Player(string n,string g,int a):Human(n,this,??),age(a),gender(g),bankAccount(??){}
+        BankAccount* getBankAccount();
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -59,9 +58,8 @@ class Health {
 private :
     int currentHealth;
     int maxHealth;
-    Person *humanObj;
 public :
-    Health(Person*);
+    Health();
     void decreaseHealth(int damage);
     void increaseHealth (int amount);
 };
@@ -71,9 +69,8 @@ class Stamina {
 private :
     int currentStamina;
     int maximum;
-    Human *humanObj;
 public :
-    Stamina(Human*);
+    Stamina();
     void decreaseStamina(int amount);
     void increaseStamina(int amount);
     void updateMaximumStamina();
@@ -93,16 +90,36 @@ class Experience {
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class Skills {};
+class Skills {
+    protected:
+        int maximum;
+        int currentSkill;
+        int upgradePrice;
+    public:
+        Skills(int);
+        virtual void upgradeSkill(BankAccount* creditcard);
+        void setUpgradePrice();
+
+};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class WarmWeaponAbility : public Skills {};
+class WarmWeaponAbility : public Skills {
+    public:
+        void upgradeSkill(BankAccount* creditcard) override;
+
+};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class ColdWeaponAbility : public Skills {};
+class ColdWeaponAbility : public Skills {
+    public:
+        void upgradeSkill(BankAccount* creditcard) override;
+};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class ThrowableWeaponAbility : public Skills {};
+class ThrowableWeaponAbility : public Skills {
+    public:
+        void upgradeSkill(BankAccount* creditcard) override;
+};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class Backpack {
@@ -127,7 +144,7 @@ class Backpack {
         int getThrowableItemsCount(vector<pair<Throwable , int>>& ThrowableItems);
         int getPermanentItemsCount(vector<Permanent>& PermanentItems);
 
-        int getSpecificFoodItemCount(vector<pair<Food , int>>& FoodItems, const Food& specificItem) const;
+        int getSpecificFoodItemCount(const Food& specificItem) const;
         int getSpecificMedicineItemCount(vector<pair<Medicine , int>>& MedicineItems, const Medicine& specificItem) const;
         int getSpecificThrowableItemCount(vector<pair<Throwable , int>>& ThrowableItems, const Throwable& specificItem) const;
         int getSpecificPermanentItemCount(vector<Permanent>& PermanentItems, const Permanent& specificItem) const;
