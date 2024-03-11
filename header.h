@@ -96,8 +96,8 @@ class Skills {
         int currentSkill;
         int upgradePrice;
     public:
-        Skills(int);
-        virtual void upgradeSkill(BankAccount* creditcard);
+        Skills(int,int);
+        void upgradeSkill(BankAccount*);
         void setUpgradePrice();
 
 };
@@ -105,20 +105,19 @@ class Skills {
 // *----------------------------------------------------------------*
 class WarmWeaponAbility : public Skills {
     public:
-        void upgradeSkill(BankAccount* creditcard) override;
-
+        WarmWeaponAbility(int);
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class ColdWeaponAbility : public Skills {
     public:
-        void upgradeSkill(BankAccount* creditcard) override;
+        ColdWeaponAbility(int);
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class ThrowableWeaponAbility : public Skills {
     public:
-        void upgradeSkill(BankAccount* creditcard) override;
+        ThrowableWeaponAbility(int);
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

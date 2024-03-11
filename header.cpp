@@ -82,60 +82,41 @@ void Experience :: increaseExp(int amount){
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Skills :: Skills(int n):maximum(5),currentSkill(n),upgradePrice(n*10){}
+
+Skills::Skills(int n,int m):maximum(5),currentSkill(n),upgradePrice(m){}
+
+void Skills::upgradeSkill(BankAccount* creditcard) {
+    try{
+        if(creditcard->getBalance()>=upgradePrice){
+            creditcard->withdraw(upgradePrice);
+            currentSkill++;
+            setUpgradePrice();
+        }
+        else{
+            throw 0;
+        }
+    }
+    catch(int temp){
+        cout<<"not enough money!\n";
+    } 
+}
+
 void Skills::setUpgradePrice(){
     upgradePrice+=10;
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-void WarmWeaponAbility :: upgradeSkill(BankAccount* creditcard) {
-    try{
-        if(creditcard->getBalance()>=upgradePrice){
-            creditcard->withdraw(upgradePrice);
-            setUpgradePrice();
-        }
-        else{
-            throw 0;
-        }
-    }
-    catch(int temp){
-        cout<<"not enough money!\n";
-    }
-}
+WarmWeaponAbility::WarmWeaponAbility(int n):Skills(n,n*10){}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-void ColdWeaponAbility :: upgradeSkill(BankAccount* creditcard) {
-    try{
-        if(creditcard->getBalance()>=upgradePrice){
-            creditcard->withdraw(upgradePrice);
-            setUpgradePrice();
-        }
-        else{
-            throw 0;
-        }
-    }
-    catch(int temp){
-        cout<<"not enough money!\n";
-    }
-}
+ColdWeaponAbility::ColdWeaponAbility(int n):Skills(n,n*15){}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-void ThrowableWeaponAbility :: upgradeSkill(BankAccount* creditcard) {
-    try{
-        if(creditcard->getBalance()>=upgradePrice){
-            creditcard->withdraw(upgradePrice);
-            setUpgradePrice();
-        }
-        else{
-            throw 0;
-        }
-    }
-    catch(int temp){
-        cout<<"not enough money!\n";
-    }   
-}
+ThrowableWeaponAbility::ThrowableWeaponAbility(int n):Skills(n,n*20){}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+
 BankAccount :: BankAccount(){
     this->balance = 500;
 }
