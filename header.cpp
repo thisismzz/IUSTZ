@@ -124,3 +124,4 @@ void Backpack::useItem(const std::string& itemName) {
     else {
         removeItem(itemName, 1);
 }
+}

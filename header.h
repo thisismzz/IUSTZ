@@ -57,7 +57,7 @@ private:
     string name;
     double price;
 public:
-    Items
+
 };
 
 class Permanent : public Items {
@@ -142,15 +142,15 @@ class ColdWeaponAbility : public Skills {
 
 class Backpack {
 private:
-    std::vector<std::pair<std::string, int>> items;
-    std::vector<std::string> singleUseItems;
+    vector<pair<string, int>> items;
+    vector<string> singleUseItems;
 public:
-    void addItem(const std::string& itemName, int quantity);
-    void removeItem(const std::string& itemName, int quantity);
-    int getItemCount(const std::string& itemName) const;
+    void addItem(const string& itemName, int quantity);
+    void removeItem(const string& itemName, int quantity);
+    int getItemCount(const string& itemName) const;
     int getTotalItemsCount() const;
     void clear();
-    void useItem(const std::string& itemName);
+    void useItem(const string& itemName);
 };
 
 class BankAccount {
