@@ -174,10 +174,22 @@ class Items {
         string name;
         int price;
     public:
+        Items(string,int);
+        void buy();
+        virtual void addToBackpack();
+        virtual void showItems();
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class Permanent : public Items {};
+class Permanent : public Items {
+    private:
+        vector<Permanent> permanentItems;
+        int damage;
+    public:
+        Permanent();
+        void showItems() override;
+        void addToBackpack() override;
+};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class WarmWeapon : public Permanent {};
@@ -186,13 +198,13 @@ class WarmWeapon : public Permanent {};
 class ColdWeapon : public Permanent {};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class Consumption : public Items {};
+class Consumable : public Items {};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class Medicine : public Consumption {};
+class Medicine : public Consumable {};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class Food : public Consumption {};
+class Food : public Consumable {};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class Throwable : public Items {};

@@ -116,32 +116,14 @@ ThrowableWeaponAbility::ThrowableWeaponAbility(int n):Skills(n,n*20){}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-
-BankAccount :: BankAccount(){
-    this->balance = 500;
-}
-int BankAccount :: getBalance() {
-    return balance;
-}
-void BankAccount :: deposit(int amount) { 
-    this->balance += amount;
-}
-void BankAccount::withdraw(int amount) {
-    if (balance >= amount)
-        balance -= amount;
-    else
-        cout << "Insufficient funds" << endl;
-}
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 int Backpack :: getSpecificFoodItemCount(const Food& specificItem) const {
-    int count = 0;
+    int count = 0;                                           
     for (const auto& item : FoodItems) {
         if (item.first == specificItem) {
             count += item.second;
         }
     }
-    return count;
+    return count;                            // return 
 }
 int Backpack :: getSpecificMedicineItemCount(const Medicine& specificItem) const {
     int count = 0;
@@ -152,15 +134,17 @@ int Backpack :: getSpecificMedicineItemCount(const Medicine& specificItem) const
     }
     return count;
 }
+
 int Backpack :: getSpecificThrowableItemCount(const Throwable& specificItem) const {
     int count = 0;
     for (const auto& item : ThrowableItems) {
-        if (item.first == specificItem) {
+        if (item.first == specificItem) {               // item.first.getName()==specificItem.getname()
             count += item.second;
         }
     }
     return count;
 }
+
 int Backpack :: getSpecificPermanentItemCount(const Permanent& specificItem) const {
     return count(PermanentItems.begin(), PermanentItems.end(), specificItem);
 }
@@ -281,6 +265,32 @@ void Backpack :: clearPermanentItems() {
 //         removeItem(itemName, 1);
 //         }
 // }
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+BankAccount :: BankAccount(){
+    this->balance = 500;
+}
+int BankAccount :: getBalance() {
+    return balance;
+}
+void BankAccount :: deposit(int amount) { 
+    this->balance += amount;
+}
+void BankAccount::withdraw(int amount) {
+    if (balance >= amount)
+        balance -= amount;
+    else
+        cout << "Insufficient funds" << endl;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+
+Items::Items(string n,int p):name(n),price(p){}
+
+
+
