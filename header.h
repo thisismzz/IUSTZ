@@ -128,30 +128,30 @@ class Backpack {
         vector<pair<Throwable , int>> ThrowableItems;
         vector<Permanent> PermanentItems;
     public:
-        void addFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, int quantity);
-        void addMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medicine& medicineItem, int quantity);
-        void addThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const Throwable& throwableItem, int quantity);
-        void addPermanentItems(vector<Permanent>& PermanentItems ,const Permanent& permanentItem);
+        void addFoodItems(const Food& foodItem, int quantity);
+        void addMedicineItems(const Medicine& medicineItem, int quantity);
+        void addThrowableItems(const Throwable& throwableItem, int quantity);
+        void addPermanentItems(const Permanent& permanentItem);
 
-        void removeFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, int quantity);
-        void removeMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medicine& medicineItem, int quantity);
-        void removeThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const Throwable& throwableItem, int quantity);
-        void removePermanentItems(vector<Permanent>& PermanentItems ,const Permanent& permanentItem);
+        void removeFoodItems(const Food& foodItem, int quantity);
+        void removeMedicineItems(const Medicine& medicineItem, int quantity);
+        void removeThrowableItems(const Throwable& throwableItem, int quantity);
+        void removePermanentItems(const Permanent& permanentItem);
 
-        int getFoodItemsCount(vector<pair<Food , int>>& FoodItems);
-        int getMedicineItemsCount(vector<pair<Medicine , int>>& MedicineItems);
-        int getThrowableItemsCount(vector<pair<Throwable , int>>& ThrowableItems);
-        int getPermanentItemsCount(vector<Permanent>& PermanentItems);
+        int getFoodItemsCount();
+        int getMedicineItemsCount();
+        int getThrowableItemsCount();
+        int getPermanentItemsCount();
 
         int getSpecificFoodItemCount(const Food& specificItem) const;
-        int getSpecificMedicineItemCount(vector<pair<Medicine , int>>& MedicineItems, const Medicine& specificItem) const;
-        int getSpecificThrowableItemCount(vector<pair<Throwable , int>>& ThrowableItems, const Throwable& specificItem) const;
-        int getSpecificPermanentItemCount(vector<Permanent>& PermanentItems, const Permanent& specificItem) const;
+        int getSpecificMedicineItemCount(const Medicine& specificItem) const;
+        int getSpecificThrowableItemCount(const Throwable& specificItem) const;
+        int getSpecificPermanentItemCount(const Permanent& specificItem) const;
         
-        void clearFoodItems(vector<pair<Food , int>>& FoodItems);
-        void clearMedicineItems(vector<pair<Medicine , int>>& MedicineItems);
-        void clearThrowableItems(vector<pair<Throwable , int>>& ThrowableItems);
-        void clearPermanentItems(vector<Permanent>& PermanentItems);
+        void clearFoodItems();
+        void clearMedicineItems();
+        void clearThrowableItems();
+        void clearPermanentItems();
 
         // void useItem(const string& itemName);
 };
