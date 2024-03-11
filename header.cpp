@@ -107,7 +107,6 @@ void Experience::setCurrentValue(int selfDamage, int enemyDamage, int usedStamin
         humanObj->updateLevel();
     }
 }
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 BankAccount :: BankAccount(){
