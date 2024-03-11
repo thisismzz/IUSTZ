@@ -19,26 +19,21 @@ void Person :: updateLevel(){
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-
-BankAccount* Player::getBankAccount(){
-    BankAccount* p=&bankAccount;
+BankAccount* Player :: getBankAccount(){
+    BankAccount* p = &bankAccount;
     return p;
 }
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 Health :: Health() : maxHealth(100),currentHealth(100){}
-void Health::decreaseHealth(int damage){
+
+void Health :: decreaseHealth(int damage){
     currentHealth -= damage;
     if(currentHealth <= 0)
         currentHealth = 0;
 }
-void Health::increaseHealth (int amount){
+void Health :: increaseHealth (int amount){
     currentHealth += amount;
     if(currentHealth >= maxHealth)
         currentHealth = maxHealth;
@@ -46,27 +41,28 @@ void Health::increaseHealth (int amount){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 Stamina :: Stamina():maximum(100),currentStamina(100){}
-void Stamina ::decreaseStamina(int amount) {
+
+void Stamina :: decreaseStamina(int amount) {
     currentStamina -= amount;
     if (currentStamina < 0)
         currentStamina = 0;
 }
-void Stamina ::increaseStamina(int amount) {
+void Stamina :: increaseStamina(int amount) {
     currentStamina += amount;
     if ( currentStamina > maximum)
         currentStamina = maximum;
 }
-void Stamina::updateMaximumStamina(){
+void Stamina :: updateMaximumStamina(){
     maximum+=100;
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 Experience :: Experience(Human *h):humanObj(h),maximum(100),currentExp(0){}
 
-void Experience::updateMaximum(){
+void Experience :: updateMaximum(){
     maximum+=50;
 }
-void Experience::setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
+void Experience :: setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
     currentExp+=(0.5*selfDamage)+(0.2*enemyDamage)+(0.3*usedStamina);
     if(currentExp>=maximum){
         currentExp=0;
@@ -75,7 +71,7 @@ void Experience::setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
         humanObj->stamina.updateMaximumStamina();
     }
 }
-void Experience::increaseExp(int amount){
+void Experience :: increaseExp(int amount){
     currentExp+=amount;
     if(currentExp>=maximum){
         currentExp=0;
@@ -86,17 +82,13 @@ void Experience::increaseExp(int amount){
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-
-Skills::Skills(int n):maximum(5),currentSkill(n),upgradePrice(n*10){}
-
+Skills :: Skills(int n):maximum(5),currentSkill(n),upgradePrice(n*10){}
 void Skills::setUpgradePrice(){
     upgradePrice+=10;
 }
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-
-void WarmWeaponAbility::upgradeSkill(BankAccount* creditcard) {
+void WarmWeaponAbility :: upgradeSkill(BankAccount* creditcard) {
     try{
         if(creditcard->getBalance()>=upgradePrice){
             creditcard->withdraw(upgradePrice);
@@ -109,13 +101,10 @@ void WarmWeaponAbility::upgradeSkill(BankAccount* creditcard) {
     catch(int temp){
         cout<<"not enough money!\n";
     }
-    
 }
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-
-void ColdWeaponAbility::upgradeSkill(BankAccount* creditcard) {
+void ColdWeaponAbility :: upgradeSkill(BankAccount* creditcard) {
     try{
         if(creditcard->getBalance()>=upgradePrice){
             creditcard->withdraw(upgradePrice);
@@ -128,13 +117,10 @@ void ColdWeaponAbility::upgradeSkill(BankAccount* creditcard) {
     catch(int temp){
         cout<<"not enough money!\n";
     }
-    
 }
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-
-void ThrowableWeaponAbility::upgradeSkill(BankAccount* creditcard) {
+void ThrowableWeaponAbility :: upgradeSkill(BankAccount* creditcard) {
     try{
         if(creditcard->getBalance()>=upgradePrice){
             creditcard->withdraw(upgradePrice);
@@ -146,16 +132,10 @@ void ThrowableWeaponAbility::upgradeSkill(BankAccount* creditcard) {
     }
     catch(int temp){
         cout<<"not enough money!\n";
-    }
-    
+    }   
 }
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-
-
-
-
 BankAccount :: BankAccount(){
     this->balance = 500;
 }
@@ -182,7 +162,7 @@ int Backpack :: getSpecificFoodItemCount(const Food& specificItem) const {
     }
     return count;
 }
-int Backpack :: getSpecificMedicineItemCount(vector<pair<Medicine , int>>& MedicineItems, const Medicine& specificItem) const {
+int Backpack :: getSpecificMedicineItemCount(const Medicine& specificItem) const {
     int count = 0;
     for (const auto& item : MedicineItems) {
         if (item.first == specificItem) {
@@ -191,7 +171,7 @@ int Backpack :: getSpecificMedicineItemCount(vector<pair<Medicine , int>>& Medic
     }
     return count;
 }
-int Backpack :: getSpecificThrowableItemCount(vector<pair<Throwable , int>>& ThrowableItems, const Throwable& specificItem) const {
+int Backpack :: getSpecificThrowableItemCount(const Throwable& specificItem) const {
     int count = 0;
     for (const auto& item : ThrowableItems) {
         if (item.first == specificItem) {
@@ -200,11 +180,11 @@ int Backpack :: getSpecificThrowableItemCount(vector<pair<Throwable , int>>& Thr
     }
     return count;
 }
-int Backpack :: getSpecificPermanentItemCount(vector<Permanent>& PermanentItems, const Permanent& specificItem) const {
+int Backpack :: getSpecificPermanentItemCount(const Permanent& specificItem) const {
     return count(PermanentItems.begin(), PermanentItems.end(), specificItem);
 }
 // *----------------------------------------------------------------*
-void Backpack :: addFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, int quantity){
+void Backpack :: addFoodItems(const Food& foodItem, int quantity){
     for (auto &item : FoodItems) {
         if (item.first == foodItem) {
             item.second += quantity;
@@ -213,7 +193,7 @@ void Backpack :: addFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& f
     }
     FoodItems.push_back(make_pair(foodItem, quantity));
 }
-void Backpack :: addMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medicine& medicineItem, int quantity){
+void Backpack :: addMedicineItems(const Medicine& medicineItem, int quantity){
     for (auto &item : MedicineItems) {
         if (item.first == medicineItem) {
             item.second += quantity;
@@ -222,7 +202,7 @@ void Backpack :: addMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,c
     }
     MedicineItems.push_back(make_pair(medicineItem, quantity));
 }
-void Backpack :: addThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const Throwable& throwableItem, int quantity){
+void Backpack :: addThrowableItems(const Throwable& throwableItem, int quantity){
     for (auto &item : ThrowableItems) {
         if (item.first == throwableItem) {
             item.second += quantity;
@@ -231,14 +211,14 @@ void Backpack :: addThrowableItems(vector<pair<Throwable , int>>& ThrowableItems
     }
     ThrowableItems.push_back(make_pair(throwableItem, quantity));
 }
-void Backpack :: addPermanentItems(vector<Permanent>& PermanentItems, const Permanent& permanentItem){
+void Backpack :: addPermanentItems( const Permanent& permanentItem){
     auto it = find(PermanentItems.begin(), PermanentItems.end(), permanentItem);
     if (it == PermanentItems.end()) {
         PermanentItems.push_back(permanentItem);
     }
 }
 // *----------------------------------------------------------------*
-void Backpack :: removeFoodItems(vector<pair<Food , int>>& FoodItems ,const Food& foodItem, int quantity) {
+void Backpack :: removeFoodItems(const Food& foodItem, int quantity) {
     for (auto it = FoodItems.begin(); it != FoodItems.end(); ) {
         if (it->first == foodItem && it->second == quantity) {
             it = FoodItems.erase(it);
@@ -247,7 +227,7 @@ void Backpack :: removeFoodItems(vector<pair<Food , int>>& FoodItems ,const Food
         }
     }
 }
-void Backpack :: removeMedicineItems(vector<pair<Medicine , int>>& MedicineItems ,const Medicine& medicineItem, int quantity) {
+void Backpack :: removeMedicineItems(const Medicine& medicineItem, int quantity) {
     for (auto it = MedicineItems.begin(); it != MedicineItems.end(); ) {
         if (it->first == medicineItem && it->second == quantity) {
             it = MedicineItems.erase(it);
@@ -256,7 +236,7 @@ void Backpack :: removeMedicineItems(vector<pair<Medicine , int>>& MedicineItems
         }
     }
 }
-void Backpack :: removeThrowableItems(vector<pair<Throwable , int>>& ThrowableItems ,const Throwable& throwableItem, int quantity) {
+void Backpack :: removeThrowableItems(const Throwable& throwableItem, int quantity) {
     for (auto it = ThrowableItems.begin(); it != ThrowableItems.end(); ) {
         if (it->first == throwableItem && it->second == quantity) {
             it = ThrowableItems.erase(it);
@@ -265,18 +245,18 @@ void Backpack :: removeThrowableItems(vector<pair<Throwable , int>>& ThrowableIt
         }
     }
 }
-void Backpack :: removePermanentItems(vector<Permanent>& PermanentItems ,const Permanent& permanentItem){
+void Backpack :: removePermanentItems(const Permanent& permanentItem){
     PermanentItems.erase(remove(PermanentItems.begin(), PermanentItems.end(), permanentItem), PermanentItems.end());
 }
 // *----------------------------------------------------------------*
-int Backpack :: getFoodItemsCount(vector<pair<Food , int>>& FoodItems) {
+int Backpack :: getFoodItemsCount() {
     int total = 0;
     for (const auto& item : FoodItems) {
         total += item.second;
     }
     return total;
 }
-int Backpack :: getMedicineItemsCount(vector<pair<Medicine , int>>& MedicineItems) {
+int Backpack :: getMedicineItemsCount() {
     int total = 0;
     for (const auto& item : MedicineItems) {
         total += item.second;
@@ -284,7 +264,7 @@ int Backpack :: getMedicineItemsCount(vector<pair<Medicine , int>>& MedicineItem
     return total;
 }
 
-int Backpack :: getThrowableItemsCount(vector<pair<Throwable , int>>& ThrowableItems) {
+int Backpack :: getThrowableItemsCount() {
     int total = 0;
     for (const auto& item : ThrowableItems) {
         total += item.second;
@@ -292,23 +272,23 @@ int Backpack :: getThrowableItemsCount(vector<pair<Throwable , int>>& ThrowableI
     return total;
 }
 
-int Backpack :: getPermanentItemsCount(vector<Permanent>& PermanentItems) {
+int Backpack :: getPermanentItemsCount() {
     return PermanentItems.size();
 }
 // *----------------------------------------------------------------*
-void Backpack :: clearFoodItems(vector<pair<Food , int>>& FoodItems) {
+void Backpack :: clearFoodItems() {
     FoodItems.clear();
 }
 
-void Backpack :: clearMedicineItems(vector<pair<Medicine , int>>& MedicineItems) {
+void Backpack :: clearMedicineItems() {
     MedicineItems.clear();
 }
 
-void Backpack :: clearThrowableItems(vector<pair<Throwable , int>>& ThrowableItems) {
+void Backpack :: clearThrowableItems() {
     ThrowableItems.clear();
 }
 
-void Backpack :: clearPermanentItems(vector<Permanent>& PermanentItems) {
+void Backpack :: clearPermanentItems() {
     PermanentItems.clear();
 }
 // *----------------------------------------------------------------*
