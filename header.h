@@ -3,53 +3,93 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<algorithm>
 
 using namespace std;
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-class Health {
-    protected:
-        int currentHealth;
-        int maxHealth;
-        Human* humanObj;
+class Person {
+    private:
+        string name;
+        int level;
+        Health hp;
     public:
-        Health(Human &human);
-        int getCurrentHealth() const;
-        int getMaxHealth() const;
-        void setHealth(int newHealth);
-        void decrease(int damage);
-        void increase(int amount);
+        Person(string);
+        void updateLevel();
+};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class Human : public Person {
+    private:
+        int age;
+        string gender;
+        WarmWeaponAbility WarmAbility;
+        ColdWeaponAbility ColdAbility;
+        Backpack backpack;
+    public:
+        Experience exp;
+        Stamina stamina;
+        Human(string n,string g,int a):Person(n),age(a),gender(g),exp(this),stamina(this),WarmAbility(??),ColdAbility(??),backpack(??){}
+};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class Player : public Human {
+    private:
+        BankAccount bankAccount;
+    public:
+        Player(string n,string g,int a):Human(n,a,g,this,this,??,??,??),bankAccount(??){}
+};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class SmartZombie : public Human {};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class Zombie : public Person {};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class BaseZombie : public Zombie {};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class AdvZombiee : public Zombie {};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+class Health {
+private :
+    int currentHealth;
+    int maxHealth;
+    Person *humanObj;
+public :
+    Health(Person*);
+    void decreaseHealth(int damage);
+    void increaseHealth (int amount);
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class Stamina {
-    protected:
-        int currentValue;
-        int maximum;
-        Human* humanObj;
-    public:
-        Stamina(Human &human);
-        int getValue() const;
-        int getMaximum() const;
-        void setValue(int newVal);
-        void decrease(int amount);
-        void increase(int amount);
-        void updateMaximumStamina();
+private :
+    int currentStamina;
+    int maximum;
+    Human *humanObj;
+public :
+    Stamina(Human*);
+    void decreaseStamina(int amount);
+    void increaseStamina(int amount);
+    void updateMaximumStamina();
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 class Experience {
-    protected:
+    private:
         int maximum;
-        int currentValue;
-        Human* humanObj;
+        int currentExp;
+        Human *humanObj;
     public:
-        Experience(Human &human);
-        int getValue() const;
-        int getMaximum() const;
-        void updateMaximumExperience();
-        void setCurrentValue(int,int,int);
+        Experience(Human*);
+        void updateMaximum();
+        void setCurrentExp(int,int,int);
+        void increaseExp(int);
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -97,7 +137,7 @@ class Backpack {
         void clearThrowableItems(vector<pair<Throwable , int>>& ThrowableItems);
         void clearPermanentItems(vector<Permanent>& PermanentItems);
 
-        void useItem(const string& itemName);
+        // void useItem(const string& itemName);
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -110,54 +150,6 @@ class BankAccount {
         void deposit(int amount);
         void withdraw(int amount);
 };
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class Person {
-    protected:
-        string name;
-        int level;
-        Health health;
-        Experience exp;
-    public:
-        Person(string name);
-};
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class Human : public Person {
-    protected:
-        WarmWeaponAbility WarmAbility;
-        ColdWeaponAbility ColdAbility;
-        ThrowableWeaponAbility throwableWeaponAbility;
-        Backpack backpack;
-        Stamina stamina;
-    public:
-        Human();
-};
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class Player : public Human {
-    protected:
-        int age;
-        string userName;
-        string gender;
-        BankAccount bankAccount;
-    public:
-        Player(int age , string userName , string gender);
-        void updateLevel();
-};
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class SmartZombie : public Human {};
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class Zombie : public Person {};
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class BaseZombie : public Zombie {};
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-class AdvZombiee : public Zombie {};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

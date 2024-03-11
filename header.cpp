@@ -12,9 +12,9 @@ using namespace std;
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Person :: Person(string name){
-    this-> name = name;
-    this-> level = 1;
+Person::Person(string n) : hp(this),name(n), level(1){}
+void Person :: updateLevel(){
+    level++;
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -32,85 +32,61 @@ void Player :: updateLevel(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Health :: Health(Human &human){
-    this->maxHealth = 100;
-    this->currentHealth = 100;
-    humanObj = &human;
-}
-int Health :: getCurrentHealth() const{
-    return currentHealth;
-}
-int Health :: getMaxHealth() const{
-    return maxHealth;
-}
-void Health :: setHealth(int newHealth){
-    currentHealth = newHealth;
-}
-void Health :: decrease(int damage){
+Health :: Health(Person *h) : humanObj(h),maxHealth(100),currentHealth(100){}
+void Health::decreaseHealth(int damage){
     currentHealth -= damage;
     if(currentHealth <= 0)
         currentHealth = 0;
 }
-void Health :: increase (int amount){
+void Health::increaseHealth (int amount){
     currentHealth += amount;
     if(currentHealth >= maxHealth)
         currentHealth = maxHealth;
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Stamina :: Stamina(Human &human){
-    this->currentValue = 100;
-    this->maximum = 100;
-    humanObj = &human;
+Stamina :: Stamina(Human *h):humanObj(h),maximum(100),currentStamina(100){}
+void Stamina ::decreaseStamina(int amount) {
+    currentStamina -= amount;
+    if (currentStamina < 0)
+        currentStamina = 0;
 }
-int Stamina :: getValue() const {
-    return currentValue;
+void Stamina ::increaseStamina(int amount) {
+    currentStamina += amount;
+    if ( currentStamina > maximum)
+        currentStamina = maximum;
 }
-int Stamina :: getMaximum() const {
-    return maximum;
-}
-void Stamina :: setValue(int newVal) {
-    currentValue = newVal;
-}
-void Stamina :: decrease(int amount) {
-    currentValue -= amount;
-    if (currentValue < 0)
-        currentValue = 0;
-}
-void Stamina :: increase(int amount) {
-    currentValue += amount;
-    if ( currentValue > maximum)
-        currentValue = maximum;
+void Stamina::updateMaximumStamina(){
+    maximum+=100;
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Experience :: Experience(Human& human) {
-    this->currentValue = 0;
-    this->maximum = 100;
-    humanObj = &human;
+Experience :: Experience(Human *h):humanObj(h),maximum(100),currentExp(0){}
+void Experience::updateMaximum(){
+    maximum+=50;
 }
-void Experience :: updateMaximumExperience(){
-    this->maximum += 50;
-}
-int Experience :: getValue() const {
-    return currentValue;
-}
-int Experience :: getMaximum() const {
-    return maximum;
-}
-void Experience::setCurrentValue(int selfDamage, int enemyDamage, int usedStamina) {
-    currentValue += (0.5 * selfDamage) + (0.2 * enemyDamage) + (0.3 * usedStamina);
-    if (currentValue >= maximum) {
-        currentValue = 0;
-        updateMaximumExperience();
-        humanObj->stamina.updateMaximumStamina();
+void Experience::setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
+    currentExp+=(0.5*selfDamage)+(0.2*enemyDamage)+(0.3*usedStamina);
+    if(currentExp>=maximum){
+        currentExp=0;
+        humanObj->exp.updateMaximum();
         humanObj->updateLevel();
+        humanObj->stamina.updateMaximumStamina();
+    }
+}
+void Experience::increaseExp(int amount){
+    currentExp+=amount;
+    if(currentExp>=maximum){
+        currentExp=0;
+        humanObj->exp.updateMaximum();
+        humanObj->updateLevel();
+        humanObj->stamina.updateMaximumStamina();
     }
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 BankAccount :: BankAccount(){
-    this->balance = 0;
+    this->balance = 500;
 }
 int BankAccount :: getBalance() {
     return balance;
