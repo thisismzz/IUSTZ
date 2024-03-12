@@ -2,6 +2,8 @@
 #include<string>
 #include<vector>
 #include<algorithm>
+#include <thread>
+#include <chrono>
 
 #include "header.h"
 
@@ -12,20 +14,25 @@ using namespace std;
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 Person::Person(string n) : name(n), level(1){}
 
 void Person :: updateLevel(){
     level++;
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 BankAccount* Player :: getBankAccount(){
     BankAccount* p = &bankAccount;
     return p;
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 Health :: Health() : maxHealth(100),currentHealth(100){}
 
 void Health :: decreaseHealth(int damage){
@@ -38,8 +45,10 @@ void Health :: increaseHealth (int amount){
     if(currentHealth >= maxHealth)
         currentHealth = maxHealth;
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 Stamina :: Stamina():maximum(100),currentStamina(100){}
 
 void Stamina :: decreaseStamina(int amount) {
@@ -55,8 +64,10 @@ void Stamina :: increaseStamina(int amount) {
 void Stamina :: updateMaximumStamina(){
     maximum+=100;
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 Experience :: Experience(Human *h):humanObj(h),maximum(100),currentExp(0){}
 
 void Experience :: updateMaximum(){
@@ -80,6 +91,7 @@ void Experience :: increaseExp(int amount){
         humanObj->stamina.updateMaximumStamina();
     }
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -104,15 +116,22 @@ void Skills::upgradeSkill(BankAccount* creditcard) {
 void Skills::setUpgradePrice(){
     upgradePrice+=10;
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 WarmWeaponAbility::WarmWeaponAbility(int n):Skills(n,n*10){}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 ColdWeaponAbility::ColdWeaponAbility(int n):Skills(n,n*15){}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 ThrowableWeaponAbility::ThrowableWeaponAbility(int n):Skills(n,n*20){}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -148,7 +167,9 @@ int Backpack :: getSpecificThrowableItemCount(const Throwable& specificItem) con
 int Backpack :: getSpecificPermanentItemCount(const Permanent& specificItem) const {
     return count(PermanentItems.begin(), PermanentItems.end(), specificItem);
 }
+
 // *----------------------------------------------------------------*
+
 void Backpack :: addFoodItems(const Food& foodItem, int quantity){
     for (auto &item : FoodItems) {
         if (item.first == foodItem) {
@@ -182,7 +203,9 @@ void Backpack :: addPermanentItems( const Permanent& permanentItem){
         PermanentItems.push_back(permanentItem);
     }
 }
+
 // *----------------------------------------------------------------*
+
 void Backpack :: removeFoodItems(const Food& foodItem, int quantity) {
     for (auto it = FoodItems.begin(); it != FoodItems.end(); ) {
         if (it->first == foodItem && it->second == quantity) {
@@ -213,7 +236,9 @@ void Backpack :: removeThrowableItems(const Throwable& throwableItem, int quanti
 void Backpack :: removePermanentItems(const Permanent& permanentItem){
     PermanentItems.erase(remove(PermanentItems.begin(), PermanentItems.end(), permanentItem), PermanentItems.end());
 }
+
 // *----------------------------------------------------------------*
+
 int Backpack :: getFoodItemsCount() {
     int total = 0;
     for (const auto& item : FoodItems) {
@@ -240,7 +265,9 @@ int Backpack :: getThrowableItemsCount() {
 int Backpack :: getPermanentItemsCount() {
     return PermanentItems.size();
 }
+
 // *----------------------------------------------------------------*
+
 void Backpack :: clearFoodItems() {
     FoodItems.clear();
 }
@@ -256,7 +283,9 @@ void Backpack :: clearThrowableItems() {
 void Backpack :: clearPermanentItems() {
     PermanentItems.clear();
 }
+
 // *----------------------------------------------------------------*
+
 // void Backpack::useItem(const string& itemName) {
 //     if (find(singleUseItems.begin(), singleUseItems.end(), itemName) != singleUseItems.end()) {
 //         removeItem(itemName, 1);
@@ -287,10 +316,23 @@ void BankAccount::withdraw(int amount) {
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
 
 Items::Items(string n,int p):name(n),price(p){}
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
+void printWithDelay() {
+    int delay_ms = 20;
+    string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt tristique maximus. Sed eget massa nec sem accumsan sagittis in a nisl. Cras pellentesque, est in feugiat consequat, orci magna tempus lorem, id pretium nibh nisl in tellus.";
+    for (char c : text) {
+        cout << c;
+        cout.flush();  // Ensure the character is immediately printed
+        this_thread :: sleep_for(chrono::milliseconds(delay_ms));
+    }
+}
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
