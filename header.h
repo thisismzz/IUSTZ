@@ -190,7 +190,11 @@ class Backpack {
         void clearWarmWeaponItems();
         void clearColdWeaponItems();
 
-        // void useItem(const string& itemName);
+        void useFoodItemCount(const Food& specificItem, int quantity);
+        void useMedicineItemCount(const Medicine& specificItem, int quantity);
+        void useThrowableItemCount(const Throwable& specificItem, int quantity);
+        void useWarmWeaponItemCount(const WarmWeapon& specificItem, int quantity);
+        void useColdWeaponItemCount(const ColdWeapon& specificItem, int quantity);
 };
 
 // *----------------------------------------------------------------*

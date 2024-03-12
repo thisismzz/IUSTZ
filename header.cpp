@@ -355,14 +355,56 @@ void Backpack :: clearColdWeaponItems() {
 
 // *----------------------------------------------------------------*
 
-// void Backpack::useItem(const string& itemName) {
-//     if (find(singleUseItems.begin(), singleUseItems.end(), itemName) != singleUseItems.end()) {
-//         removeItem(itemName, 1);
-//     }
-//     else {
-//         removeItem(itemName, 1);
-//         }
-// }
+void Backpack :: useFoodItemCount(const Food& specificItem, int quantity) {
+    for (auto& item : FoodItems) {
+        if (item.first == specificItem) {
+            item.second -= quantity;
+            if (item.second < 0) item.second = 0;
+            break;
+        }
+    }
+}
+
+void Backpack :: useMedicineItemCount(const Medicine& specificItem, int quantity) {
+    for (auto& item : MedicineItems) {
+        if (item.first == specificItem) {
+            item.second -= quantity;
+            if (item.second < 0) item.second = 0;
+            break;
+        }
+    }
+}
+
+void Backpack :: useThrowableItemCount(const Throwable& specificItem, int quantity) {
+    for (auto& item : ThrowableItems) {
+        if (item.first == specificItem) {
+            item.second -= quantity;
+            if (item.second < 0) item.second = 0;
+            break;
+        }
+    }
+}
+
+void Backpack :: useWarmWeaponItemCount(const WarmWeapon& specificItem, int quantity) {
+    for (auto& item : WarmWeaponItems) {
+        if (item.first == specificItem) {
+            item.second -= quantity;
+            if (item.second < 0) item.second = 0;
+            break;
+        }
+    }
+}
+
+void Backpack :: useColdWeaponItemCount(const ColdWeapon& specificItem, int quantity) {
+    for (auto& item : ColdWeaponItems) {
+        if (item.first == specificItem) {
+            item.second -= quantity;
+            if (item.second < 0) item.second = 0;
+            break;
+        }
+    }
+}
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
