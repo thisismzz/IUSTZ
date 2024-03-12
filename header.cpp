@@ -165,31 +165,29 @@ void Backpack :: addThrowableItem(const Throwable& throwableItem, int quantity){
     ThrowableItems.push_back(make_pair(throwableItem, quantity));
 }
 
-void Backpack :: addWarmWeaponItem(const WarmWeapon& WarmWeaponItem, int quantity){
-    for (auto &item : WarmWeaponItems) {
+void Backpack :: addWarmWeaponItem(const WarmWeapon& WarmWeaponItem){
+    for (const auto &item : WarmWeaponItems) {
         if (item.first == WarmWeaponItem) {
-            item.second += quantity;
             return;
         }
     }
-    WarmWeaponItems.push_back(make_pair(WarmWeaponItem, quantity));
+    WarmWeaponItems.push_back(make_pair(WarmWeaponItem, 1));
 }
 
-void Backpack :: addColdWeaponItem(const ColdWeapon& ColdWeaponItem, int quantity){
-    for (auto &item : ColdWeaponItems) {
+void Backpack :: addColdWeaponItem(const ColdWeapon& ColdWeaponItem){
+    for (const auto &item : ColdWeaponItems) {
         if (item.first == ColdWeaponItem) {
-            item.second += quantity;
             return;
         }
     }
-    ColdWeaponItems.push_back(make_pair(ColdWeaponItem, quantity));
+    ColdWeaponItems.push_back(make_pair(ColdWeaponItem, 1));
 }
 
 // *----------------------------------------------------------------*
 
-void Backpack :: removeFoodItem(const Food& foodItem, int quantity) {
+void Backpack :: removeFoodItem(const Food& foodItem) {
     for (auto it = FoodItems.begin(); it != FoodItems.end(); ) {
-        if (it->first == foodItem && it->second == quantity) {
+        if (it->first == foodItem) {
             it = FoodItems.erase(it);
         } else {
             ++it;
@@ -197,9 +195,9 @@ void Backpack :: removeFoodItem(const Food& foodItem, int quantity) {
     }
 }
 
-void Backpack :: removeMedicineItem(const Medicine& medicineItem, int quantity) {
+void Backpack :: removeMedicineItem(const Medicine& medicineItem) {
     for (auto it = MedicineItems.begin(); it != MedicineItems.end(); ) {
-        if (it->first == medicineItem && it->second == quantity) {
+        if (it->first == medicineItem) {
             it = MedicineItems.erase(it);
         } else {
             ++it;
@@ -207,9 +205,9 @@ void Backpack :: removeMedicineItem(const Medicine& medicineItem, int quantity) 
     }
 }
 
-void Backpack :: removeThrowableItem(const Throwable& throwableItem, int quantity) {
+void Backpack :: removeThrowableItem(const Throwable& throwableItem) {
     for (auto it = ThrowableItems.begin(); it != ThrowableItems.end(); ) {
-        if (it->first == throwableItem && it->second == quantity) {
+        if (it->first == throwableItem) {
             it = ThrowableItems.erase(it);
         } else {
             ++it;
@@ -217,9 +215,9 @@ void Backpack :: removeThrowableItem(const Throwable& throwableItem, int quantit
     }
 }
 
-void Backpack :: removeWarmWeaponItem(const WarmWeapon& WarmWeaponItem, int quantity) {
+void Backpack :: removeWarmWeaponItem(const WarmWeapon& WarmWeaponItem) {
     for (auto it = WarmWeaponItems.begin(); it != WarmWeaponItems.end(); ) {
-        if (it->first == WarmWeaponItem && it->second == quantity) {
+        if (it->first == WarmWeaponItem) {
             it = WarmWeaponItems.erase(it);
         } else {
             ++it;
@@ -227,9 +225,9 @@ void Backpack :: removeWarmWeaponItem(const WarmWeapon& WarmWeaponItem, int quan
     }
 }
 
-void Backpack :: removeColdWeaponItem(const ColdWeapon& ColdWeaponItem, int quantity) {
+void Backpack :: removeColdWeaponItem(const ColdWeapon& ColdWeaponItem) {
     for (auto it = ColdWeaponItems.begin(); it != ColdWeaponItems.end(); ) {
-        if (it->first == ColdWeaponItem && it->second == quantity) {
+        if (it->first == ColdWeaponItem) {
             it = ColdWeaponItems.erase(it);
         } else {
             ++it;
@@ -384,27 +382,6 @@ void Backpack :: useThrowableItemCount(const Throwable& specificItem, int quanti
         }
     }
 }
-
-void Backpack :: useWarmWeaponItemCount(const WarmWeapon& specificItem, int quantity) {
-    for (auto& item : WarmWeaponItems) {
-        if (item.first == specificItem) {
-            item.second -= quantity;
-            if (item.second < 0) item.second = 0;
-            break;
-        }
-    }
-}
-
-void Backpack :: useColdWeaponItemCount(const ColdWeapon& specificItem, int quantity) {
-    for (auto& item : ColdWeaponItems) {
-        if (item.first == specificItem) {
-            item.second -= quantity;
-            if (item.second < 0) item.second = 0;
-            break;
-        }
-    }
-}
-
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

@@ -163,14 +163,14 @@ class Backpack {
         void addFoodItem(const Food& foodItem, int quantity);
         void addMedicineItem(const Medicine& medicineItem, int quantity);
         void addThrowableItem(const Throwable& throwableItem, int quantity);
-        void addWarmWeaponItem(const WarmWeapon& WarmWeaponItem, int quantity);
-        void addColdWeaponItem(const ColdWeapon& ColdWeaponItem, int quantity);
+        void addWarmWeaponItem(const WarmWeapon& WarmWeaponItem);
+        void addColdWeaponItem(const ColdWeapon& ColdWeaponItem);
 
-        void removeFoodItem(const Food& foodItem, int quantity);
-        void removeMedicineItem(const Medicine& medicineItem, int quantity);
-        void removeThrowableItem(const Throwable& throwableItem, int quantity);
-        void removeWarmWeaponItem(const WarmWeapon& WarmWeaponItem, int quantity);
-        void removeColdWeaponItem(const ColdWeapon& ColdWeaponItem, int quantity);
+        void removeFoodItem(const Food& foodItem);
+        void removeMedicineItem(const Medicine& medicineItem);
+        void removeThrowableItem(const Throwable& throwableItem);
+        void removeWarmWeaponItem(const WarmWeapon& WarmWeaponItem);
+        void removeColdWeaponItem(const ColdWeapon& ColdWeaponItem);
 
         int getFoodItemsCount();
         int getMedicineItemsCount();
