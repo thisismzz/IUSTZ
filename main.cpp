@@ -6,6 +6,6 @@
 using namespace std;
 
 int main(){
-
+    printWithDelay();
     return 0;
 }

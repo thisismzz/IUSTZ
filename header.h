@@ -157,32 +157,38 @@ class Backpack {
         vector<pair<Food , int>> FoodItems;
         vector<pair<Medicine , int>> MedicineItems;
         vector<pair<Throwable , int>> ThrowableItems;
-        vector<Permanent> PermanentItems;
+        vector<pair<WarmWeapon , int>> WarmWeaponItems;
+        vector<pair<ColdWeapon , int>> ColdWeaponItems;
     public:
-        void addFoodItems(const Food& foodItem, int quantity);
-        void addMedicineItems(const Medicine& medicineItem, int quantity);
-        void addThrowableItems(const Throwable& throwableItem, int quantity);
-        void addPermanentItems(const Permanent& permanentItem);
+        void addFoodItem(const Food& foodItem, int quantity);
+        void addMedicineItem(const Medicine& medicineItem, int quantity);
+        void addThrowableItem(const Throwable& throwableItem, int quantity);
+        void addWarmWeaponItem(const WarmWeapon& WarmWeaponItem, int quantity);
+        void addColdWeaponItem(const ColdWeapon& ColdWeaponItem, int quantity);
 
-        void removeFoodItems(const Food& foodItem, int quantity);
-        void removeMedicineItems(const Medicine& medicineItem, int quantity);
-        void removeThrowableItems(const Throwable& throwableItem, int quantity);
-        void removePermanentItems(const Permanent& permanentItem);
+        void removeFoodItem(const Food& foodItem, int quantity);
+        void removeMedicineItem(const Medicine& medicineItem, int quantity);
+        void removeThrowableItem(const Throwable& throwableItem, int quantity);
+        void removeWarmWeaponItem(const WarmWeapon& WarmWeaponItem, int quantity);
+        void removeColdWeaponItem(const ColdWeapon& ColdWeaponItem, int quantity);
 
         int getFoodItemsCount();
         int getMedicineItemsCount();
         int getThrowableItemsCount();
-        int getPermanentItemsCount();
+        int getWarmWeaponItemsCount();
+        int getColdWeaponItemsCount();
 
         int getSpecificFoodItemCount(const Food& specificItem) const;
         int getSpecificMedicineItemCount(const Medicine& specificItem) const;
         int getSpecificThrowableItemCount(const Throwable& specificItem) const;
-        int getSpecificPermanentItemCount(const Permanent& specificItem) const;
+        int getSpecificWarmWeaponItemCount(const WarmWeapon& WarmWeaponItem) const;
+        int getSpecificColdWeaponItemCount(const ColdWeapon& ColdWeaponItem) const;
         
         void clearFoodItems();
         void clearMedicineItems();
         void clearThrowableItems();
-        void clearPermanentItems();
+        void clearWarmWeaponItems();
+        void clearColdWeaponItems();
 
         // void useItem(const string& itemName);
 };
@@ -213,6 +219,7 @@ class Items {
         void buy();
         virtual void addToBackpack();
         virtual void showItems();
+        virtual bool operator==(const Items& other) const;
 };
 
 // *----------------------------------------------------------------*
