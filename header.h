@@ -32,6 +32,7 @@ class Human : public Person {
         Experience exp;
         Stamina stamina;
         Human(string n):Person(n),exp(this),backpack(??){}
+        Backpack* getBackpack();
 };
 
 // *----------------------------------------------------------------*
@@ -215,14 +216,16 @@ class BankAccount {
 
 class Items {
     protected:
+        string type;
         string name;
         int price;
+        vector <Items> shop_items;
     public:
         Items(string,int);
-        void buy();
-        virtual void addToBackpack();
+        virtual void buy(Player& player);        //buy Item and add it into player's backpack
         virtual void showItems();
         virtual bool operator==(const Items& other) const;
+        void addToShop(Items )
 };
 
 // *----------------------------------------------------------------*
@@ -230,18 +233,20 @@ class Items {
 
 class Permanent : public Items {
     private:
-        vector<Permanent> permanentItems;
         int damage;
     public:
-        Permanent();
+        Permanent(string,int);
         void showItems() override;
-        void addToBackpack() override;
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class WarmWeapon : public Permanent {};
+class WarmWeapon : public Permanent {
+    private:
+        WarmWeaponAbility wwa;
+
+};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

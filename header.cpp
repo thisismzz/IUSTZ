@@ -24,6 +24,14 @@ void Person :: updateLevel(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
+Backpack* Human::getBackpack(){
+    Backpack *p=&backpack;
+    return p;
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
 BankAccount* Player :: getBankAccount(){
     BankAccount* p = &bankAccount;
     return p;
@@ -97,7 +105,7 @@ void Experience :: increaseExp(int amount){
 
 Skills::Skills(int n,int m):maximum(5),currentSkill(n),upgradePrice(m){}
 
-void Skills::upgradeSkill(BankAccount* creditcard) {
+void Skills::upgradeSkill(BankAccount *creditcard){
     try{
         if(creditcard->getBalance()>=upgradePrice){
             creditcard->withdraw(upgradePrice);
@@ -423,7 +431,7 @@ void printWithDelay() {
         cout.flush();  // Ensure the character is immediately printed
         this_thread :: sleep_for(chrono::milliseconds(delay_ms));
     }
-}
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
