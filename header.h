@@ -219,14 +219,14 @@ class Items {
         string type;
         string name;
         int price;
-        vector <Items> shop_items;
+        static vector <Items> shop_items;
     public:
-        Items(string,int);
+        Items(string,int,string);
         virtual void buy(Player& player);        //buy Item and add it into player's backpack
         virtual void showItems();
-        virtual bool operator==(const Items& other) const;
-        void addToShop(Items )
-};
+        bool operator==(const Items& other) const;
+        virtual void addToVectors();
+};      
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -234,8 +234,9 @@ class Items {
 class Permanent : public Items {
     private:
         int damage;
+        static vector <Permanent> shop_items_permanent;
     public:
-        Permanent(string,int);
+        Permanent(string,int,string);
 };
 
 // *----------------------------------------------------------------*
@@ -246,13 +247,10 @@ class WarmWeapon : public Permanent {
         static vector <WarmWeapon> ww_items;
         WarmWeaponAbility wwa;
     public:
-        void showItems() override{
-            for (int i = 0; i < ww_items.size(); i++){
-                cout << ww_items;
-            }
-
-        }
+        WarmWeapon(string,int,int);
+        void showItems() override;
 };
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

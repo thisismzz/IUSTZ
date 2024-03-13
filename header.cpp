@@ -413,12 +413,34 @@ void BankAccount::withdraw(int amount) {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Items::Items(string n,int p):name(n),price(p){}
+Items::Items(string n,int p,string t):name(n),price(p),type(t){}
 
 bool Items::operator==(const Items& other) const {
     return name == other.name;
 }
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Permanent::Permanent(string n,int p,string t):Items(n,p,t){}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+WarmWeapon::WarmWeapon(string n,int p,int x):Permanent(n,p,"Warm Weapon"){}
+
+void WarmWeapon::showItems() override{
+    for(auto& warmWeapon : ww_items){
+        cout << warmWeapon;
+    }
+}
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+void ColdWeapon::showItems() override{
+    for (auto& coldWeapon : cw_items){
+        cout << coldWeapon;
+    }
+}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -431,6 +453,8 @@ void printWithDelay() {
         cout.flush();  // Ensure the character is immediately printed
         this_thread :: sleep_for(chrono::milliseconds(delay_ms));
     }
+}
+
 
 
 // *----------------------------------------------------------------*
