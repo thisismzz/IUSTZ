@@ -403,11 +403,14 @@ int BankAccount :: getBalance() {
 void BankAccount :: deposit(int amount) { 
     this->balance += amount;
 }
-void BankAccount::withdraw(int amount) {
-    if (balance >= amount)
+bool BankAccount::withdraw(int amount) {
+    if (balance >= amount){
         balance -= amount;
+        return true;
+    }    
     else
-        cout << "Insufficient funds" << endl;
+        return false;
+        
 }
 
 // *----------------------------------------------------------------*
@@ -416,7 +419,7 @@ void BankAccount::withdraw(int amount) {
 Items::Items(string n,int p,string t):name(n),price(p),type(t){}
 
 bool Items::operator==(const Items& other) const {
-    return name == other.name;
+    return (name == other.name);
 }
 
 // *----------------------------------------------------------------*
@@ -427,36 +430,86 @@ Permanent::Permanent(string n,int p,string t):Items(n,p,t){}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-WarmWeapon::WarmWeapon(string n,int p,int x):Permanent(n,p,"Warm Weapon"){}
+WarmWeapon::WarmWeapon(string n,int p,int x):Permanent(n,p,"Warm Weapon"),wwa(x){}
 
 void WarmWeapon::showItems(){
-    for(auto& warmWeapon : ww_items){
-        cout << warmWeapon;
+    for(auto& warmWeapon : shop_items_permanent_warmweapon){
+        cout << ??;
     }
 }
+
 void WarmWeapon::buy(Player& player){
-    addToVectors();
-    player.getBankAccount()->withdraw(price);
-    cout << "Item bought successfully!" << endl;
+    BankAccount *creditcard=player.getBankAccount();
+
+    if(creditcard->withdraw(price)){
+        WarmWeapon::addToVectors();
+        cout << "Item bought successfully!\n";
+    }
+    else
+        cout<<"Not enough money!\n";
 }
+
 void WarmWeapon::addToVectors(){
-    ww_items.push_back(*this);
+    shop_items_permanent_warmweapon.push_back(this);
+    shop_items_permanent.push_back(this);
+    shop_items.push_back(this);
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+ColdWeapon::ColdWeapon(string n,int p,int x):Permanent(n,p,"Cold Weapon"),cwa(x){}
+
 void ColdWeapon::showItems(){
-    for (auto& coldWeapon : cw_items){
-        cout << coldWeapon;
+    for (auto& coldWeapon : shop_items_permanent_coldweapon){
+        cout << ??;
     }
 }
+
 void ColdWeapon::buy(Player& player){
-    addToVectors();
-    player.getBankAccount()->withdraw(price);
-    cout << "Item bought successfully!" << endl;
+    BankAccount *creditcard=player.getBankAccount();
+
+    if(creditcard->withdraw(price)){
+        ColdWeapon::addToVectors();
+        cout << "Item bought successfully!\n";
+    }
+    else
+        cout<<"Not enough money!\n";
 }
+
 void ColdWeapon::addToVectors(){
-    cw_items.push_back(*this);
+    shop_items_permanent_coldweapon.push_back(this);
+    shop_items_permanent.push_back(this);
+    shop_items.push_back(this);
 }
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Throwable::Throwable(string n,int p,int x):Items(n,p,"Throwable Weapon"),twa(x){}
+
+void Throwable::showItems(){
+    for (auto& Throwable : shop_items_throwable){
+        cout << ??;
+    }
+}
+
+void Throwable::buy(Player& player){
+    BankAccount *creditcard=player.getBankAccount();
+
+    if(creditcard->withdraw(price)){
+        Throwable::addToVectors();
+        cout << "Item bought successfully!\n";
+    }
+    else
+        cout<<"Not enough money!\n";
+}
+
+void Throwable::addToVectors(){
+    shop_items_throwable.push_back(this);
+    shop_items.push_back(this);
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

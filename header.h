@@ -207,7 +207,7 @@ class BankAccount {
         BankAccount();
         int getBalance();
         void deposit(int amount);
-        void withdraw(int amount);
+        bool withdraw(int amount);
 };
 
 // *----------------------------------------------------------------*
@@ -219,24 +219,27 @@ class Items {
         string type;
         string name;
         int price;
-        static vector <Items> shop_items;
+        static vector <Items*> shop_items;
     public:
         Items(string,int,string);
-        virtual void buy(Player& player);        //buy Item and add it into player's backpack
-        virtual void showItems();
-        bool operator==(const Items& other) const;
-        virtual void addToVectors();
+        virtual void buy(Player& player){}        //buy Item and add it into player's backpack
+        virtual void showItems(){}
+        virtual void addToVectors(){}
+        bool operator==(const Items& other) const;   //check equality of two object names
 };      
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class Permanent : public Items {
-    private:
-        int damage;
-        static vector <Permanent> shop_items_permanent;
+    protected:
+        // int damage;
+        static vector <Permanent*> shop_items_permanent;
     public:
         Permanent(string,int,string);
+
+        // virtual int PlayerAttack(Player&){}           //Calculate the damage inflicted on the enemy
+        // virtual int EnemyAttack(SmartZombie&){}           //Calculate the damage inflicted on the player
 };
 
 // *----------------------------------------------------------------*
@@ -244,7 +247,7 @@ class Permanent : public Items {
 
 class WarmWeapon : public Permanent {
     private:
-        static vector <WarmWeapon> ww_items;
+        static vector <WarmWeapon*> shop_items_permanent_warmweapon;
         WarmWeaponAbility wwa;
     public:
         WarmWeapon(string,int,int);
@@ -259,12 +262,30 @@ class WarmWeapon : public Permanent {
 
 class ColdWeapon : public Permanent {
     private:
-        static vector <ColdWeapon> cw_items;
+        static vector <ColdWeapon*> shop_items_permanent_coldweapon;
         ColdWeaponAbility cwa;
     public:
+        ColdWeapon(string,int,int);
         void showItems() override;
         void buy(Player& player) override;
         void addToVectors() override;
+};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class Throwable : public Items {
+    private:
+        // int damage;
+        static vector <Throwable*> shop_items_throwable;
+        ThrowableWeaponAbility twa;
+    public:
+        Throwable(string,int,int);
+        void showItems() override;
+        void buy(Player& player) override;
+        void addToVectors() override;
+        // int ThrowByPlayer(Player&);                      //Calculate the damage inflicted on the enemy
+        // int ThrowByEnemy(SmartZombie&);                      //Calculate the damage inflicted on the player
 };
 
 // *----------------------------------------------------------------*
@@ -277,10 +298,6 @@ class Medicine : public Items {};
 
 class Food : public Items {};
 
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Throwable : public Items {};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
