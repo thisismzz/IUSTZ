@@ -236,7 +236,6 @@ class Permanent : public Items {
         int damage;
     public:
         Permanent(string,int);
-        void showItems() override;
 };
 
 // *----------------------------------------------------------------*
@@ -244,29 +243,37 @@ class Permanent : public Items {
 
 class WarmWeapon : public Permanent {
     private:
+        static vector <WarmWeapon> ww_items;
         WarmWeaponAbility wwa;
+    public:
+        void showItems() override{
+            for (int i = 0; i < ww_items.size(); i++){
+                cout << ww_items;
+            }
 
+        }
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class ColdWeapon : public Permanent {};
+class ColdWeapon : public Permanent {
+    private:
+        static vector <ColdWeapon> cw_items;
+        ColdWeaponAbility cwa;
+    public:
+        void showItems() override;
+};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class Consumable : public Items {};
+class Medicine : public Items {};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class Medicine : public Consumable {};
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Food : public Consumable {};
+class Food : public Items {};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
