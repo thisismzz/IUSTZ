@@ -225,7 +225,7 @@ class Items {
         virtual void buy(Player& player);        //buy Item and add it into player's backpack
         virtual void showItems();
         virtual bool operator==(const Items& other) const;
-        void addToShop(Items )
+        void addToShop(Items);
 };
 
 // *----------------------------------------------------------------*
