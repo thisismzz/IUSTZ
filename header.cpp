@@ -429,23 +429,39 @@ Permanent::Permanent(string n,int p,string t):Items(n,p,t){}
 
 WarmWeapon::WarmWeapon(string n,int p,int x):Permanent(n,p,"Warm Weapon"){}
 
-void WarmWeapon::showItems() override{
+void WarmWeapon::showItems(){
     for(auto& warmWeapon : ww_items){
         cout << warmWeapon;
     }
 }
+void WarmWeapon::buy(Player& player){
+    addToVectors();
+    player.getBankAccount()->withdraw(price);
+    cout << "Item bought successfully!" << endl;
+}
+void WarmWeapon::addToVectors(){
+    ww_items.push_back(*this);
+}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-void ColdWeapon::showItems() override{
+void ColdWeapon::showItems(){
     for (auto& coldWeapon : cw_items){
         cout << coldWeapon;
     }
+}
+void ColdWeapon::buy(Player& player){
+    addToVectors();
+    player.getBankAccount()->withdraw(price);
+    cout << "Item bought successfully!" << endl;
+}
+void ColdWeapon::addToVectors(){
+    cw_items.push_back(*this);
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void printWithDelay() {
+void printWithDelay(){
     int delay_ms = 20;
     string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt tristique maximus. Sed eget massa nec sem accumsan sagittis in a nisl. Cras pellentesque, est in feugiat consequat, orci magna tempus lorem, id pretium nibh nisl in tellus.";
     for (char c : text) {

@@ -249,6 +249,8 @@ class WarmWeapon : public Permanent {
     public:
         WarmWeapon(string,int,int);
         void showItems() override;
+        void buy(Player& player) override;
+        void addToVectors() override;
 };
 
 
@@ -261,6 +263,8 @@ class ColdWeapon : public Permanent {
         ColdWeaponAbility cwa;
     public:
         void showItems() override;
+        void buy(Player& player) override;
+        void addToVectors() override;
 };
 
 // *----------------------------------------------------------------*

@@ -6,6 +6,9 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "utility": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
     }
 }
