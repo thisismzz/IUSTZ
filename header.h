@@ -16,8 +16,8 @@ class Person {
     private:
         string name;
         int level;
-        Health hp;
     public:
+        Health hp;
         Person(string);
         void updateLevel();
 };
@@ -226,21 +226,19 @@ class Items {
         virtual void showItems(){}
         virtual void addToVectors(){}
         bool operator==(const Items& other) const;   //check equality of two object names
-};      
+}; 
+vector <Items*> Items::shop_items;     
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class Permanent : public Items {
     protected:
-        // int damage;
         static vector <Permanent*> shop_items_permanent;
     public:
         Permanent(string,int,string);
-
-        // virtual int PlayerAttack(Player&){}           //Calculate the damage inflicted on the enemy
-        // virtual int EnemyAttack(SmartZombie&){}           //Calculate the damage inflicted on the player
 };
+vector <Permanent*> Permanent::shop_items_permanent;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -255,7 +253,7 @@ class WarmWeapon : public Permanent {
         void buy(Player& player) override;
         void addToVectors() override;
 };
-
+vector <WarmWeapon*> WarmWeapon::shop_items_permanent_warmweapon;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -270,13 +268,13 @@ class ColdWeapon : public Permanent {
         void buy(Player& player) override;
         void addToVectors() override;
 };
+vector <ColdWeapon*> ColdWeapon::shop_items_permanent_coldweapon;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class Throwable : public Items {
     private:
-        // int damage;
         static vector <Throwable*> shop_items_throwable;
         ThrowableWeaponAbility twa;
     public:
@@ -284,20 +282,38 @@ class Throwable : public Items {
         void showItems() override;
         void buy(Player& player) override;
         void addToVectors() override;
-        // int ThrowByPlayer(Player&);                      //Calculate the damage inflicted on the enemy
-        // int ThrowByEnemy(SmartZombie&);                      //Calculate the damage inflicted on the player
 };
+vector <Throwable*> Throwable::shop_items_throwable;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class Medicine : public Items {};
+class Medicine : public Items {
+    private:
+        int heal;
+        static vector <Medicine*> shop_items_medicine;
+    public:
+        Medicine(string,int,int);
+        void showItems() override;
+        void buy(Player& player) override;
+        void addToVectors() override;
+};
+vector <Medicine*> Medicine::shop_items_medicine;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class Food : public Items {};
-
+class Food : public Items {
+    private:
+        int strength;
+        static vector <Food*> shop_items_food;
+    public:
+        Food(string,int,int);
+        void showItems() override;
+        void buy(Player& player) override;
+        void addToVectors() override;
+};
+vector <Food*> Food::shop_items_food;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

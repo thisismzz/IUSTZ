@@ -430,7 +430,9 @@ Permanent::Permanent(string n,int p,string t):Items(n,p,t){}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-WarmWeapon::WarmWeapon(string n,int p,int x):Permanent(n,p,"Warm Weapon"),wwa(x){}
+WarmWeapon::WarmWeapon(string n,int p,int x):Permanent(n,p,"Warm Weapon"),wwa(x){
+    WarmWeapon::addToVectors();
+}
 
 void WarmWeapon::showItems(){
     for(auto& warmWeapon : shop_items_permanent_warmweapon){
@@ -458,7 +460,9 @@ void WarmWeapon::addToVectors(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-ColdWeapon::ColdWeapon(string n,int p,int x):Permanent(n,p,"Cold Weapon"),cwa(x){}
+ColdWeapon::ColdWeapon(string n,int p,int x):Permanent(n,p,"Cold Weapon"),cwa(x){
+    ColdWeapon::addToVectors();
+}
 
 void ColdWeapon::showItems(){
     for (auto& coldWeapon : shop_items_permanent_coldweapon){
@@ -486,7 +490,9 @@ void ColdWeapon::addToVectors(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Throwable::Throwable(string n,int p,int x):Items(n,p,"Throwable Weapon"),twa(x){}
+Throwable::Throwable(string n,int p,int x):Items(n,p,"Throwable Weapon"),twa(x){
+    Throwable::addToVectors();
+}
 
 void Throwable::showItems(){
     for (auto& Throwable : shop_items_throwable){
@@ -507,6 +513,64 @@ void Throwable::buy(Player& player){
 
 void Throwable::addToVectors(){
     shop_items_throwable.push_back(this);
+    shop_items.push_back(this);
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Medicine::Medicine(string n,int p,int h):Items(n,p,"Medicine"),heal(h){
+    Medicine::addToVectors();
+}
+
+void Medicine::showItems(){
+    for (auto& Medicine : shop_items_medicine){
+        cout << ??;
+    }
+}
+
+void Medicine::buy(Player& player){
+    BankAccount *creditcard=player.getBankAccount();
+
+    if(creditcard->withdraw(price)){
+        Medicine::addToVectors();
+        cout << "Item bought successfully!\n";
+    }
+    else
+        cout<<"Not enough money!\n";
+}
+
+void Medicine::addToVectors(){
+    shop_items_medicine.push_back(this);
+    shop_items.push_back(this);
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Food::Food(string n,int p,int s):Items(n,p,"Food"),strength(s){
+    Food::addToVectors();
+}
+
+void Food::showItems(){
+    for (auto& Food : shop_items_food){
+        cout << ??;
+    }
+}
+
+void Food::buy(Player& player){
+    BankAccount *creditcard=player.getBankAccount();
+
+    if(creditcard->withdraw(price)){
+        Food::addToVectors();
+        cout << "Item bought successfully!\n";
+    }
+    else
+        cout<<"Not enough money!\n";
+}
+
+void Food::addToVectors(){
+    shop_items_food.push_back(this);
     shop_items.push_back(this);
 }
 
