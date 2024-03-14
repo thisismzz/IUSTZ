@@ -225,6 +225,7 @@ class Items {
         Items(string,int,string);
         virtual void showItems(){}
         virtual void addToVectors(){}
+        virtual void use(Player&){}
         bool operator==(const Items& other) const;   //check equality of two object names
 }; 
 vector <Items*> Items::shop_items;     
@@ -303,7 +304,7 @@ class Medicine : public Items {
         void showItems() override;
         void buy(Player&,int);
         void addToVectors() override;
-        void use(Player&);
+        void use(Player&) override;
         friend ostream& operator<<(ostream&,Medicine&);
 };
 vector <Medicine*> Medicine::shop_items_medicine;
@@ -320,7 +321,7 @@ class Food : public Items {
         void showItems() override;
         void buy(Player&,int);
         void addToVectors() override;
-        void use(Player&);
+        void use(Player&) override;
         friend ostream& operator<<(ostream&,Food&);
 };
 vector <Food*> Food::shop_items_food;

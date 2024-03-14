@@ -581,7 +581,7 @@ void Medicine::addToVectors(){
 
 void Medicine::use(Player& player){
     player.hp.increaseHealth(heal);
-    decrease_a_medicine;
+    decrease_a_medicine_from_backpack;
 }
 
 ostream& operator<<(ostream& os,Medicine& obj) {
@@ -621,7 +621,7 @@ void Food::addToVectors(){
 
 void Food::use(Player& player){
     player.stamina.increaseStamina(strength);
-    decrease_a_food;
+    decrease_a_food_from_backpack;
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
