@@ -44,7 +44,7 @@ class Player : public Human {
         string gender;
         BankAccount bankAccount;
     public:
-        Player(string n,string g,int a):Human(n,this,??),age(a),gender(g),bankAccount(??){}
+        Player(string n,string g,int a,int m):Human(n),age(a),gender(g),bankAccount(m){}
         BankAccount* getBankAccount();
 };
 
@@ -123,6 +123,7 @@ class Skills {
         Skills(int,int);
         void upgradeSkill(BankAccount*);
         void setUpgradePrice();
+        int getCurrentSkill();
 
 };
 
@@ -204,7 +205,7 @@ class BankAccount {
     protected:
         int balance;
     public:
-        BankAccount();
+        BankAccount(int);
         int getBalance();
         void deposit(int amount);
         bool withdraw(int amount);
@@ -222,7 +223,6 @@ class Items {
         static vector <Items*> shop_items;
     public:
         Items(string,int,string);
-        virtual void buy(Player& player){}        //buy Item and add it into player's backpack
         virtual void showItems(){}
         virtual void addToVectors(){}
         bool operator==(const Items& other) const;   //check equality of two object names
@@ -234,9 +234,11 @@ vector <Items*> Items::shop_items;
 
 class Permanent : public Items {
     protected:
+        int exp;
         static vector <Permanent*> shop_items_permanent;
     public:
-        Permanent(string,int,string);
+        Permanent(string,int,string,int);
+        virtual void buy(Player&){}        //buy Item and add it into player's backpack
 };
 vector <Permanent*> Permanent::shop_items_permanent;
 
@@ -248,10 +250,11 @@ class WarmWeapon : public Permanent {
         static vector <WarmWeapon*> shop_items_permanent_warmweapon;
         WarmWeaponAbility wwa;
     public:
-        WarmWeapon(string,int,int);
+        WarmWeapon(string,int,int,int);
         void showItems() override;
-        void buy(Player& player) override;
+        void buy(Player&) override;
         void addToVectors() override;
+        friend ostream& operator<<(ostream&,WarmWeapon&);
 };
 vector <WarmWeapon*> WarmWeapon::shop_items_permanent_warmweapon;
 
@@ -263,10 +266,11 @@ class ColdWeapon : public Permanent {
         static vector <ColdWeapon*> shop_items_permanent_coldweapon;
         ColdWeaponAbility cwa;
     public:
-        ColdWeapon(string,int,int);
+        ColdWeapon(string,int,int,int);
         void showItems() override;
-        void buy(Player& player) override;
+        void buy(Player&) override;
         void addToVectors() override;
+        friend ostream& operator<<(ostream&,ColdWeapon&);
 };
 vector <ColdWeapon*> ColdWeapon::shop_items_permanent_coldweapon;
 
@@ -275,13 +279,15 @@ vector <ColdWeapon*> ColdWeapon::shop_items_permanent_coldweapon;
 
 class Throwable : public Items {
     private:
+        int exp;
         static vector <Throwable*> shop_items_throwable;
         ThrowableWeaponAbility twa;
     public:
-        Throwable(string,int,int);
+        Throwable(string,int,int,int);
         void showItems() override;
-        void buy(Player& player) override;
+        void buy(Player&,int);
         void addToVectors() override;
+        friend ostream& operator<<(ostream&,Throwable&);
 };
 vector <Throwable*> Throwable::shop_items_throwable;
 
@@ -295,8 +301,9 @@ class Medicine : public Items {
     public:
         Medicine(string,int,int);
         void showItems() override;
-        void buy(Player& player) override;
+        void buy(Player&,int);
         void addToVectors() override;
+        friend ostream& operator<<(ostream&,Medicine&);
 };
 vector <Medicine*> Medicine::shop_items_medicine;
 
@@ -310,8 +317,9 @@ class Food : public Items {
     public:
         Food(string,int,int);
         void showItems() override;
-        void buy(Player& player) override;
+        void buy(Player&,int);
         void addToVectors() override;
+        friend ostream& operator<<(ostream&,Food&);
 };
 vector <Food*> Food::shop_items_food;
 

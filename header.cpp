@@ -48,6 +48,7 @@ void Health :: decreaseHealth(int damage){
     if(currentHealth <= 0)
         currentHealth = 0;
 }
+
 void Health :: increaseHealth (int amount){
     currentHealth += amount;
     if(currentHealth >= maxHealth)
@@ -64,11 +65,13 @@ void Stamina :: decreaseStamina(int amount) {
     if (currentStamina < 0)
         currentStamina = 0;
 }
+
 void Stamina :: increaseStamina(int amount) {
     currentStamina += amount;
     if ( currentStamina > maximum)
         currentStamina = maximum;
 }
+
 void Stamina :: updateMaximumStamina(){
     maximum+=100;
 }
@@ -81,6 +84,7 @@ Experience :: Experience(Human *h):humanObj(h),maximum(100),currentExp(0){}
 void Experience :: updateMaximum(){
     maximum+=50;
 }
+
 void Experience :: setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
     currentExp+=(0.5*selfDamage)+(0.2*enemyDamage)+(0.3*usedStamina);
     if(currentExp>=maximum){
@@ -90,6 +94,7 @@ void Experience :: setCurrentExp(int selfDamage,int enemyDamage,int usedStamina)
         humanObj->stamina.updateMaximumStamina();
     }
 }
+
 void Experience :: increaseExp(int amount){
     currentExp+=amount;
     if(currentExp>=maximum){
@@ -123,6 +128,10 @@ void Skills::upgradeSkill(BankAccount *creditcard){
 
 void Skills::setUpgradePrice(){
     upgradePrice+=10;
+}
+
+int Skills::getCurrentSkill(){
+    return currentSkill;
 }
 
 // *----------------------------------------------------------------*
@@ -394,8 +403,8 @@ void Backpack :: useThrowableItemCount(const Throwable& specificItem, int quanti
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-BankAccount :: BankAccount(){
-    this->balance = 500;
+BankAccount :: BankAccount(int n){
+    this->balance = n;
 }
 int BankAccount :: getBalance() {
     return balance;
@@ -425,18 +434,18 @@ bool Items::operator==(const Items& other) const {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Permanent::Permanent(string n,int p,string t):Items(n,p,t){}
+Permanent::Permanent(string n,int p,string t,int e):Items(n,p,t),exp(e){}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-WarmWeapon::WarmWeapon(string n,int p,int x):Permanent(n,p,"Warm Weapon"),wwa(x){
+WarmWeapon::WarmWeapon(string n,int p,int x,int e):Permanent(n,p,"Warm Weapon",e),wwa(x){
     WarmWeapon::addToVectors();
 }
 
 void WarmWeapon::showItems(){
-    for(auto& warmWeapon : shop_items_permanent_warmweapon){
-        cout << ??;
+    for(auto& i : shop_items_permanent_warmweapon){
+        cout << i;
     }
 }
 
@@ -444,8 +453,11 @@ void WarmWeapon::buy(Player& player){
     BankAccount *creditcard=player.getBankAccount();
 
     if(creditcard->withdraw(price)){
-        WarmWeapon::addToVectors();
         cout << "Item bought successfully!\n";
+        add_to_backpack;
+        cout<<"Item added to your backpack!\n";
+        player.exp.increaseExp(exp);
+        cout<<"EXP increased!\n";
     }
     else
         cout<<"Not enough money!\n";
@@ -457,16 +469,21 @@ void WarmWeapon::addToVectors(){
     shop_items.push_back(this);
 }
 
+ostream& operator<<(ostream& os,WarmWeapon& obj){
+    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.wwa.getCurrentSkill()<<"\t(+"<<obj.exp<<"EXP)\tprice : "<<obj.price<<"$";
+    return os;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-ColdWeapon::ColdWeapon(string n,int p,int x):Permanent(n,p,"Cold Weapon"),cwa(x){
+ColdWeapon::ColdWeapon(string n,int p,int x,int e):Permanent(n,p,"Cold Weapon",e),cwa(x){
     ColdWeapon::addToVectors();
 }
 
 void ColdWeapon::showItems(){
-    for (auto& coldWeapon : shop_items_permanent_coldweapon){
-        cout << ??;
+    for (auto& i : shop_items_permanent_coldweapon){
+        cout << i;
     }
 }
 
@@ -474,8 +491,11 @@ void ColdWeapon::buy(Player& player){
     BankAccount *creditcard=player.getBankAccount();
 
     if(creditcard->withdraw(price)){
-        ColdWeapon::addToVectors();
         cout << "Item bought successfully!\n";
+        add_to_backpack;
+        cout<<"Item added to your backpack!\n";
+        player.exp.increaseExp(exp);
+        cout<<"EXP increased!\n";
     }
     else
         cout<<"Not enough money!\n";
@@ -487,25 +507,33 @@ void ColdWeapon::addToVectors(){
     shop_items.push_back(this);
 }
 
+ostream& operator<<(ostream& os,ColdWeapon& obj){
+    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.cwa.getCurrentSkill()<<"(+"<<obj.exp<<"EXP)\tprice : "<<obj.price<<"$";
+    return os;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Throwable::Throwable(string n,int p,int x):Items(n,p,"Throwable Weapon"),twa(x){
+Throwable::Throwable(string n,int p,int x,int e):Items(n,p,"Throwable Weapon"),twa(x),exp(e){
     Throwable::addToVectors();
 }
 
 void Throwable::showItems(){
-    for (auto& Throwable : shop_items_throwable){
-        cout << ??;
+    for (auto& i : shop_items_throwable){
+        cout << i;
     }
 }
 
-void Throwable::buy(Player& player){
+void Throwable::buy(Player& player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
 
-    if(creditcard->withdraw(price)){
-        Throwable::addToVectors();
+    if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
+        add_to_backpack;
+        cout<<"Item added to your backpack!\n";
+        player.exp.increaseExp(exp*quantity);
+        cout<<"EXP increased!\n";
     }
     else
         cout<<"Not enough money!\n";
@@ -516,6 +544,11 @@ void Throwable::addToVectors(){
     shop_items.push_back(this);
 }
 
+ostream& operator<<(ostream& os,Throwable& obj) {
+    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.twa.getCurrentSkill()<<"(+"<<obj.exp<<"EXP)\tprice : "<<obj.price<<"$ (each)";
+    return os;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -524,17 +557,18 @@ Medicine::Medicine(string n,int p,int h):Items(n,p,"Medicine"),heal(h){
 }
 
 void Medicine::showItems(){
-    for (auto& Medicine : shop_items_medicine){
-        cout << ??;
+    for (auto& i : shop_items_medicine){
+        cout << i;
     }
 }
 
-void Medicine::buy(Player& player){
+void Medicine::buy(Player& player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
 
-    if(creditcard->withdraw(price)){
-        Medicine::addToVectors();
+    if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
+        add_to_backpack;
+        cout<<"Item added to your backpack!\n";
     }
     else
         cout<<"Not enough money!\n";
@@ -545,6 +579,11 @@ void Medicine::addToVectors(){
     shop_items.push_back(this);
 }
 
+ostream& operator<<(ostream& os,Medicine& obj) {
+    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\theal : +"<<obj.heal<<"HP"<<"\tprice : "<<obj.price<<"$ (each)";
+    return os;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -553,17 +592,18 @@ Food::Food(string n,int p,int s):Items(n,p,"Food"),strength(s){
 }
 
 void Food::showItems(){
-    for (auto& Food : shop_items_food){
-        cout << ??;
+    for (auto& i : shop_items_food){
+        cout << i;
     }
 }
 
-void Food::buy(Player& player){
+void Food::buy(Player& player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
 
-    if(creditcard->withdraw(price)){
-        Food::addToVectors();
+    if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
+        add_to_backpack;
+        cout<<"Item added to your backpack!\n";
     }
     else
         cout<<"Not enough money!\n";
@@ -572,6 +612,11 @@ void Food::buy(Player& player){
 void Food::addToVectors(){
     shop_items_food.push_back(this);
     shop_items.push_back(this);
+}
+
+ostream& operator<<(ostream& os,Food& obj) {
+    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\theal : +"<<obj.strength<<"STM"<<"\tprice : "<<obj.price<<"$ (each)";
+    return os;
 }
 
 // *----------------------------------------------------------------*
