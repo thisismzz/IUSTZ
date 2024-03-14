@@ -469,6 +469,8 @@ void WarmWeapon::addToVectors(){
     shop_items.push_back(this);
 }
 
+void WarmWeapon::attack(Human& attacker, Human& attacked){}
+
 ostream& operator<<(ostream& os,WarmWeapon& obj){
     os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.wwa.getCurrentSkill()<<"\t(+"<<obj.exp<<"EXP)\tprice : "<<obj.price<<"$";
     return os;
@@ -506,6 +508,8 @@ void ColdWeapon::addToVectors(){
     shop_items_permanent.push_back(this);
     shop_items.push_back(this);
 }
+
+void ColdWeapon::attack(Human& attacker, Human& attacked){}
 
 ostream& operator<<(ostream& os,ColdWeapon& obj){
     os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.cwa.getCurrentSkill()<<"(+"<<obj.exp<<"EXP)\tprice : "<<obj.price<<"$";
