@@ -239,8 +239,8 @@ class Permanent : public Items {
         static vector <Permanent*> shop_items_permanent;
     public:
         Permanent(string,int,string,int);       
-        virtual void buy(Player&){}              //buy item and add it into player's backpack
-        virtual void attack(Human&,Human&){}     //calculate the damage of attacker and reduce it from attacked health
+        virtual void buy(Player&){}                      //buy item and add it into player's backpack
+        virtual void Attack(Human&,Human&){}             //calculate the damage of attacker and reduce it from attacked health
 };
 vector <Permanent*> Permanent::shop_items_permanent;
 
@@ -256,7 +256,7 @@ class WarmWeapon : public Permanent {
         void showItems() override;
         void buy(Player&) override;
         void addToVectors() override;
-        void attack(Human&,Human&) override;
+        void Attack(Human&,Human&) override;
         friend ostream& operator<<(ostream&,WarmWeapon&);
 };
 vector <WarmWeapon*> WarmWeapon::shop_items_permanent_warmweapon;
@@ -273,7 +273,7 @@ class ColdWeapon : public Permanent {
         void showItems() override;
         void buy(Player&) override;
         void addToVectors() override;
-        void attack(Human&,Human&) override;
+        void Attack(Human&,Human&) override;
         friend ostream& operator<<(ostream&,ColdWeapon&);
 };
 vector <ColdWeapon*> ColdWeapon::shop_items_permanent_coldweapon;
@@ -291,6 +291,7 @@ class Throwable : public Items {
         void showItems() override;
         void buy(Player&,int);
         void addToVectors() override;
+        void Throw(Human&,Human&);
         friend ostream& operator<<(ostream&,Throwable&);
 };
 vector <Throwable*> Throwable::shop_items_throwable;
@@ -320,7 +321,6 @@ class Food : public Items {
         int strength;
         static vector <Food*> shop_items_food;
     public:
-    
         Food(string,int,int);
         void showItems() override;
         void buy(Player&,int);
