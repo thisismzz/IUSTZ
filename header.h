@@ -20,6 +20,7 @@ class Person {
         Health hp;
         Person(string);
         void updateLevel();
+        int getLevel();
 };
 
 // *----------------------------------------------------------------*
@@ -61,7 +62,7 @@ class Zombie : public Person {};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class BaseZombie : public Zombie {};
+class BasicZombie : public Zombie {};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -94,6 +95,7 @@ public :
     void decreaseStamina(int amount);
     void increaseStamina(int amount);
     void updateMaximumStamina();
+    int getCurrentStamina();
 };
 
 // *----------------------------------------------------------------*
@@ -240,7 +242,7 @@ class Permanent : public Items {
     public:
         Permanent(string,int,string,int);       
         virtual void buy(Player&){}                      //buy item and add it into player's backpack
-        virtual void Attack(Human&,Human&){}             //calculate the damage of attacker and reduce it from attacked health
+        virtual void Attack(Human,Human){}               //calculate the damage of attacker and reduce it from attacked health
 };
 vector <Permanent*> Permanent::shop_items_permanent;
 
@@ -256,7 +258,7 @@ class WarmWeapon : public Permanent {
         void showItems() override;
         void buy(Player&) override;
         void addToVectors() override;
-        void Attack(Human&,Human&) override;
+        void Attack(Human,Human) override;
         friend ostream& operator<<(ostream&,WarmWeapon&);
 };
 vector <WarmWeapon*> WarmWeapon::shop_items_permanent_warmweapon;
@@ -273,7 +275,7 @@ class ColdWeapon : public Permanent {
         void showItems() override;
         void buy(Player&) override;
         void addToVectors() override;
-        void Attack(Human&,Human&) override;
+        void Attack(Human,Human) override;
         friend ostream& operator<<(ostream&,ColdWeapon&);
 };
 vector <ColdWeapon*> ColdWeapon::shop_items_permanent_coldweapon;
@@ -291,7 +293,7 @@ class Throwable : public Items {
         void showItems() override;
         void buy(Player&,int);
         void addToVectors() override;
-        void Throw(Human&,Human&);
+        void Throw(Human,Human);
         friend ostream& operator<<(ostream&,Throwable&);
 };
 vector <Throwable*> Throwable::shop_items_throwable;

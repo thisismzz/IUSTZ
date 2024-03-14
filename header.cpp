@@ -1,9 +1,12 @@
-#include<iostream>
-#include<string>
-#include<vector>
-#include<algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
 #include <thread>
 #include <chrono>
+#include <ctime>
+#include <cstdlib>
+
 
 #include "header.h"
 
@@ -19,6 +22,10 @@ Person::Person(string n) : name(n), level(1){}
 
 void Person :: updateLevel(){
     level++;
+}
+
+int Person::getLevel(){
+    return level;
 }
 
 // *----------------------------------------------------------------*
@@ -58,7 +65,7 @@ void Health :: increaseHealth (int amount){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Stamina :: Stamina():maximum(100),currentStamina(100){}
+Stamina :: Stamina():maximum(50),currentStamina(100){}
 
 void Stamina :: decreaseStamina(int amount) {
     currentStamina -= amount;
@@ -73,7 +80,11 @@ void Stamina :: increaseStamina(int amount) {
 }
 
 void Stamina :: updateMaximumStamina(){
-    maximum+=100;
+    maximum+=50;
+}
+
+int Stamina :: getCurrentStamina(){
+    return currentStamina;
 }
 
 // *----------------------------------------------------------------*
@@ -82,7 +93,7 @@ void Stamina :: updateMaximumStamina(){
 Experience :: Experience(Human *h):humanObj(h),maximum(100),currentExp(0){}
 
 void Experience :: updateMaximum(){
-    maximum+=50;
+    maximum+=100;
 }
 
 void Experience :: setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
@@ -469,7 +480,26 @@ void WarmWeapon::addToVectors(){
     shop_items.push_back(this);
 }
 
-void WarmWeapon::Attack(Human& attacker, Human& attacked){}
+void WarmWeapon::Attack(Human attacker, Human attacked){
+    double staminaFactor = 0.3;
+    double weaponLevelFactor = 1.0;
+    double playerLevelFactor = 0.8;
+
+    srand(time(nullptr));
+    int baseDamage = rand() % 10 + 1;
+    int damage = baseDamage + (attacker.stamina.getCurrentStamina() * staminaFactor) + (wwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
+    attacker.stamina.decreaseStamina(10*wwa.getCurrentSkill());
+    attacked.hp.decreaseHealth(damage);
+
+    if(static_cast<Player*>(&attacker)){
+        Player *p=static_cast<Player*>(&attacker);
+        p->exp.setCurrentExp(0,damage,10*wwa.getCurrentSkill());
+    }
+    else{
+        Player *p=static_cast<Player*>(&attacked);
+        p->exp.setCurrentExp(damage,0,0);
+    }
+}
 
 ostream& operator<<(ostream& os,WarmWeapon& obj){
     os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.wwa.getCurrentSkill()<<"\t(+"<<obj.exp<<"EXP)\tprice : "<<obj.price<<"$";
@@ -509,7 +539,26 @@ void ColdWeapon::addToVectors(){
     shop_items.push_back(this);
 }
 
-void ColdWeapon::Attack(Human& attacker, Human& attacked){}
+void ColdWeapon::Attack(Human attacker, Human attacked){
+    double staminaFactor = 0.3;
+    double weaponLevelFactor = 1.0;
+    double playerLevelFactor = 0.8;
+
+    srand(time(nullptr));
+    int baseDamage = rand() % 10 + 1;
+    int damage = baseDamage + (attacker.stamina.getCurrentStamina() * staminaFactor) + (cwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
+    attacker.stamina.decreaseStamina(10*cwa.getCurrentSkill());
+    attacked.hp.decreaseHealth(damage);
+
+    if(static_cast<Player*>(&attacker)){
+        Player *p=static_cast<Player*>(&attacker);
+        p->exp.setCurrentExp(0,damage,10*cwa.getCurrentSkill());
+    }
+    else{
+        Player *p=static_cast<Player*>(&attacked);
+        p->exp.setCurrentExp(damage,0,0);
+    }
+}
 
 ostream& operator<<(ostream& os,ColdWeapon& obj){
     os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.cwa.getCurrentSkill()<<"(+"<<obj.exp<<"EXP)\tprice : "<<obj.price<<"$";
@@ -548,7 +597,9 @@ void Throwable::addToVectors(){
     shop_items.push_back(this);
 }
 
-void Throwable::Throw(Human& attacker, Human& attacked){}
+void Throwable::Throw(Human attacker, Human attacked){
+    
+}
 
 ostream& operator<<(ostream& os,Throwable& obj) {
     os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.twa.getCurrentSkill()<<"(+"<<obj.exp<<"EXP)\tprice : "<<obj.price<<"$ (each)";
