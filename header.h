@@ -16,10 +16,11 @@ class Person {
     private:
         string name;
         int level;
-        Health hp;
     public:
+        Health hp;
         Person(string);
         void updateLevel();
+        int getLevel();
 };
 
 // *----------------------------------------------------------------*
@@ -44,7 +45,7 @@ class Player : public Human {
         string gender;
         BankAccount bankAccount;
     public:
-        Player(string n,string g,int a):Human(n,this,??),age(a),gender(g),bankAccount(??){}
+        Player(string n,string g,int a,int m):Human(n),age(a),gender(g),bankAccount(m){}
         BankAccount* getBankAccount();
 };
 
@@ -61,7 +62,7 @@ class Zombie : public Person {};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class BaseZombie : public Zombie {};
+class BasicZombie : public Zombie {};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -94,6 +95,7 @@ public :
     void decreaseStamina(int amount);
     void increaseStamina(int amount);
     void updateMaximumStamina();
+    int getCurrentStamina();
 };
 
 // *----------------------------------------------------------------*
@@ -123,6 +125,7 @@ class Skills {
         Skills(int,int);
         void upgradeSkill(BankAccount*);
         void setUpgradePrice();
+        int getCurrentSkill();
 
 };
 
@@ -204,10 +207,10 @@ class BankAccount {
     protected:
         int balance;
     public:
-        BankAccount();
+        BankAccount(int);
         int getBalance();
         void deposit(int amount);
-        void withdraw(int amount);
+        bool withdraw(int amount);
 };
 
 // *----------------------------------------------------------------*
@@ -219,59 +222,115 @@ class Items {
         string type;
         string name;
         int price;
-        vector <Items> shop_items;
+        static vector <Items*> shop_items;
     public:
-        Items(string,int);
-        virtual void buy(Player& player);        //buy Item and add it into player's backpack
-        virtual void showItems();
-        virtual bool operator==(const Items& other) const;
-        void addToShop(Items);
-};
+        Items(string,int,string);
+        virtual void showItems(){}                       //show the available items in the shop based on their types
+        virtual void addToVectors(){}                    //add the bought item to the vector
+        virtual void use(Player&){}                      //use consumable items and increase health or stamina 
+        bool operator==(const Items& other) const;       //check equality of two object names
+}; 
+vector <Items*> Items::shop_items;     
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class Permanent : public Items {
-    private:
-        int damage;
+    protected:
+        int exp;
+        static vector <Permanent*> shop_items_permanent;
     public:
-        Permanent(string,int);
-        void showItems() override;
+        Permanent(string,int,string,int);       
+        virtual void buy(Player&){}                      //buy item and add it into player's backpack
+        virtual void Attack(Human,Human){}               //calculate the damage of attacker and reduce it from attacked health
 };
+vector <Permanent*> Permanent::shop_items_permanent;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class WarmWeapon : public Permanent {
     private:
+        static vector <WarmWeapon*> shop_items_permanent_warmweapon;
         WarmWeaponAbility wwa;
-
+    public:
+        WarmWeapon(string,int,int,int);
+        void showItems() override;
+        void buy(Player&) override;
+        void addToVectors() override;
+        void Attack(Human,Human) override;
+        friend ostream& operator<<(ostream&,WarmWeapon&);
 };
+vector <WarmWeapon*> WarmWeapon::shop_items_permanent_warmweapon;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class ColdWeapon : public Permanent {};
+class ColdWeapon : public Permanent {
+    private:
+        static vector <ColdWeapon*> shop_items_permanent_coldweapon;
+        ColdWeaponAbility cwa;
+    public:
+        ColdWeapon(string,int,int,int);
+        void showItems() override;
+        void buy(Player&) override;
+        void addToVectors() override;
+        void Attack(Human,Human) override;
+        friend ostream& operator<<(ostream&,ColdWeapon&);
+};
+vector <ColdWeapon*> ColdWeapon::shop_items_permanent_coldweapon;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class Consumable : public Items {};
+class Throwable : public Items {
+    private:
+        int exp;
+        static vector <Throwable*> shop_items_throwable;
+        ThrowableWeaponAbility twa;
+    public:
+        Throwable(string,int,int,int);
+        void showItems() override;
+        void buy(Player&,int);
+        void addToVectors() override;
+        void Throw(Human,Human);
+        friend ostream& operator<<(ostream&,Throwable&);
+};
+vector <Throwable*> Throwable::shop_items_throwable;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class Medicine : public Consumable {};
+class Medicine : public Items {
+    private:
+        int heal;
+        static vector <Medicine*> shop_items_medicine;
+    public:
+        Medicine(string,int,int);
+        void showItems() override;
+        void buy(Player&,int);
+        void addToVectors() override;
+        void use(Player&) override;
+        friend ostream& operator<<(ostream&,Medicine&);
+};
+vector <Medicine*> Medicine::shop_items_medicine;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class Food : public Consumable {};
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Throwable : public Items {};
+class Food : public Items {
+    private:
+        int strength;
+        static vector <Food*> shop_items_food;
+    public:
+        Food(string,int,int);
+        void showItems() override;
+        void buy(Player&,int);
+        void addToVectors() override;
+        void use(Player&) override;
+        friend ostream& operator<<(ostream&,Food&);
+};
+vector <Food*> Food::shop_items_food;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
