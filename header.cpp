@@ -25,7 +25,7 @@ void Person :: updateLevel(){
 // *----------------------------------------------------------------*
 
 Backpack* Human::getBackpack(){
-    Backpack *p=&backpack;
+    Backpack *p = &backpack;
     return p;
 }
 
@@ -431,7 +431,7 @@ void printWithDelay() {
         cout.flush();  // Ensure the character is immediately printed
         this_thread :: sleep_for(chrono::milliseconds(delay_ms));
     }
-
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
