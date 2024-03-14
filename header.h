@@ -303,6 +303,7 @@ class Medicine : public Items {
         void showItems() override;
         void buy(Player&,int);
         void addToVectors() override;
+        void use(Player&);
         friend ostream& operator<<(ostream&,Medicine&);
 };
 vector <Medicine*> Medicine::shop_items_medicine;
@@ -319,6 +320,7 @@ class Food : public Items {
         void showItems() override;
         void buy(Player&,int);
         void addToVectors() override;
+        void use(Player&);
         friend ostream& operator<<(ostream&,Food&);
 };
 vector <Food*> Food::shop_items_food;

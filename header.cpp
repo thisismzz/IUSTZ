@@ -579,6 +579,11 @@ void Medicine::addToVectors(){
     shop_items.push_back(this);
 }
 
+void Medicine::use(Player& player){
+    player.hp.increaseHealth(heal);
+    //an item of that medicine will decrease;
+}
+
 ostream& operator<<(ostream& os,Medicine& obj) {
     os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\theal : +"<<obj.heal<<"HP"<<"\tprice : "<<obj.price<<"$ (each)";
     return os;
@@ -612,6 +617,11 @@ void Food::buy(Player& player,int quantity){
 void Food::addToVectors(){
     shop_items_food.push_back(this);
     shop_items.push_back(this);
+}
+
+void Food::use(Player& player){
+    player.stamina.increaseStamina(strength);
+    //an item of that food will decrease;
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
