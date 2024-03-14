@@ -223,10 +223,10 @@ class Items {
         static vector <Items*> shop_items;
     public:
         Items(string,int,string);
-        virtual void showItems(){}
-        virtual void addToVectors(){}
-        virtual void use(Player&){}
-        bool operator==(const Items& other) const;   //check equality of two object names
+        virtual void showItems(){}                       //show the available items in the shop based on their types
+        virtual void addToVectors(){}                    //add the bought item to the vector
+        virtual void use(Player&){}                      //use consumable items and increase health or stamina 
+        bool operator==(const Items& other) const;       //check equality of two object names
 }; 
 vector <Items*> Items::shop_items;     
 
@@ -238,9 +238,9 @@ class Permanent : public Items {
         int exp;
         static vector <Permanent*> shop_items_permanent;
     public:
-        Permanent(string,int,string,int);
-        virtual void buy(Player&){}        //buy Item and add it into player's backpack
-        virtual void attack(Human&,Human&){}
+        Permanent(string,int,string,int);       
+        virtual void buy(Player&){}              //buy item and add it into player's backpack
+        virtual void attack(Human&,Human&){}     //calculate the damage of attacker and reduce it from attacked health
 };
 vector <Permanent*> Permanent::shop_items_permanent;
 
