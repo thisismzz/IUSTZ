@@ -19,7 +19,7 @@ using namespace std;
 // *----------------------------------------------------------------*
 
 Person::Person(string n) : name(n), level(1){}
-Person::Person(int dmg) : damage(dmg);
+Person::Person(int dmg) : name("") , level(1) , damage(dmg){};
 
 void Person :: updateLevel(){
     level++;
@@ -43,11 +43,11 @@ Backpack* Human::getBackpack(){
 BankAccount* Player :: getBankAccount(){
     BankAccount* p = &bankAccount;
     return p;
-}c
+}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Zombie ::Zombie(int maxHealth, int dmg) : Health(maxHealth) ,Person(dmg){}
+Zombie ::Zombie(int maxHealth, int dmg) : health(maxHealth) ,Person(dmg){}
 void Zombie::attack() {
     cout << name <<"bites for" << damage << "damage!" << endl;
 }
@@ -67,7 +67,6 @@ void Zombie ::takeDamage(int amount) {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 Health ::Health() : maxHealth(100){}
-Health ::Health() : maxHealth(100) , currentHealth(100){}
 int Health ::getCurrentHealth() {
     return currentHealth;
 }

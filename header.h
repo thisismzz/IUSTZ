@@ -61,6 +61,8 @@ class SmartZombie : public Human {};
 // *----------------------------------------------------------------*
 
 class Zombie : public Person {
+private:
+    Health health;
 public:
 
     Zombie(int maxHealth , int dmg);
