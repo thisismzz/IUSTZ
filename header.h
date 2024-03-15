@@ -32,7 +32,7 @@ class Human : public Person {
     public:
         Experience exp;
         Stamina stamina;
-        Human(string n):Person(n),exp(this),backpack(??){}
+        Human(string n, int i, int i1, int i2, int i3, int i4, int i5) : Person(n), exp(this), backpack(??){}
         Backpack* getBackpack();
 };
 
@@ -45,14 +45,16 @@ class Player : public Human {
         string gender;
         BankAccount bankAccount;
     public:
-        Player(string n,string g,int a,int m):Human(n),age(a),gender(g),bankAccount(m){}
+        Player(string n,string g,int a,int m): Human(n, 0, 0, 0, 0, 0, 0), age(a), gender(g), bankAccount(m){}
         BankAccount* getBankAccount();
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class SmartZombie : public Human {};
+class SmartZombie : public Human {
+    SmartZombie() {}
+};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -341,4 +343,28 @@ void printWithDelay() {}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+class Factory {
+public:
+    static shared_ptr<Human> createCharacter(const string &name, const string &type);
+
+private:
+    static shared_ptr<Human> createJonSnow(const string &name);
+
+    static shared_ptr<Human> createJaimeLannister(const string &name);
+
+    static shared_ptr<Human> createDaenerys(const string &name);
+
+    static shared_ptr<Human> createStannis(const string &name);
+
+    static shared_ptr<Human> createJoffrey(const string &name);
+
+    static shared_ptr<Human> createTheonGreyjoy(const string &name);
+
+
+};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
 #endif

@@ -705,3 +705,51 @@ void printWithDelay(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+shared_ptr<Human> Factory::createCharacter(const string& name, const string& type) {
+    if (type == "JonSnow") {
+        return createJonSnow(name);
+    }
+    else if (type == "JaimeLannister") {
+        return createJaimeLannister(name);
+    }
+    else if (type == "Daenerys") {
+        return createDaenerys(name);
+    }
+    else if (type == "Stannis") {
+        return createStannis(name);
+    }
+    else if (type == "Joffrey") {
+        return createJoffrey(name);
+    }
+    else if (type == "TheonGreyjoy") {
+        return createTheonGreyjoy(name);
+    }
+    else {
+        return nullptr;
+    }
+}
+
+shared_ptr<Human> Factory::createJonSnow(const string& name) {
+    return make_shared<Human>(name, /*age*/ 30, /*exp*/ 0, /*hp*/ 100, /*stamina*/ 100, /*damage*/ 85, /*money*/ 100);
+}
+
+shared_ptr<Human> Factory::createJaimeLannister(const string& name) {
+    return make_shared<Human>(name, /*age*/ 40, /*exp*/ 0, /*hp*/ 100, /*stamina*/ 70, /*damage*/ 80, /*money*/ 180);
+}
+
+shared_ptr<Human> Factory::createDaenerys(const string& name) {
+    return make_shared<Human>(name, /*age*/ 25, /*exp*/ 0, /*hp*/ 100, /*stamina*/ 110, /*damage*/ 65, /*money*/ 120);
+}
+
+shared_ptr<Human> Factory::createStannis(const string& name) {
+    return make_shared<Human>(name, /*age*/ 45, /*exp*/ 0, /*hp*/ 100, /*stamina*/ 90, /*damage*/ 75, /*money*/ 130);
+}
+
+shared_ptr<Human> Factory::createJoffrey(const string& name) {
+    return make_shared<Human>(name, /*age*/ 20, /*exp*/ 0, /*hp*/ 100, /*stamina*/ 75, /*damage*/ 60, /*money*/ 200);
+}
+
+shared_ptr<Human> Factory::createTheonGreyjoy(const string& name) {
+    return make_shared<Human>(name, /*age*/ 35, /*exp*/ 0, /*hp*/ 100, /*stamina*/ 85, /*damage*/ 70, /*money*/ 110);
+}
