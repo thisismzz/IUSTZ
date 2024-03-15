@@ -487,7 +487,7 @@ void WarmWeapon::buy(Player& player){
 
     if(creditcard->withdraw(price)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        player.getBackpack()->addWarmWeaponItem(*this);
         cout<<"Item added to your backpack!\n";
         player.exp.increaseExp(exp);
         cout<<"EXP increased!\n";
@@ -546,7 +546,7 @@ void ColdWeapon::buy(Player& player){
 
     if(creditcard->withdraw(price)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        player.getBackpack()->addColdWeaponItem(*this);
         cout<<"Item added to your backpack!\n";
         player.exp.increaseExp(exp);
         cout<<"EXP increased!\n";
@@ -605,7 +605,7 @@ void Throwable::buy(Player& player,int quantity){
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        player.getBackpack()->addThrowableItem(*this, quantity);
         cout<<"Item added to your backpack!\n";
         player.exp.increaseExp(exp*quantity);
         cout<<"EXP increased!\n";
@@ -646,7 +646,7 @@ void Medicine::buy(Player& player,int quantity){
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        player.getBackpack()->addMedicineItem(*this, quantity);
         cout<<"Item added to your backpack!\n";
     }
     else
@@ -660,7 +660,7 @@ void Medicine::addToVectors(){
 
 void Medicine::use(Player& player){
     player.hp.increaseHealth(heal);
-    decrease_a_medicine_from_backpack;
+    player.getBackpack()->useMedicineItemCount(*this, 1);
 }
 
 ostream& operator<<(ostream& os,Medicine& obj) {
@@ -686,7 +686,7 @@ void Food::buy(Player& player,int quantity){
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        player.getBackpack()->addFoodItem(*this, quantity);
         cout<<"Item added to your backpack!\n";
     }
     else
@@ -700,7 +700,7 @@ void Food::addToVectors(){
 
 void Food::use(Player& player){
     player.stamina.increaseStamina(strength);
-    decrease_a_food_from_backpack;
+    player.getBackpack()->useFoodItemCount(*this, 1);
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
