@@ -478,7 +478,7 @@ WarmWeapon::WarmWeapon(string n,int p,int x,int e):Permanent(n,p,"Warm Weapon",e
 
 void WarmWeapon::showItems(){
     for(auto& i : shop_items_permanent_warmweapon){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -537,7 +537,7 @@ ColdWeapon::ColdWeapon(string n,int p,int x,int e):Permanent(n,p,"Cold Weapon",e
 
 void ColdWeapon::showItems(){
     for (auto& i : shop_items_permanent_coldweapon){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -596,7 +596,7 @@ Throwable::Throwable(string n,int p,int x,int e):Items(n,p,"Throwable Weapon"),t
 
 void Throwable::showItems(){
     for (auto& i : shop_items_throwable){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -637,7 +637,7 @@ Medicine::Medicine(string n,int p,int h):Items(n,p,"Medicine"),heal(h){
 
 void Medicine::showItems(){
     for (auto& i : shop_items_medicine){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -677,7 +677,7 @@ Food::Food(string n,int p,int s):Items(n,p,"Food"),strength(s){
 
 void Food::showItems(){
     for (auto& i : shop_items_food){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -712,17 +712,14 @@ ostream& operator<<(ostream& os,Food& obj) {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void printWithDelay(){
+void printWithDelay(string &text){
     int delay_ms = 20;
-    string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt tristique maximus. Sed eget massa nec sem accumsan sagittis in a nisl. Cras pellentesque, est in feugiat consequat, orci magna tempus lorem, id pretium nibh nisl in tellus.";
     for (char c : text) {
         cout << c;
         cout.flush();  // Ensure the character is immediately printed
         this_thread :: sleep_for(chrono::milliseconds(delay_ms));
     }
 }
-
-
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
