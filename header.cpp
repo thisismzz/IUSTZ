@@ -19,6 +19,7 @@ using namespace std;
 // *----------------------------------------------------------------*
 
 Person::Person(string n) : name(n), level(1){}
+Person::Person(int dmg) : damage(dmg);
 
 void Person :: updateLevel(){
     level++;
@@ -42,13 +43,34 @@ Backpack* Human::getBackpack(){
 BankAccount* Player :: getBankAccount(){
     BankAccount* p = &bankAccount;
     return p;
+}c
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Zombie ::Zombie(int maxHealth, int dmg) : Health(maxHealth) ,Person(dmg){}
+void Zombie::attack() {
+    cout << name <<"bites for" << damage << "damage!" << endl;
+}
+int Zombie ::getHealth() {
+    return health.getCurrentHealth();
+}
+void Zombie ::takeDamage(int amount) {
+    health.decreaseHealth(amount);
+    if (health.getCurrentHealth() <= 0) {
+        cout << name << " has been defeated!" << endl;
+    } else {
+        cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << health.getCurrentHealth() << std::endl;
+    }
 }
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-
-Health :: Health() : maxHealth(100),currentHealth(100){}
+Health ::Health() : maxHealth(100){}
+Health ::Health() : maxHealth(100) , currentHealth(100){}
+int Health ::getCurrentHealth() {
+    return currentHealth;
+}
 
 void Health :: decreaseHealth(int damage){
     currentHealth -= damage;

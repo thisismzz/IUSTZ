@@ -13,14 +13,17 @@ using namespace std;
 // *----------------------------------------------------------------*
 
 class Person {
-    private:
+    protected:
         string name;
         int level;
+        int damage;
     public:
+        Person(int);
         Health hp;
         Person(string);
         void updateLevel();
         int getLevel();
+
 };
 
 // *----------------------------------------------------------------*
@@ -52,14 +55,20 @@ class Player : public Human {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class SmartZombie : public Human {
-    SmartZombie() {}
+class SmartZombie : public Human {};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class Zombie : public Person {
+public:
+
+    Zombie(int maxHealth , int dmg);
+    void attack();
+    int getHealth();
+    void takeDamage(int amount);
+
 };
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Zombie : public Person {};
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -81,6 +90,7 @@ private :
     int maxHealth;
 public :
     Health();
+    int getCurrentHealth();
     void decreaseHealth(int damage);
     void increaseHealth (int amount);
 };
