@@ -125,6 +125,7 @@ class Experience {
         void updateMaximum();
         void setCurrentExp(int,int,int);
         void increaseExp(int);
+        int getCurrentExp();
 };
 
 // *----------------------------------------------------------------*

@@ -117,6 +117,10 @@ void Experience :: updateMaximum(){
     maximum+=100;
 }
 
+int Experience :: getCurrentExp(){
+    return currentExp;
+}
+
 void Experience :: setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
     currentExp+=(0.5*selfDamage)+(0.2*enemyDamage)+(0.3*usedStamina);
     if(currentExp>=maximum){
