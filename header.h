@@ -338,16 +338,21 @@ vector <Food*> Food::shop_items_food;
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void printWithDelay() {}
+void printWithDelay();
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void ShopMenu() {}
-void Show_Permanent_Items() {}
-void Show_Throwable_Items() {}
-void Show_Consumable_Items() {}
+void ShopMenu();
+void Show_Permanent_Items();
+void Show_Throwable_Items();
+void Show_Consumable_Items();
+void createWarmWeapons();
+void createColdWeapons();
+void createThrowableItems();
+void createMedicines();
+void createFoods();
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

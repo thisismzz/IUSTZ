@@ -778,3 +778,67 @@ void Show_Consumable_Items(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+void createWarmWeapons() {
+    WarmWeapon longclaw("Longclaw", 2800, 4, 100);
+    WarmWeapon wildfire("Wildfire Flask", 2500, 2, 90);
+    WarmWeapon dragonfire("Dragonfire Bow", 2200, 5, 80);
+    WarmWeapon valyrian("Valyrian Steel Dagger", 1900, 3, 70);
+    WarmWeapon dragonglass("Dragonglass Blade", 1600, 5, 60);
+    WarmWeapon ice("Ice Sword", 3000, 1, 110);
+    WarmWeapon crimson("Crimson Sword", 2700, 2, 95);
+    WarmWeapon shadow("Shadow Dagger", 2400, 4, 84);
+    WarmWeapon blackfyre("Blackfyre Sword", 2100, 3, 76);
+    WarmWeapon storm("Storm Bow", 1800, 3, 64);
+}
+
+void createColdWeapons() {
+    ColdWeapon icicle("Icicle Dagger", 2800, 5, 100);
+    ColdWeapon frostbite("Frostbite Axe", 2500, 4, 90);
+    ColdWeapon blizzard("Blizzard Mace", 2200, 3, 80);
+    ColdWeapon snowfall("Snowfall Sword", 1900, 2, 70);
+    ColdWeapon freeze("Freeze Bow", 1600, 1, 60);
+    ColdWeapon frost("Frost Dagger", 2700, 4, 95);
+    ColdWeapon coldsteel("Coldsteel Axe", 2400, 3, 85);
+    ColdWeapon winter("Winter Mace", 2100, 2, 75);
+    ColdWeapon icy("Icy Sword", 1800, 1, 65);
+    ColdWeapon chill("Chill Bow", 1500, 5, 55);
+}
+
+void createThrowableItems() {
+    Throwable bomb("Firebomb", 2500, 3, 100);
+    Throwable grenade("Ice Grenade", 2200, 5, 90);
+    Throwable dart("Poison Dart", 1600, 4, 70);
+    Throwable rock("Rock", 1300, 1, 60);
+    Throwable knife("Throwing Knife", 1000, 2, 50);
+}
+
+void createMedicines() {
+    Medicine milkOfThePoppy("Milk of the Poppy", 1200, 30);
+    Medicine essenceOfNightshade("Essence of Nightshade", 1100, 25);
+    Medicine dreamwine("Dreamwine", 1000, 20);
+    Medicine sourRed("Sour Red", 1300, 35);
+    Medicine sweetsleep("Sweetsleep", 1500, 40);
+    Medicine moonTea("Moon Tea", 1050, 22);
+    Medicine weirwoodPaste("Weirwood Paste", 1250, 28);
+    Medicine firemilk("Firemilk", 1400, 32);
+    Medicine greyscaleCure("Greyscale Cure", 1800, 50);
+    Medicine heartsbane("Heartsbane", 1700, 45);
+}
+
+void createFoods() {
+    Food roastPork("Roast Pork", 1200, 50);
+    Food lemonCakes("Lemon Cakes", 1100, 45);
+    Food honeyedChicken("Honeyed Chicken", 1000, 40);
+    Food beefAndBarleyStew("Beef and Barley Stew", 1300, 55);
+    Food blackBread("Black Bread", 1500, 60);
+    Food fishPie("Fish Pie", 1050, 42);
+    Food lemonWater("Lemon Water", 1250, 48);
+    Food mulledWine("Mulled Wine", 1400, 52);
+    Food venisonStew("Venison Stew", 1800, 70);
+    Food honeycakes("Honeycakes", 1700, 65);
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
