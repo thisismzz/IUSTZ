@@ -122,6 +122,9 @@ void Experience :: increaseExp(int amount){
 Skills::Skills(int n,int m):maximum(5),currentSkill(n),upgradePrice(m){}
 
 void Skills::upgradeSkill(BankAccount *creditcard){
+    if(currentSkill == 5){
+        cout << "Maximum level!\n";
+    }
     try{
         if(creditcard->getBalance()>=upgradePrice){
             creditcard->withdraw(upgradePrice);
@@ -133,7 +136,7 @@ void Skills::upgradeSkill(BankAccount *creditcard){
         }
     }
     catch(int temp){
-        cout<<"not enough money!\n";
+        cout << "not enough money!\n";
     } 
 }
 
@@ -793,63 +796,63 @@ void Show_Consumable_Items(){
 // *----------------------------------------------------------------*
 
 void createWarmWeapons() {
-    WarmWeapon longclaw("Longclaw", 2800, 4, 100);
-    WarmWeapon wildfire("Wildfire Flask", 2500, 2, 90);
-    WarmWeapon dragonfire("Dragonfire Bow", 2200, 5, 80);
-    WarmWeapon valyrian("Valyrian Steel Dagger", 1900, 3, 70);
-    WarmWeapon dragonglass("Dragonglass Blade", 1600, 5, 60);
-    WarmWeapon ice("Ice Sword", 3000, 1, 110);
-    WarmWeapon crimson("Crimson Sword", 2700, 2, 95);
-    WarmWeapon shadow("Shadow Dagger", 2400, 4, 84);
-    WarmWeapon blackfyre("Blackfyre Sword", 2100, 3, 76);
-    WarmWeapon storm("Storm Bow", 1800, 3, 64);
+    WarmWeapon longclaw("Longclaw", 2800, 3, 20, 15);
+    WarmWeapon wildfire("Wildfire Flask", 2500, 1, 25, 18);
+    WarmWeapon dragonfire("Dragonfire Bow", 2200, 2, 15, 22);
+    WarmWeapon valyrian("Valyrian Steel Dagger", 1900, 3, 30, 14);
+    WarmWeapon dragonglass("Dragonglass Blade", 1600, 1, 12, 20);
+    WarmWeapon ice("Ice Sword", 3000, 2, 18, 12);
+    WarmWeapon crimson("Crimson Sword", 2700, 2, 22, 16);
+    WarmWeapon shadow("Shadow Dagger", 2400, 3, 28, 19);
+    WarmWeapon blackfyre("Blackfyre Sword", 2100, 1, 16, 23);
+    WarmWeapon storm("Storm Bow", 1800, 2, 14, 17);
 }
 
 void createColdWeapons() {
-    ColdWeapon icicle("Icicle Dagger", 2800, 5, 100);
-    ColdWeapon frostbite("Frostbite Axe", 2500, 4, 90);
-    ColdWeapon blizzard("Blizzard Mace", 2200, 3, 80);
-    ColdWeapon snowfall("Snowfall Sword", 1900, 2, 70);
-    ColdWeapon freeze("Freeze Bow", 1600, 1, 60);
-    ColdWeapon frost("Frost Dagger", 2700, 4, 95);
-    ColdWeapon coldsteel("Coldsteel Axe", 2400, 3, 85);
-    ColdWeapon winter("Winter Mace", 2100, 2, 75);
-    ColdWeapon icy("Icy Sword", 1800, 1, 65);
-    ColdWeapon chill("Chill Bow", 1500, 5, 55);
+    ColdWeapon icicle("Icicle Dagger", 2800, 3, 30, 13);
+    ColdWeapon frostbite("Frostbite Axe", 2500, 2, 20, 18);
+    ColdWeapon blizzard("Blizzard Mace", 2200, 1, 25, 21);
+    ColdWeapon snowfall("Snowfall Sword", 1900, 2, 18, 16);
+    ColdWeapon freeze("Freeze Bow", 1600, 1, 12, 11);
+    ColdWeapon frost("Frost Dagger", 2700, 3, 16, 22);
+    ColdWeapon coldsteel("Coldsteel Axe", 2400, 1, 22, 14);
+    ColdWeapon winter("Winter Mace", 2100, 2, 28, 19);
+    ColdWeapon icy("Icy Sword", 1800, 1, 14, 17);
+    ColdWeapon chill("Chill Bow", 1500, 3, 20, 12);
 }
 
 void createThrowableItems() {
-    Throwable bomb("Firebomb", 2500, 3, 100);
-    Throwable grenade("Ice Grenade", 2200, 5, 90);
-    Throwable dart("Poison Dart", 1600, 4, 70);
-    Throwable rock("Rock", 1300, 1, 60);
-    Throwable knife("Throwing Knife", 1000, 2, 50);
+    Throwable bomb("Firebomb", 2500, 2, 16, 15);
+    Throwable grenade("Ice Grenade", 2200, 3, 12, 17);
+    Throwable dart("Poison Dart", 1600, 1, 18, 20);
+    Throwable rock("Rock", 1300, 3, 14, 23);
+    Throwable knife("Throwing Knife", 1000, 2, 30, 10);
 }
 
 void createMedicines() {
-    Medicine milkOfThePoppy("Milk of the Poppy", 1200, 30);
-    Medicine essenceOfNightshade("Essence of Nightshade", 1100, 25);
-    Medicine dreamwine("Dreamwine", 1000, 20);
-    Medicine sourRed("Sour Red", 1300, 35);
-    Medicine sweetsleep("Sweetsleep", 1500, 40);
-    Medicine moonTea("Moon Tea", 1050, 22);
-    Medicine weirwoodPaste("Weirwood Paste", 1250, 28);
-    Medicine firemilk("Firemilk", 1400, 32);
-    Medicine greyscaleCure("Greyscale Cure", 1800, 50);
-    Medicine heartsbane("Heartsbane", 1700, 45);
+    Medicine milkOfThePoppy("Milk of the Poppy", 1200, 20);
+    Medicine essenceOfNightshade("Essence of Nightshade", 1100, 18);
+    Medicine dreamwine("Dreamwine", 1000, 15);
+    Medicine sourRed("Sour Red", 1300, 22);
+    Medicine sweetsleep("Sweetsleep", 1500, 25);
+    Medicine moonTea("Moon Tea", 1050, 15);
+    Medicine weirwoodPaste("Weirwood Paste", 1250, 18);
+    Medicine firemilk("Firemilk", 1400, 22);
+    Medicine greyscaleCure("Greyscale Cure", 1800, 30);
+    Medicine heartsbane("Heartsbane", 1700, 28);
 }
 
 void createFoods() {
-    Food roastPork("Roast Pork", 1200, 50);
-    Food lemonCakes("Lemon Cakes", 1100, 45);
-    Food honeyedChicken("Honeyed Chicken", 1000, 40);
-    Food beefAndBarleyStew("Beef and Barley Stew", 1300, 55);
-    Food blackBread("Black Bread", 1500, 60);
-    Food fishPie("Fish Pie", 1050, 42);
-    Food lemonWater("Lemon Water", 1250, 48);
-    Food mulledWine("Mulled Wine", 1400, 52);
-    Food venisonStew("Venison Stew", 1800, 70);
-    Food honeycakes("Honeycakes", 1700, 65);
+    Food roastPork("Roast Pork", 1200, 25);
+    Food lemonCakes("Lemon Cakes", 1100, 23);
+    Food honeyedChicken("Honeyed Chicken", 1000, 20);
+    Food beefAndBarleyStew("Beef and Barley Stew", 1300, 26);
+    Food blackBread("Black Bread", 1500, 28);
+    Food fishPie("Fish Pie", 1050, 18);
+    Food lemonWater("Lemon Water", 1250, 20);
+    Food mulledWine("Mulled Wine", 1400, 23);
+    Food venisonStew("Venison Stew", 1800, 30);
+    Food honeycakes("Honeycakes", 1700, 28);
 }
 
 // *----------------------------------------------------------------*
