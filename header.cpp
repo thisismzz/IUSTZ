@@ -752,12 +752,16 @@ void ShopMenu(){
 void Show_Permanent_Items(){
     system("cls");
     int number;
-    cout << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].back" << endl;
+    cout << "Permanent Items:" << endl << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].back" << endl;
     switch(number){
-        case 1: WarmWeapon::showItems();
+        case 1: 
+        cout << "You go to take a look at the WarmWeapons:" << endl;
+        WarmWeapon::showItems();
             break;
         
-        case 2: ColdWeapon::showItems();
+        case 2:
+        cout << "You go to take a look at the ColdWeapons:" << endl; 
+        ColdWeapon::showItems();
             break;
         
         case 3: 
@@ -767,18 +771,23 @@ void Show_Permanent_Items(){
 
 void Show_Throwable_Items(){
     system("cls");
+    cout << "You go to take a look at the Throwable Items:" << endl;
     Throwable::showItems();
 }
 
 void Show_Consumable_Items(){
     system("cls");
     int number;
-    cout << "[1].Medicines" << endl << "[2].Foods" << endl << "[3].back" << endl;
+    cout << "Consumable Items:" << endl << "[1].Medicines" << endl << "[2].Foods" << endl << "[3].back" << endl;
     switch(number){
-        case 1: Medicine::showItems();
+        case 1: 
+        cout << "You go to take a look at the Medicines:" << endl;
+        Medicine::showItems();
             break;
-        
-        case 2: Food::showItems();
+            
+        case 2:
+        cout << "You go to take a look at the Foods:" << endl;
+        Food::showItems();
             break;
         
         case 3: 
