@@ -344,75 +344,10 @@ void printWithDelay() {}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void ShopMenu(){
-    while(true){
-        system("cls");
-        int number;
-        cout << "You enter the shop." << endl << "What do you want to buy?" << endl 
-        << "[1].Permanent Items" << endl << "[2].Throwable Items" << endl << "[3].Consumable Items" << endl << "[4].Exit" << endl;
-        cin >> number;
-        switch(number){
-            case 1: Show_Permanent_Items();
-                break;
-        
-            case 2: Show_Throwable_Items();
-                break;
-        
-            case 3: Show_Consumable_Items();
-                break;
-        
-            case 4: 
-            cout << "You left the shop." << endl;
-                return;
-
-            default: 
-            cout << "Wrong number!" << endl << "Press enter to continue";
-            getch();
-                break;
-        }
-    }
-}
-
-void Show_Permanent_Items(){
-    system("cls");
-    int number;
-    WarmWeapon warmweapon;
-    ColdWeapon coldweapon;
-    cout << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].back" << endl;
-    switch(number){
-        case 1: warmweapon.showItems();
-            break;
-        
-        case 2: coldweapon.showItems();
-            break;
-        
-        case 3: 
-            return;
-    }
-}
-void Show_Throwable_Items(){
-    system("cls");
-    Throwable throwable;
-    throwable.showItems();
-}
-
-void Show_Consumable_Items(){
-    system("cls");
-    int number;
-    Medicine medicine;
-    Food food;
-    cout << "[1].Medicines" << endl << "[2].Foods" << endl << "[3].back" << endl;
-    switch(number){
-        case 1: medicine.showItems();
-            break;
-        
-        case 2: food.showItems();
-            break;
-        
-        case 3: 
-            return;
-    }
-}
+void ShopMenu() {}
+void Show_Permanent_Items() {}
+void Show_Throwable_Items() {}
+void Show_Consumable_Items() {}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
