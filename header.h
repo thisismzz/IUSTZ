@@ -227,7 +227,6 @@ class Items {
         static vector <Items*> shop_items;
     public:
         Items(string,int,string);
-        virtual void showItems(){}                       //show the available items in the shop based on their types
         virtual void addToVectors(){}                    //add the bought item to the vector
         virtual void use(Player&){}                      //use consumable items and increase health or stamina 
         bool operator==(const Items& other) const;       //check equality of two object names
@@ -239,10 +238,11 @@ vector <Items*> Items::shop_items;
 
 class Permanent : public Items {
     protected:
+        int harm;
         int exp;
         static vector <Permanent*> shop_items_permanent;
-    public:
-        Permanent(string,int,string,int);       
+        Permanent(string,int,string,int,int); 
+    public:       
         virtual void buy(Player&){}                      //buy item and add it into player's backpack
         virtual void Attack(Human,Human){}               //calculate the damage of attacker and reduce it from attacked health
 };
@@ -256,8 +256,8 @@ class WarmWeapon : public Permanent {
         static vector <WarmWeapon*> shop_items_permanent_warmweapon;
         WarmWeaponAbility wwa;
     public:
-        WarmWeapon(string,int,int,int);
-        void showItems() override;
+        WarmWeapon(string,int,int,int,int);
+        static void showItems();                     //show the available items to buy
         void buy(Player&) override;
         void addToVectors() override;
         void Attack(Human,Human) override;
@@ -273,8 +273,8 @@ class ColdWeapon : public Permanent {
         static vector <ColdWeapon*> shop_items_permanent_coldweapon;
         ColdWeaponAbility cwa;
     public:
-        ColdWeapon(string,int,int,int);
-        void showItems() override;
+        ColdWeapon(string,int,int,int,int);
+        static void showItems();                     //show the available items to buy
         void buy(Player&) override;
         void addToVectors() override;
         void Attack(Human,Human) override;
@@ -287,12 +287,13 @@ vector <ColdWeapon*> ColdWeapon::shop_items_permanent_coldweapon;
 
 class Throwable : public Items {
     private:
+        int harm;
         int exp;
         static vector <Throwable*> shop_items_throwable;
         ThrowableWeaponAbility twa;
     public:
-        Throwable(string,int,int,int);
-        void showItems() override;
+        Throwable(string,int,int,int,int);
+        static void showItems();                     //show the available items to buy
         void buy(Player&,int);
         void addToVectors() override;
         void Throw(Human,Human);
@@ -309,7 +310,7 @@ class Medicine : public Items {
         static vector <Medicine*> shop_items_medicine;
     public:
         Medicine(string,int,int);
-        void showItems() override;
+        static void showItems();                     //show the available items to buy
         void buy(Player&,int);
         void addToVectors() override;
         void use(Player&) override;
@@ -326,7 +327,7 @@ class Food : public Items {
         static vector <Food*> shop_items_food;
     public:
         Food(string,int,int);
-        void showItems() override;
+        static void showItems();                     //show the available items to buy
         void buy(Player&,int);
         void addToVectors() override;
         void use(Player&) override;

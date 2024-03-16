@@ -445,18 +445,18 @@ bool Items::operator==(const Items& other) const {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Permanent::Permanent(string n,int p,string t,int e):Items(n,p,t),exp(e){}
+Permanent::Permanent(string n,int p,string t,int e,int h):Items(n,p,t),exp(e),harm(h){}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-WarmWeapon::WarmWeapon(string n,int p,int x,int e):Permanent(n,p,"Warm Weapon",e),wwa(x){
+WarmWeapon::WarmWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Warm Weapon",e,h),wwa(x){
     WarmWeapon::addToVectors();
 }
 
 void WarmWeapon::showItems(){
     for(auto& i : shop_items_permanent_warmweapon){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -485,9 +485,7 @@ void WarmWeapon::Attack(Human attacker, Human attacked){
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;
 
-    srand(time(nullptr));
-    int baseDamage = rand() % 10 + 1;
-    int damage = baseDamage + (attacker.stamina.getCurrentStamina() * staminaFactor) + (wwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
+    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (wwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
     attacker.stamina.decreaseStamina(10*wwa.getCurrentSkill());
     attacked.hp.decreaseHealth(damage);
 
@@ -509,13 +507,13 @@ ostream& operator<<(ostream& os,WarmWeapon& obj){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-ColdWeapon::ColdWeapon(string n,int p,int x,int e):Permanent(n,p,"Cold Weapon",e),cwa(x){
+ColdWeapon::ColdWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Cold Weapon",e,h),cwa(x){
     ColdWeapon::addToVectors();
 }
 
 void ColdWeapon::showItems(){
     for (auto& i : shop_items_permanent_coldweapon){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -544,9 +542,7 @@ void ColdWeapon::Attack(Human attacker, Human attacked){
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;
 
-    srand(time(nullptr));
-    int baseDamage = rand() % 10 + 1;
-    int damage = baseDamage + (attacker.stamina.getCurrentStamina() * staminaFactor) + (cwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
+    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (cwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
     attacker.stamina.decreaseStamina(10*cwa.getCurrentSkill());
     attacked.hp.decreaseHealth(damage);
 
@@ -568,13 +564,13 @@ ostream& operator<<(ostream& os,ColdWeapon& obj){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Throwable::Throwable(string n,int p,int x,int e):Items(n,p,"Throwable Weapon"),twa(x),exp(e){
+Throwable::Throwable(string n,int p,int x,int e,int h):Items(n,p,"Throwable Weapon"),twa(x),exp(e),harm(h){
     Throwable::addToVectors();
 }
 
 void Throwable::showItems(){
     for (auto& i : shop_items_throwable){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -598,7 +594,24 @@ void Throwable::addToVectors(){
 }
 
 void Throwable::Throw(Human attacker, Human attacked){
-    
+    double staminaFactor = 0.3;
+    double weaponLevelFactor = 1.0;
+    double playerLevelFactor = 0.8;
+
+    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (twa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
+    attacker.stamina.decreaseStamina(10*twa.getCurrentSkill());
+    attacked.hp.decreaseHealth(damage);
+
+    if(static_cast<Player*>(&attacker)){
+        Player *p=static_cast<Player*>(&attacker);
+        p->exp.setCurrentExp(0,damage,10*twa.getCurrentSkill());
+    }
+    else{
+        Player *p=static_cast<Player*>(&attacked);
+        p->exp.setCurrentExp(damage,0,0);
+    }
+
+    decrease_a_throwable_from_backpack;
 }
 
 ostream& operator<<(ostream& os,Throwable& obj) {
@@ -615,7 +628,7 @@ Medicine::Medicine(string n,int p,int h):Items(n,p,"Medicine"),heal(h){
 
 void Medicine::showItems(){
     for (auto& i : shop_items_medicine){
-        cout << i;
+        cout << i << endl;
     }
 }
 
@@ -655,7 +668,7 @@ Food::Food(string n,int p,int s):Items(n,p,"Food"),strength(s){
 
 void Food::showItems(){
     for (auto& i : shop_items_food){
-        cout << i;
+        cout << i << endl;
     }
 }
 
