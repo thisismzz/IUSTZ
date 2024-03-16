@@ -31,6 +31,8 @@ int Person::getLevel(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
+Human::Human(string n):Person(n),exp(this){}
+
 Backpack* Human::getBackpack(){
     Backpack *p=&backpack;
     return p;
@@ -38,6 +40,8 @@ Backpack* Human::getBackpack(){
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+Player::Player(string n,string g,int a,int m):Human(n),age(a),gender(g),bankAccount(m){}
 
 BankAccount* Player :: getBankAccount(){
     BankAccount* p = &bankAccount;
@@ -166,250 +170,117 @@ ThrowableWeaponAbility::ThrowableWeaponAbility(int n):Skills(n,n*20){}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void Backpack :: addFoodItem(const Food& foodItem, int quantity){
-    for (auto &item : FoodItems) {
-        if (item.first == foodItem) {
-            item.second += quantity;
-            return;
-        }
+void Backpack :: addFoodItem(const Food foodItem, int quantity){
+    if(FoodItems.find(foodItem)!=FoodItems.end()){
+        FoodItems[foodItem]+=quantity;
     }
-    FoodItems.push_back(make_pair(foodItem, quantity));
+    else
+        FoodItems.insert({foodItem,quantity});
 }
 
-void Backpack :: addMedicineItem(const Medicine& medicineItem, int quantity){
-    for (auto &item : MedicineItems) {
-        if (item.first == medicineItem) {
-            item.second += quantity;
-            return;
-        }
+void Backpack :: addMedicineItem(const Medicine medicineItem, int quantity){
+    if(MedicineItems.find(medicineItem)!=MedicineItems.end()){
+        MedicineItems[medicineItem]+=quantity;
     }
-    MedicineItems.push_back(make_pair(medicineItem, quantity));
+    else
+        MedicineItems.insert({medicineItem,quantity});
 }
 
-void Backpack :: addThrowableItem(const Throwable& throwableItem, int quantity){
-    for (auto &item : ThrowableItems) {
-        if (item.first == throwableItem) {
-            item.second += quantity;
-            return;
-        }
+void Backpack :: addThrowableItem(const Throwable throwableItem, int quantity){
+    if(ThrowableItems.find(throwableItem)!=ThrowableItems.end()){
+        ThrowableItems[throwableItem]+=quantity;
     }
-    ThrowableItems.push_back(make_pair(throwableItem, quantity));
+    else
+        ThrowableItems.insert({throwableItem,quantity});
 }
 
-void Backpack :: addWarmWeaponItem(const WarmWeapon& WarmWeaponItem){
+void Backpack :: addWarmWeaponItem(const WarmWeapon warmWeaponItem){
+    WarmWeaponItems.push_back(warmWeaponItem);
+}
+
+void Backpack :: addColdWeaponItem(const ColdWeapon coldWeaponItem){
+    ColdWeaponItems.push_back(coldWeaponItem);
+}
+
+bool Backpack::warmWeaponExistence(const WarmWeapon warmWeaponItem){
     for (const auto &item : WarmWeaponItems) {
-        if (item.first == WarmWeaponItem) {
-            return;
+        if (item== warmWeaponItem) {
+            return true;
         }
     }
-    WarmWeaponItems.push_back(make_pair(WarmWeaponItem, 1));
+    return false;
 }
 
-void Backpack :: addColdWeaponItem(const ColdWeapon& ColdWeaponItem){
+bool Backpack::coldWeaponExistence(const ColdWeapon coldWeaponItem){
     for (const auto &item : ColdWeaponItems) {
-        if (item.first == ColdWeaponItem) {
-            return;
+        if (item== coldWeaponItem) {
+            return true;
         }
     }
-    ColdWeaponItems.push_back(make_pair(ColdWeaponItem, 1));
+    return false;
 }
 
-// *----------------------------------------------------------------*
+void Backpack :: removeFoodItem(const Food foodItem) {
+    FoodItems.erase(foodItem);
+}
 
-void Backpack :: removeFoodItem(const Food& foodItem) {
-    for (auto it = FoodItems.begin(); it != FoodItems.end(); ) {
-        if (it->first == foodItem) {
-            it = FoodItems.erase(it);
-        } else {
-            ++it;
+void Backpack :: removeMedicineItem(const Medicine medicineItem) {
+    MedicineItems.erase(medicineItem);
+}
+
+void Backpack :: removeThrowableItem(const Throwable throwableItem) {
+    ThrowableItems.erase(throwableItem);
+}
+
+void Backpack :: useFoodItemCount(const Food foodItem) {
+    FoodItems[foodItem]-=1;
+    if(FoodItems[foodItem]==0)
+        removeFoodItem(foodItem);
+}
+
+void Backpack :: useMedicineItemCount(const Medicine medicineItem) {
+    MedicineItems[medicineItem]-=1;
+    if(MedicineItems[medicineItem]==0)
+        removeMedicineItem(medicineItem);
+}
+
+void Backpack :: useThrowableItemCount(const Throwable throwableItem) {
+    ThrowableItems[throwableItem]-=1;
+    if(ThrowableItems[throwableItem]==0)
+        removeThrowableItem(throwableItem);
+}
+
+void Backpack::showItems(){
+    if(!ColdWeaponItems.empty()){
+        for(auto i:ColdWeaponItems){
+            cout<<"type : "<<i.getName()<<"\tname : "<<i.getName()<<'\n';
         }
     }
-}
 
-void Backpack :: removeMedicineItem(const Medicine& medicineItem) {
-    for (auto it = MedicineItems.begin(); it != MedicineItems.end(); ) {
-        if (it->first == medicineItem) {
-            it = MedicineItems.erase(it);
-        } else {
-            ++it;
+    if(!WarmWeaponItems.empty()){
+        for(auto i:WarmWeaponItems){
+            cout<<"type : "<<i.getName()<<"\tname : "<<i.getName()<<'\n';
         }
     }
-}
 
-void Backpack :: removeThrowableItem(const Throwable& throwableItem) {
-    for (auto it = ThrowableItems.begin(); it != ThrowableItems.end(); ) {
-        if (it->first == throwableItem) {
-            it = ThrowableItems.erase(it);
-        } else {
-            ++it;
+    if(!ThrowableItems.empty()){
+        for(auto i:ThrowableItems){
+            Throwable item=i.first;
+            cout<<"type : "<<item.getName()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n';
         }
     }
-}
 
-void Backpack :: removeWarmWeaponItem(const WarmWeapon& WarmWeaponItem) {
-    for (auto it = WarmWeaponItems.begin(); it != WarmWeaponItems.end(); ) {
-        if (it->first == WarmWeaponItem) {
-            it = WarmWeaponItems.erase(it);
-        } else {
-            ++it;
+    if(!MedicineItems.empty()){
+        for(auto i:MedicineItems){
+            Medicine item=i.first;
+            cout<<"type : "<<item.getName()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n';
         }
     }
-}
 
-void Backpack :: removeColdWeaponItem(const ColdWeapon& ColdWeaponItem) {
-    for (auto it = ColdWeaponItems.begin(); it != ColdWeaponItems.end(); ) {
-        if (it->first == ColdWeaponItem) {
-            it = ColdWeaponItems.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}
-
-// *----------------------------------------------------------------*
-
-int Backpack :: getFoodItemsCount() {
-    int total = 0;
-    for (const auto& item : FoodItems) {
-        total += item.second;
-    }
-    return total;
-}
-
-int Backpack :: getMedicineItemsCount() {
-    int total = 0;
-    for (const auto& item : MedicineItems) {
-        total += item.second;
-    }
-    return total;
-}
-
-int Backpack :: getThrowableItemsCount() {
-    int total = 0;
-    for (const auto& item : ThrowableItems) {
-        total += item.second;
-    }
-    return total;
-}
-
-int Backpack :: getWarmWeaponItemsCount() {
-    int total = 0;
-    for (const auto& item : WarmWeaponItems) {
-        total += item.second;
-    }
-    return total;
-}
-
-int Backpack :: getColdWeaponItemsCount() {
-    int total = 0;
-    for (const auto& item : ColdWeaponItems) {
-        total += item.second;
-    }
-    return total;
-}
-
-// *----------------------------------------------------------------*
-
-int Backpack :: getSpecificFoodItemCount(const Food& specificItem) const {
-    int count = 0;                                           
-    for (const auto& item : FoodItems) {
-        if (item.first == specificItem) {
-            count += item.second;
-        }
-    }
-    return count;
-}
-
-int Backpack :: getSpecificMedicineItemCount(const Medicine& specificItem) const {
-    int count = 0;
-    for (const auto& item : MedicineItems) {
-        if (item.first == specificItem) {
-            count += item.second;
-        }
-    }
-    return count;
-}
-
-int Backpack :: getSpecificThrowableItemCount(const Throwable& specificItem) const {
-    int count = 0;
-    for (const auto& item : ThrowableItems) {
-        if (item.first == specificItem) {
-            count += item.second;
-        }
-    }
-    return count;
-}
-
-int Backpack :: getSpecificWarmWeaponItemCount(const WarmWeapon& specificItem) const {
-    int count = 0;
-    for (const auto& item : WarmWeaponItems) {
-        if (item.first == specificItem) {
-            count += item.second;
-        }
-    }
-    return count;
-}
-
-int Backpack :: getSpecificColdWeaponItemCount(const ColdWeapon& specificItem) const {
-    int count = 0;
-    for (const auto& item : ColdWeaponItems) {
-        if (item.first == specificItem) {
-            count += item.second;
-        }
-    }
-    return count;
-}
-
-// *----------------------------------------------------------------*
-
-void Backpack :: clearFoodItems() {
-    FoodItems.clear();
-}
-
-void Backpack :: clearMedicineItems() {
-    MedicineItems.clear();
-}
-
-void Backpack :: clearThrowableItems() {
-    ThrowableItems.clear();
-}
-
-void Backpack :: clearWarmWeaponItems() {
-    WarmWeaponItems.clear();
-}
-
-void Backpack :: clearColdWeaponItems() {
-    ColdWeaponItems.clear();
-}
-
-// *----------------------------------------------------------------*
-
-void Backpack :: useFoodItemCount(const Food& specificItem, int quantity) {
-    for (auto& item : FoodItems) {
-        if (item.first == specificItem) {
-            item.second -= quantity;
-            if (item.second < 0) item.second = 0;
-            break;
-        }
-    }
-}
-
-void Backpack :: useMedicineItemCount(const Medicine& specificItem, int quantity) {
-    for (auto& item : MedicineItems) {
-        if (item.first == specificItem) {
-            item.second -= quantity;
-            if (item.second < 0) item.second = 0;
-            break;
-        }
-    }
-}
-
-void Backpack :: useThrowableItemCount(const Throwable& specificItem, int quantity) {
-    for (auto& item : ThrowableItems) {
-        if (item.first == specificItem) {
-            item.second -= quantity;
-            if (item.second < 0) item.second = 0;
-            break;
+    if(!FoodItems.empty()){
+        for(auto i:FoodItems){
+            Food item=i.first;
+            cout<<"type : "<<item.getName()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n';
         }
     }
 }
@@ -433,7 +304,6 @@ bool BankAccount::withdraw(int amount) {
     }    
     else
         return false;
-        
 }
 
 // *----------------------------------------------------------------*
@@ -443,6 +313,18 @@ Items::Items(string n,int p,string t):name(n),price(p),type(t){}
 
 bool Items::operator==(const Items& other) const {
     return (name == other.name);
+}
+
+bool Items::operator<(const Items& other) const {
+        return name < other.name;
+}
+
+string Items::getName(){
+    return name;
+}
+
+string Items::getType(){
+    return type;
 }
 
 // *----------------------------------------------------------------*
@@ -465,10 +347,15 @@ void WarmWeapon::showItems(){
 
 void WarmWeapon::buy(Player& player){
     BankAccount *creditcard=player.getBankAccount();
+    Backpack *backpack=player.getBackpack();
 
-    if(creditcard->withdraw(price)){
+    if(backpack->warmWeaponExistence(*this)){
+        cout<<"This item already exist in you backpack!\n";
+    }
+
+    else if(creditcard->withdraw(price)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        backpack->addWarmWeaponItem(*this);
         cout<<"Item added to your backpack!\n";
         player.exp.increaseExp(exp);
         cout<<"EXP increased!\n";
@@ -522,10 +409,15 @@ void ColdWeapon::showItems(){
 
 void ColdWeapon::buy(Player& player){
     BankAccount *creditcard=player.getBankAccount();
+    Backpack *backpack=player.getBackpack();
 
-    if(creditcard->withdraw(price)){
+    if(backpack->coldWeaponExistence(*this)){
+        cout<<"This item already exist in you backpack!\n";
+    }
+
+    else if(creditcard->withdraw(price)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        backpack->addColdWeaponItem(*this);
         cout<<"Item added to your backpack!\n";
         player.exp.increaseExp(exp);
         cout<<"EXP increased!\n";
@@ -579,10 +471,11 @@ void Throwable::showItems(){
 
 void Throwable::buy(Player& player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
+    Backpack *backpack=player.getBackpack();
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        backpack->addThrowableItem(*this,quantity);
         cout<<"Item added to your backpack!\n";
         player.exp.increaseExp(exp*quantity);
         cout<<"EXP increased!\n";
@@ -608,13 +501,15 @@ void Throwable::Throw(Human attacker, Human attacked){
     if(static_cast<Player*>(&attacker)){
         Player *p=static_cast<Player*>(&attacker);
         p->exp.setCurrentExp(0,damage,10*twa.getCurrentSkill());
+        Backpack *b=p->getBackpack();
+        b->useThrowableItemCount(*this);
     }
     else{
         Player *p=static_cast<Player*>(&attacked);
         p->exp.setCurrentExp(damage,0,0);
+        Backpack *b=attacker.getBackpack();
+        b->useThrowableItemCount(*this);
     }
-
-    decrease_a_throwable_from_backpack;
 }
 
 ostream& operator<<(ostream& os,Throwable& obj) {
@@ -637,10 +532,11 @@ void Medicine::showItems(){
 
 void Medicine::buy(Player& player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
+    Backpack *backpack=player.getBackpack();
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        backpack->addMedicineItem(*this,quantity);
         cout<<"Item added to your backpack!\n";
     }
     else
@@ -652,9 +548,10 @@ void Medicine::addToVectors(){
     shop_items.push_back(this);
 }
 
-void Medicine::use(Player& player){
-    player.hp.increaseHealth(heal);
-    decrease_a_medicine_from_backpack;
+void Medicine::use(Human& human){
+    human.hp.increaseHealth(heal);
+    Backpack *b=human.getBackpack();
+    b->useMedicineItemCount(*this);
 }
 
 ostream& operator<<(ostream& os,Medicine& obj) {
@@ -677,10 +574,11 @@ void Food::showItems(){
 
 void Food::buy(Player& player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
+    Backpack *backpack=player.getBackpack();
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n";
-        add_to_backpack;
+        backpack->addFoodItem(*this,quantity);
         cout<<"Item added to your backpack!\n";
     }
     else
@@ -692,9 +590,10 @@ void Food::addToVectors(){
     shop_items.push_back(this);
 }
 
-void Food::use(Player& player){
-    player.stamina.increaseStamina(strength);
-    decrease_a_food_from_backpack;
+void Food::use(Human& human){
+    human.stamina.increaseStamina(strength);
+    Backpack *b=human.getBackpack();
+    b->useFoodItemCount(*this);
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
