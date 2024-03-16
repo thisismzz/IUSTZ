@@ -752,14 +752,12 @@ void ShopMenu(){
 void Show_Permanent_Items(){
     system("cls");
     int number;
-    WarmWeapon warmweapon("Wildfire Flasks", 2000, 100, 10);
-    ColdWeapon coldweapon("Ice Sword", 2500, 100, 10);
     cout << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].back" << endl;
     switch(number){
-        case 1: warmweapon.showItems();
+        case 1: WarmWeapon::showItems();
             break;
         
-        case 2: coldweapon.showItems();
+        case 2: ColdWeapon::showItems();
             break;
         
         case 3: 
@@ -769,21 +767,18 @@ void Show_Permanent_Items(){
 
 void Show_Throwable_Items(){
     system("cls");
-    Throwable throwable("Lore",1500, 200, 20);
-    throwable.showItems();
+    Throwable::showItems();
 }
 
 void Show_Consumable_Items(){
     system("cls");
     int number;
-    Medicine medicine("Maester's Tincture", 500, 15);
-    Food food("Honeyed Chicken", 800, 10);
     cout << "[1].Medicines" << endl << "[2].Foods" << endl << "[3].back" << endl;
     switch(number){
-        case 1: medicine.showItems();
+        case 1: Medicine::showItems();
             break;
         
-        case 2: food.showItems();
+        case 2: Food::showItems();
             break;
         
         case 3: 
