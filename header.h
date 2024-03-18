@@ -8,6 +8,7 @@
 #include <chrono>
 #include <conio.h> 
 #include <cstdlib>
+#include <map>
 
 using namespace std;
 // *----------------------------------------------------------------*
@@ -34,7 +35,7 @@ class Human : public Person {
     public:
         Experience exp;
         Stamina stamina;
-        Human(string n):Person(n),exp(this),backpack(??){}
+        Human(string);
         Backpack* getBackpack();
 };
 
@@ -47,7 +48,7 @@ class Player : public Human {
         string gender;
         BankAccount bankAccount;
     public:
-        Player(string n,string g,int a,int m):Human(n),age(a),gender(g),bankAccount(m){}
+        Player(string,string,int,int);
         BankAccount* getBankAccount();
 };
 
@@ -159,47 +160,28 @@ class ThrowableWeaponAbility : public Skills {
 // *----------------------------------------------------------------*
 
 class Backpack {
-    protected:
-        vector<pair<Food , int>> FoodItems;
-        vector<pair<Medicine , int>> MedicineItems;
-        vector<pair<Throwable , int>> ThrowableItems;
-        vector<pair<WarmWeapon , int>> WarmWeaponItems;
-        vector<pair<ColdWeapon , int>> ColdWeaponItems;
+    private:
+        map <Food , int> FoodItems;
+        map <Medicine , int> MedicineItems;
+        map <Throwable , int> ThrowableItems;
+        vector <WarmWeapon> WarmWeaponItems;
+        vector <ColdWeapon> ColdWeaponItems;
+        void removeFoodItem(const Food);
+        void removeMedicineItem(const Medicine);
+        void removeThrowableItem(const Throwable);
     public:
-        void addFoodItem(const Food& foodItem, int quantity);
-        void addMedicineItem(const Medicine& medicineItem, int quantity);
-        void addThrowableItem(const Throwable& throwableItem, int quantity);
-        void addWarmWeaponItem(const WarmWeapon& WarmWeaponItem);
-        void addColdWeaponItem(const ColdWeapon& ColdWeaponItem);
-
-        void removeFoodItem(const Food& foodItem);
-        void removeMedicineItem(const Medicine& medicineItem);
-        void removeThrowableItem(const Throwable& throwableItem);
-        void removeWarmWeaponItem(const WarmWeapon& WarmWeaponItem);
-        void removeColdWeaponItem(const ColdWeapon& ColdWeaponItem);
-
-        int getFoodItemsCount();
-        int getMedicineItemsCount();
-        int getThrowableItemsCount();
-        int getWarmWeaponItemsCount();
-        int getColdWeaponItemsCount();
-
-        int getSpecificFoodItemCount(const Food& specificItem) const;
-        int getSpecificMedicineItemCount(const Medicine& specificItem) const;
-        int getSpecificThrowableItemCount(const Throwable& specificItem) const;
-        int getSpecificWarmWeaponItemCount(const WarmWeapon& WarmWeaponItem) const;
-        int getSpecificColdWeaponItemCount(const ColdWeapon& ColdWeaponItem) const;
-        
-        void clearFoodItems();
-        void clearMedicineItems();
-        void clearThrowableItems();
-        void clearWarmWeaponItems();
-        void clearColdWeaponItems();
-
-        void useFoodItemCount(const Food& specificItem, int quantity);
-        void useMedicineItemCount(const Medicine& specificItem, int quantity);
-        void useThrowableItemCount(const Throwable& specificItem, int quantity);
-
+        Backpack(){}
+        void addFoodItem(const Food,int);
+        void addMedicineItem(const Medicine,int);
+        void addThrowableItem(const Throwable,int);
+        void addWarmWeaponItem(const WarmWeapon);
+        void addColdWeaponItem(const ColdWeapon);
+        bool warmWeaponExistence(const WarmWeapon);
+        bool coldWeaponExistence(const ColdWeapon);
+        void useFoodItemCount(const Food specificItem);
+        void useMedicineItemCount(const Medicine specificItem);
+        void useThrowableItemCount(const Throwable specificItem);
+        void showItems();
 };
 
 // *----------------------------------------------------------------*
@@ -228,8 +210,10 @@ class Items {
     public:
         Items(string,int,string);
         virtual void addToVectors(){}                    //add the bought item to the vector
-        virtual void use(Player&){}                      //use consumable items and increase health or stamina 
-        bool operator==(const Items& other) const;       //check equality of two object names
+        bool operator==(const Items&) const;             //check equality of two object based on names
+        bool operator<(const Items&) const;
+        string getName();
+        string getType();
 }; 
 vector <Items*> Items::shop_items;     
 
@@ -313,7 +297,7 @@ class Medicine : public Items {
         static void showItems();                     //show the available items to buy
         void buy(Player&,int);
         void addToVectors() override;
-        void use(Player&) override;
+        void use(Human&);
         friend ostream& operator<<(ostream&,Medicine&);
 };
 vector <Medicine*> Medicine::shop_items_medicine;
@@ -330,7 +314,7 @@ class Food : public Items {
         static void showItems();                     //show the available items to buy
         void buy(Player&,int);
         void addToVectors() override;
-        void use(Player&) override;
+        void use(Human&);
         friend ostream& operator<<(ostream&,Food&);
 };
 vector <Food*> Food::shop_items_food;
