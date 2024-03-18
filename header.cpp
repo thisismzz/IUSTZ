@@ -14,123 +14,6 @@ using namespace std;
 Player* player = nullptr;
 //*****************************
 
-Person::Person(string n):name(n),level(1){}
-
-void Person::updateLevel() {
-    level++;
-}
-
-int Person::getLevel() {
-    return level;
-}
-
-string Person::getName() {
-    return name;
-}
-
-int Person::getHealthPoints() {
-    return hp.getCurrentHealth();
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-Human::Human(string n,int s):Person(n),stamina(s){}
-
-Backpack* Human::getBackpack() {
-    Backpack *p=&backpack;
-    return p;
-}
-
-int Human::getStamina() {
-    return stamina.getCurrentStamina();
-}
-
-BankAccount* Player :: getBankAccount(){
-    BankAccount* p = &bankAccount;
-    return p;
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-Player::Player(string n, string g,string un, int a,int m,int s) : Human(n,s), age(a), gender(g), bankAccount(m) , username(un), exp(this){}
-Player::Player(Human & human,string g,string un,int a,int m) : Human(human.getName(), human.getStamina()), age(a), gender(g), bankAccount(m), username(un),exp(this) {}
-int Player::getAge() {
-    return age;
-}
-
-string Player::getGender() {
-    return gender;
-}
-
-int Player::getMoney() {
-    return bankAccount.getBalance();
-}
-
-int Player::getExperience() {
-    return exp.getCurrentExp();
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-humanEnemy::humanEnemy(Human& human): Human(human.getName(), human.getStamina()){}
-
-void humanEnemy::updateState() {
-    // Check if health or stamina is below half
-    if (hp.getCurrentHealth() < hp.getMaxHealth() / 2 || stamina.getCurrentStamina() < stamina.getMaximumStamina() / 2) {
-        // Use items from the shop to increase health or stamina
-        cout << name << " visits the shop to replenish health or stamina." << endl;
-        // Assume there's a method in the shop class to handle this
-        // shop.replenishHealthAndStamina(*this);
-
-    }
-
-    // Determine whether to attack or continue wandering
-    if (rand() % 100 < 70 && hp.getCurrentHealth() >= hp.getMaxHealth() / 2 && stamina.getCurrentStamina() >= stamina.getMaximumStamina() / 2) {
-        cout << name << " decides to attack!" << endl;
-        // Logic to initiate attack
-    } else {
-        cout << name << " continues wandering..." << endl;
-    }
-}
-
-void humanEnemy::takeDamage(int amount) {
-    if (hp.getCurrentHealth() <= 0) {
-        cout << name << " has been defeated!" << endl;
-    } else {
-        cout << name << " takes " << amount << " damage. Remaining health: " << hp.getCurrentHealth() << endl;
-    }
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-Zombie :: Zombie(string n) : Person(n) {}
-
-void Zombie :: takeDamage(int amount) {
-    if (hp.getCurrentHealth() <= 0) {
-        cout << name << " has been defeated!" << endl;
-    } else {
-        cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl;
-    }
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-BasicZombie ::BasicZombie(string n) : Zombie(n){}
-
-void BasicZombie ::bite() {}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-AdvZombie ::AdvZombie(string n) : Zombie(n){}
-
-void AdvZombie ::bite() {}
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -262,7 +145,6 @@ ThrowableWeaponAbility::ThrowableWeaponAbility(int n):Skills(n,n*20){}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 void Backpack :: addFoodItem(const Food foodItem, int quantity){
     if(FoodItems.find(foodItem)!=FoodItems.end()){
@@ -297,7 +179,6 @@ void Backpack :: addColdWeaponItem(const ColdWeapon coldWeaponItem){
 }
 
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 bool Backpack::warmWeaponExistence(const WarmWeapon warmWeaponItem){
     for (const auto &item : WarmWeaponItems) {
@@ -317,7 +198,6 @@ bool Backpack::coldWeaponExistence(const ColdWeapon coldWeaponItem){
     return false;
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack :: removeFoodItem(const Food foodItem) {
@@ -350,7 +230,6 @@ void Backpack :: useThrowableItemCount(const Throwable throwableItem) {
         removeThrowableItem(throwableItem);
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack::showItems(){
@@ -390,7 +269,6 @@ void Backpack::showItems(){
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 BankAccount :: BankAccount(int n){
     this->balance = n;
@@ -409,6 +287,179 @@ bool BankAccount::withdraw(int amount) {
     else
         return false;
 }
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Person::Person(string n):name(n),level(1){}
+
+void Person::updateLevel() {
+    level++;
+}
+
+int Person::getLevel() {
+    return level;
+}
+
+string Person::getName() {
+    return name;
+}
+
+int Person::getHealthPoints() {
+    return hp.getCurrentHealth();
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Human::Human(string n,int s):Person(n),stamina(s){}
+
+Backpack* Human::getBackpack() {
+    Backpack *p=&backpack;
+    return p;
+}
+
+int Human::getStamina() {
+    return stamina.getCurrentStamina();
+}
+
+BankAccount* Player :: getBankAccount(){
+    BankAccount* p = &bankAccount;
+    return p;
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Player::Player(string n, string g,string un, int a,int m,int s) : Human(n,s), age(a), gender(g), bankAccount(m) , username(un), exp(this){}
+Player::Player(Human & human,string g,string un,int a,int m) : Human(human.getName(), human.getStamina()), age(a), gender(g), bankAccount(m), username(un),exp(this) {}
+int Player::getAge() {
+    return age;
+}
+
+string Player::getGender() {
+    return gender;
+}
+
+int Player::getMoney() {
+    return bankAccount.getBalance();
+}
+
+int Player::getExperience() {
+    return exp.getCurrentExp();
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+HumanEnemy::HumanEnemy(Human& human): Human(human.getName(), human.getStamina()){}
+
+void HumanEnemy::updateState() {
+    // Check if health or stamina is below half
+    if (hp.getCurrentHealth() < hp.getMaxHealth() / 2 || stamina.getCurrentStamina() < stamina.getMaximumStamina() / 2) {
+        // Use items from the shop to increase health or stamina
+        cout << name << " visits the shop to replenish health or stamina." << endl;
+        // Assume there's a method in the shop class to handle this
+        // shop.replenishHealthAndStamina(*this);
+
+    }
+
+    // Determine whether to attack or continue wandering
+    if (rand() % 100 < 70 && hp.getCurrentHealth() >= hp.getMaxHealth() / 2 && stamina.getCurrentStamina() >= stamina.getMaximumStamina() / 2) {
+        cout << name << " decides to attack!" << endl;
+        // Logic to initiate attack
+    } else {
+        cout << name << " continues wandering..." << endl;
+    }
+}
+
+void HumanEnemy::takeDamage(int amount) {
+    if (hp.getCurrentHealth() <= 0) {
+        cout << name << " has been defeated!" << endl;
+    } else {
+        cout << name << " takes " << amount << " damage. Remaining health: " << hp.getCurrentHealth() << endl;
+    }
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Zombie :: Zombie(string n) : Person(n) {}
+
+void Zombie :: takeDamage(int amount) {
+    if (hp.getCurrentHealth() <= 0) {
+        cout << name << " has been defeated!" << endl;
+    } else {
+        cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl;
+    }
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+BasicZombie ::BasicZombie(string n) : Zombie(n){}
+
+void BasicZombie ::bite() {}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+AdvZombie ::AdvZombie(string n) : Zombie(n){}
+
+void AdvZombie ::bite() {}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Human* Factory::createCharacter(const string& type) {
+    if (type == "JonSnow") {
+        return createJonSnow(type);
+    }
+    else if (type == "JaimeLannister") {
+        return createJaimeLannister(type);
+    }
+    else if (type == "Daenerys") {
+        return createDaenerys(type);
+    }
+    else if (type == "Stannis") {
+        return createStannis(type);
+    }
+    else if (type == "Joffrey") {
+        return createJoffrey(type);
+    }
+    else if (type == "TheonGreyjoy") {
+        return createTheonGreyjoy(type);
+    }
+    else {
+        return nullptr;
+    }
+}
+
+Human* Factory::createJonSnow(const string& type) {
+    return new Human(type, /*stamina*/ 100);
+}
+
+Human* Factory::createJaimeLannister(const string& type) {
+    return new Human(type, /*stamina*/ 70);
+}
+
+Human* Factory::createDaenerys(const string& type) {
+    return new Human(type, /*stamina*/ 110);
+}
+
+Human* Factory::createStannis(const string& type) {
+    return new Human(type, /*stamina*/ 90);
+}
+
+Human* Factory::createJoffrey(const string& type) {
+    return new Human(type, /*stamina*/ 75);
+}
+
+Human* Factory::createTheonGreyjoy(const string& type) {
+    return new Human(type, /*stamina*/ 85);
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -446,7 +497,7 @@ WarmWeapon::WarmWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Warm Wea
 void WarmWeapon::showItems(){
     int n=1;
     for(WarmWeapon i : shop_items_permanent_warmweapon){
-        cout << n <<") " << i << endl;
+        cout << "[" << n <<"]. " << i << endl;
         n++;
     }
 }
@@ -489,8 +540,8 @@ void WarmWeapon::Attack(Human attacker, Person attacked){
         Player *p=static_cast<Player*>(&attacker);
         p->exp.setCurrentExp(0,damage,10*wwa.getCurrentSkill());
 
-        if(static_cast<humanEnemy*>(&attacked)){
-            humanEnemy *he=static_cast<humanEnemy*>(&attacked);
+        if(static_cast<HumanEnemy*>(&attacked)){
+            HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
             he->takeDamage(damage);
         }
 
@@ -506,7 +557,7 @@ void WarmWeapon::Attack(Human attacker, Person attacked){
 }
 
 ostream& operator<<(ostream &os,WarmWeapon &obj){
-    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.wwa.getCurrentSkill()<<"\t(+"<<obj.exp<<"EXP)"<<"\tharm : "<<obj.harm<<"\tprice : "<<obj.price<<"$";
+    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.wwa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
     return os;
 }
 
@@ -520,7 +571,7 @@ ColdWeapon::ColdWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Cold Wea
 void ColdWeapon::showItems(){
     int n=1;
     for (ColdWeapon i : shop_items_permanent_coldweapon){
-        cout << n <<") " << i << endl;
+        cout << "[" << n <<"]. " << i << endl;
         n++;
     }
 }
@@ -563,8 +614,8 @@ void ColdWeapon::Attack(Human attacker, Person attacked){
         Player *p=static_cast<Player*>(&attacker);
         p->exp.setCurrentExp(0,damage,10*cwa.getCurrentSkill());
 
-        if(static_cast<humanEnemy*>(&attacked)){
-            humanEnemy *he=static_cast<humanEnemy*>(&attacked);
+        if(static_cast<HumanEnemy*>(&attacked)){
+            HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
             he->takeDamage(damage);
         }
 
@@ -580,7 +631,7 @@ void ColdWeapon::Attack(Human attacker, Person attacked){
 }
 
 ostream& operator<<(ostream& os,ColdWeapon& obj){
-    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.cwa.getCurrentSkill()<<"(+"<<obj.exp<<"EXP)"<<"\tharm : "<<obj.harm<<"\tprice : "<<obj.price<<"$";
+    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.cwa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
     return os;
 }
 
@@ -594,7 +645,7 @@ Throwable::Throwable(string n,int p,int x,int e,int h):Items(n,p,"Throwable Weap
 void Throwable::showItems(){
     int n=1;
     for (Throwable i : shop_items_throwable){
-        cout << n <<") " << i << endl;
+        cout << "[" << n <<"]. " << i << endl;
         n++;
     }
 }
@@ -643,7 +694,7 @@ void Throwable::Throw(Human attacker, Human attacked){
 }
 
 ostream& operator<<(ostream& os,Throwable& obj) {
-    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tlvl "<<obj.twa.getCurrentSkill()<<"(+"<<obj.exp<<"EXP)"<<"\tharm : "<<obj.harm<<"\tprice : "<<obj.price<<"$ (each)";
+    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
     return os;
 }
 
@@ -657,7 +708,7 @@ Medicine::Medicine(string n,int p,int h):Items(n,p,"Medicine"),heal(h){
 void Medicine::showItems(){
     int n=1;
     for (Medicine i : shop_items_medicine){
-        cout << n << ") "<< i << endl;
+        cout << "[" << n <<"]. " << i << endl;
         n++;
     }
 }
@@ -687,7 +738,7 @@ void Medicine::use(Human& human){
 }
 
 ostream& operator<<(ostream& os,Medicine& obj) {
-    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\theal : +"<<obj.heal<<"HP"<<"\tprice : "<<obj.price<<"$ (each)";
+    os << obj.name << "(+" << obj.heal << "HP): " << obj.price << "$ (each)";
     return os;
 }
 
@@ -701,7 +752,7 @@ Food::Food(string n,int p,int s):Items(n,p,"Food"),strength(s){
 void Food::showItems(){
     int n=1;
     for (Food i : shop_items_food){
-        cout << n <<") " << i << endl;
+        cout << "[" << n <<"]. " << i << endl;
         n++;
     }
 }
@@ -731,10 +782,11 @@ void Food::use(Human& human){
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
-    os<<"name : "<<obj.name<<"\ttype : "<<obj.type<<"\tstrength : +"<<obj.strength<<"STM"<<"\tprice : "<<obj.price<<"$ (each)";
-    return os;
+    os << obj.name << "(+" << obj.strength << "STM): " << obj.price << "$ (each)";
+    return os;;
 }
 
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -749,12 +801,74 @@ void printWithDelay(string text){
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+void Menu() {
+    int age;
+    string gender,username;
+    // just getting user info :)))
+    //system("cls");
+    cout << "Please Enter your age , gender and name : ";
+    cin >> age >> gender >> username;
+    cout << '\n';
+    vector<string> characterTypes = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
+    int chosenIndex;
+    int money[6]={1000, 1800, 1200, 1300, 2000, 1100};
+    vector<HumanEnemy*> zombies;
+
+    // Show all the different options a user has for the characters
+    //system("cls");
+    Human *character;
+    cout << "Choose a character index: " << endl;
+    for (int i = 0; i < characterTypes.size(); i++) {
+        character = Factory::createCharacter(characterTypes[i]);
+        cout << i+1 << ". " << characterTypes[i] << endl;
+        cout << "   Name: " << character->getName() << endl;
+        cout << "   Stamina: " << character->getStamina() << endl;
+        cout << "   Money: " << money[i] << endl;
+    }
+
+    // Get the user's choice
+    cin >> chosenIndex;
+    chosenIndex--;  // Adjust for 0-based indexing
+
+    // Create the characters
+    for (int i = 0; i < characterTypes.size(); i++) {
+        Human* character = Factory::createCharacter(characterTypes[i]);
+        if (i == chosenIndex) {
+            // Turn the chosen character into a Player object
+            player = new Player(*character,gender,username,age,money[i]);
+        } else {
+            // Turn the other characters into SmartZombie objects
+            zombies.push_back(new HumanEnemy(*character));
+        }
+        delete character;  // Delete the temporary character
+    }
+
+    // // Show the details of the Player
+    // cout << "Player details: " << endl;
+    // cout << "Name: " << player->getName() << endl;
+    // cout << "Level: " << player->getLevel() << endl;
+    // // Add more details as needed...
+
+    // // Show the details of the SmartZombies
+    // for (const auto& zombie : zombies) {
+    //     cout << "Zombie details: " << endl;
+    //     cout << "Name: " << zombie->getName() << endl;
+    //     cout << "Level: " << zombie->getLevel() << endl;
+    //     // Add more details as needed...
+    // }
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 void ShopMenu(){
     while(true){
         //system("cls");
         int number;
-        cout << "You enter the shop." << endl << "What do you want to buy?\t\t" <<"your money : "<< player->getMoney() << endl 
+        cout << "You enter the shop." << endl << "What do you want to buy?" << "(your money : " << player->getMoney() << ")" << endl 
         << "[1].Permanent Items" << endl << "[2].Throwable Items" << endl << "[3].Consumable Items" << endl << "[4].Exit" << endl;
         cin >> number;
         switch(number){
@@ -772,7 +886,7 @@ void ShopMenu(){
                 return;
 
             default: 
-            cout << "Wrong number!" << endl << "Press enter to continue";
+            cout << "Wrong number!" << endl << "Press enter to continue" << endl;
             getch();
                 break;
         }
@@ -788,21 +902,19 @@ void Show_Permanent_Items(){
     cin>>number;
     switch(number){
         case 1: 
-            cout << "You go to take a look at the WarmWeapons:"<<"\t\tyour money : "<<player->getMoney() << endl;
+            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
             WarmWeapon::showItems();
-            cout<<"which one do you want to buy?     ";
-            cout<<"\n";
-            cin>>item;
+            cout << "which one do you want to buy?" << endl;
+            cin >> item;
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
             wweapon->buy(*player);
             break;
         
         case 2:
-            cout << "You go to take a look at the ColdWeapons:" <<"\t\tyour money : "<<player->getMoney()<< endl;
+            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
             ColdWeapon::showItems(); 
-            cout<<"which one do you want to buy?     ";
-            cin>>item;
-            cout<<"\n";
+            cout << "which one do you want to buy?" << endl;
+            cin >> item;
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
             cweapon->buy(*player);
             break;
@@ -816,13 +928,12 @@ void Show_Throwable_Items(){
     // system("cls");
     int item,quantity;
     Throwable *tweapon;
-    cout << "You go to take a look at the Throwable Items:" <<"\t\tyour money : "<<player->getMoney()<< endl;
+    cout << "You go to take a look at the Throwable Items:" << "(your money : " << player->getMoney() << ")" << endl;
     Throwable::showItems();
-    cout<<"which one do you want to buy?     ";
-    cin>>item;
-    cout<<"\nHow many?     ";
-    cin>>quantity;
-    cout<<"\n";
+    cout<<"which one do you want to buy?" << endl;
+    cin >> item;
+    cout << "How many?" << endl;
+    cin >> quantity;
     tweapon=new Throwable(Throwable::shop_items_throwable.at(item-1));
     tweapon->buy(*player,quantity);
 }
@@ -836,23 +947,23 @@ void Show_Consumable_Items(){
     cin>>number;
     switch(number){
         case 1: 
-            cout << "You go to take a look at the Medicines:" <<"\t\tyour money : "<<player->getMoney()<< endl;
+            cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl;
             Medicine::showItems();
-            cout<<"which one do you want to buy?     ";
-            cin>>item;
-            cout<<"\nHow many?     ";
-            cin>>quantity;
+            cout << "which one do you want to buy?" << endl;
+            cin >> item;
+            cout << "How many?" << endl;
+            cin >> quantity;
             drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
             drug->buy(*player,quantity);
             break;
             
         case 2:
-            cout << "You go to take a look at the Foods:"<<"\t\tyour money : "<<player->getMoney() << endl;
+            cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl;
             Food::showItems();
-            cout<<"which one do you want to buy?     ";
-            cin>>item;
-            cout<<"\nHow many?     ";
-            cin>>quantity;
+            cout << "which one do you want to buy?" << endl;
+            cin >> item;
+            cout << "How many?" << endl;
+            cin >> quantity;
             food=new Food(Food::shop_items_food.at(item-1));
             food->buy(*player,quantity);
             break;
@@ -929,110 +1040,3 @@ void createFoods() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-
-Human* Factory::createCharacter(const string& type) {
-    if (type == "JonSnow") {
-        return createJonSnow(type);
-    }
-    else if (type == "JaimeLannister") {
-        return createJaimeLannister(type);
-    }
-    else if (type == "Daenerys") {
-        return createDaenerys(type);
-    }
-    else if (type == "Stannis") {
-        return createStannis(type);
-    }
-    else if (type == "Joffrey") {
-        return createJoffrey(type);
-    }
-    else if (type == "TheonGreyjoy") {
-        return createTheonGreyjoy(type);
-    }
-    else {
-        return nullptr;
-    }
-}
-
-Human* Factory::createJonSnow(const string& type) {
-    return new Human(type, /*stamina*/ 100);
-}
-
-Human* Factory::createJaimeLannister(const string& type) {
-    return new Human(type, /*stamina*/ 70);
-}
-
-Human* Factory::createDaenerys(const string& type) {
-    return new Human(type, /*stamina*/ 110);
-}
-
-Human* Factory::createStannis(const string& type) {
-    return new Human(type, /*stamina*/ 90);
-}
-
-Human* Factory::createJoffrey(const string& type) {
-    return new Human(type, /*stamina*/ 75);
-}
-
-Human* Factory::createTheonGreyjoy(const string& type) {
-    return new Human(type, /*stamina*/ 85);
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-void Menu() {
-    int age;
-    string gender,username;
-    // just getting user info :)))
-    cout<<"Enter your age , gender , name : ";
-    cin>>age>>gender>>username;
-    cout<<'\n';
-    vector<string> characterTypes = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
-    int chosenIndex;
-    int money[6]={1000,1800,1200,1300,2000,1100};
-    vector<humanEnemy*> zombies;
-
-    // Show all the different options a user has for the characters
-    Human *character;
-    cout << "Choose a character index: " << endl;
-    for (int i = 0; i < characterTypes.size(); i++) {
-        character = Factory::createCharacter(characterTypes[i]);
-        cout << i+1 << ". " << characterTypes[i] << endl;
-        cout << "   Name: " << character->getName() << endl;
-        cout << "   Stamina: " << character->getStamina() << endl;
-        cout << "   Money: " << money[i] << endl;
-    }
-
-    // Get the user's choice
-    cin >> chosenIndex;
-    chosenIndex--;  // Adjust for 0-based indexing
-
-    // Create the characters
-    for (int i = 0; i < characterTypes.size(); i++) {
-        Human* character = Factory::createCharacter(characterTypes[i]);
-        if (i == chosenIndex) {
-            // Turn the chosen character into a Player object
-            player = new Player(*character,gender,username,age,money[i]);
-        } else {
-            // Turn the other characters into SmartZombie objects
-            zombies.push_back(new humanEnemy(*character));
-        }
-        delete character;  // Delete the temporary character
-    }
-
-    // // Show the details of the Player
-    // cout << "Player details: " << endl;
-    // cout << "Name: " << player->getName() << endl;
-    // cout << "Level: " << player->getLevel() << endl;
-    // // Add more details as needed...
-
-    // // Show the details of the SmartZombies
-    // for (const auto& zombie : zombies) {
-    //     cout << "Zombie details: " << endl;
-    //     cout << "Name: " << zombie->getName() << endl;
-    //     cout << "Level: " << zombie->getLevel() << endl;
-    //     // Add more details as needed...
-    // }
-}

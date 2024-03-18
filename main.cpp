@@ -21,6 +21,7 @@ int main(){
     Menu();
     ShopMenu();
 
+    cout << "Your backpack:" << endl;
     Backpack *bp=player->getBackpack();
     bp->showItems();
 }
