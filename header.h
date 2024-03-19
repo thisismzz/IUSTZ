@@ -283,7 +283,6 @@ class Items {
         static vector <Items> shop_items;
     public:
         Items(string,int,string);
-        Items(){}
         virtual void addToVectors(){}                    //add the bought item to the vector
         bool operator==(const Items&) const;             //check equality of two object based on names
         bool operator<(const Items&) const;
