@@ -18,10 +18,6 @@ int main(){
     createThrowableItems();
     createMedicines();
     createFoods();
-    Menu();
-    ShopMenu();
 
-    cout << "Your backpack:" << endl;
-    Backpack *bp=player->getBackpack();
-    bp->showItems();
+    Menu();
 }
