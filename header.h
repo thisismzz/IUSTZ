@@ -39,31 +39,31 @@ class Food;
 // *----------------------------------------------------------------*
 
 class Health {
-private :
+private:
     int currentHealth;
     int maxHealth;
-public :
+public:
     Health();
     int getCurrentHealth();
     int getMaxHealth();
-    void decreaseHealth(int damage);
-    void increaseHealth (int amount);
+    void decreaseHealth(int);
+    void increaseHealth(int);
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class Stamina {
-private :
-    int currentStamina;
-    int maximum;
-public :
-    Stamina(int);
-    void decreaseStamina(int amount);
-    void increaseStamina(int amount);
-    void updateMaximumStamina();
-    int getCurrentStamina();
-    int getMaximumStamina();
+    private:
+        int currentStamina;
+        int maximum;
+    public:
+        Stamina(int);
+        void decreaseStamina(int);
+        void increaseStamina(int);
+        void updateMaximumStamina();
+        int getCurrentStamina();
+        int getMaximumStamina();
 };
 
 // *----------------------------------------------------------------*
@@ -77,7 +77,7 @@ class Experience {
     public:
         Experience(Player*);
         void updateMaximum();
-        void setCurrentExp(int,int,int);
+        void setCurrentExp(int, int, int);
         void increaseExp(int);
         int getCurrentExp();
 };
@@ -91,7 +91,7 @@ class Skills {
         int currentSkill;
         int upgradePrice;
     public:
-        Skills(int,int);
+        Skills(int, int);
         void upgradeSkill(BankAccount*);
         void setUpgradePrice();
         int getCurrentSkill();
@@ -184,7 +184,7 @@ class Human : public Person {
         Backpack backpack;
     public:
         Stamina stamina;
-        Human(string,int);
+        Human(string, int);
         Backpack* getBackpack();
         int getStamina();
 };
@@ -200,8 +200,8 @@ class Player : public Human {
         BankAccount bankAccount;
     public:
         Experience exp;
-        Player(string, string,string, int ,int ,int );
-        Player(Human &,string ,string ,int ,int );
+        Player(string, string, string, int, int, int);
+        Player(Human&, string, string, int, int);
         BankAccount* getBankAccount();
         int getAge();  // Getter for age
         string getGender();  // Getter for gender
@@ -298,10 +298,10 @@ class Permanent : public Items {
         int harm;
         int exp;
         static vector <Permanent> shop_items_permanent;
-        Permanent(string,int,string,int,int);
+        Permanent(string, int, string, int, int);
     public:       
         virtual void buy(Player&){}                      //buy item and add it into player's backpack
-        virtual void Attack(Human,Person){}               //calculate the damage of attacker and reduce it from attacked health
+        virtual void Attack(Human, Person){}               //calculate the damage of attacker and reduce it from attacked health
 };
 vector <Permanent> Permanent::shop_items_permanent;
 
@@ -317,8 +317,8 @@ class WarmWeapon : public Permanent {
         static void showItems();                     //show the available items to buy
         void buy(Player&) override;
         void addToVectors() override;
-        void Attack(Human,Person) override;
-        friend ostream& operator<<(ostream&,WarmWeapon&);
+        void Attack(Human, Person) override;
+        friend ostream& operator<<(ostream&, WarmWeapon&);
         friend void Show_Permanent_Items();
         // Add a public method to get the shop items
         static vector<WarmWeapon>& get_shop_items_permanent_warmweapon();
@@ -337,8 +337,8 @@ class ColdWeapon : public Permanent {
         static void showItems();                     //show the available items to buy
         void buy(Player&) override;
         void addToVectors() override;
-        void Attack(Human,Person) override;
-        friend ostream& operator<<(ostream&,ColdWeapon&);
+        void Attack(Human, Person) override;
+        friend ostream& operator<<(ostream&, ColdWeapon&);
         friend void Show_Permanent_Items();
         // Add a public method to get the shop items
         static vector<ColdWeapon>& get_shop_items_permanent_coldweapon();
@@ -357,10 +357,10 @@ class Throwable : public Items {
     public:
         Throwable(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player&,int);
+        void buy(Player&, int);
         void addToVectors() override;
-        void Throw(Human,Human);
-        friend ostream& operator<<(ostream&,Throwable&);
+        void Throw(Human, Human);
+        friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
         // Add a public method to get the shop items
         static vector<Throwable>& get_shop_items_throwable();
@@ -377,7 +377,7 @@ class Medicine : public Items {
     public:
         Medicine(string,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player&,int);
+        void buy(Player&, int);
         void addToVectors() override;
         void use(Human&);
         friend ostream& operator<<(ostream&,Medicine&);
@@ -395,12 +395,12 @@ class Food : public Items {
         int strength;
         static vector <Food> shop_items_food;
     public:
-        Food(string,int,int);
+        Food(string, int, int);
         static void showItems();                     //show the available items to buy
-        void buy(Player&,int);
+        void buy(Player&, int);
         void addToVectors() override;
         void use(Human&);
-        friend ostream& operator<<(ostream&,Food&);
+        friend ostream& operator<<(ostream&, Food&);
         friend void Show_Consumable_Items();
         // Add a public method to get the shop items
         static vector<Food>& get_shop_items_food();
@@ -412,6 +412,9 @@ vector <Food> Food::shop_items_food;
 // *----------------------------------------------------------------*
 
 void printWithDelay(string);
+void getUserInfo(int&, string&, string&);
+void showPlayerInfo();
+void playground();
 void Menu();
 void ShopMenu();
 void Show_Permanent_Items();
