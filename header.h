@@ -321,8 +321,6 @@ class WarmWeapon : public Permanent {
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, WarmWeapon&);
         friend void Show_Permanent_Items();
-        // Add a public method to get the shop items
-        static vector<WarmWeapon>& get_shop_items_permanent_warmweapon();
 };
 vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
@@ -341,8 +339,6 @@ class ColdWeapon : public Permanent {
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, ColdWeapon&);
         friend void Show_Permanent_Items();
-        // Add a public method to get the shop items
-        static vector<ColdWeapon>& get_shop_items_permanent_coldweapon();
 };
 vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
 
@@ -363,8 +359,6 @@ class Throwable : public Items {
         void Throw(Human, Human);
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
-        // Add a public method to get the shop items
-        static vector<Throwable>& get_shop_items_throwable();
 };
 vector <Throwable> Throwable::shop_items_throwable;
 
@@ -383,8 +377,6 @@ class Medicine : public Items {
         void use(Human&);
         friend ostream& operator<<(ostream&,Medicine&);
         friend void Show_Consumable_Items();
-        // Add a public method to get the shop items
-        static vector<Medicine>& get_shop_items_medicine();
 };
 vector <Medicine> Medicine::shop_items_medicine;
 
@@ -403,8 +395,6 @@ class Food : public Items {
         void use(Human&);
         friend ostream& operator<<(ostream&, Food&);
         friend void Show_Consumable_Items();
-        // Add a public method to get the shop items
-        static vector<Food>& get_shop_items_food();
 };
 vector <Food> Food::shop_items_food;
 

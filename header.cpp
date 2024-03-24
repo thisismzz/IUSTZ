@@ -937,11 +937,11 @@ void Menu() {
             // Add items to the zombie's backpack
             Backpack *bp = zombie->getBackpack();
             bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
-            bp->addColdWeaponItem(ColdWeapon::get_shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
+            bp->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
             for (int j = 0; j < 100; j++) {
-                bp->addThrowableItem(Throwable::get_shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
-                bp->addFoodItem(Food::get_shop_items_food.at(rand() % Food::get_shop_items_food.size()), 1);
-                bp->addMedicineItem(Medicine::get_shop_items_medicine.at(rand() % Medicine::get_shop_items_medicine.size()), 1);
+                bp->addThrowableItem(Throwable::shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
+                bp->addFoodItem(Food::shop_items_food.at(rand() % Food::get_shop_items_food.size()), 1);
+                bp->addMedicineItem(Medicine::shop_items_medicine.at(rand() % Medicine::get_shop_items_medicine.size()), 1);
             }
         }
         delete character;  // Delete the temporary character
