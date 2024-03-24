@@ -409,8 +409,8 @@ void Zombie::takeDamage(int amount) {
 BasicZombie::BasicZombie(string n) : Zombie(n){} // Constructor that initializes name from a Zombie object
 
 void BasicZombie::bite(Player& player ,int damage) {
-    cout << "zombie bites " << player.getname <<" for " << damage << " damage!" << endl ;
-    player.decreaseHealth(damage);
+    cout << "zombie bites " << player.getName() <<" for " << damage << " damage!" << endl ;
+    player.hp.decreaseHealth(damage);
 } // Method for a basic zombie to bite
 
 // *----------------------------------------------------------------*
