@@ -568,10 +568,6 @@ void WarmWeapon::Attack(Human attacker, Person attacked){
     }
 }
 
-vector<WarmWeapon>& WarmWeapon::get_shop_items_permanent_warmweapon() {
-    return shop_items_permanent_warmweapon;
-}
-
 ostream& operator<<(ostream &os,WarmWeapon &obj){
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.wwa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
     return os; // Prints the warm weapon's details
@@ -646,10 +642,6 @@ void ColdWeapon::Attack(Human attacker, Person attacked){
     }
 }
 
-vector<ColdWeapon>& ColdWeapon::get_shop_items_permanent_coldweapon() {
-    return shop_items_permanent_coldweapon;
-}
-
 ostream& operator<<(ostream& os,ColdWeapon& obj){
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.cwa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
     return os; // Prints the cold weapon's details
@@ -714,10 +706,6 @@ void Throwable::Throw(Human attacker, Human attacked){
     }
 }
 
-vector<Throwable>& Throwable::get_shop_items_throwable() {
-    return shop_items_throwable;
-}
-
 ostream& operator<<(ostream& os,Throwable& obj) {
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
     return os; // Prints the throwable weapon's details
@@ -762,10 +750,6 @@ void Medicine::use(Human& human){
     b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
 }
 
-vector<Medicine>& Medicine::get_shop_items_medicine() {
-    return shop_items_medicine;
-}
-
 ostream& operator<<(ostream& os,Medicine& obj) {
     os << obj.name << "(+" << obj.heal << "HP): " << obj.price << "$ (each)";
     return os; // Prints the medicine's details
@@ -808,10 +792,6 @@ void Food::use(Human& human){
     human.stamina.increaseStamina(strength); // Increases the human's stamina
     Backpack *b=human.getBackpack();
     b->useFoodItemCount(*this); // Uses a food item from the human's backpack
-}
-
-vector<Food>& Food::get_shop_items_food() {
-    return shop_items_food;
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
@@ -940,8 +920,8 @@ void Menu() {
             bp->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
             for (int j = 0; j < 100; j++) {
                 bp->addThrowableItem(Throwable::shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
-                bp->addFoodItem(Food::shop_items_food.at(rand() % Food::get_shop_items_food.size()), 1);
-                bp->addMedicineItem(Medicine::shop_items_medicine.at(rand() % Medicine::get_shop_items_medicine.size()), 1);
+                bp->addFoodItem(Food::shop_items_food.at(rand() % Food::shop_items_food.size()), 1);
+                bp->addMedicineItem(Medicine::shop_items_medicine.at(rand() % Medicine::shop_items_medicine.size()), 1);
             }
         }
         delete character;  // Delete the temporary character

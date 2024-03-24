@@ -320,6 +320,7 @@ class WarmWeapon : public Permanent {
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, WarmWeapon&);
         friend void Show_Permanent_Items();
+        friend void Menu();
 };
 vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
@@ -338,6 +339,7 @@ class ColdWeapon : public Permanent {
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, ColdWeapon&);
         friend void Show_Permanent_Items();
+        friend void Menu();
 };
 vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
 
@@ -358,6 +360,7 @@ class Throwable : public Items {
         void Throw(Human, Human);
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
+        friend void Menu();
 };
 vector <Throwable> Throwable::shop_items_throwable;
 
@@ -376,6 +379,7 @@ class Medicine : public Items {
         void use(Human&);
         friend ostream& operator<<(ostream&,Medicine&);
         friend void Show_Consumable_Items();
+        friend void Menu();
 };
 vector <Medicine> Medicine::shop_items_medicine;
 
@@ -394,6 +398,7 @@ class Food : public Items {
         void use(Human&);
         friend ostream& operator<<(ostream&, Food&);
         friend void Show_Consumable_Items();
+        friend void Menu();
 };
 vector <Food> Food::shop_items_food;
 
