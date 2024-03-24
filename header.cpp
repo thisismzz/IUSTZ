@@ -828,6 +828,7 @@ void print_with_delay(string text, int delay=4) {
 }
 
 void getUserInfo(int& age , string& gender , string& username) {
+    system("cls");
     cout << "Please Enter your Name : ";
     cin >> username;
     cout << "Please Enter your Age : ";
@@ -923,19 +924,21 @@ void Menu() {
         if (i == chosenIndex) {
             // Turn the chosen character into a Player object
             player = new Player(*character,gender,username,age,money[i]);
-        } else {
+        } 
+        else {
             // Turn the other characters into SmartZombie objects
             HumanEnemy* zombie = new HumanEnemy(*character);
             zombies.push_back(zombie);
 
             // Add items to the zombie's backpack
-            // zombie->getBackpack()->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon[rand() % WarmWeapon::shop_items_permanent_warmweapon.size()]);
-            // zombie->getBackpack()->addColdWeaponItem(ColdWeapon::get_shop_items_permanent_coldweapon[rand() % ColdWeapon::shop_items_permanent_coldweapon.size()]);
-            // for (int j = 0; j < 100; j++) {
-            //     zombie->getBackpack()->addThrowableItem(Throwable::get_shop_items_throwable[rand() % Throwable::shop_items_throwable.size()], 1);
-            //     zombie->getBackpack()->addFoodItem(Food::get_shop_items_food[rand() % Food::get_shop_items_food.size()], 1);
-            //     zombie->getBackpack()->addMedicineItem(Medicine::get_shop_items_medicine[rand() % Medicine::get_shop_items_medicine.size()], 1);
-            // }
+            Backpack *bp = zombie->getBackpack();
+            bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
+            bp->addColdWeaponItem(ColdWeapon::get_shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
+            for (int j = 0; j < 100; j++) {
+                bp->addThrowableItem(Throwable::get_shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
+                bp->addFoodItem(Food::get_shop_items_food.at(rand() % Food::get_shop_items_food.size()), 1);
+                bp->addMedicineItem(Medicine::get_shop_items_medicine.at(rand() % Medicine::get_shop_items_medicine.size()), 1);
+            }
         }
         delete character;  // Delete the temporary character
     }
@@ -957,6 +960,7 @@ void Menu() {
     // while (!_kbhit());  // Wait for a key press
     getch();
     system("cls");
+    
     // *----------------------------------------------------------------*
     // *----------------------------------------------------------------*
     // *----------------------------------------------------------------*

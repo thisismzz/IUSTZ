@@ -413,6 +413,9 @@ vector <Food> Food::shop_items_food;
 // *----------------------------------------------------------------*
 
 void printWithDelay(string);
+void getUserInfo(int& ,string& ,string&);
+void showPlayerInfo();
+void playground();
 void Menu();
 void ShopMenu();
 void Show_Permanent_Items();
