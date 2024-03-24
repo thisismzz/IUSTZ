@@ -963,7 +963,7 @@ void Menu() {
     // while (!_kbhit());  // Wait for a key press
     getch();
     system("cls");
-    
+
     // *----------------------------------------------------------------*
     // *----------------------------------------------------------------*
     // *----------------------------------------------------------------*
@@ -1151,39 +1151,39 @@ void createColdWeapons() {
 
 void createThrowableItems() {
     // Creating throwable items with their respective attributes
-    Throwable bomb("Firebomb", 250, 2, 16, 15);
-    Throwable grenade("Ice Grenade", 220, 3, 12, 17);
-    Throwable dart("Poison Dart", 160, 1, 18, 20);
-    Throwable rock("Rock", 130, 3, 14, 23);
-    Throwable knife("Throwing Knife", 100, 2, 30, 10);
+    Throwable bomb("Firebomb", 2500, 2, 16, 15);
+    Throwable grenade("Ice Grenade", 2200, 3, 12, 17);
+    Throwable dart("Poison Dart", 1600, 1, 18, 20);
+    Throwable rock("Rock", 1300, 3, 14, 23);
+    Throwable knife("Throwing Knife", 1000, 2, 30, 10);
 }
 
 void createMedicines() {
     // Creating medicines with their respective attributes
-    Medicine milkOfThePoppy("Milk of the Poppy", 120, 20);
-    Medicine essenceOfNightshade("Essence of Nightshade", 110, 18);
-    Medicine dreamwine("Dreamwine", 100, 15);
-    Medicine sourRed("Sour Red", 130, 22);
-    Medicine sweetsleep("Sweetsleep", 150, 25);
-    Medicine moonTea("Moon Tea", 105, 15);
-    Medicine weirwoodPaste("Weirwood Paste", 125, 18);
-    Medicine firemilk("Firemilk", 140, 22);
-    Medicine greyscaleCure("Greyscale Cure", 180, 30);
-    Medicine heartsbane("Heartsbane", 170, 28);
+    Medicine milkOfThePoppy("Milk of the Poppy", 1200, 20);
+    Medicine essenceOfNightshade("Essence of Nightshade", 1100, 18);
+    Medicine dreamwine("Dreamwine", 1000, 15);
+    Medicine sourRed("Sour Red", 1300, 22);
+    Medicine sweetsleep("Sweetsleep", 1500, 25);
+    Medicine moonTea("Moon Tea", 1050, 15);
+    Medicine weirwoodPaste("Weirwood Paste", 1250, 18);
+    Medicine firemilk("Firemilk", 1400, 22);
+    Medicine greyscaleCure("Greyscale Cure", 1800, 30);
+    Medicine heartsbane("Heartsbane", 1700, 28);
 }
 
 void createFoods() {
     // Creating foods with their respective attributes
-    Food roastPork("Roast Pork", 120, 25);
-    Food lemonCakes("Lemon Cakes", 110, 23);
-    Food honeyedChicken("Honeyed Chicken", 100, 20);
-    Food beefAndBarleyStew("Beef and Barley Stew", 130, 26);
-    Food blackBread("Black Bread", 150, 28);
-    Food fishPie("Fish Pie", 105, 18);
-    Food lemonWater("Lemon Water", 125, 20);
-    Food mulledWine("Mulled Wine", 140, 23);
-    Food venisonStew("Venison Stew", 180, 30);
-    Food honeycakes("Honeycakes", 170, 28);
+    Food roastPork("Roast Pork", 1200, 25);
+    Food lemonCakes("Lemon Cakes", 1100, 23);
+    Food honeyedChicken("Honeyed Chicken", 1000, 20);
+    Food beefAndBarleyStew("Beef and Barley Stew", 1300, 26);
+    Food blackBread("Black Bread", 1500, 28);
+    Food fishPie("Fish Pie", 1050, 18);
+    Food lemonWater("Lemon Water", 1250, 20);
+    Food mulledWine("Mulled Wine", 1400, 23);
+    Food venisonStew("Venison Stew", 1800, 30);
+    Food honeycakes("Honeycakes", 1700, 28);
 }
 
 // *----------------------------------------------------------------*
