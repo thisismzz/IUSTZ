@@ -228,7 +228,6 @@ class HumanEnemy : public Human {
 class Zombie : public Person {
     public:
         Zombie(string);
-        virtual void bite(){}
         void takeDamage(int);
 };
 
@@ -238,7 +237,7 @@ class Zombie : public Person {
 class BasicZombie : public Zombie {
     public:
         BasicZombie(string);
-        void bite() override;
+        void bite(Player& player ,int damage);
 };
 
 // *----------------------------------------------------------------*
@@ -247,7 +246,7 @@ class BasicZombie : public Zombie {
 class AdvZombie : public Zombie {
     public:
         AdvZombie(string);
-        void bite() override;
+        void bite();
 };
 
 // *----------------------------------------------------------------*
