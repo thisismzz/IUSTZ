@@ -1186,12 +1186,16 @@ void ShopMenu(){
                 break;
         
             case 4: 
-            cout << "You left the shop." << endl; // Exits the shop
-                return;
+                cout << "You left the shop." << endl; // Exits the shop
+                std::cout << "Press any key to continue...";
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                getch();  // Wait for a key press
+                playground();
 
             default: 
-            cout << "Wrong number!" << endl << "Press enter to continue" << endl;
-            getch(); // Handles invalid input
+                cout << "Wrong number!" << endl << "Press enter to continue" << endl;
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                getch(); // Handles invalid input
                 break;
         }
     }
@@ -1212,7 +1216,7 @@ void Show_Permanent_Items(){
             cout << "which one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
-                return;
+                Show_Permanent_Items();
             }
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
             wweapon->buy(*player); // Buys a warm weapon
@@ -1225,14 +1229,14 @@ void Show_Permanent_Items(){
             cout << "which one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
-                return;
+                Show_Permanent_Items();
             }
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
             cweapon->buy(*player); // Buys a cold weapon
             break;
         
         case 3: 
-            return; // Returns to the previous menu
+            ShopMenu(); // Returns to the previous menu
     }
 }
 
@@ -1246,7 +1250,7 @@ void Show_Throwable_Items(){
     cout<<"which one do you want to buy?" << endl;
     cin >> item;
     if ( item == 0) {
-        return;
+        ShopMenu();
     }
     cout << "How many?" << endl;
     cin >> quantity;
@@ -1269,7 +1273,7 @@ void Show_Consumable_Items(){
             cout << "which one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
-                return;
+                Show_Consumable_Items();
             }
             cout << "How many?" << endl;
             cin >> quantity;
@@ -1284,16 +1288,15 @@ void Show_Consumable_Items(){
             cout << "which one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
-                return;
+                Show_Consumable_Items();
             }
             cout << "How many?" << endl;
             cin >> quantity;
             food=new Food(Food::shop_items_food.at(item-1));
             food->buy(*player,quantity); // Buys a food
             break;
-        
         case 3: 
-            return; // Returns to the previous menu
+            ShopMenu(); // Returns to the previous menu
     }
 }
 
