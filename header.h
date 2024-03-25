@@ -213,8 +213,6 @@ class Player : public Human {
 // *----------------------------------------------------------------*
 
 class HumanEnemy : public Human {
-    private:
-
     public:
         HumanEnemy(Human&);
         void updateState();       // Method to update the state of the human enemy
@@ -237,6 +235,7 @@ class Zombie : public Person {
 class BasicZombie : public Zombie {
     public:
         BasicZombie(string);
+        BasicZombie(Zombie&);
         void bite(Player& player ,int damage);
 };
 
@@ -244,9 +243,13 @@ class BasicZombie : public Zombie {
 // *----------------------------------------------------------------*
 
 class AdvZombie : public Zombie {
+    private:
+        int power;
     public:
-        AdvZombie(string);
+        AdvZombie(string , int);
+        AdvZombie(Zombie& , int);
         void bite();
+        int getPower();
 };
 
 // *----------------------------------------------------------------*
@@ -255,6 +258,8 @@ class AdvZombie : public Zombie {
 class Factory {
     public:
         static Human* createCharacter(const string &type);
+
+        static Zombie* createZombies(const string &type);
 
     private:
         static Human* createJonSnow(const string &name);
@@ -268,6 +273,27 @@ class Factory {
         static Human* createJoffrey(const string &name);
 
         static Human* createTheonGreyjoy(const string &name);
+
+
+        static Zombie* createZombie1(const string &name);
+
+        static Zombie* createZombie2(const string &name);
+
+        static Zombie* createZombie3(const string &name);
+
+        static Zombie* createZombie4(const string &name);
+
+        static Zombie* createZombie5(const string &name);
+
+        static Zombie* createZombie6(const string &name);
+
+        static Zombie* createZombie7(const string &name);
+
+        static Zombie* createZombie8(const string &name);
+
+        static Zombie* createZombie9(const string &name);
+
+        static Zombie* createZombie10(const string &name);
 };
 
 // *----------------------------------------------------------------*

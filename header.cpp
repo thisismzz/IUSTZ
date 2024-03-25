@@ -13,7 +13,10 @@ using namespace std;
 
 //*****************************
 Player* player = nullptr;
-vector<HumanEnemy*> zombies;
+vector<HumanEnemy*> humanEnemies;
+vector<BasicZombie*> basicZombies;
+vector<AdvZombie*> advZombies;
+
 //*****************************
 
 // *----------------------------------------------------------------*
@@ -401,12 +404,14 @@ void Zombie::takeDamage(int amount) {
     } else {
         cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl; // Prints a message if the zombie takes damage
     }
-}
+} 
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 BasicZombie::BasicZombie(string n) : Zombie(n){} // Constructor that initializes name from a Zombie object
+
+BasicZombie::BasicZombie(Zombie & zombie) : Zombie(zombie.getName()) {}
 
 void BasicZombie::bite(Player& player ,int damage) {
     cout << "zombie bites " << player.getName() <<" for " << damage << " damage!" << endl ;
@@ -416,60 +421,18 @@ void BasicZombie::bite(Player& player ,int damage) {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-AdvZombie::AdvZombie(string n) : Zombie(n){} // Constructor that initializes name from a Zombie object
+AdvZombie::AdvZombie(string n , int p) : Zombie(n){
+	power = p;
+} // Constructor that initializes name from a Zombie object
+
+AdvZombie::AdvZombie(Zombie & zombie , int p) : Zombie(zombie.getName()) {
+    power = p;
+}
 
 void AdvZombie::bite() {} // Method for an advanced zombie to bite
 
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-Human* Factory::createCharacter(const string& type) {
-    // Creates a character of a specific type
-    if (type == "JonSnow") {
-        return createJonSnow(type);
-    }
-    else if (type == "JaimeLannister") {
-        return createJaimeLannister(type);
-    }
-    else if (type == "Daenerys") {
-        return createDaenerys(type);
-    }
-    else if (type == "Stannis") {
-        return createStannis(type);
-    }
-    else if (type == "Joffrey") {
-        return createJoffrey(type);
-    }
-    else if (type == "TheonGreyjoy") {
-        return createTheonGreyjoy(type);
-    }
-    else {
-        return nullptr; // Returns null if type is not recognized
-    }
-}
-
-Human* Factory::createJonSnow(const string& type) {
-    return new Human(type, /*stamina*/ 100); // Creates a Jon Snow character with 100 stamina
-}
-
-Human* Factory::createJaimeLannister(const string& type) {
-    return new Human(type, /*stamina*/ 70); // Creates a Jaime Lannister character with 70 stamina
-}
-
-Human* Factory::createDaenerys(const string& type) {
-    return new Human(type, /*stamina*/ 110); // Creates a Daenerys character with 110 stamina
-}
-
-Human* Factory::createStannis(const string& type) {
-    return new Human(type, /*stamina*/ 90); // Creates a Stannis character with 90 stamina
-}
-
-Human* Factory::createJoffrey(const string& type) {
-    return new Human(type, /*stamina*/ 75); // Creates a Joffrey character with 75 stamina
-}
-
-Human* Factory::createTheonGreyjoy(const string& type) {
-    return new Human(type, /*stamina*/ 85); // Creates a Theon Greyjoy character with 85 stamina
+int AdvZombie :: getPower() {
+    return power;
 }
 
 // *----------------------------------------------------------------*
@@ -803,6 +766,136 @@ ostream& operator<<(ostream& os,Food& obj) {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
+Human* Factory::createCharacter(const string& type) {
+    // Creates a character of a specific type
+    if (type == "JonSnow") {
+        return createJonSnow(type);
+    }
+    else if (type == "JaimeLannister") {
+        return createJaimeLannister(type);
+    }
+    else if (type == "Daenerys") {
+        return createDaenerys(type);
+    }
+    else if (type == "Stannis") {
+        return createStannis(type);
+    }
+    else if (type == "Joffrey") {
+        return createJoffrey(type);
+    }
+    else if (type == "TheonGreyjoy") {
+        return createTheonGreyjoy(type);
+    }
+    else {
+        return nullptr; // Returns null if type is not recognized
+    }
+}
+
+Human* Factory::createJonSnow(const string& type) {
+    return new Human(type, /*stamina*/ 100); // Creates a Jon Snow character with 100 stamina
+}
+
+Human* Factory::createJaimeLannister(const string& type) {
+    return new Human(type, /*stamina*/ 70); // Creates a Jaime Lannister character with 70 stamina
+}
+
+Human* Factory::createDaenerys(const string& type) {
+    return new Human(type, /*stamina*/ 110); // Creates a Daenerys character with 110 stamina
+}
+
+Human* Factory::createStannis(const string& type) {
+    return new Human(type, /*stamina*/ 90); // Creates a Stannis character with 90 stamina
+}
+
+Human* Factory::createJoffrey(const string& type) {
+    return new Human(type, /*stamina*/ 75); // Creates a Joffrey character with 75 stamina
+}
+
+Human* Factory::createTheonGreyjoy(const string& type) {
+    return new Human(type, /*stamina*/ 85); // Creates a Theon Greyjoy character with 85 stamina
+}
+
+// *----------------------------------------------------------------*
+
+Zombie* Factory::createZombies(const string& type) {
+    // Creates a character of a specific type
+    if (type == "Zombie1") {
+        return createZombie1(type);
+    }
+    else if (type == "Zombie2") {
+        return createZombie2(type);
+    }
+    else if (type == "Zombie3") {
+        return createZombie3(type);
+    }
+    else if (type == "Zombie4") {
+        return createZombie4(type);
+    }
+    else if (type == "Zombie5") {
+        return createZombie5(type);
+    }
+    else if (type == "Zombie6") {
+        return createZombie6(type);
+    }
+    else if (type == "Zombie7") {
+        return createZombie7(type);
+    }
+    else if (type == "Zombie8") {
+        return createZombie8(type);
+    }
+    else if (type == "Zombie9") {
+        return createZombie9(type);
+    }
+    else if (type == "Zombie10") {
+        return createZombie10(type);
+    }
+    else {
+        return nullptr; // Returns null if type is not recognized
+    }
+}
+
+Zombie* Factory::createZombie1(const string& type) {
+    return new Zombie(type); 
+}
+
+Zombie* Factory::createZombie2(const string& type) {
+    return new Zombie(type); 
+}
+
+Zombie* Factory::createZombie3(const string& type) {
+    return new Zombie(type); 
+}
+
+Zombie* Factory::createZombie4(const string& type) {
+    return new Zombie(type); 
+}
+
+Zombie* Factory::createZombie5(const string& type) {
+    return new Zombie(type); 
+}
+
+Zombie* Factory::createZombie6(const string& type) {
+    return new Zombie(type);
+}
+Zombie* Factory::createZombie7(const string& type) {
+    return new Zombie(type); 
+}
+
+Zombie* Factory::createZombie8(const string& type) {
+    return new Zombie(type); 
+}
+
+Zombie* Factory::createZombie9(const string& type) {
+    return new Zombie(type); 
+}
+
+Zombie* Factory::createZombie10(const string& type) {
+    return new Zombie(type); 
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
 void print_with_delay(string text, int delay=4) {
     for (char c : text) {
         cout << c;
@@ -835,38 +928,112 @@ void showPlayerInfo() {
 
 void playground() {
     system("cls");
-    int number;
+    int choice;
     if ((rand() % 100) < 70) {
         if (rand() % 2 == 0) {
-            int index = rand() % zombies.size();
-            HumanEnemy* selectedZombie = zombies[index];
-            cout << "THE ENEMY YOU ARE FACING IS : " << endl;
-            cout << "   Name: " << selectedZombie->getName() << endl;
-            cout << "   Level: " << selectedZombie->getLevel() << endl;
-            cout << "   Stamina: " << selectedZombie->getStamina() << endl;
-            cout << "   Health: " << selectedZombie->getHealthPoints() << endl << endl;
+            int index = rand() % humanEnemies.size();
+            HumanEnemy* selectedHumanEnemy = humanEnemies[index];
+            cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl;
+            cout << "   Name: " << selectedHumanEnemy->getName() << endl;
+            cout << "   Level: " << selectedHumanEnemy->getLevel() << endl;
+            cout << "   Stamina: " << selectedHumanEnemy->getStamina() << endl;
+            cout << "   Health: " << selectedHumanEnemy->getHealthPoints() << endl << endl;
             cout << "Press any key to Continue...";
             while (!_kbhit());  // Wait for a key press
 
-            cout << endl;
-            player->getBackpack()->showItems();
-            cout << "CHOOSE AN ITEM : ";
-            cin >> number; 
-        } else{
-            cout << "THE ENEMY YOU ARE FACING IS : " << endl;
-            cout << "   Name: " << endl;
-            cout << "   Level: " <<endl;
-            cout << "   Stamina: " <<endl;
-            cout << "   Health: " << endl << endl;
-            cout << "Press any key to Continue...";
-            while (!_kbhit());  // Wait for a key press
+            system("cls");
 
-            cout << endl;
-            player->getBackpack()->showItems();
-            cout << "CHOOSE AN ITEM : ";
-            cin >> number; 
+            while((player->getHealthPoints() <= 0) || (selectedHumanEnemy->getHealthPoints() <= 0)) {
+                cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl;
+                cout << "   Name: " << selectedHumanEnemy->getName() << endl;
+                cout << "   Level: " << selectedHumanEnemy->getLevel() << endl;
+                cout << "   Stamina: " << selectedHumanEnemy->getStamina() << endl;
+                cout << "   Health: " << selectedHumanEnemy->getHealthPoints() << endl << endl;
+
+                cout<< "YOUR CHARACTER'S INFO : " << endl;
+                cout << "Name : " << player->getName() << endl;
+                cout << "Level : " << player->getLevel() << endl;
+                cout << "Experience : " << player->getExperience() << endl;
+                cout << "Stamina : " << player->getStamina() << endl;
+                cout << "Health : " << player->getHealthPoints() << endl;
+                cout << "Money : " << player->getMoney() << " $" << endl << endl;
+                
+                cout << endl;
+                player->getBackpack()->showItems();
+                cout << "CHOOSE AN ITEM : ";
+                while (!_kbhit());
+            }
+        } 
+        else{
+            if ((rand() % 100) < 70) {
+                int index = rand() % basicZombies.size();
+                BasicZombie* selectedBasicZombie = basicZombies[index];
+                cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
+                cout << "   Name: " << selectedBasicZombie->getName() << endl;
+                cout << "   Level: " << selectedBasicZombie->getLevel() << endl;
+                cout << "   Health: " << selectedBasicZombie->getHealthPoints() << endl << endl;
+                cout << "Press any key to Continue...";
+                while (!_kbhit());  // Wait for a key press
+
+                system("cls");
+
+                while((player->getHealthPoints() <= 0) || (selectedBasicZombie->getHealthPoints() <= 0)) {
+                    cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
+                    cout << "   Name: " << selectedBasicZombie->getName() << endl;
+                    cout << "   Level: " << selectedBasicZombie->getLevel() << endl;
+                    cout << "   Health: " << selectedBasicZombie->getHealthPoints() << endl << endl;
+
+                    cout<< "YOUR CHARACTER'S INFO : " << endl;
+                    cout << "Name : " << player->getName() << endl;
+                    cout << "Level : " << player->getLevel() << endl;
+                    cout << "Experience : " << player->getExperience() << endl;
+                    cout << "Stamina : " << player->getStamina() << endl;
+                    cout << "Health : " << player->getHealthPoints() << endl;
+                    cout << "Money : " << player->getMoney() << " $" << endl << endl;
+                    
+                    cout << endl;
+                    player->getBackpack()->showItems();
+                    cout << "CHOOSE AN ITEM : ";
+                    while (!_kbhit());
+                }
+            } 
+            else{
+                int index = rand() % advZombies.size();
+                AdvZombie* selectedAdvZombie = advZombies[index];
+                cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
+                cout << "   Name: " << selectedAdvZombie->getName() << endl;
+                cout << "   Level: " << selectedAdvZombie->getLevel() << endl;
+                cout << "   Power: " << selectedAdvZombie->getPower() << endl;
+                cout << "   Health: " << selectedAdvZombie->getHealthPoints() << endl << endl;
+                cout << "Press any key to Continue...";
+                while (!_kbhit());  // Wait for a key press
+
+                system("cls");
+
+                while((player->getHealthPoints() <= 0) || (selectedAdvZombie->getHealthPoints() <= 0)) {
+                    cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
+	                cout << "   Name: " << selectedAdvZombie->getName() << endl;
+	                cout << "   Level: " << selectedAdvZombie->getLevel() << endl;
+	                cout << "   Power: " << selectedAdvZombie->getPower() << endl;
+                    cout << "   Health: " << selectedAdvZombie->getHealthPoints() << endl << endl;
+
+                    cout<< "YOUR CHARACTER'S INFO : " << endl;
+                    cout << "Name : " << player->getName() << endl;
+                    cout << "Level : " << player->getLevel() << endl;
+                    cout << "Experience : " << player->getExperience() << endl;
+                    cout << "Stamina : " << player->getStamina() << endl;
+                    cout << "Health : " << player->getHealthPoints() << endl;
+                    cout << "Money : " << player->getMoney() << " $" << endl << endl;
+                    
+                    cout << endl;
+                    player->getBackpack()->showItems();
+                    cout << "CHOOSE AN ITEM : ";
+                    while (!_kbhit());
+                }
+            }
         }
-    } else {
+    }
+    else {
         ShopMenu();
     }
 }
@@ -902,20 +1069,22 @@ void Menu() {
     chosenIndex--;  // Adjust for 0-based indexing
     system("cls");
 
-    // Create the characters
+    // Create Player Character and HumanEnemies
     for (int i = 0; i < characterTypes.size(); i++) {
         Human* character = Factory::createCharacter(characterTypes[i]);
         if (i == chosenIndex) {
             // Turn the chosen character into a Player object
             player = new Player(*character,gender,username,age,money[i]);
+            Backpack *bp = player->getBackpack();
+            bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
         } 
         else {
             // Turn the other characters into SmartZombie objects
-            HumanEnemy* zombie = new HumanEnemy(*character);
-            zombies.push_back(zombie);
+            HumanEnemy* humanEnemy = new HumanEnemy(*character);
+            humanEnemies.push_back(humanEnemy);
 
             // Add items to the zombie's backpack
-            Backpack *bp = zombie->getBackpack();
+            Backpack *bp = humanEnemy->getBackpack();
             bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
             bp->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
             for (int j = 0; j < 100; j++) {
@@ -927,22 +1096,43 @@ void Menu() {
         delete character;  // Delete the temporary character
     }
 
+    // Creating Zombies , BasicZombies and advZombies
+
+    vector<Zombie*> zombies;
+    vector<string> names = {"Zombie1", "Zombie2", "Zombie3", "Zombie4", "Zombie5","Zombie6", "Zombie7", "Zombie8", "Zombie9", "Zombie10"};
+
+    for (int i = 0; i < 10; i++) {
+        Zombie* character = Factory:: createZombies(names[i]);
+        if (i <= 5) {
+            // Turn the chosen character into a Player object
+            BasicZombie* basicZombie = new BasicZombie(*character);
+            basicZombies.push_back(basicZombie);
+        } 
+        else {
+            // Turn the other characters into SmartZombie objects
+            int power = rand() % 100;
+            AdvZombie* advZombie = new AdvZombie(*character , power);
+            advZombies.push_back(advZombie);
+        }
+        delete character;  // Delete the temporary character
+    }
+
     // Show the details of the Player
-    cout << "CHARACTER YOU HAVE CHOSEN IS : " << endl;
-    cout << "   " << "Name : " << player->getName() << endl;
-    cout << "   " << "Level : " << player->getLevel() << endl;
-    cout << "   " << "Experience : " << player->getExperience() << endl;
-    cout << "   " << "Stamina : " << player->getStamina() << endl;
-    cout << "   " << "Health : " << player->getHealthPoints() << endl;
-    cout << "   " << "Money : " << money[chosenIndex] << " $" << endl << endl;
-    cout << "Press any key to continue...";
-    while (!_kbhit());  // Wait for a key press
+    std::cout << "CHARACTER YOU HAVE CHOSEN IS : " << endl;
+    std::cout << "   " << "Name : " << player->getName() << endl;
+    std::cout << "   " << "Level : " << player->getLevel() << endl;
+    std::cout << "   " << "Experience : " << player->getExperience() << endl;
+    std::cout << "   " << "Stamina : " << player->getStamina() << endl;
+    std::cout << "   " << "Health : " << player->getHealthPoints() << endl;
+    std::cout << "   " << "Money : " << money[chosenIndex] << " $" << endl << endl;
+    std::cout << "Press any key to continue...";
+    while(!_kbhit());  // Wait for a key press
+    
     system("cls");
 
     print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nIn this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
     cout << endl << "Press any key to continue...";
-    // while (!_kbhit());  // Wait for a key press
-    getch();
+    while (!_kbhit());
     system("cls");
 
     // *----------------------------------------------------------------*
@@ -964,7 +1154,6 @@ void Menu() {
         system("cls");
     }
 }
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
