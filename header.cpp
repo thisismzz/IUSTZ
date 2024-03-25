@@ -923,7 +923,8 @@ void showPlayerInfo() {
     cout << "Health : " << player->getHealthPoints() << endl;
     cout << "Money : " << player->getMoney() << " $" << endl << endl;
     cout << "Press any key to go back...";
-    while (!_kbhit());  // Wait for a key press
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    getch();  // Wait for a key press
 }
 
 void playground() {
@@ -939,7 +940,8 @@ void playground() {
             cout << "   Stamina: " << selectedHumanEnemy->getStamina() << endl;
             cout << "   Health: " << selectedHumanEnemy->getHealthPoints() << endl << endl;
             cout << "Press any key to Continue...";
-            while (!_kbhit());  // Wait for a key press
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            getch();  // Wait for a key press
 
             system("cls");
 
@@ -961,7 +963,8 @@ void playground() {
                 cout << endl;
                 player->getBackpack()->showItems();
                 cout << "CHOOSE AN ITEM : ";
-                while (!_kbhit());
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                getch();
             }
         } 
         else{
@@ -973,7 +976,8 @@ void playground() {
                 cout << "   Level: " << selectedBasicZombie->getLevel() << endl;
                 cout << "   Health: " << selectedBasicZombie->getHealthPoints() << endl << endl;
                 cout << "Press any key to Continue...";
-                while (!_kbhit());  // Wait for a key press
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                getch();  // Wait for a key press
 
                 system("cls");
 
@@ -994,7 +998,8 @@ void playground() {
                     cout << endl;
                     player->getBackpack()->showItems();
                     cout << "CHOOSE AN ITEM : ";
-                    while (!_kbhit());
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    getch();
                 }
             } 
             else{
@@ -1006,7 +1011,8 @@ void playground() {
                 cout << "   Power: " << selectedAdvZombie->getPower() << endl;
                 cout << "   Health: " << selectedAdvZombie->getHealthPoints() << endl << endl;
                 cout << "Press any key to Continue...";
-                while (!_kbhit());  // Wait for a key press
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                getch();  // Wait for a key press
 
                 system("cls");
 
@@ -1028,7 +1034,8 @@ void playground() {
                     cout << endl;
                     player->getBackpack()->showItems();
                     cout << "CHOOSE AN ITEM : ";
-                    while (!_kbhit());
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    getch();
                 }
             }
         }
@@ -1126,13 +1133,16 @@ void Menu() {
     std::cout << "   " << "Health : " << player->getHealthPoints() << endl;
     std::cout << "   " << "Money : " << money[chosenIndex] << " $" << endl << endl;
     std::cout << "Press any key to continue...";
-    while(!_kbhit());  // Wait for a key press
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    getch();  // Wait for a key press
     
     system("cls");
 
     print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nIn this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
     cout << endl << "Press any key to continue...";
-    while (!_kbhit());
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    getch();
+
     system("cls");
 
     // *----------------------------------------------------------------*
