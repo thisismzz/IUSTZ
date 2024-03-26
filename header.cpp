@@ -32,9 +32,10 @@ int Health::getMaxHealth() {
 }
 
 void Health::decreaseHealth(int damage){
-    currentHealth -= damage; // Decreases health
+    currentHealth -= damage;
+    // Ensures health doesn't go below 0
     if(currentHealth <= 0)
-        currentHealth = 0; // Ensures health doesn't go below 0
+        currentHealth = 0;
 }
 
 void Health::increaseHealth (int amount){
@@ -330,7 +331,7 @@ int Person::getHealthPoints() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Human::Human(string n,int s):Person(n),stamina(s){} // Constructor that initializes name and stamina
+Human::Human(string n,int s,int l=1):Person(n,l),stamina(s){} // Constructor that initializes name and stamina
 
 Backpack* Human::getBackpack() {
     Backpack *p=&backpack;
@@ -378,38 +379,39 @@ string Player::getUsername(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-HumanEnemy::HumanEnemy(Human& human): Human(human.getName(), human.getStamina()){} // Constructor that initializes name and stamina from a Human object
+HumanEnemy::HumanEnemy(Human& human,int l=1): Human(human.getName(), human.getStamina(),l),state(HumanEnemyState::FIGHT){} // Constructor that initializes name and stamina from a Human object
+
+HumanEnemyState HumanEnemy::getState(){
+    return state;
+}
 
 void HumanEnemy::updateState() {
-    // Check if health or stamina is below half
-    if (hp.getCurrentHealth() < hp.getMaxHealth() / 2 || stamina.getCurrentStamina() < stamina.getMaximumStamina() / 2) {
-        // Use items from the shop to increase health or stamina
-        cout << name << " visits the shop to replenish health or stamina." << endl;
-        // Assume there's a method in the shop class to handle this
-        // shop.replenishHealthAndStamina(*this);
-    }
+    double healthRatio = hp.getCurrentHealth() / hp.getMaxHealth();
+    double staminaRatio = stamina.getCurrentStamina() / stamina.getMaximumStamina();
 
-    // Determine whether to attack or continue wandering
-    if (rand() % 100 < 70 && hp.getCurrentHealth() >= hp.getMaxHealth() / 2 && stamina.getCurrentStamina() >= stamina.getMaximumStamina() / 2) {
-        cout << name << " decides to attack!" << endl; // Prints a message if the enemy decides to attack
-        // Logic to initiate attack
-    } else {
-        cout << name << " continues wandering..." << endl; // Prints a message if the enemy continues wandering
-    }
+    // Check if health or stamina is below 0.4
+    if (staminaRatio <= 0.4)
+        state = HumanEnemyState :: LOW_HEALTH;
+
+    else if (healthRatio <= 0.4)
+        state = HumanEnemyState :: LOW_POWER; 
+
+    else
+        state = HumanEnemyState :: FIGHT;
 }
 
 void HumanEnemy::takeDamage(int amount) {
     if (hp.getCurrentHealth() <= 0) {
-        cout << name << " has been defeated!" << endl; // Prints a message if the enemy has been defeated
+        cout << name << " has been defeated!" << endl; // Prints a message if the zombie has been defeated
     } else {
-        cout << name << " takes " << amount << " damage. Remaining health: " << hp.getCurrentHealth() << endl; // Prints a message if the enemy takes damage
+        cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl; // Prints a message if the zombie takes damage
     }
 }
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Zombie::Zombie(string n) : Person(n) {} // Constructor that initializes name from a Person object
+Zombie::Zombie(string n,int l=1) : Person(n,l) {} // Constructor that initializes name from a Person object
 
 void Zombie::takeDamage(int amount) {
     if (hp.getCurrentHealth() <= 0) {
@@ -417,36 +419,19 @@ void Zombie::takeDamage(int amount) {
     } else {
         cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl; // Prints a message if the zombie takes damage
     }
-} 
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-BasicZombie::BasicZombie(string n) : Zombie(n){} // Constructor that initializes name from a Zombie object
-
-BasicZombie::BasicZombie(Zombie & zombie) : Zombie(zombie.getName()) {}
-
-void BasicZombie::bite(Player& player ,int damage) {
-    cout << "zombie bites " << player.getName() <<" for " << damage << " damage!" << endl ;
-    player.hp.decreaseHealth(damage);
-} // Method for a basic zombie to bite
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-AdvZombie::AdvZombie(string n , int p) : Zombie(n){
-	power = p;
-} // Constructor that initializes name from a Zombie object
-
-AdvZombie::AdvZombie(Zombie & zombie , int p) : Zombie(zombie.getName()) {
-    power = p;
 }
 
-void AdvZombie::bite() {} // Method for an advanced zombie to bite
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
-int AdvZombie :: getPower() {
-    return power;
-}
+BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
+BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+AdvZombie::AdvZombie(Zombie & zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
+AdvZombie::AdvZombie(string n,int l) : Zombie(n,l){}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -828,9 +813,13 @@ Human* Factory::createTheonGreyjoy(const string& type) {
     return new Human(type, /*stamina*/ 85); // Creates a Theon Greyjoy character with 85 stamina
 }
 
-BasicZombie* Factory::createBasicZombie() {......}
+BasicZombie* Factory :: createBasicZombie(const int level) {
+    return new BasicZombie("BasicZombie",level); // Creates a basic zombie
+}
 
-AdvZombie* Factory::createAdvanceZombie() {......}
+AdvZombie* Factory :: createAdvanceZombie(const int level) {
+    return new AdvZombie("AdvanceZombie",level); // Creates a Advance zombie
+}
 
 
 // *----------------------------------------------------------------*
@@ -875,17 +864,17 @@ void playground() {
     int choice;
 
     if ((rand() % 100) < 70) {
-        //fight ground
+    //fight ground
 
         if (rand() % 2 == 0) {
-            //fight with human enemy
+        //fight with human enemy
             
             //create random humanEnemy from characters
             int index = rand() % characterTypes.size();
             Human *character=Factory::createCharacter(characterTypes[index]);
+            HumanEnemy* humanEnemy = new HumanEnemy(*character,player->getLevel());
 
             // Add items to the humanEnemy's backpack
-            HumanEnemy* humanEnemy = new HumanEnemy(*character);
             Backpack *bp = humanEnemy->getBackpack();
             bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
             bp->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
@@ -909,13 +898,13 @@ void playground() {
         }
 
         else{
-            //fight with zombie
+        //fight with zombie
 
             if ((rand() % 100) < 50) {
                 //fight with basic zombie
 
                 //create basic zombie
-                BasicZombie* basicZombie = Factory::createBasicZombie();
+                BasicZombie* basicZombie = Factory::createBasicZombie(player->getLevel());
 
                 //show enemy's info
                 cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
@@ -930,16 +919,15 @@ void playground() {
             }
 
             else{
-                //fight with advance zombie
+            //fight with advance zombie
 
                 //create advance zombie
-                AdvZombie* advZombie = Factory::createAdvanceZombie();
+                AdvZombie* advZombie = Factory::createAdvanceZombie(player->getLevel());
 
                 //show enemy's info
                 cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
                 cout << "   Name: " << advZombie->getName() << endl;
                 cout << "   Level: " << advZombie->getLevel() << endl;
-                cout << "   Power: " << advZombie->getPower() << endl;
                 cout << "   Health: " << advZombie->getHealthPoints() << endl << endl;
                 cout << "Press any key to Enter to fightground...";
                 cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -951,7 +939,7 @@ void playground() {
     }
 
     else {
-        //reach to shop menu
+    //reach to shop menu
         ShopMenu();
     }
 }

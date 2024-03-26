@@ -184,7 +184,7 @@ class Human : public Person {
         Backpack backpack;
     public:
         Stamina stamina;
-        Human(string, int);
+        Human(string,int,int);
         Backpack* getBackpack();
         int getStamina();
 };
@@ -212,22 +212,34 @@ class Player : public Human {
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+enum class HumanEnemyState{
+    LOW_HEALTH,LOW_POWER,FIGHT
+};
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 class HumanEnemy : public Human {
+    private:
+        HumanEnemyState state;
     public:
-        HumanEnemy(Human&);
+        HumanEnemy(Human&,int);
+        HumanEnemyState getState();
         void updateState();       // Method to update the state of the human enemy
-        void takeDamage(int);     // Method to take damage
-
+        void takeDamage(int);        //show damage amount
 };
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+enum class ZombieState{
+    SCRATCH,BITE
+};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class Zombie : public Person {
     public:
-        Zombie(string);
-        void takeDamage(int);
+        Zombie(string,int);
+        void takeDamage(int);     //show damage amount
 };
 
 // *----------------------------------------------------------------*
@@ -235,22 +247,17 @@ class Zombie : public Person {
 
 class BasicZombie : public Zombie {
     public:
-        BasicZombie(string);
+        BasicZombie(string,int);
         BasicZombie(Zombie&);
-        void bite(Player& player ,int damage);
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class AdvZombie : public Zombie {
-    private:
-        int power;
     public:
-        AdvZombie(string , int);
-        AdvZombie(Zombie& , int);
-        void bite();
-        int getPower();
+        AdvZombie(string,int);
+        AdvZombie(Zombie&);
 };
 
 // *----------------------------------------------------------------*
@@ -258,24 +265,24 @@ class AdvZombie : public Zombie {
 
 class Factory {
     public:
-        static Human* createCharacter(const string &type);
+        static Human* createCharacter(const string&);
 
-        static BasicZombie* createBasicZombie();
+        static BasicZombie* createBasicZombie(const int);
 
-        static AdvZombie* createAdvanceZombie();
+        static AdvZombie* createAdvanceZombie(const int);
 
     private:
-        static Human* createJonSnow(const string &name);
+        static Human* createJonSnow(const string&);
 
-        static Human* createJaimeLannister(const string &name);
+        static Human* createJaimeLannister(const string&);
 
-        static Human* createDaenerys(const string &name);
+        static Human* createDaenerys(const string&);
 
-        static Human* createStannis(const string &name);
+        static Human* createStannis(const string&);
 
-        static Human* createJoffrey(const string &name);
+        static Human* createJoffrey(const string&);
 
-        static Human* createTheonGreyjoy(const string &name);
+        static Human* createTheonGreyjoy(const string&);
 
 };
 
