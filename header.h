@@ -260,7 +260,9 @@ class Factory {
     public:
         static Human* createCharacter(const string &type);
 
-        static Zombie* createZombies(const string &type);
+        static BasicZombie* createBasicZombie(const string &name);
+
+        static AdvZombie* createAdvanceZombie(const string &name);
 
     private:
         static Human* createJonSnow(const string &name);
@@ -275,26 +277,6 @@ class Factory {
 
         static Human* createTheonGreyjoy(const string &name);
 
-
-        static Zombie* createZombie1(const string &name);
-
-        static Zombie* createZombie2(const string &name);
-
-        static Zombie* createZombie3(const string &name);
-
-        static Zombie* createZombie4(const string &name);
-
-        static Zombie* createZombie5(const string &name);
-
-        static Zombie* createZombie6(const string &name);
-
-        static Zombie* createZombie7(const string &name);
-
-        static Zombie* createZombie8(const string &name);
-
-        static Zombie* createZombie9(const string &name);
-
-        static Zombie* createZombie10(const string &name);
 };
 
 // *----------------------------------------------------------------*
@@ -347,7 +329,7 @@ class WarmWeapon : public Permanent {
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, WarmWeapon&);
         friend void Show_Permanent_Items();
-        friend void Menu();
+        friend void playground();
 };
 vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
@@ -366,7 +348,7 @@ class ColdWeapon : public Permanent {
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, ColdWeapon&);
         friend void Show_Permanent_Items();
-        friend void Menu();
+        friend void playground();
 };
 vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
 
@@ -387,7 +369,7 @@ class Throwable : public Items {
         void Throw(Human, Human);
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
-        friend void Menu();
+        friend void playground();
 };
 vector <Throwable> Throwable::shop_items_throwable;
 
@@ -406,7 +388,7 @@ class Medicine : public Items {
         void use(Human&);
         friend ostream& operator<<(ostream&,Medicine&);
         friend void Show_Consumable_Items();
-        friend void Menu();
+        friend void playground();
 };
 vector <Medicine> Medicine::shop_items_medicine;
 
@@ -425,7 +407,7 @@ class Food : public Items {
         void use(Human&);
         friend ostream& operator<<(ostream&, Food&);
         friend void Show_Consumable_Items();
-        friend void Menu();
+        friend void playground();
 };
 vector <Food> Food::shop_items_food;
 

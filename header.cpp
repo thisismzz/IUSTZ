@@ -14,10 +14,7 @@ using namespace std;
 
 //*****************************
 Player* player = nullptr;
-vector<HumanEnemy*> humanEnemies;
-vector<BasicZombie*> basicZombies;
-vector<AdvZombie*> advZombies;
-
+vector <string> characterTypes = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
 //*****************************
 
 // *----------------------------------------------------------------*
@@ -831,83 +828,10 @@ Human* Factory::createTheonGreyjoy(const string& type) {
     return new Human(type, /*stamina*/ 85); // Creates a Theon Greyjoy character with 85 stamina
 }
 
-// *----------------------------------------------------------------*
+BasicZombie* Factory::createBasicZombie(const string& type) {}
 
-Zombie* Factory::createZombies(const string& type) {
-    // Creates a character of a specific type
-    if (type == "Zombie1") {
-        return createZombie1(type);
-    }
-    else if (type == "Zombie2") {
-        return createZombie2(type);
-    }
-    else if (type == "Zombie3") {
-        return createZombie3(type);
-    }
-    else if (type == "Zombie4") {
-        return createZombie4(type);
-    }
-    else if (type == "Zombie5") {
-        return createZombie5(type);
-    }
-    else if (type == "Zombie6") {
-        return createZombie6(type);
-    }
-    else if (type == "Zombie7") {
-        return createZombie7(type);
-    }
-    else if (type == "Zombie8") {
-        return createZombie8(type);
-    }
-    else if (type == "Zombie9") {
-        return createZombie9(type);
-    }
-    else if (type == "Zombie10") {
-        return createZombie10(type);
-    }
-    else {
-        return nullptr; // Returns null if type is not recognized
-    }
-}
+AdvZombie* Factory::createAdvanceZombie(const string& type) {}
 
-Zombie* Factory::createZombie1(const string& type) {
-    return new Zombie(type); 
-}
-
-Zombie* Factory::createZombie2(const string& type) {
-    return new Zombie(type); 
-}
-
-Zombie* Factory::createZombie3(const string& type) {
-    return new Zombie(type); 
-}
-
-Zombie* Factory::createZombie4(const string& type) {
-    return new Zombie(type); 
-}
-
-Zombie* Factory::createZombie5(const string& type) {
-    return new Zombie(type); 
-}
-
-Zombie* Factory::createZombie6(const string& type) {
-    return new Zombie(type);
-}
-Zombie* Factory::createZombie7(const string& type) {
-    return new Zombie(type); 
-}
-
-Zombie* Factory::createZombie8(const string& type) {
-    return new Zombie(type); 
-}
-
-Zombie* Factory::createZombie9(const string& type) {
-    return new Zombie(type); 
-}
-
-Zombie* Factory::createZombie10(const string& type) {
-    return new Zombie(type); 
-}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -951,15 +875,33 @@ void playground() {
     int choice;
 
     if ((rand() % 100) < 70) {
+        //fight ground
+
         if (rand() % 2 == 0) {
-            int index = rand() % humanEnemies.size();
-            HumanEnemy* selectedHumanEnemy = humanEnemies[index];
+            //fight with human enemy
+            
+            //create random humanEnemy from characters
+            int index = rand() % characterTypes.size();
+            Human *character=Factory::createCharacter(characterTypes[index]);
+            HumanEnemy* humanEnemy = new HumanEnemy(*character);
+
+            // Add items to the humanEnemy's backpack
+            Backpack *bp = humanEnemy->getBackpack();
+            bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
+            bp->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
+            for (int j = 0; j < 100; j++) {
+                bp->addThrowableItem(Throwable::shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
+                bp->addFoodItem(Food::shop_items_food.at(rand() % Food::shop_items_food.size()), 1);
+                bp->addMedicineItem(Medicine::shop_items_medicine.at(rand() % Medicine::shop_items_medicine.size()), 1);
+            }
+
+            //show enemy's info
             cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl;
-            cout << "   Name: " << selectedHumanEnemy->getName() << endl;
-            cout << "   Level: " << selectedHumanEnemy->getLevel() << endl;
-            cout << "   Stamina: " << selectedHumanEnemy->getStamina() << endl;
-            cout << "   Health: " << selectedHumanEnemy->getHealthPoints() << endl << endl;
-            cout << "Press any key to Continue...";
+            cout << "   Name: " << humanEnemy->getName() << endl;
+            cout << "   Level: " << humanEnemy->getLevel() << endl;
+            cout << "   Stamina: " << humanEnemy->getStamina() << endl;
+            cout << "   Health: " << humanEnemy->getHealthPoints() << endl << endl;
+            cout << "Press any key to Enter to fightground...";
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             getch();  // Wait for a key press
 
@@ -1078,7 +1020,6 @@ void Menu() {
     getUserInfo(age , gender , username);
     
     // Creating the Player's Character Choices
-    string characterTypes[6] = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
     int chosenIndex;
     int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
 
@@ -1098,41 +1039,20 @@ void Menu() {
     chosenIndex--;  // Adjust for 0-based indexing
     system("cls");
 
-    // Create Player Character and HumanEnemies
+    // Create Player Character
     character = Factory::createCharacter(characterTypes[chosenIndex]);
     player = new Player(*character,gender,username,age,money[chosenIndex]);
-
-
-    // Creating Zombies , BasicZombies and advZombies
-
-    vector<Zombie*> zombies;
-    vector<string> names = {"Zombie1", "Zombie2", "Zombie3", "Zombie4", "Zombie5","Zombie6", "Zombie7", "Zombie8", "Zombie9", "Zombie10"};
-
-    for (int i = 0; i < 10; i++) {
-        Zombie* character = Factory:: createZombies(names[i]);
-        if (i <= 5) {
-            // Turn the chosen character into a Player object
-            BasicZombie* basicZombie = new BasicZombie(*character);
-            basicZombies.push_back(basicZombie);
-        } 
-        else {
-            // Turn the other characters into SmartZombie objects
-            int power = rand() % 100;
-            AdvZombie* advZombie = new AdvZombie(*character , power);
-            advZombies.push_back(advZombie);
-        }
-        delete character;  // Delete the temporary character
-    }
+    characterTypes.erase(characterTypes.begin()+chosenIndex);
 
     // Show the details of the Player
-    std::cout << "CHARACTER YOU HAVE CHOSEN IS : " << endl;
-    std::cout << "   " << "Name : " << player->getName() << endl;
-    std::cout << "   " << "Level : " << player->getLevel() << endl;
-    std::cout << "   " << "Experience : " << player->getExperience() << endl;
-    std::cout << "   " << "Stamina : " << player->getStamina() << endl;
-    std::cout << "   " << "Health : " << player->getHealthPoints() << endl;
-    std::cout << "   " << "Money : " << money[chosenIndex] << " $" << endl << endl;
-    std::cout << "Press any key to continue...";
+    cout << "CHARACTER YOU HAVE CHOSEN IS : " << endl;
+    cout << "   " << "Name : " << player->getName() << endl;
+    cout << "   " << "Level : " << player->getLevel() << endl;
+    cout << "   " << "Experience : " << player->getExperience() << endl;
+    cout << "   " << "Stamina : " << player->getStamina() << endl;
+    cout << "   " << "Health : " << player->getHealthPoints() << endl;
+    cout << "   " << "Money : " << money[chosenIndex] << " $" << endl << endl;
+    cout << "Press any key to continue...";
     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     getch();  // Wait for a key press
     
