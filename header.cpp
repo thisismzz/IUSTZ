@@ -1078,14 +1078,14 @@ void Menu() {
     getUserInfo(age , gender , username);
     
     // Creating the Player's Character Choices
-    vector<string> characterTypes = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
+    string characterTypes[6] = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
     int chosenIndex;
     int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
 
     // Show all the different options a user has for the characters
     Human *character;
     
-    for (int i = 0; i < characterTypes.size(); i++) {
+    for (int i = 0; i < 6; i++) {
         character = Factory::createCharacter(characterTypes[i]);
         cout << i+1 << ". " << characterTypes[i] << endl;
         cout << "   " << "Stamina : " << character->getStamina() << endl;
@@ -1099,31 +1099,9 @@ void Menu() {
     system("cls");
 
     // Create Player Character and HumanEnemies
-    for (int i = 0; i < characterTypes.size(); i++) {
-        Human* character = Factory::createCharacter(characterTypes[i]);
-        if (i == chosenIndex) {
-            // Turn the chosen character into a Player object
-            player = new Player(*character,gender,username,age,money[i]);
-            Backpack *bp = player->getBackpack();
-            bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
-        } 
-        else {
-            // Turn the other characters into SmartZombie objects
-            HumanEnemy* humanEnemy = new HumanEnemy(*character);
-            humanEnemies.push_back(humanEnemy);
+    character = Factory::createCharacter(characterTypes[chosenIndex]);
+    player = new Player(*character,gender,username,age,money[chosenIndex]);
 
-            // Add items to the zombie's backpack
-            Backpack *bp = humanEnemy->getBackpack();
-            bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
-            bp->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
-            for (int j = 0; j < 100; j++) {
-                bp->addThrowableItem(Throwable::shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
-                bp->addFoodItem(Food::shop_items_food.at(rand() % Food::shop_items_food.size()), 1);
-                bp->addMedicineItem(Medicine::shop_items_medicine.at(rand() % Medicine::shop_items_medicine.size()), 1);
-            }
-        }
-        delete character;  // Delete the temporary character
-    }
 
     // Creating Zombies , BasicZombies and advZombies
 
