@@ -259,6 +259,8 @@ void Backpack::showItems(){
             cout<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints throwable items
             index++;
         }
+
+        auto p=ThrowableItems.begin();
     }
 
     if(!MedicineItems.empty()){
@@ -350,7 +352,7 @@ BankAccount* Player::getBankAccount(){
     return p; // Returns a pointer to the bank account
 }
 
-Player::Player(string n, string g,string un, int a,int m,int s) : Human(n,s), age(a), gender(g), bankAccount(m) , username(un), exp(this){}
+Player::Player(string n, string g,string un, int a,int m,int s) : Human(n,s), age(a), gender(g), bankAccount(m) , username(un), exp(this), state(PlayerState::ALIVE){}
 // Constructor that initializes name, gender, username, age, money, and stamina
 
 Player::Player(Human & human,string g,string un,int a,int m) : Human(human.getName(), human.getStamina()), age(a), gender(g), bankAccount(m), username(un),exp(this) {}
@@ -374,6 +376,25 @@ int Player::getExperience() {
 
 string Player::getUsername(){
     return username;
+}
+
+void Player::takeDamage(int amount) {
+    if (hp.getCurrentHealth() <= 0) {
+        cout << "You have been defeated!" << endl; // Prints a message if the player has been defeated
+        state=PlayerState::DEFEATED;
+    } 
+
+    else 
+        cout << "You took " << amount << " damage. Remaining your HP: " << hp.getCurrentHealth() << endl; // Prints a message if the player takes damage
+    
+}
+
+void Player::newLife(){
+    state=PlayerState::ALIVE;
+}
+
+PlayerState Player::getState(){
+    return state;
 }
 
 // *----------------------------------------------------------------*
@@ -402,23 +423,29 @@ void HumanEnemy::updateState() {
 
 void HumanEnemy::takeDamage(int amount) {
     if (hp.getCurrentHealth() <= 0) {
-        cout << name << " has been defeated!" << endl; // Prints a message if the zombie has been defeated
-    } else {
-        cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl; // Prints a message if the zombie takes damage
-    }
+        cout << name << " has been defeated!" << endl; // Prints a message if the human enemy has been defeated
+        state = HumanEnemyState :: DEFEATED;
+    } 
+
+    else 
+        cout << name << " takes " << amount << " damage. Remaining enemy HP: " << hp.getCurrentHealth() << endl; // Prints a message if the human enemy takes damage
+    
 }
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Zombie::Zombie(string n,int l=1) : Person(n,l) {} // Constructor that initializes name from a Person object
+Zombie::Zombie(string n,int l=1) : Person(n,l) , state(ZombieState::ALIVE){} // Constructor that initializes name from a Person object
 
 void Zombie::takeDamage(int amount) {
     if (hp.getCurrentHealth() <= 0) {
         cout << name << " has been defeated!" << endl; // Prints a message if the zombie has been defeated
-    } else {
+        state=ZombieState::DEFEATED;
+    } 
+
+    else 
         cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl; // Prints a message if the zombie takes damage
-    }
+    
 }
 
 // *----------------------------------------------------------------*
@@ -508,24 +535,16 @@ void WarmWeapon::Attack(Human attacker, Person attacked){
     int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (wwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
     attacker.stamina.decreaseStamina(10*wwa.getCurrentSkill()); // Decreases the attacker's stamina
     attacked.hp.decreaseHealth(damage); // Decreases the attacked person's health
+    attacked.takeDamage(damage);  //attacked takes damage 
 
     if(static_cast<Player*>(&attacker)){
         Player *p=static_cast<Player*>(&attacker);
-        p->exp.setCurrentExp(0,damage,10*wwa.getCurrentSkill()); // Updates the attacker's experience
-
-        if(static_cast<HumanEnemy*>(&attacked)){
-            HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
-            he->takeDamage(damage); // The attacked human enemy takes damage
-        }
-
-        else if(static_cast<Zombie*>(&attacked)){
-            Zombie *z=static_cast<Zombie*>(&attacked);
-            z->takeDamage(damage); // The attacked zombie takes damage
-        }
+        p->exp.setCurrentExp(0,damage,10*wwa.getCurrentSkill()); // Updates the player's as attacker experience
     }
+
     else{
         Player *p=static_cast<Player*>(&attacked);
-        p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's experience
+        p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's as attacked experience
     }
 }
 
@@ -858,7 +877,12 @@ void showPlayerInfo() {
 
 void playground() {
     system("cls");
-    
+
+    //check the player state
+    if(player->getState()==PlayerState::DEFEATED){
+        cout<<"YOUR hp is 0\n To continue you need to increase your hp";   rqrqergq
+    }
+
     Backpack *playerBackpack;
     Backpack *enemyBackpack;
     int choice;
@@ -1167,7 +1191,9 @@ void goodbye(){
 
 }
 
-void battleGround_humanEnemy(HumanEnemy Enemy){}
+void battleGround_humanEnemy(HumanEnemy Enemy){
+    whi
+}
 
 void battleGround_basicZombie(BasicZombie zombie){}
 

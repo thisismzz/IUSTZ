@@ -174,6 +174,7 @@ class Person {
         int getLevel();
         string getName();  // Getter for name
         int getHealthPoints();  // Getter for health points
+        virtual void takeDamage(int){}  //show detail of entry damage
 };
 
 // *----------------------------------------------------------------*
@@ -192,12 +193,20 @@ class Human : public Person {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
+enum class PlayerState{
+    DEFEATED,ALIVE
+};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
 class Player : public Human {
     private:
         int age;
         string gender;
         string username;
         BankAccount bankAccount;
+        PlayerState state;
     public:
         Experience exp;
         Player(string, string, string, int, int, int);
@@ -208,12 +217,16 @@ class Player : public Human {
         int getMoney();  // Getter for money
         int getExperience();  // Getter for current experience
         string getUsername();  //Getter for username
+        void takeDamage(int) override;  //show detail of entry damage
+        void newLife();     //set the state ALIVE
+        PlayerState getState();
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 enum class HumanEnemyState{
     LOW_HEALTH,LOW_POWER,FIGHT
+    ,DEFEATED,ALIVE
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -225,21 +238,23 @@ class HumanEnemy : public Human {
         HumanEnemy(Human&,int);
         HumanEnemyState getState();
         void updateState();       // Method to update the state of the human enemy
-        void takeDamage(int);        //show damage amount
+        void takeDamage(int) override;        //show damage amount
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 enum class ZombieState{
-    SCRATCH,BITE
+    SCRATCH,BITE,DEFEATED,ALIVE
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 class Zombie : public Person {
+    private:
+        ZombieState state;
     public:
         Zombie(string,int);
-        void takeDamage(int);     //show damage amount
+        void takeDamage(int) override;     //show damage amount
 };
 
 // *----------------------------------------------------------------*
