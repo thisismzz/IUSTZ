@@ -23,7 +23,7 @@ class Player;
 class HumanEnemy;
 class Zombie; 
 class BasicZombie; 
-class AdvZombiee;
+class AdvZombie;
 class Factory; 
 
 class Items;  
@@ -260,9 +260,9 @@ class Factory {
     public:
         static Human* createCharacter(const string &type);
 
-        static BasicZombie* createBasicZombie(const string &name);
+        static BasicZombie* createBasicZombie();
 
-        static AdvZombie* createAdvanceZombie(const string &name);
+        static AdvZombie* createAdvanceZombie();
 
     private:
         static Human* createJonSnow(const string &name);
@@ -430,6 +430,9 @@ void createThrowableItems();
 void createMedicines();
 void createFoods();
 void goodbye();
+void battleGround_humanEnemy(HumanEnemy);
+void battleGround_basicZombie(BasicZombie);
+void battleGround_advZombie(AdvZombie);
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

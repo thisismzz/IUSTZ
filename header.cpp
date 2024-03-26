@@ -828,9 +828,9 @@ Human* Factory::createTheonGreyjoy(const string& type) {
     return new Human(type, /*stamina*/ 85); // Creates a Theon Greyjoy character with 85 stamina
 }
 
-BasicZombie* Factory::createBasicZombie(const string& type) {}
+BasicZombie* Factory::createBasicZombie() {......}
 
-AdvZombie* Factory::createAdvanceZombie(const string& type) {}
+AdvZombie* Factory::createAdvanceZombie() {......}
 
 
 // *----------------------------------------------------------------*
@@ -883,9 +883,9 @@ void playground() {
             //create random humanEnemy from characters
             int index = rand() % characterTypes.size();
             Human *character=Factory::createCharacter(characterTypes[index]);
-            HumanEnemy* humanEnemy = new HumanEnemy(*character);
 
             // Add items to the humanEnemy's backpack
+            HumanEnemy* humanEnemy = new HumanEnemy(*character);
             Backpack *bp = humanEnemy->getBackpack();
             bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
             bp->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
@@ -905,106 +905,53 @@ void playground() {
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             getch();  // Wait for a key press
 
-            system("cls");
-            while((player->getHealthPoints() >= 0) and (selectedHumanEnemy->getHealthPoints() >= 0)) {
-                cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl;
-                cout << "   Name: " << selectedHumanEnemy->getName() << endl;
-                cout << "   Level: " << selectedHumanEnemy->getLevel() << endl;
-                cout << "   Stamina: " << selectedHumanEnemy->getStamina() << endl;
-                cout << "   Health: " << selectedHumanEnemy->getHealthPoints() << endl << endl;
+            battleGround_humanEnemy(*humanEnemy);
+        }
 
-                cout<< "YOUR CHARACTER'S INFO : " << endl;
-                cout << "Name : " << player->getName() << endl;
-                cout << "Level : " << player->getLevel() << endl;
-                cout << "Experience : " << player->getExperience() << endl;
-                cout << "Stamina : " << player->getStamina() << endl;
-                cout << "Health : " << player->getHealthPoints() << endl;
-                cout << "Money : " << player->getMoney() << " $" << endl << endl;
-                
-                cout << endl;
-                playerBackpack=player->getBackpack();
-                playerBackpack->showItems();
-                cout << "CHOOSE AN ITEM : ";
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                getch();
-            }
-        } 
         else{
+            //fight with zombie
+
             if ((rand() % 100) < 50) {
-                int index = rand() % basicZombies.size();
-                BasicZombie* selectedBasicZombie = basicZombies[index];
+                //fight with basic zombie
+
+                //create basic zombie
+                BasicZombie* basicZombie = Factory::createBasicZombie();
+
+                //show enemy's info
                 cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
-                cout << "   Name: " << selectedBasicZombie->getName() << endl;
-                cout << "   Level: " << selectedBasicZombie->getLevel() << endl;
-                cout << "   Health: " << selectedBasicZombie->getHealthPoints() << endl << endl;
-                cout << "Press any key to Continue...";
+                cout << "   Name: " << basicZombie->getName() << endl;
+                cout << "   Level: " << basicZombie->getLevel() << endl;
+                cout << "   Health: " << basicZombie->getHealthPoints() << endl << endl;
+                cout << "Press any key to Enter to fightground...";
                 cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 getch();  // Wait for a key press
 
-                system("cls");
+                battleGround_basicZombie(*basicZombie);
+            }
 
-                while((player->getHealthPoints() >= 0) and (selectedBasicZombie->getHealthPoints() >= 0)) {
-                    cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
-                    cout << "   Name: " << selectedBasicZombie->getName() << endl;
-                    cout << "   Level: " << selectedBasicZombie->getLevel() << endl;
-                    cout << "   Health: " << selectedBasicZombie->getHealthPoints() << endl << endl;
-
-                    cout<< "YOUR CHARACTER'S INFO : " << endl;
-                    cout << "Name : " << player->getName() << endl;
-                    cout << "Level : " << player->getLevel() << endl;
-                    cout << "Experience : " << player->getExperience() << endl;
-                    cout << "Stamina : " << player->getStamina() << endl;
-                    cout << "Health : " << player->getHealthPoints() << endl;
-                    cout << "Money : " << player->getMoney() << " $" << endl << endl;
-                    
-                    cout << endl;
-                    playerBackpack=player->getBackpack();
-                    playerBackpack->showItems();
-                    cout << "CHOOSE AN ITEM : ";
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    getch();
-                }
-            } 
             else{
-                int index = rand() % advZombies.size();
-                AdvZombie* selectedAdvZombie = advZombies[index];
+                //fight with advance zombie
+
+                //create advance zombie
+                AdvZombie* advZombie = Factory::createAdvanceZombie();
+
+                //show enemy's info
                 cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
-                cout << "   Name: " << selectedAdvZombie->getName() << endl;
-                cout << "   Level: " << selectedAdvZombie->getLevel() << endl;
-                cout << "   Power: " << selectedAdvZombie->getPower() << endl;
-                cout << "   Health: " << selectedAdvZombie->getHealthPoints() << endl << endl;
-                cout << "Press any key to Continue...";
+                cout << "   Name: " << advZombie->getName() << endl;
+                cout << "   Level: " << advZombie->getLevel() << endl;
+                cout << "   Power: " << advZombie->getPower() << endl;
+                cout << "   Health: " << advZombie->getHealthPoints() << endl << endl;
+                cout << "Press any key to Enter to fightground...";
                 cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 getch();  // Wait for a key press
 
-                system("cls");
-
-                while((player->getHealthPoints() <= 0) || (selectedAdvZombie->getHealthPoints() <= 0)) {
-                    cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
-	                cout << "   Name: " << selectedAdvZombie->getName() << endl;
-	                cout << "   Level: " << selectedAdvZombie->getLevel() << endl;
-	                cout << "   Power: " << selectedAdvZombie->getPower() << endl;
-                    cout << "   Health: " << selectedAdvZombie->getHealthPoints() << endl << endl;
-
-                    cout<< "YOUR CHARACTER'S INFO : " << endl;
-                    cout << "Name : " << player->getName() << endl;
-                    cout << "Level : " << player->getLevel() << endl;
-                    cout << "Experience : " << player->getExperience() << endl;
-                    cout << "Stamina : " << player->getStamina() << endl;
-                    cout << "Health : " << player->getHealthPoints() << endl;
-                    cout << "Money : " << player->getMoney() << " $" << endl << endl;
-                    
-                    cout << endl;
-                    playerBackpack=player->getBackpack();
-                    playerBackpack->showItems();
-                    cout << "CHOOSE AN ITEM : ";
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    getch();
-                }
+                battleGround_advZombie(*advZombie);
             }
         }
     }
+
     else {
+        //reach to shop menu
         ShopMenu();
     }
 }
@@ -1046,12 +993,12 @@ void Menu() {
 
     // Show the details of the Player
     cout << "CHARACTER YOU HAVE CHOSEN IS : " << endl;
-    cout << "   " << "Name : " << player->getName() << endl;
-    cout << "   " << "Level : " << player->getLevel() << endl;
-    cout << "   " << "Experience : " << player->getExperience() << endl;
-    cout << "   " << "Stamina : " << player->getStamina() << endl;
-    cout << "   " << "Health : " << player->getHealthPoints() << endl;
-    cout << "   " << "Money : " << money[chosenIndex] << " $" << endl << endl;
+    cout << "\t" << "Name : " << player->getName() << endl;
+    cout << "\t" << "Level : " << player->getLevel() << endl;
+    cout << "\t" << "Experience : " << player->getExperience() << endl;
+    cout << "\t" << "Stamina : " << player->getStamina() << endl;
+    cout << "\t" << "Health : " << player->getHealthPoints() << endl;
+    cout << "\t" << "Money : " << money[chosenIndex] << " $" << endl << endl;
     cout << "Press any key to continue...";
     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     getch();  // Wait for a key press
@@ -1231,6 +1178,15 @@ void goodbye(){
     exit(0);
 
 }
+
+void battleGround_humanEnemy(HumanEnemy Enemy){}
+
+void battleGround_basicZombie(BasicZombie zombie){}
+
+void battleGround_advZombie(AdvZombie zombie){}
+
+
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
