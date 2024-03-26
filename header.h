@@ -169,7 +169,7 @@ class Person {
         int level;
     public:
         Health hp;
-        Person(string n);
+        Person(string,int);
         void updateLevel();
         int getLevel();
         string getName();  // Getter for name
@@ -206,7 +206,8 @@ class Player : public Human {
         int getAge();  // Getter for age
         string getGender();  // Getter for gender
         int getMoney();  // Getter for money
-        int getExperience();  // Getter for experience
+        int getExperience();  // Getter for current experience
+        string getUsername();  //Getter for username
 };
 
 // *----------------------------------------------------------------*
@@ -446,6 +447,7 @@ void createColdWeapons();
 void createThrowableItems();
 void createMedicines();
 void createFoods();
+void goodbye();
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

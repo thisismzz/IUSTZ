@@ -12,6 +12,7 @@
         "vector": "cpp",
         "iostream": "cpp",
         "ostream": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "*.tcc": "cpp"
     }
 }

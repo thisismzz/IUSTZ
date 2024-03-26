@@ -1,11 +1,12 @@
-#include<iostream>
-#include<string>
-#include<vector>
-#include<algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
 #include <thread>
 #include <chrono>
 #include <map>
 #include <conio.h>
+#include <windows.h>
 
 #include "header.h"
 
@@ -236,36 +237,47 @@ void Backpack::useThrowableItemCount(const Throwable throwableItem) {
 // *----------------------------------------------------------------*
 
 void Backpack::showItems(){
+    int index;
     if(!ColdWeaponItems.empty()){
+        index=1;
         for(auto i:ColdWeaponItems){
-            cout<<"type : "<<i.getType()<<"\tname : "<<i.getName()<<'\n'; // Prints cold weapon items
+            cout<<index<<")   "<<"type : "<<i.getType()<<"\tname : "<<i.getName()<<'\n'; // Prints cold weapon items
+            index++;
         }
     }
 
     if(!WarmWeaponItems.empty()){
+        index=1;
         for(auto i:WarmWeaponItems){
-            cout<<"type : "<<i.getType()<<"\tname : "<<i.getName()<<'\n'; // Prints warm weapon items
+            cout<<index<<")   "<<"type : "<<i.getType()<<"\tname : "<<i.getName()<<'\n'; // Prints warm weapon items
+            index++;
         }
     }
 
     if(!ThrowableItems.empty()){
+        index=1;
         for(auto i:ThrowableItems){
             Throwable item=i.first;
-            cout<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints throwable items
+            cout<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints throwable items
+            index++;
         }
     }
 
     if(!MedicineItems.empty()){
+        index=1;
         for(auto i:MedicineItems){
             Medicine item=i.first;
-            cout<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints medicine items
+            cout<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints medicine items
+            index++;
         }
     }
 
     if(!FoodItems.empty()){
+        index=1;
         for(auto i:FoodItems){
             Food item=i.first;
-            cout<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints food items
+            cout<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints food items
+            index++;
         }
     }
 }
@@ -300,7 +312,7 @@ bool BankAccount::withdraw(int amount) {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Person::Person(string n):name(n),level(1){} // Constructor that initializes name and level
+Person::Person(string n,int l=1):name(n),level(l){} // Constructor that initializes name and level
 
 void Person::updateLevel() {
     level++; // Increases level by 1
@@ -360,6 +372,10 @@ int Player::getMoney() {
 
 int Player::getExperience() {
     return exp.getCurrentExp(); // Returns the current experience
+}
+
+string Player::getUsername(){
+    return username;
 }
 
 // *----------------------------------------------------------------*
@@ -929,7 +945,11 @@ void showPlayerInfo() {
 
 void playground() {
     system("cls");
+    
+    Backpack *playerBackpack;
+    Backpack *enemyBackpack;
     int choice;
+
     if ((rand() % 100) < 70) {
         if (rand() % 2 == 0) {
             int index = rand() % humanEnemies.size();
@@ -944,8 +964,7 @@ void playground() {
             getch();  // Wait for a key press
 
             system("cls");
-
-            while((player->getHealthPoints() <= 0) || (selectedHumanEnemy->getHealthPoints() <= 0)) {
+            while((player->getHealthPoints() >= 0) and (selectedHumanEnemy->getHealthPoints() >= 0)) {
                 cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl;
                 cout << "   Name: " << selectedHumanEnemy->getName() << endl;
                 cout << "   Level: " << selectedHumanEnemy->getLevel() << endl;
@@ -961,14 +980,15 @@ void playground() {
                 cout << "Money : " << player->getMoney() << " $" << endl << endl;
                 
                 cout << endl;
-                player->getBackpack()->showItems();
+                playerBackpack=player->getBackpack();
+                playerBackpack->showItems();
                 cout << "CHOOSE AN ITEM : ";
                 cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 getch();
             }
         } 
         else{
-            if ((rand() % 100) < 70) {
+            if ((rand() % 100) < 50) {
                 int index = rand() % basicZombies.size();
                 BasicZombie* selectedBasicZombie = basicZombies[index];
                 cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
@@ -981,7 +1001,7 @@ void playground() {
 
                 system("cls");
 
-                while((player->getHealthPoints() <= 0) || (selectedBasicZombie->getHealthPoints() <= 0)) {
+                while((player->getHealthPoints() >= 0) and (selectedBasicZombie->getHealthPoints() >= 0)) {
                     cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
                     cout << "   Name: " << selectedBasicZombie->getName() << endl;
                     cout << "   Level: " << selectedBasicZombie->getLevel() << endl;
@@ -996,7 +1016,8 @@ void playground() {
                     cout << "Money : " << player->getMoney() << " $" << endl << endl;
                     
                     cout << endl;
-                    player->getBackpack()->showItems();
+                    playerBackpack=player->getBackpack();
+                    playerBackpack->showItems();
                     cout << "CHOOSE AN ITEM : ";
                     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     getch();
@@ -1032,7 +1053,8 @@ void playground() {
                     cout << "Money : " << player->getMoney() << " $" << endl << endl;
                     
                     cout << endl;
-                    player->getBackpack()->showItems();
+                    playerBackpack=player->getBackpack();
+                    playerBackpack->showItems();
                     cout << "CHOOSE AN ITEM : ";
                     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     getch();
@@ -1153,13 +1175,15 @@ void Menu() {
     while(number != 3) {
         cout << "[1] : SHOW PLAYER INFO" << endl;
         cout << "[2] : CONTINUE THE GAME" << endl;
-        cout << "[3] : QUIT THE GAME" << endl << endl;
+        cout << "[3] : Shop" << endl;
+        cout << "[4] : QUIT THE GAME" << endl;
         cout << "Choose One Of The Options Above : ";
         cin >> number;
         switch(number) {
             case 1 : showPlayerInfo(); break;
             case 2 : playground(); break;
-            case 3 : break;
+            case 3 : ShopMenu(); break;
+            case 4 : goodbye(); break;
         }
         system("cls");
     }
@@ -1298,6 +1322,16 @@ void Show_Consumable_Items(){
         case 3: 
             ShopMenu(); // Returns to the previous menu
     }
+}
+
+void goodbye(){
+    cout<<"Really?\n";
+    Sleep(1000);
+    cout<<"It to soon!\n";
+    Sleep(1000);
+    cout<<"fine i let you go :(\nbye bye "<<player->getUsername()<<"hope to see you again:)";
+    exit(0);
+
 }
 
 // *----------------------------------------------------------------*
