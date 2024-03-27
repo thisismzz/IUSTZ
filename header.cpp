@@ -671,6 +671,7 @@ void Throwable::Throw(Human attacker, Human attacked){
     int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (twa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
     attacker.stamina.decreaseStamina(10*twa.getCurrentSkill()); // Decreases the attacker's stamina
     attacked.hp.decreaseHealth(damage); // Decreases the attacked person's health
+    attacked.takeDamage(damage);
 
     if(static_cast<Player*>(&attacker)){
         Player *p=static_cast<Player*>(&attacker);
@@ -880,7 +881,7 @@ void playground() {
 
     //check the player state
     if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOUR hp is 0\n To continue you need to increase your hp";   rqrqergq
+        cout<<"YOUR hp is 0\n To continue you need to increase your hp"; woeinfowi
     }
 
     Backpack *playerBackpack;
@@ -892,7 +893,7 @@ void playground() {
 
         if (rand() % 2 == 0) {
         //fight with human enemy
-            
+
             //create random humanEnemy from characters
             int index = rand() % characterTypes.size();
             Human *character=Factory::createCharacter(characterTypes[index]);
@@ -1188,11 +1189,23 @@ void goodbye(){
     Sleep(1000);
     cout<<"fine i let you go :(\nbye bye "<<player->getUsername()<<"hope to see you again:)";
     exit(0);
-
 }
 
 void battleGround_humanEnemy(HumanEnemy Enemy){
-    whi
+    int turn = 1;        //odd turn for player even turn for enemy
+
+    while(Enemy.getState()==HumanEnemyState::ALIVE and player->getState()==PlayerState::ALIVE){
+        if(turn%2!=0){
+        //player turn
+        
+
+        }
+
+        else{
+        //enemy turn
+
+        }
+    }
 }
 
 void battleGround_basicZombie(BasicZombie zombie){}
