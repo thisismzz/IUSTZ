@@ -1002,6 +1002,7 @@ void Menu() {
 
     // Show all the different options a user has for the characters
     Human *character;
+    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
     for (int i = 0; i < 6; i++) {
         character = Factory::createCharacter(characterTypes[i]);
         cout << i+1 << ". " << characterTypes[i] << endl;
@@ -1010,7 +1011,6 @@ void Menu() {
     }
 
     // Get the user's choice
-    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
     cin >> chosenIndex;
     chosenIndex--;  // Adjust for 0-based indexing
 
@@ -1195,8 +1195,8 @@ void Shop_PermanentItems_Menu(){
             }
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
             wweapon->buy(*player); // Buys a warm weapon
-            cout << "Ok, Now that you have bought a WarmWeapon, you can buy other Items that you want." << endl;
-            cout << "Press any key to continue shopping";
+            cout << "Ok, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want." << endl;
+            cout << "Press any key to continue shopping...";
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             getch();  // Wait for a key press
             ShopMenu();
@@ -1213,7 +1213,7 @@ void Shop_PermanentItems_Menu(){
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
             cweapon->buy(*player); // Buys a cold weapon
             cout << "Ok, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want." << endl;
-            cout << "Press any key to continue shopping";
+            cout << "Press any key to continue shopping...";
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             getch();  // Wait for a key press
             ShopMenu();
@@ -1249,6 +1249,12 @@ void battleGround_humanEnemy(HumanEnemy Enemy){
 void battleGround_basicZombie(BasicZombie zombie){}
 
 void battleGround_advZombie(AdvZombie zombie){}
+
+
+void AttackMenu() {
+    
+
+}
 
 
 
