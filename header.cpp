@@ -239,7 +239,7 @@ void Backpack::showItems(){
     if(!ColdWeaponItems.empty()){
         index=1;
         for(auto i:ColdWeaponItems){
-            cout<<index<<")   "<<"type : "<<i.getType()<<"\tname : "<<i.getName()<<'\n'; // Prints cold weapon items
+            cout << index << ")   " << "type : " << i.getType() << "\tname : " << i.getName() << '\n'; // Prints cold weapon items
             index++;
         }
     }
@@ -281,7 +281,6 @@ void Backpack::showItems(){
         }
     }
 }
-
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1250,14 +1249,23 @@ void battleGround_basicZombie(BasicZombie zombie){}
 
 void battleGround_advZombie(AdvZombie zombie){}
 
-
-void AttackMenu() {
-    
-
+void BattleMenu() {
+    int number;
+    cout << "What do you want to do? (Attack ends your turn.)" << endl
+    << "[1].Attack" << endl << "[2].BackPack" << endl << "[3].Player Info" << endl << "[4].Upgrade Weapon's Skill" ;
+    cin >> number;
+    switch(number){
+        case 1: 
+            useWeapons()=
+            break;
+        case 2:
+            useConsumableItems()=
+            break;
+        case 3: 
+           
+        case 4:
+    }
 }
-
-
-
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

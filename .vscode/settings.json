@@ -13,6 +13,7 @@
         "iostream": "cpp",
         "ostream": "cpp",
         "chrono": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "new": "cpp"
     }
 }

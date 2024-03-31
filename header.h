@@ -123,11 +123,11 @@ class ThrowableWeaponAbility : public Skills {
 
 class Backpack {
     private:
-        map <Food , int> FoodItems;
-        map <Medicine , int> MedicineItems;
-        map <Throwable , int> ThrowableItems;
-        vector <WarmWeapon> WarmWeaponItems;
-        vector <ColdWeapon> ColdWeaponItems;
+        static map <Food , int> FoodItems;
+        static map <Medicine , int> MedicineItems;
+        static map <Throwable , int> ThrowableItems;
+        static vector <WarmWeapon> WarmWeaponItems;
+        static vector <ColdWeapon> ColdWeaponItems;
         void removeFoodItem(const Food);
         void removeMedicineItem(const Medicine);
         void removeThrowableItem(const Throwable);
@@ -144,6 +144,9 @@ class Backpack {
         void useMedicineItemCount(const Medicine specificItem);
         void useThrowableItemCount(const Throwable specificItem);
         void showItems();
+        friend Items useWeapons();
+        friend Items useConsumableItems();
+
 };
 
 // *----------------------------------------------------------------*
@@ -341,9 +344,9 @@ vector <Permanent> Permanent::shop_items_permanent;
 
 class WarmWeapon : public Permanent {
     private:
+        static vector <WarmWeapon> shop_items_permanent_warmweapon;
         WarmWeaponAbility wwa;
     public:
-        static vector <WarmWeapon> shop_items_permanent_warmweapon;
         WarmWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
         void buy(Player&) override;
@@ -352,6 +355,7 @@ class WarmWeapon : public Permanent {
         friend ostream& operator<<(ostream&, WarmWeapon&);
         friend void Show_Permanent_Items();
         friend void playground();
+        friend void Shop_PermanentItems_Menu();
 };
 vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
@@ -360,9 +364,9 @@ vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
 class ColdWeapon : public Permanent {
     private:
+        static vector <ColdWeapon> shop_items_permanent_coldweapon;
         ColdWeaponAbility cwa;
     public:
-        static vector <ColdWeapon> shop_items_permanent_coldweapon;
         ColdWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
         void buy(Player&) override;
@@ -371,6 +375,7 @@ class ColdWeapon : public Permanent {
         friend ostream& operator<<(ostream&, ColdWeapon&);
         friend void Show_Permanent_Items();
         friend void playground();
+        friend void Shop_PermanentItems_Menu();
 };
 vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
 
