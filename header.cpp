@@ -1333,6 +1333,57 @@ Items useWeapons(){
     }
 }
 
+Items useConsumableItems(){
+    int number;
+    cout << "Enter the index of the Consumable Item you want to use:" << endl 
+    << "[1].Medicine" << endl << "[2].Food" << endl << "[3].Back" << endl;
+    cin >> number;
+    switch(number){
+        int index;
+        int ChosenConsumableItem;
+        case 1: 
+            Medicine *medicine;
+            cout << "Choose the Medicine you want to use:" << endl;
+            if(!Backpack::MedicineItems.empty()){
+                index=1;
+                for(auto i:Backpack::MedicineItems){
+                    Medicine item=i.first;
+                    cout<<index<<")   "<<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints medicine items
+                    index++;
+                }
+            }
+            else{
+                cout << "No Medicine exists!" << endl;
+                useConsumableItems();
+            }
+            cin >> ChosenConsumableItem;
+            medicine=new Medicine(Backpack::MedicineItems.at(ChosenConsumableItem-1));
+            return medicine;
+
+        case 2:
+            Food *food;
+            cout << "Choose the Food you want to use:" << endl;
+            if(!Backpack::FoodItems.empty()){
+                index=1;
+                for(auto i:Backpack::FoodItems){
+                    Food item=i.first;
+                    cout<<index<<")   "<<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints food items
+                index++;
+                }
+            }
+            else{
+                cout << "No Food exists!" << endl;
+                useConsumableItems();
+            }
+            cin >> ChosenConsumableItem;
+            food=new Food(Backpack::FoodItems.at(ChosenConsumableItem-1));
+            return food;
+
+        case 3:
+            BattleMenu();
+    }
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
