@@ -1267,6 +1267,39 @@ void BattleMenu() {
     }
 }
 
+Items useWeapons(){
+    int number;
+    cout << "Enter the index of the Weapon you want to attack with:" << endl 
+    << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl;
+    cin >> number;
+    switch(number){
+        int index;
+        int ChosenWeapon;
+        case 1: 
+            WarmWeapon *wweapon;
+            cout << "Choose the WarmWeapon you want to attack with:" << endl;
+            if(!Backpack::WarmWeaponItems.empty()){
+                index=1;
+                for(auto i:Backpack::WarmWeaponItems){
+                    cout<<index<<")"<<i.getName()<<'\n'; // Prints warm weapon items
+                    index++;
+                }
+            }
+            else{
+                cout << "No WarmWeapon exists!" << endl;
+                useWeapons();
+            }
+            cin >> ChosenWeapon;
+            wweapon=new WarmWeapon(Backpack::WarmWeaponItems.at(ChosenWeapon-1));
+            return wweapon;
+
+        case 2:
+
+        case 3:
+
+    }
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
