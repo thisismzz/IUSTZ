@@ -281,8 +281,6 @@ void Backpack::showItems(){
         }
     }
 }
-
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -480,6 +478,10 @@ string Items::getName(){
 
 string Items::getType(){
     return type; // Returns the type of the item
+}
+
+int Items::getPrice(){
+    return price;
 }
 
 // *----------------------------------------------------------------*
@@ -876,16 +878,97 @@ void showPlayerInfo() {
     getch();  // Wait for a key press
 }
 
+void medicineMenu() {
+    system("cls");
+
+    //checks the lowest price of Medicine Item in Shop
+    Medicine cheapestMedicine = Medicine::shop_items_medicine[0];
+    int lowestPrice = cheapestMedicine.getPrice();
+
+    // Go through the rest of the items
+    for(auto& medicine : Medicine::shop_items_medicine) {
+        if(medicine.getPrice() < lowestPrice) {
+            cheapestMedicine = medicine;
+            lowestPrice = medicine.getPrice();
+        }
+    }
+    
+    if(player->getBankAccount()->getBalance() >= lowestPrice) {
+        int item,quantity;
+        Medicine *drug;
+
+        cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl;
+        Medicine::showItems(); // Shows medicines
+        cout << "which one do you want to buy?" << endl;
+        cin >> item;
+        cout << "How many?" << endl;
+        cin >> quantity;
+        drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
+        drug->buy(*player,quantity); // Buys a medicine
+    } else {
+        //the Player Looses.
+    }
+}
+
+void Backpack::consumeForSurvival() {
+    system("cls");
+
+    if(MedicineItems.empty()){
+        cout << "No medicine items left in the backpack." << endl;
+        medicineMenu();
+    }
+
+    cout << "Here are the available medicine items in the backpack:" << endl;
+    int index = 1;
+    vector<Medicine> medicineVector;
+    for(auto i:MedicineItems){
+        Medicine item = i.first;
+        cout << index << ")   " << "\tname : " << item.getName() << "\tstock : " << i.second << '\n'; // Prints medicine items
+        medicineVector.push_back(item);
+        index++;
+    }
+
+    int choice;
+    cout << "Enter the number of the medicine item you want to use: ";
+    cin >> choice;
+
+    if(choice < 1 || choice > medicineVector.size()){
+        cout << "Invalid choice. Please enter a valid number." << endl;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getch();  // Wait for a key press
+        consumeForSurvival();
+    }
+
+    int quantity;
+    cout << "Enter the quantity of the medicine item you want to use: ";
+    cin >> quantity;
+
+    Medicine chosenMedicine = medicineVector[choice - 1];
+    if(MedicineItems[chosenMedicine] < quantity){
+        cout << "Not enough stock. You only have " << MedicineItems[chosenMedicine] << "." << endl;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getch();  // Wait for a key press
+        consumeForSurvival();
+    } else {
+        for(int i = 0; i < quantity; i++){
+            chosenMedicine.use(*player);
+        }
+        cout << "You used " << quantity << " many " << chosenMedicine.getName() << " items." << endl;
+    }
+}
+
 void playground() {
     system("cls");
 
-    //check the player state
-    if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOUR hp is 0\n To continue you need to increase your hp"; 
-    }
-
     Backpack *playerBackpack;
     Backpack *enemyBackpack;
+
+    //check the player state
+    if(player->getState()==PlayerState::ALIVE){
+        cout<<"YOUR hp is 0\n To continue you need to increase your hp"; 
+        playerBackpack->consumeForSurvival();
+    }
+
     int choice;
 
     if ((rand() % 100) < 70) {

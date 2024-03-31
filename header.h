@@ -144,6 +144,7 @@ class Backpack {
         void useMedicineItemCount(const Medicine specificItem);
         void useThrowableItemCount(const Throwable specificItem);
         void showItems();
+        void consumeForSurvival();
 };
 
 // *----------------------------------------------------------------*
@@ -318,6 +319,7 @@ class Items {
         bool operator<(const Items&) const;
         string getName();
         string getType();
+        int getPrice();
 }; 
 vector <Items> Items::shop_items;     
 
@@ -411,6 +413,7 @@ class Medicine : public Items {
         friend ostream& operator<<(ostream&,Medicine&);
         friend void Show_Consumable_Items();
         friend void playground();
+        friend void medicineMenu();
 };
 vector <Medicine> Medicine::shop_items_medicine;
 
