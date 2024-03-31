@@ -881,7 +881,7 @@ void playground() {
 
     //check the player state
     if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOUR hp is 0\n To continue you need to increase your hp"; woeinfowi
+        cout<<"YOUR hp is 0\n To continue you need to increase your hp"; 
     }
 
     Backpack *playerBackpack;
