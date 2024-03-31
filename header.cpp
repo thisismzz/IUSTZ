@@ -1036,9 +1036,9 @@ void Menu() {
     getch();  // Wait for a key press
 
     createItem();
-    ShopMenu(); 
-
+    Shop_PermanentItems_Menu();
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1195,7 +1195,11 @@ void Shop_PermanentItems_Menu(){
             }
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
             wweapon->buy(*player); // Buys a warm weapon
-            break;
+            cout << "Ok, Now that you have bought a WarmWeapon, you can buy other Items that you want." << endl;
+            cout << "Press any key to continue shopping";
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            getch();  // Wait for a key press
+            ShopMenu();
         
         case 2:
             cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
@@ -1208,7 +1212,11 @@ void Shop_PermanentItems_Menu(){
             }
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
             cweapon->buy(*player); // Buys a cold weapon
-            break;
+            cout << "Ok, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want." << endl;
+            cout << "Press any key to continue shopping";
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            getch();  // Wait for a key press
+            ShopMenu();
     }
 }
 
