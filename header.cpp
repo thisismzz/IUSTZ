@@ -1294,9 +1294,42 @@ Items useWeapons(){
             return wweapon;
 
         case 2:
+            ColdWeapon *cweapon;
+            cout << "Choose the ColdWeapon you want to attack with:" << endl;
+            if(!Backpack::ColdWeaponItems.empty()){
+                index=1;
+                for(auto i:Backpack::ColdWeaponItems){
+                    cout<<index<<")"<<i.getName()<<'\n'; // Prints cold weapon items
+                    index++;
+                }
+            }
+            else{
+                cout << "No ColdWeapon exists!" << endl;
+                useWeapons();
+            }
+            cin >> ChosenWeapon;
+            cweapon=new ColdWeapon(Backpack::ColdWeaponItems.at(ChosenWeapon-1));
+            return cweapon;
 
         case 3:
-
+            Throwable *tweapon;
+            cout << "Choose the ThrowableWeapon you want to attack with:" << endl;
+            if(!Backpack::ThrowableItems.empty()){
+                index=1;
+                for(auto i:Backpack::ThrowableItems){
+                    Throwable item=i.first;
+                    cout<<index<<")"<<item.getName()<<"(stock : " << i.second<< ")" << '\n'; // Prints throwable items
+                    index++;
+                }
+                auto p=Backpack::ThrowableItems.begin();
+            }
+            else{
+                cout << "No ThrowableWeapon exists!" << endl;
+                useWeapons();
+            }
+            cin >> ChosenWeapon;
+            tweapon=new Throwable(Backpack::ThrowableItems.at(ChosenWeapon-1));
+            return tweapon;
     }
 }
 
