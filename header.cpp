@@ -876,12 +876,20 @@ void showPlayerInfo() {
     getch();  // Wait for a key press
 }
 
+void createItem() {
+    createWarmWeapons();
+    createColdWeapons();
+    createThrowableItems();
+    createMedicines();
+    createFoods();
+}
+
 void playground() {
     system("cls");
 
     //check the player state
     if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOUR hp is 0\n To continue you need to increase your hp"; woeinfowi
+        cout<<"YOUR hp is 0\n To continue you need to increase your hp";
     }
 
     Backpack *playerBackpack;
@@ -978,6 +986,15 @@ void Menu() {
     int age;
     string gender,username;
     getUserInfo(age , gender , username);
+
+    system("cls");
+
+    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nIn this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
+    cout << endl << "Press any key to continue...";
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    getch();
+
+    system("cls");
     
     // Creating the Player's Character Choices
     int chosenIndex;
@@ -985,7 +1002,6 @@ void Menu() {
 
     // Show all the different options a user has for the characters
     Human *character;
-    
     for (int i = 0; i < 6; i++) {
         character = Factory::createCharacter(characterTypes[i]);
         cout << i+1 << ". " << characterTypes[i] << endl;
@@ -997,6 +1013,7 @@ void Menu() {
     cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
     cin >> chosenIndex;
     chosenIndex--;  // Adjust for 0-based indexing
+
     system("cls");
 
     // Create Player Character
@@ -1012,39 +1029,15 @@ void Menu() {
     cout << "\t" << "Stamina : " << player->getStamina() << endl;
     cout << "\t" << "Health : " << player->getHealthPoints() << endl;
     cout << "\t" << "Money : " << money[chosenIndex] << " $" << endl << endl;
+
+    cout << "Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with." << endl;
     cout << "Press any key to continue...";
     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     getch();  // Wait for a key press
-    
-    system("cls");
 
-    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nIn this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
-    cout << endl << "Press any key to continue...";
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    getch();
+    createItem();
+    ShopMenu(); 
 
-    system("cls");
-
-    // *----------------------------------------------------------------*
-    // *----------------------------------------------------------------*
-    // *----------------------------------------------------------------*
-
-    int number = 0;
-    while(number != 3) {
-        cout << "[1] : SHOW PLAYER INFO" << endl;
-        cout << "[2] : CONTINUE THE GAME" << endl;
-        cout << "[3] : Shop" << endl;
-        cout << "[4] : QUIT THE GAME" << endl;
-        cout << "Choose One Of The Options Above : ";
-        cin >> number;
-        switch(number) {
-            case 1 : showPlayerInfo(); break;
-            case 2 : playground(); break;
-            case 3 : ShopMenu(); break;
-            case 4 : goodbye(); break;
-        }
-        system("cls");
-    }
 }
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1179,6 +1172,43 @@ void Show_Consumable_Items(){
             break;
         case 3: 
             ShopMenu(); // Returns to the previous menu
+    }
+}
+
+void Shop_PermanentItems_Menu(){
+    system("cls");
+    int number,item;
+    WarmWeapon *wweapon;
+    ColdWeapon *cweapon;
+    cout << "You enter the shop to buy atleast one Permanent Item to fight with." << endl << "What do you want to buy?" << "(your money : " << player->getMoney() << ")" << endl
+    << "Permanent Items:" << endl << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl;
+    cin >> number;
+    switch(number){
+        case 1: 
+            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
+            WarmWeapon::showItems(); // Shows warm weapons
+            cout << "[0] : Back" << endl;
+            cout << "which one do you want to buy?" << endl;
+            cin >> item;
+            if ( item == 0) {
+                Shop_PermanentItems_Menu();
+            }
+            wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
+            wweapon->buy(*player); // Buys a warm weapon
+            break;
+        
+        case 2:
+            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
+            ColdWeapon::showItems(); // Shows cold weapons
+            cout << "[0] : Back" << endl;
+            cout << "which one do you want to buy?" << endl;
+            cin >> item;
+            if ( item == 0) {
+                Shop_PermanentItems_Menu();
+            }
+            cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
+            cweapon->buy(*player); // Buys a cold weapon
+            break;
     }
 }
 

@@ -341,9 +341,9 @@ vector <Permanent> Permanent::shop_items_permanent;
 
 class WarmWeapon : public Permanent {
     private:
-        static vector <WarmWeapon> shop_items_permanent_warmweapon;
         WarmWeaponAbility wwa;
     public:
+        static vector <WarmWeapon> shop_items_permanent_warmweapon;
         WarmWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
         void buy(Player&) override;
@@ -360,9 +360,9 @@ vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
 class ColdWeapon : public Permanent {
     private:
-        static vector <ColdWeapon> shop_items_permanent_coldweapon;
         ColdWeaponAbility cwa;
     public:
+        static vector <ColdWeapon> shop_items_permanent_coldweapon;
         ColdWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
         void buy(Player&) override;
@@ -440,21 +440,23 @@ vector <Food> Food::shop_items_food;
 void printWithDelay(string);
 void getUserInfo(int&, string&, string&);
 void showPlayerInfo();
+void createItem(); 
 void playground();
 void Menu();
 void ShopMenu();
 void Show_Permanent_Items();
 void Show_Throwable_Items();
 void Show_Consumable_Items();
+void Shop_PermanentItems_Menu();
+void goodbye();
+void battleGround_humanEnemy(HumanEnemy);
+void battleGround_basicZombie(BasicZombie);
+void battleGround_advZombie(AdvZombie);
 void createWarmWeapons();
 void createColdWeapons();
 void createThrowableItems();
 void createMedicines();
 void createFoods();
-void goodbye();
-void battleGround_humanEnemy(HumanEnemy);
-void battleGround_basicZombie(BasicZombie);
-void battleGround_advZombie(AdvZombie);
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

@@ -13,11 +13,5 @@
 using namespace std;
 
 int main(){
-    createWarmWeapons();
-    createColdWeapons();
-    createThrowableItems();
-    createMedicines();
-    createFoods();
-
     Menu();
 }
