@@ -144,8 +144,8 @@ class Backpack {
         void useMedicineItemCount(const Medicine specificItem);
         void useThrowableItemCount(const Throwable specificItem);
         void showItems();
-        friend Items useWeapons();
-        friend Items useConsumableItems();
+        friend Items* useWeapons();
+        friend Items* useConsumableItems();
 
 };
 
@@ -457,6 +457,9 @@ void goodbye();
 void battleGround_humanEnemy(HumanEnemy);
 void battleGround_basicZombie(BasicZombie);
 void battleGround_advZombie(AdvZombie);
+void BattleMenu();
+Items* useWeapons();
+Items* useConsumableItems();
 void createWarmWeapons();
 void createColdWeapons();
 void createThrowableItems();

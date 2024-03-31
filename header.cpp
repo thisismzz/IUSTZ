@@ -1262,12 +1262,14 @@ void BattleMenu() {
             useConsumableItems()=
             break;
         case 3: 
-           
+            showPlayerInfo();
+            break;
         case 4:
+        
     }
 }
 
-Items useWeapons(){
+Items* useWeapons(){
     int number;
     cout << "Enter the index of the Weapon you want to attack with:" << endl 
     << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl;
@@ -1333,7 +1335,7 @@ Items useWeapons(){
     }
 }
 
-Items useConsumableItems(){
+Items* useConsumableItems(){
     int number;
     cout << "Enter the index of the Consumable Item you want to use:" << endl 
     << "[1].Medicine" << endl << "[2].Food" << endl << "[3].Back" << endl;
