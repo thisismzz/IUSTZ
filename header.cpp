@@ -904,7 +904,15 @@ void medicineMenu() {
         cout << "How many?" << endl;
         cin >> quantity;
         drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
-        drug->buy(*player,quantity); // Buys a medicine
+        if(player->getBankAccount()->getBalance() >= drug->getPrice() * quantity) {
+            drug->buy(*player,quantity); // Buys a medicine
+        }
+        else {
+            cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << drug->getName() << " Items. Buy Less Items ... \n";
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            getch();  // Wait for a key press
+            medicineMenu();
+        }
     } else {
         //the Player Looses.
     }
