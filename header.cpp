@@ -1256,17 +1256,34 @@ void BattleMenu() {
     cin >> number;
     switch(number){
         case 1: 
-        auto obj = useWeapons();
-        if (Static_cast<WarmWeapon*>(obj)){
-
+        auto weapon = useWeapons();
+        if (dynamic_cast<WarmWeapon*>(weapon)){
+            WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(weapon);
+            wweapon->Attack(*player,humanenmy);
         }
-            
+        else if (dynamic_cast<ColdWeapon*>(weapon)){
+            ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(weapon);
+            cweapon->Attack(*player,humanEnemy);
+        }
+        else{
+            Throwable* tweapon = dynamic_cast<Throwable*>(weapon);
+            tweapon->Throw(*player,humanenmy);
+        }
         case 2:
-            
+        auto consumable = useConsumableItems();
+        if (dynamic_cast<Medicine*>(consumable)){
+            Medicine* medicine = dynamic_cast<Medicine*>(consumable);
+            medicine->use(*player);
+        }
+        else{
+            Food* food = dynamic_cast<Food*>(consumable);
+            food->use(*player);
+        }
         case 3: 
             showPlayerInfo();
             break;
         case 4:
+            
         
     }
 }
