@@ -1361,49 +1361,67 @@ Items* useWeapons(){
 
 Items* useConsumableItems(){
     int number;
+    int index;
+    int ChosenConsumableItem;
     cout << "Enter the index of the Consumable Item you want to use:" << endl 
     << "[1].Medicine" << endl << "[2].Food" << endl << "[3].Back" << endl;
     cin >> number;
     switch(number){
-        int index;
-        int ChosenConsumableItem;
         case 1: 
-            Medicine *medicine;
             cout << "Choose the Medicine you want to use:" << endl;
             if(!Backpack::MedicineItems.empty()){
-                index=1;
-                for(auto i:Backpack::MedicineItems){
-                    Medicine item=i.first;
-                    cout<<index<<")   "<<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints medicine items
+                index = 1;
+                for(auto i: Backpack::MedicineItems){
+                    Medicine item = i.first;
+                    cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints medicine items
                     index++;
+                }
+                cin >> ChosenConsumableItem;
+                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= Backpack::MedicineItems.size()) {
+                    auto iter = next(Backpack::MedicineItems.begin(), ChosenConsumableItem - 1);
+                    Medicine chosenMedicine = iter->first;
+                    Medicine* medicine = new Medicine(chosenMedicine);
+                    //cout << *medicine;
+                    return medicine;
+                }
+                else {
+                    cout << "Invalid index. Please try again." << endl;
+                    useConsumableItems();
                 }
             }
             else{
                 cout << "No Medicine exists!" << endl;
                 useConsumableItems();
             }
-            cin >> ChosenConsumableItem;
-            medicine=new Medicine(Backpack::MedicineItems.at(ChosenConsumableItem-1));
-            return medicine;
+            break;
 
         case 2:
-            Food *food;
             cout << "Choose the Food you want to use:" << endl;
             if(!Backpack::FoodItems.empty()){
-                index=1;
-                for(auto i:Backpack::FoodItems){
-                    Food item=i.first;
-                    cout<<index<<")   "<<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints food items
-                index++;
+                index = 1;
+                for(auto i: Backpack::FoodItems) {
+                    Food item = i.first;
+                    cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints food items
+                    index++;
+                }
+                cin >> ChosenConsumableItem;
+                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= Backpack::FoodItems.size()) {
+                    auto iter = next(Backpack::FoodItems.begin(), ChosenConsumableItem - 1);
+                    Food chosenFood = iter->first;
+                    Food* food = new Food(chosenFood);
+                    //cout << *food;
+                    return food;
+                }
+                else{
+                    cout << "Invalid index. Please try again." << endl;
+                    useConsumableItems();
                 }
             }
             else{
                 cout << "No Food exists!" << endl;
                 useConsumableItems();
             }
-            cin >> ChosenConsumableItem;
-            food=new Food(Backpack::FoodItems.at(ChosenConsumableItem-1));
-            return food;
+            break;
 
         case 3:
             BattleMenu();
