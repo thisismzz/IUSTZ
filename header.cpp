@@ -973,7 +973,9 @@ void playground() {
 
     //check the player state
     if(player->getState()==PlayerState::ALIVE){
-        cout<<"YOUR hp is 0\n To continue you need to increase your hp"; 
+        cout<<"YOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... "; 
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getch();  // Wait for a key press
         playerBackpack->consumeForSurvival();
     }
 
