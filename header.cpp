@@ -1270,70 +1270,94 @@ void BattleMenu() {
 }
 
 Items* useWeapons(){
+
     int number;
+    int index;
+    int ChosenWeapon;
     cout << "Enter the index of the Weapon you want to attack with:" << endl 
     << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl;
     cin >> number;
     switch(number){
-        int index;
-        int ChosenWeapon;
         case 1: 
-            WarmWeapon *wweapon;
             cout << "Choose the WarmWeapon you want to attack with:" << endl;
             if(!Backpack::WarmWeaponItems.empty()){
-                index=1;
-                for(auto i:Backpack::WarmWeaponItems){
-                    cout<<index<<")"<<i.getName()<<'\n'; // Prints warm weapon items
+                index = 1;
+                for(auto i: Backpack::WarmWeaponItems){
+                    cout << index << ")" << i.getName() << '\n'; // Prints warm weapon items
                     index++;
+                }
+                cin >> ChosenWeapon;
+                if (ChosenWeapon >= 1 && ChosenWeapon <= Backpack::WarmWeaponItems.size()) {
+                    WarmWeapon *wweapon=new WarmWeapon(Backpack::WarmWeaponItems.at(ChosenWeapon-1));
+                    //cout << *wweapon;
+                    return wweapon;
+                } else {
+                    cout << "Invalid index. Please try again." << endl;
+                    useWeapons();
                 }
             }
             else{
                 cout << "No WarmWeapon exists!" << endl;
                 useWeapons();
             }
-            cin >> ChosenWeapon;
-            wweapon=new WarmWeapon(Backpack::WarmWeaponItems.at(ChosenWeapon-1));
-            return wweapon;
+            break;
 
         case 2:
-            ColdWeapon *cweapon;
             cout << "Choose the ColdWeapon you want to attack with:" << endl;
             if(!Backpack::ColdWeaponItems.empty()){
-                index=1;
-                for(auto i:Backpack::ColdWeaponItems){
-                    cout<<index<<")"<<i.getName()<<'\n'; // Prints cold weapon items
+                index = 1;
+                for(auto i: Backpack::ColdWeaponItems){
+                    cout << index << ")" << i.getName() << '\n'; // Prints cold weapon items
                     index++;
+                }
+                cin >> ChosenWeapon;
+                if (ChosenWeapon >= 1 && ChosenWeapon <= Backpack::ColdWeaponItems.size()) {
+                    ColdWeapon* cweapon=new ColdWeapon(Backpack::ColdWeaponItems.at(ChosenWeapon-1));
+                    //cout << *cweapon;
+                    return cweapon;
+                }
+                else {
+                    cout << "Invalid index. Please try again." << endl;
+                    useWeapons();
                 }
             }
             else{
                 cout << "No ColdWeapon exists!" << endl;
                 useWeapons();
             }
-            cin >> ChosenWeapon;
-            cweapon=new ColdWeapon(Backpack::ColdWeaponItems.at(ChosenWeapon-1));
-            return cweapon;
+            break;
 
         case 3:
-            Throwable *tweapon;
             cout << "Choose the ThrowableWeapon you want to attack with:" << endl;
             if(!Backpack::ThrowableItems.empty()){
-                index=1;
-                for(auto i:Backpack::ThrowableItems){
-                    Throwable item=i.first;
-                    cout<<index<<")"<<item.getName()<<"(stock : " << i.second<< ")" << '\n'; // Prints throwable items
+                index = 1;
+                for(auto& pair : Backpack::ThrowableItems){
+                    Throwable item = pair.first;
+                    cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n'; // Prints throwable items
                     index++;
                 }
-                auto p=Backpack::ThrowableItems.begin();
+                cin >> ChosenWeapon;
+                if (ChosenWeapon >= 1 && ChosenWeapon <= Backpack::ThrowableItems.size()) {
+                    auto iter = next(Backpack::ThrowableItems.begin(), ChosenWeapon - 1);
+                    Throwable chosenThrowable = iter->first;
+                    Throwable* tweapon = new Throwable(chosenThrowable);
+                    //cout << *tweapon;
+                    return tweapon;
+                }
+                else {
+                    cout << "Invalid index. Please try again." << endl;
+                    useWeapons();
+                }
             }
             else{
                 cout << "No ThrowableWeapon exists!" << endl;
                 useWeapons();
             }
-            cin >> ChosenWeapon;
-            tweapon=new Throwable(Backpack::ThrowableItems.at(ChosenWeapon-1));
-            return tweapon;
+            break;
+
     }
 }
+    
 
 Items* useConsumableItems(){
     int number;
