@@ -1252,15 +1252,13 @@ void battleGround_advZombie(AdvZombie zombie){}
 void BattleMenu() {
     int number;
     cout << "What do you want to do? (Attack ends your turn.)" << endl
-    << "[1].Attack" << endl << "[2].BackPack" << endl << "[3].Player Info" << endl << "[4].Upgrade Weapon's Skill" ;
+    << "[1].Attack" << endl << "[2].BackPack" << endl << "[3].Player Info" << endl << "[4].Upgrade Weapon's Skill" << endl ;
     cin >> number;
     switch(number){
         case 1: 
-            useWeapons()=
-            break;
+            
         case 2:
-            useConsumableItems()=
-            break;
+            
         case 3: 
             showPlayerInfo();
             break;
