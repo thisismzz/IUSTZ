@@ -1042,7 +1042,7 @@ void Menu() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void ShopMenu(){
+void ShopMenu() {
     while(true){
         system("cls");
         int number;
@@ -1075,7 +1075,7 @@ void ShopMenu(){
     }
 }
 
-void Show_Permanent_Items(){
+void Show_Permanent_Items() {
     system("cls");
     int number,item;
     WarmWeapon *wweapon;
@@ -1114,7 +1114,7 @@ void Show_Permanent_Items(){
     }
 }
 
-void Show_Throwable_Items(){
+void Show_Throwable_Items() {
     system("cls");
     int item,quantity;
     Throwable *tweapon;
@@ -1132,7 +1132,7 @@ void Show_Throwable_Items(){
     tweapon->buy(*player,quantity); // Buys a throwable item
 }
 
-void Show_Consumable_Items(){
+void Show_Consumable_Items() {
     system("cls");
     int number,item,quantity;
     Medicine *drug;
@@ -1174,7 +1174,7 @@ void Show_Consumable_Items(){
     }
 }
 
-void Shop_PermanentItems_Menu(){
+void Shop_PermanentItems_Menu() {
     system("cls");
     int number,item;
     WarmWeapon *wweapon;
@@ -1256,6 +1256,10 @@ void BattleMenu() {
     cin >> number;
     switch(number){
         case 1: 
+        auto obj = useWeapons();
+        if (Static_cast<WarmWeapon*>(obj)){
+
+        }
             
         case 2:
             
@@ -1267,8 +1271,7 @@ void BattleMenu() {
     }
 }
 
-Items* useWeapons(){
-
+Items* useWeapons() {
     int number;
     int index;
     int ChosenWeapon;
@@ -1352,12 +1355,11 @@ Items* useWeapons(){
                 useWeapons();
             }
             break;
-
     }
 }
     
 
-Items* useConsumableItems(){
+Items* useConsumableItems() {
     int number;
     int index;
     int ChosenConsumableItem;

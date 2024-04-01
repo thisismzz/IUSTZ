@@ -146,8 +146,12 @@ class Backpack {
         void showItems();
         friend Items* useWeapons();
         friend Items* useConsumableItems();
-
 };
+map<Food, int> Backpack::FoodItems;
+map<Medicine, int> Backpack::MedicineItems;
+map<Throwable, int> Backpack::ThrowableItems;
+vector<WarmWeapon> Backpack::WarmWeaponItems;
+vector<ColdWeapon> Backpack::ColdWeaponItems;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
