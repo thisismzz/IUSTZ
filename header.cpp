@@ -941,14 +941,14 @@ void Backpack::consumeForSurvival() {
     cin >> choice;
 
     if(choice < 1 || choice > medicineVector.size()){
-        cout << "Invalid choice. Please enter a valid number." << endl;
+        cout << "INVALID CHOICE. PLEASE ENTER A VALID NUMBER." << endl;
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         getch();  // Wait for a key press
         consumeForSurvival();
     }
 
     int quantity;
-    cout << "Enter the quantity of the medicine item you want to use: ";
+    cout << "ENTER THE QUANTITY OF THE MEDICINE ITEM YOU WANT TO USE: ";
     cin >> quantity;
 
     Medicine chosenMedicine = medicineVector[choice - 1];
@@ -1008,7 +1008,7 @@ void playground() {
             cout << "   Level: " << humanEnemy->getLevel() << endl;
             cout << "   Stamina: " << humanEnemy->getStamina() << endl;
             cout << "   Health: " << humanEnemy->getHealthPoints() << endl << endl;
-            cout << "Press any key to Enter to fightground...";
+            cout << "PRESS ANY KEY TO ENTER THE FIGHTGROUND...";
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             getch();  // Wait for a key press
 
