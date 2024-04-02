@@ -360,6 +360,7 @@ class WarmWeapon : public Permanent {
         friend void Show_Permanent_Items();
         friend void playground();
         friend void Shop_PermanentItems_Menu();
+        WarmWeaponAbility getwwa();
 };
 vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
@@ -380,6 +381,7 @@ class ColdWeapon : public Permanent {
         friend void Show_Permanent_Items();
         friend void playground();
         friend void Shop_PermanentItems_Menu();
+        ColdWeaponAbility getcwa();
 };
 vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
 
@@ -401,6 +403,7 @@ class Throwable : public Items {
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
         friend void playground();
+        ThrowableWeaponAbility gettwa();
 };
 vector <Throwable> Throwable::shop_items_throwable;
 

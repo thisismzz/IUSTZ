@@ -552,6 +552,10 @@ ostream& operator<<(ostream &os,WarmWeapon &obj){
     return os; // Prints the warm weapon's details
 }
 
+WarmWeaponAbility WarmWeapon::getwwa(){
+    return wwa;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -626,6 +630,9 @@ ostream& operator<<(ostream& os,ColdWeapon& obj){
     return os; // Prints the cold weapon's details
 }
 
+ColdWeaponAbility ColdWeapon::getcwa(){
+    return cwa;
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -689,6 +696,10 @@ void Throwable::Throw(Human attacker, Human attacked){
 ostream& operator<<(ostream& os,Throwable& obj) {
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
     return os; // Prints the throwable weapon's details
+}
+
+ThrowableWeaponAbility Throwable::gettwa(){
+    return twa;
 }
 
 // *----------------------------------------------------------------*
@@ -1256,35 +1267,50 @@ void BattleMenu() {
     cin >> number;
     switch(number){
         case 1: 
-        auto weapon = useWeapons();
-        if (dynamic_cast<WarmWeapon*>(weapon)){
-            WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(weapon);
-            wweapon->Attack(*player,humanenmy);
-        }
-        else if (dynamic_cast<ColdWeapon*>(weapon)){
-            ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(weapon);
-            cweapon->Attack(*player,humanEnemy);
-        }
-        else{
-            Throwable* tweapon = dynamic_cast<Throwable*>(weapon);
-            tweapon->Throw(*player,humanenmy);
-        }
+            auto weapon = useWeapons();
+            if (static_cast<WarmWeapon*>(weapon)){
+                WarmWeapon* wweapon = static_cast<WarmWeapon*>(weapon);
+                wweapon->Attack(*player,humanenmy);
+            }
+            else if (static_cast<ColdWeapon*>(weapon)){
+                ColdWeapon* cweapon = static_cast<ColdWeapon*>(weapon);
+                cweapon->Attack(*player,humanEnemy);
+            }
+            else{
+                Throwable* tweapon = static_cast<Throwable*>(weapon);
+                tweapon->Throw(*player,humanenmy);
+            }
+            break;
         case 2:
-        auto consumable = useConsumableItems();
-        if (dynamic_cast<Medicine*>(consumable)){
-            Medicine* medicine = dynamic_cast<Medicine*>(consumable);
-            medicine->use(*player);
-        }
-        else{
-            Food* food = dynamic_cast<Food*>(consumable);
-            food->use(*player);
-        }
+            auto consumable = useConsumableItems();
+            if (static_cast<Medicine*>(consumable)){
+                Medicine* medicine = static_cast<Medicine*>(consumable);
+                medicine->use(*player);
+            }
+            else{
+                Food* food = static_cast<Food*>(consumable);
+                food->use(*player);
+            }
+            break;
         case 3: 
             showPlayerInfo();
             break;
         case 4:
-            
-        
+            BankAccount* creditcard = player->getBankAccount();
+            auto weapon = useWeapons();
+            if (static_cast<WarmWeapon*>(weapon)){
+                WarmWeapon* wweapon = static_cast<WarmWeapon*>(weapon);
+                wweapon->getwwa().upgradeSkill(creditcard);
+            }
+            else if (static_cast<ColdWeapon*>(weapon)){
+                ColdWeapon* cweapon = static_cast<ColdWeapon*>(weapon);
+                cweapon->getcwa().upgradeSkill(creditcard);
+            }
+            else{
+                Throwable* tweapon = static_cast<Throwable*>(weapon);
+                tweapon->gettwa().upgradeSkill(creditcard);
+            }
+            break;  
     }
 }
 
