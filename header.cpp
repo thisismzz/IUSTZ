@@ -1291,26 +1291,29 @@ void BattleMenu() {
                 Food* food = static_cast<Food*>(consumable);
                 food->use(*player);
             }
-            break;
+            break; 
         case 3: 
             showPlayerInfo();
-            break;
+            break; 
         case 4:
             BankAccount* creditcard = player->getBankAccount();
-            auto weapon = useWeapons();
-            if (static_cast<WarmWeapon*>(weapon)){
-                WarmWeapon* wweapon = static_cast<WarmWeapon*>(weapon);
+            auto chosenweapon = useWeapons();
+            if (static_cast<WarmWeapon*>(chosenweapon)){
+                WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
                 wweapon->getwwa().upgradeSkill(creditcard);
             }
-            else if (static_cast<ColdWeapon*>(weapon)){
-                ColdWeapon* cweapon = static_cast<ColdWeapon*>(weapon);
+            else if (static_cast<ColdWeapon*>(chosenweapon)){
+                ColdWeapon* cweapon = static_cast<ColdWeapon*>(chosenweapon);
                 cweapon->getcwa().upgradeSkill(creditcard);
             }
             else{
-                Throwable* tweapon = static_cast<Throwable*>(weapon);
+                Throwable* tweapon = static_cast<Throwable*>(chosenweapon);
                 tweapon->gettwa().upgradeSkill(creditcard);
             }
-            break;  
+            break; 
+        default:
+            cout << "Invalid choice. Please choose a number between 1 and 4." << endl;
+            BattleMenu(); 
     }
 }
 
@@ -1398,7 +1401,11 @@ Items* useWeapons() {
                 useWeapons();
             }
             break;
+        default:
+            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
+            useWeapons();
     }
+    return nullptr;
 }
     
 
@@ -1468,7 +1475,13 @@ Items* useConsumableItems() {
 
         case 3:
             BattleMenu();
+            break;
+
+        default:
+            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
+            useConsumableItems();
     }
+    return nullptr;
 }
 
 // *----------------------------------------------------------------*
