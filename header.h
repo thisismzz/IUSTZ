@@ -123,11 +123,11 @@ class ThrowableWeaponAbility : public Skills {
 
 class Backpack {
     private:
-        static map <Food , int> FoodItems;
-        static map <Medicine , int> MedicineItems;
-        static map <Throwable , int> ThrowableItems;
-        static vector <WarmWeapon> WarmWeaponItems;
-        static vector <ColdWeapon> ColdWeaponItems;
+        map <Food , int> FoodItems;
+        map <Medicine , int> MedicineItems;
+        map <Throwable , int> ThrowableItems;
+        vector <WarmWeapon> WarmWeaponItems;
+        vector <ColdWeapon> ColdWeaponItems;
         void removeFoodItem(const Food);
         void removeMedicineItem(const Medicine);
         void removeThrowableItem(const Throwable);
@@ -144,14 +144,9 @@ class Backpack {
         void useMedicineItemCount(const Medicine specificItem);
         void useThrowableItemCount(const Throwable specificItem);
         void showItems();
-        friend Items* useWeapons();
-        friend Items* useConsumableItems();
+        Items* useWeapons();
+        Items* useConsumableItems();
 };
-map<Food, int> Backpack::FoodItems;
-map<Medicine, int> Backpack::MedicineItems;
-map<Throwable, int> Backpack::ThrowableItems;
-vector<WarmWeapon> Backpack::WarmWeaponItems;
-vector<ColdWeapon> Backpack::ColdWeaponItems;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

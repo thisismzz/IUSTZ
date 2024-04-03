@@ -1265,19 +1265,22 @@ void BattleMenu() {
     cout << "What do you want to do? (Attack ends your turn.)" << endl
     << "[1].Attack" << endl << "[2].BackPack" << endl << "[3].Player Info" << endl << "[4].Upgrade Weapon's Skill" << endl ;
     cin >> number;
+    WarmWeapon* wweapon;
+    ColdWeapon* cweapon;
+    Throwable* tweapon;
     switch(number){
         case 1: 
             auto weapon = useWeapons();
             if (static_cast<WarmWeapon*>(weapon)){
-                WarmWeapon* wweapon = static_cast<WarmWeapon*>(weapon);
-                wweapon->Attack(*player,humanenmy);
+                wweapon = static_cast<WarmWeapon*>(weapon);
+                wweapon->Attack(*player,humanEnemy);
             }
             else if (static_cast<ColdWeapon*>(weapon)){
-                ColdWeapon* cweapon = static_cast<ColdWeapon*>(weapon);
+                cweapon = static_cast<ColdWeapon*>(weapon);
                 cweapon->Attack(*player,humanEnemy);
             }
             else{
-                Throwable* tweapon = static_cast<Throwable*>(weapon);
+                tweapon = static_cast<Throwable*>(weapon);
                 tweapon->Throw(*player,humanenmy);
             }
             break;
@@ -1301,14 +1304,17 @@ void BattleMenu() {
             if (static_cast<WarmWeapon*>(chosenweapon)){
                 WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
                 wweapon->getwwa().upgradeSkill(creditcard);
-            }
+                error!!!!!
+            }     
             else if (static_cast<ColdWeapon*>(chosenweapon)){
                 ColdWeapon* cweapon = static_cast<ColdWeapon*>(chosenweapon);
                 cweapon->getcwa().upgradeSkill(creditcard);
+                error!!!!!
             }
             else{
                 Throwable* tweapon = static_cast<Throwable*>(chosenweapon);
                 tweapon->gettwa().upgradeSkill(creditcard);
+                error!!!!!
             }
             break; 
         default:
@@ -1317,7 +1323,7 @@ void BattleMenu() {
     }
 }
 
-Items* useWeapons() {
+Items* Backpack::useWeapons() {
     int number;
     int index;
     int ChosenWeapon;
@@ -1326,21 +1332,21 @@ Items* useWeapons() {
     cin >> number;
     switch(number){
         case 1: 
-            cout << "Choose the WarmWeapon you want to attack with:" << endl;
-            if(!Backpack::WarmWeaponItems.empty()){
+            if(!WarmWeaponItems.empty()){
+                cout << "Choose the WarmWeapon you want to attack with:" << endl;
                 index = 1;
-                for(auto i: Backpack::WarmWeaponItems){
+                for(auto i: WarmWeaponItems){
                     cout << index << ")" << i.getName() << '\n'; // Prints warm weapon items
                     index++;
                 }
                 cin >> ChosenWeapon;
-                if (ChosenWeapon >= 1 && ChosenWeapon <= Backpack::WarmWeaponItems.size()) {
-                    WarmWeapon *wweapon=new WarmWeapon(Backpack::WarmWeaponItems.at(ChosenWeapon-1));
+                if (ChosenWeapon >= 1 && ChosenWeapon <= WarmWeaponItems.size()) {
+                    WarmWeapon *wweapon=new WarmWeapon(WarmWeaponItems.at(ChosenWeapon-1));
                     //cout << *wweapon;
                     return wweapon;
                 } else {
                     cout << "Invalid index. Please try again." << endl;
-                    useWeapons();
+                    useWeapons();         // change with new func
                 }
             }
             else{
@@ -1351,15 +1357,15 @@ Items* useWeapons() {
 
         case 2:
             cout << "Choose the ColdWeapon you want to attack with:" << endl;
-            if(!Backpack::ColdWeaponItems.empty()){
+            if(!ColdWeaponItems.empty()){
                 index = 1;
-                for(auto i: Backpack::ColdWeaponItems){
+                for(auto i: ColdWeaponItems){
                     cout << index << ")" << i.getName() << '\n'; // Prints cold weapon items
                     index++;
                 }
                 cin >> ChosenWeapon;
-                if (ChosenWeapon >= 1 && ChosenWeapon <= Backpack::ColdWeaponItems.size()) {
-                    ColdWeapon* cweapon=new ColdWeapon(Backpack::ColdWeaponItems.at(ChosenWeapon-1));
+                if (ChosenWeapon >= 1 && ChosenWeapon <= ColdWeaponItems.size()) {
+                    ColdWeapon* cweapon=new ColdWeapon(ColdWeaponItems.at(ChosenWeapon-1));
                     //cout << *cweapon;
                     return cweapon;
                 }
@@ -1376,16 +1382,16 @@ Items* useWeapons() {
 
         case 3:
             cout << "Choose the ThrowableWeapon you want to attack with:" << endl;
-            if(!Backpack::ThrowableItems.empty()){
+            if(!ThrowableItems.empty()){
                 index = 1;
-                for(auto& pair : Backpack::ThrowableItems){
+                for(auto& pair : ThrowableItems){
                     Throwable item = pair.first;
                     cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n'; // Prints throwable items
                     index++;
                 }
                 cin >> ChosenWeapon;
-                if (ChosenWeapon >= 1 && ChosenWeapon <= Backpack::ThrowableItems.size()) {
-                    auto iter = next(Backpack::ThrowableItems.begin(), ChosenWeapon - 1);
+                if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
+                    auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
                     Throwable chosenThrowable = iter->first;
                     Throwable* tweapon = new Throwable(chosenThrowable);
                     //cout << *tweapon;
@@ -1409,7 +1415,7 @@ Items* useWeapons() {
 }
     
 
-Items* useConsumableItems() {
+Items* Backpack::useConsumableItems() {
     int number;
     int index;
     int ChosenConsumableItem;
@@ -1419,16 +1425,16 @@ Items* useConsumableItems() {
     switch(number){
         case 1: 
             cout << "Choose the Medicine you want to use:" << endl;
-            if(!Backpack::MedicineItems.empty()){
+            if(!MedicineItems.empty()){
                 index = 1;
-                for(auto i: Backpack::MedicineItems){
+                for(auto i: MedicineItems){
                     Medicine item = i.first;
                     cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints medicine items
                     index++;
                 }
                 cin >> ChosenConsumableItem;
-                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= Backpack::MedicineItems.size()) {
-                    auto iter = next(Backpack::MedicineItems.begin(), ChosenConsumableItem - 1);
+                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
+                    auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
                     Medicine chosenMedicine = iter->first;
                     Medicine* medicine = new Medicine(chosenMedicine);
                     //cout << *medicine;
@@ -1447,16 +1453,16 @@ Items* useConsumableItems() {
 
         case 2:
             cout << "Choose the Food you want to use:" << endl;
-            if(!Backpack::FoodItems.empty()){
+            if(!FoodItems.empty()){
                 index = 1;
-                for(auto i: Backpack::FoodItems) {
+                for(auto i: FoodItems) {
                     Food item = i.first;
                     cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints food items
                     index++;
                 }
                 cin >> ChosenConsumableItem;
-                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= Backpack::FoodItems.size()) {
-                    auto iter = next(Backpack::FoodItems.begin(), ChosenConsumableItem - 1);
+                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
+                    auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
                     Food chosenFood = iter->first;
                     Food* food = new Food(chosenFood);
                     //cout << *food;
