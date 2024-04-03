@@ -282,6 +282,205 @@ void Backpack::showItems(){
     }
 }
 
+
+void Backpack::showWarmWeaponItems(){
+    int index = 1;
+    for(auto i: WarmWeaponItems){
+        cout << index << ")" << i.getName() << '\n';
+        index++;
+    }
+}
+
+void Backpack::showColdWeaponItems(){
+    int index = 1;
+    for(auto i: ColdWeaponItems){
+        cout << index << ")" << i.getName() << '\n'; 
+        index++;
+    }
+}
+
+void Backpack::showThrowableItems(){
+    int index = 1;
+    for(auto pair : ThrowableItems){
+    Throwable item = pair.first;
+    cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n';
+    index++;
+    }
+
+}
+
+void Backpack::showMedicineItems(){}
+
+void Backpack::showFoodItems(){}
+
+// *----------------------------------------------------------------*
+
+Items* Backpack::useWeapons() {
+    int number;
+    int index;
+    int ChosenWeapon;
+    cout << "Enter the index of the Weapon you want to attack with:" << endl 
+    << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl << "[4].Back" << endl;
+    cin >> number;
+    switch(number){
+        case 1: 
+            if(!WarmWeaponItems.empty()){
+                while(true){
+                    cout << "Choose the WarmWeapon you want to attack with:" << endl;
+                    index = 1;
+                    showWarmWeaponItems();    // Prints warm weapon items
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= WarmWeaponItems.size()) {
+                        WarmWeapon *wweapon=new WarmWeapon(WarmWeaponItems.at(ChosenWeapon-1));
+                        //cout << *wweapon;
+                        return wweapon;
+                    } 
+                    else {
+                        cout << "Invalid index. Please try again." << endl;
+                    }
+                }
+            }
+            else{
+                cout << "No WarmWeapon exists!" << endl;
+                useWeapons();
+            }
+            break;
+
+        case 2:
+            if(!ColdWeaponItems.empty()){
+                while(true){
+                    cout << "Choose the ColdWeapon you want to attack with:" << endl;
+                    index = 1;
+                    showColdWeaponItems();      // Prints cold weapon items
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= ColdWeaponItems.size()) {
+                        ColdWeapon* cweapon=new ColdWeapon(ColdWeaponItems.at(ChosenWeapon-1));
+                        //cout << *cweapon;
+                        return cweapon;
+                    }
+                    else {
+                        cout << "Invalid index. Please try again." << endl;
+                    }
+                }
+            }
+            else{
+                cout << "No ColdWeapon exists!" << endl;
+                useWeapons();
+            }
+            break;
+
+        case 3:
+            if(!ThrowableItems.empty()){
+                while(true){
+                    cout << "Choose the ThrowableWeapon you want to attack with:" << endl;
+                    index = 1;
+                    showThrowableItems();      // Prints throwable items
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
+                        auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
+                        Throwable chosenThrowable = iter->first;
+                        Throwable* tweapon = new Throwable(chosenThrowable);
+                        //cout << *tweapon;
+                        return tweapon;
+                    }
+                    else {
+                        cout << "Invalid index. Please try again." << endl;
+                        useWeapons();
+                    }
+                }
+            }
+            else{
+                cout << "No ThrowableWeapon exists!" << endl;
+            }
+            break;
+
+        case 4:
+            BattleMenu();
+            break;
+
+        default:
+            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
+            useWeapons();
+    }
+    return nullptr;
+}
+    
+
+Items* Backpack::useConsumableItems() {
+    int number;
+    int index;
+    int ChosenConsumableItem;
+    cout << "Enter the index of the Consumable Item you want to use:" << endl 
+    << "[1].Medicine" << endl << "[2].Food" << endl << "[3].Back" << endl;
+    cin >> number;
+    switch(number){
+        case 1: 
+            cout << "Choose the Medicine you want to use:" << endl;
+            if(!MedicineItems.empty()){
+                index = 1;
+                for(auto i: MedicineItems){
+                    Medicine item = i.first;
+                    cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints medicine items
+                    index++;
+                }
+                cin >> ChosenConsumableItem;
+                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
+                    auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
+                    Medicine chosenMedicine = iter->first;
+                    Medicine* medicine = new Medicine(chosenMedicine);
+                    //cout << *medicine;
+                    return medicine;
+                }
+                else {
+                    cout << "Invalid index. Please try again." << endl;
+                    useConsumableItems();
+                }
+            }
+            else{
+                cout << "No Medicine exists!" << endl;
+                useConsumableItems();
+            }
+            break;
+
+        case 2:
+            cout << "Choose the Food you want to use:" << endl;
+            if(!FoodItems.empty()){
+                index = 1;
+                for(auto i: FoodItems) {
+                    Food item = i.first;
+                    cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints food items
+                    index++;
+                }
+                cin >> ChosenConsumableItem;
+                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
+                    auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
+                    Food chosenFood = iter->first;
+                    Food* food = new Food(chosenFood);
+                    //cout << *food;
+                    return food;
+                }
+                else{
+                    cout << "Invalid index. Please try again." << endl;
+                    useConsumableItems();
+                }
+            }
+            else{
+                cout << "No Food exists!" << endl;
+                useConsumableItems();
+            }
+            break;
+
+        case 3:
+            BattleMenu();
+            break;
+
+        default:
+            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
+            useConsumableItems();
+    }
+    return nullptr;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -1284,6 +1483,7 @@ void BattleMenu() {
                 tweapon->Throw(*player,humanenmy);
             }
             break;
+            
         case 2:
             auto consumable = useConsumableItems();
             if (static_cast<Medicine*>(consumable)){
@@ -1295,9 +1495,11 @@ void BattleMenu() {
                 food->use(*player);
             }
             break; 
+
         case 3: 
             showPlayerInfo();
             break; 
+
         case 4:
             BankAccount* creditcard = player->getBankAccount();
             auto chosenweapon = useWeapons();
@@ -1317,178 +1519,14 @@ void BattleMenu() {
                 error!!!!!
             }
             break; 
+
         default:
             cout << "Invalid choice. Please choose a number between 1 and 4." << endl;
             BattleMenu(); 
     }
 }
 
-Items* Backpack::useWeapons() {
-    int number;
-    int index;
-    int ChosenWeapon;
-    cout << "Enter the index of the Weapon you want to attack with:" << endl 
-    << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl;
-    cin >> number;
-    switch(number){
-        case 1: 
-            if(!WarmWeaponItems.empty()){
-                cout << "Choose the WarmWeapon you want to attack with:" << endl;
-                index = 1;
-                for(auto i: WarmWeaponItems){
-                    cout << index << ")" << i.getName() << '\n'; // Prints warm weapon items
-                    index++;
-                }
-                cin >> ChosenWeapon;
-                if (ChosenWeapon >= 1 && ChosenWeapon <= WarmWeaponItems.size()) {
-                    WarmWeapon *wweapon=new WarmWeapon(WarmWeaponItems.at(ChosenWeapon-1));
-                    //cout << *wweapon;
-                    return wweapon;
-                } else {
-                    cout << "Invalid index. Please try again." << endl;
-                    useWeapons();         // change with new func
-                }
-            }
-            else{
-                cout << "No WarmWeapon exists!" << endl;
-                useWeapons();
-            }
-            break;
 
-        case 2:
-            cout << "Choose the ColdWeapon you want to attack with:" << endl;
-            if(!ColdWeaponItems.empty()){
-                index = 1;
-                for(auto i: ColdWeaponItems){
-                    cout << index << ")" << i.getName() << '\n'; // Prints cold weapon items
-                    index++;
-                }
-                cin >> ChosenWeapon;
-                if (ChosenWeapon >= 1 && ChosenWeapon <= ColdWeaponItems.size()) {
-                    ColdWeapon* cweapon=new ColdWeapon(ColdWeaponItems.at(ChosenWeapon-1));
-                    //cout << *cweapon;
-                    return cweapon;
-                }
-                else {
-                    cout << "Invalid index. Please try again." << endl;
-                    useWeapons();
-                }
-            }
-            else{
-                cout << "No ColdWeapon exists!" << endl;
-                useWeapons();
-            }
-            break;
-
-        case 3:
-            cout << "Choose the ThrowableWeapon you want to attack with:" << endl;
-            if(!ThrowableItems.empty()){
-                index = 1;
-                for(auto& pair : ThrowableItems){
-                    Throwable item = pair.first;
-                    cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n'; // Prints throwable items
-                    index++;
-                }
-                cin >> ChosenWeapon;
-                if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
-                    auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
-                    Throwable chosenThrowable = iter->first;
-                    Throwable* tweapon = new Throwable(chosenThrowable);
-                    //cout << *tweapon;
-                    return tweapon;
-                }
-                else {
-                    cout << "Invalid index. Please try again." << endl;
-                    useWeapons();
-                }
-            }
-            else{
-                cout << "No ThrowableWeapon exists!" << endl;
-                useWeapons();
-            }
-            break;
-        default:
-            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
-            useWeapons();
-    }
-    return nullptr;
-}
-    
-
-Items* Backpack::useConsumableItems() {
-    int number;
-    int index;
-    int ChosenConsumableItem;
-    cout << "Enter the index of the Consumable Item you want to use:" << endl 
-    << "[1].Medicine" << endl << "[2].Food" << endl << "[3].Back" << endl;
-    cin >> number;
-    switch(number){
-        case 1: 
-            cout << "Choose the Medicine you want to use:" << endl;
-            if(!MedicineItems.empty()){
-                index = 1;
-                for(auto i: MedicineItems){
-                    Medicine item = i.first;
-                    cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints medicine items
-                    index++;
-                }
-                cin >> ChosenConsumableItem;
-                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
-                    auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
-                    Medicine chosenMedicine = iter->first;
-                    Medicine* medicine = new Medicine(chosenMedicine);
-                    //cout << *medicine;
-                    return medicine;
-                }
-                else {
-                    cout << "Invalid index. Please try again." << endl;
-                    useConsumableItems();
-                }
-            }
-            else{
-                cout << "No Medicine exists!" << endl;
-                useConsumableItems();
-            }
-            break;
-
-        case 2:
-            cout << "Choose the Food you want to use:" << endl;
-            if(!FoodItems.empty()){
-                index = 1;
-                for(auto i: FoodItems) {
-                    Food item = i.first;
-                    cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints food items
-                    index++;
-                }
-                cin >> ChosenConsumableItem;
-                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
-                    auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
-                    Food chosenFood = iter->first;
-                    Food* food = new Food(chosenFood);
-                    //cout << *food;
-                    return food;
-                }
-                else{
-                    cout << "Invalid index. Please try again." << endl;
-                    useConsumableItems();
-                }
-            }
-            else{
-                cout << "No Food exists!" << endl;
-                useConsumableItems();
-            }
-            break;
-
-        case 3:
-            BattleMenu();
-            break;
-
-        default:
-            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
-            useConsumableItems();
-    }
-    return nullptr;
-}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

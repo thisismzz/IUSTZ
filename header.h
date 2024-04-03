@@ -144,6 +144,11 @@ class Backpack {
         void useMedicineItemCount(const Medicine specificItem);
         void useThrowableItemCount(const Throwable specificItem);
         void showItems();
+        void showWarmWeaponItems();
+        void showColdWeaponItems();
+        void showThrowableItems();
+        void showMedicineItems();
+        void showFoodItems();
         Items* useWeapons();
         Items* useConsumableItems();
 };
@@ -243,6 +248,14 @@ class HumanEnemy : public Human {
         void takeDamage(int) override;        //show damage amount
 };
 
+class HE_Controller {
+
+};
+
+class HE_View {
+
+};
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 enum class ZombieState{
@@ -268,6 +281,14 @@ class BasicZombie : public Zombie {
         BasicZombie(Zombie&);
 };
 
+class BZ_Controller {
+
+};
+
+class BZ_View {
+
+};
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -275,6 +296,14 @@ class AdvZombie : public Zombie {
     public:
         AdvZombie(string,int);
         AdvZombie(Zombie&);
+};
+
+class AZ_Controller {
+
+};
+
+class AZ_View {
+    
 };
 
 // *----------------------------------------------------------------*
