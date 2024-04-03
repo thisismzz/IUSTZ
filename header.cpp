@@ -881,22 +881,9 @@ void showPlayerInfo() {
 void medicineMenu() {
     system("cls");
 
-    //checks the lowest price of Medicine Item in Shop
-    Medicine cheapestMedicine = Medicine::shop_items_medicine[0];
-    int lowestPrice = cheapestMedicine.getPrice();
-
-    // Go through the rest of the items
-    for(auto& medicine : Medicine::shop_items_medicine) {
-        if(medicine.getPrice() < lowestPrice) {
-            cheapestMedicine = medicine;
-            lowestPrice = medicine.getPrice();
-        }
-    }
-    
-    if(player->getBankAccount()->getBalance() >= lowestPrice) {
+    if(player->getMoney() >= 15) {
         int item,quantity;
         Medicine *drug;
-
         cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl;
         Medicine::showItems(); // Shows medicines
         cout << "which one do you want to buy?" << endl;
@@ -904,7 +891,7 @@ void medicineMenu() {
         cout << "How many?" << endl;
         cin >> quantity;
         drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
-        if(player->getBankAccount()->getBalance() >= drug->getPrice() * quantity) {
+        if(player->getMoney() >= drug->getPrice() * quantity) {
             drug->buy(*player,quantity); // Buys a medicine
         }
         else {
@@ -913,8 +900,10 @@ void medicineMenu() {
             getch();  // Wait for a key press
             medicineMenu();
         }
-    } else {
+    } 
+    else {
         //the Player Looses.
+        lost;
     }
 }
 
@@ -968,11 +957,12 @@ void Backpack::consumeForSurvival() {
 void playground() {
     system("cls");
 
-    Backpack *playerBackpack;
+    Backpack *playerBackpack = player->getBackpack();
     Backpack *enemyBackpack;
+    BankAccount *creditCard = player->getBankAccount();
 
     //check the player state
-    if(player->getState()==PlayerState::ALIVE){
+    if(player->getState()==PlayerState::DEFEATED){
         cout<<"YOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... "; 
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         getch();  // Wait for a key press
