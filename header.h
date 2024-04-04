@@ -138,6 +138,7 @@ class Backpack {
         void removeFoodItem(const Food);
         void removeMedicineItem(const Medicine);
         void removeThrowableItem(const Throwable);
+        friend class HE_Controller;
     public:
         Backpack(){}
         void addFoodItem(const Food,int);
@@ -235,6 +236,7 @@ class Player : public Human {
         void takeDamage(int) override;  //show detail of entry damage
         void newLife();     //set the state ALIVE
         PlayerState getState();
+        void showInfo();
 };
 
 // *----------------------------------------------------------------*
@@ -252,7 +254,7 @@ class HumanEnemy : public Human {
     public:
         HumanEnemy(Human&,int);
         HumanEnemyState getState();
-        void updateState();       // Method to update the state of the human enemy
+        void setState(HumanEnemyState);
         void takeDamage(int) override;        //show damage amount
 };
 
@@ -262,8 +264,15 @@ class HE_View {
 
 class HE_Controller {
     private:
-        HumanEnemy  HE;
-        
+        HumanEnemy  model;
+        HE_View view;
+        Backpack* backpack;
+    public:
+        HE_Controller(HumanEnemy);
+        void updateState();
+        Items* chooseWeapon();
+        void showInfo();         // Method to update the state of the human enemy
+        void Attack(Items*);
 };
 
 // *----------------------------------------------------------------*

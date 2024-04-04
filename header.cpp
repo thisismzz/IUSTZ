@@ -354,7 +354,7 @@ void Backpack::consumeForSurvival() {
 
     if(choice < 1 || choice > medicineVector.size()){
         cout << "INVALID CHOICE. PLEASE ENTER A VALID NUMBER." << endl;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getch();  // Wait for a key press
         consumeForSurvival();
     }
@@ -366,7 +366,7 @@ void Backpack::consumeForSurvival() {
     Medicine chosenMedicine = medicineVector[choice - 1];
     if(MedicineItems[chosenMedicine] < quantity){
         cout << "Not enough stock. You only have " << MedicineItems[chosenMedicine] << "." << endl;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getch();  // Wait for a key press
         consumeForSurvival();
     } 
@@ -660,6 +660,17 @@ PlayerState Player::getState(){
     return state;
 }
 
+void Player :: showInfo() {
+    cout << "Name : " << player->getName() << endl;
+    cout << "Level : " << player->getLevel() << endl;
+    cout << "Experience : " << player->getExperience() << endl;
+    cout << "Stamina : " << player->getStamina() << endl;
+    cout << "Health : " << player->getHealthPoints() << endl;
+    cout << "Money : " << player->getMoney() << " $" << endl << endl;
+    cout << "Press any key to go back...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getch();  // Wait for a key press
+}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -669,19 +680,8 @@ HumanEnemyState HumanEnemy::getState(){
     return state;
 }
 
-void HumanEnemy::updateState() {
-    double healthRatio = hp.getCurrentHealth() / hp.getMaxHealth();
-    double staminaRatio = stamina.getCurrentStamina() / stamina.getMaximumStamina();
-
-    // Check if health or stamina is below 0.4
-    if (staminaRatio <= 0.4)
-        state = HumanEnemyState :: LOW_HEALTH;
-
-    else if (healthRatio <= 0.4)
-        state = HumanEnemyState :: LOW_POWER; 
-
-    else
-        state = HumanEnemyState :: FIGHT;
+void HumanEnemy::setState(HumanEnemyState newState){
+    state = newState;
 }
 
 void HumanEnemy::takeDamage(int amount) {
@@ -695,6 +695,71 @@ void HumanEnemy::takeDamage(int amount) {
     
 }
 
+// *----------------------------------------------------------------*
+
+HE_Controller :: HE_Controller (HumanEnemy HE) : model(HE) , backpack(HE.getBackpack()) , view(HE_View())  {}
+
+void HE_Controller::updateState() {
+    double healthRatio = model.getHealthPoints() / model.hp.getMaxHealth();
+    double staminaRatio = model.stamina.getCurrentStamina() / model.stamina.getMaximumStamina();
+
+    // Check if health or stamina is below 0.4
+    if (staminaRatio <= 0.4)
+        model.setState(HumanEnemyState :: LOW_HEALTH);
+
+    else if (healthRatio <= 0.4)
+        model.setState(HumanEnemyState :: LOW_POWER); 
+
+    else
+        model.setState(HumanEnemyState :: FIGHT);
+}
+
+Items* HE_Controller :: chooseWeapon() {
+    srand(time(0)); // use current time as seed for random generator
+
+    // Check if backpack is empty
+    if (backpack->ThrowableItems.empty() && backpack->WarmWeaponItems.empty() && 
+        backpack->ColdWeaponItems.empty()) {
+        return nullptr; // backpack is empty
+    }
+
+    // Keep trying until we successfully get an item
+    while (true) {
+        int itemType = rand() % 3; // Randomly choose between 5 types of items
+
+        switch (itemType) {
+            case 0: // Throwable
+                if (!backpack->ThrowableItems.empty()) {
+                    int index = rand() % backpack->ThrowableItems.size();
+                    auto it = next(backpack->ThrowableItems.begin(),index);
+                    Throwable *item = new Throwable(it->first);
+                    return item;
+                }
+                break;
+            case 1: // WarmWeapon
+                if (!backpack->WarmWeaponItems.empty()) {
+                    int index = rand() % backpack->WarmWeaponItems.size();
+                    WarmWeapon *item = new WarmWeapon(backpack->WarmWeaponItems[index]);
+                    return item;
+                }
+                break;
+            case 2: // ColdWeapon
+                if (!backpack->ColdWeaponItems.empty()) {
+                    int index = rand() % backpack->ColdWeaponItems.size();
+                    ColdWeapon *item = new ColdWeapon(backpack->ColdWeaponItems[index]);
+                    return item;
+                }
+                break;
+        }
+    }
+}
+
+void HE_Controller :: showInfo(){
+    cout << "Name : " << HE->getName() << endl;
+    cout << "Level : " << HE->getLevel() << endl;
+    cout << "Stamina : " << HE->getStamina() << endl;
+    cout << "Health : " << HE->getHealthPoints() << endl << endl;
+}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -1150,7 +1215,7 @@ void showPlayerInfo() {
     cout << "Health : " << player->getHealthPoints() << endl;
     cout << "Money : " << player->getMoney() << " $" << endl << endl;
     cout << "Press any key to go back...";
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();  // Wait for a key press
 }
 
@@ -1180,7 +1245,7 @@ void medicineMenu() {
         }
         else {
             cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << drug->getName() << " Items. Buy Less Items ... \n";
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
             medicineMenu();
         }
@@ -1200,7 +1265,7 @@ void playground() {
     //check the player state
     if(player->getState()==PlayerState::DEFEATED){
         cout<<"YOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... \n"; 
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getch();  // Wait for a key press
         cout<<"going to your backpack...\n";
         playerBackpack->consumeForSurvival();
@@ -1236,7 +1301,7 @@ void playground() {
             cout << "   Stamina: " << humanEnemy->getStamina() << endl;
             cout << "   Health: " << humanEnemy->getHealthPoints() << endl << endl;
             cout << "PRESS ANY KEY TO ENTER THE FIGHTGROUND...";
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
 
             battleGround_humanEnemy(*humanEnemy);
@@ -1257,7 +1322,7 @@ void playground() {
                 cout << "   Level: " << basicZombie->getLevel() << endl;
                 cout << "   Health: " << basicZombie->getHealthPoints() << endl << endl;
                 cout << "Press any key to Enter to fightground...";
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
 
                 battleGround_basicZombie(*basicZombie);
@@ -1275,7 +1340,7 @@ void playground() {
                 cout << "   Level: " << advZombie->getLevel() << endl;
                 cout << "   Health: " << advZombie->getHealthPoints() << endl << endl;
                 cout << "Press any key to Enter to fightground...";
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
 
                 battleGround_advZombie(*advZombie);
@@ -1303,7 +1368,7 @@ void Menu() {
 
     print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nIn this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
     cout << endl << "Press any key to continue...";
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();
 
     system("cls");
@@ -1344,7 +1409,7 @@ void Menu() {
 
     cout << "Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with." << endl;
     cout << "Press any key to continue...";
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();  // Wait for a key press
 
     createItem();
@@ -1374,14 +1439,14 @@ void ShopMenu() {
         
             case 4: 
                 cout << "You left the shop." << endl; // Exits the shop
-                std::cout << "Press any key to continue...";
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cout << "Press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
                 playground();
 
             default: 
                 cout << "Wrong number!" << endl << "Press enter to continue" << endl;
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch(); // Handles invalid input
                 break;
         }
@@ -1509,7 +1574,7 @@ void Shop_PermanentItems_Menu() {
             wweapon->buy(*player); // Buys a warm weapon
             cout << "Ok, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want." << endl;
             cout << "Press any key to continue shopping...";
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
             ShopMenu();
         
@@ -1526,7 +1591,7 @@ void Shop_PermanentItems_Menu() {
             cweapon->buy(*player); // Buys a cold weapon
             cout << "Ok, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want." << endl;
             cout << "Press any key to continue shopping...";
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
             ShopMenu();
     }
@@ -1549,11 +1614,9 @@ void goodbye(){
     }
 }
 
-void battleGround_humanEnemy(
-
-){
+void battleGround_humanEnemy(){
     int turn = 1;        //odd turn for player even turn for enemy
-
+    HE_Controller Enemy(*humanEnemy);
     while(Enemy.getState()==HumanEnemyState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
@@ -1564,7 +1627,9 @@ void battleGround_humanEnemy(
 
         else{
         //enemy turn
-
+            Enemy.Attack(Enemy.chooseWeapon());
+            Enemy.showInfo();
+            player.showInfo();
         }
     }
 }
