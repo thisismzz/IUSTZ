@@ -280,8 +280,9 @@ class HE_Controller {
         Items* chooseWeapon();
         Food* chooseFood();
         Medicine* chooseMedicine();
-        void showInfo();
         void decision();
+        void showInfo();
+
 };
 
 // *----------------------------------------------------------------*
@@ -316,6 +317,12 @@ class BasicZombie : public Zombie {
         void bite() override;
 };
 
+class BZ_View {
+    public:
+        BZ_View();
+        void showInfo(BasicZombie);
+};
+
 class BZ_Controller {
     private:
         BasicZombie model;
@@ -323,14 +330,8 @@ class BZ_Controller {
     public:
         BZ_Controller(BasicZombie);
         ZombieState getState();
-        void Attack();
+        void bite();
         void showInfo();
-};
-
-class BZ_View {
-    public:
-        BZ_View() {}
-        void showInfo(BasicZombie);
 };
 
 // *----------------------------------------------------------------*
@@ -344,12 +345,20 @@ class AdvZombie : public Zombie {
         void scratch() override;
 };
 
-class AZ_Controller {
-    
+class AZ_View {
+    public:
+    AZ_View();
+    void showInfo(AdvZombie);
 };
 
-class AZ_View {
-    
+class AZ_Controller {
+    private:
+        AdvZombie model;
+        AZ_View view;
+    public:
+        AZ_Controller(AdvZombie);
+        ZombieState getState();
+        void showInfo();
 };
 
 // *----------------------------------------------------------------*
@@ -546,6 +555,7 @@ void createColdWeapons();
 void createThrowableItems();
 void createMedicines();
 void createFoods();
+void medicineMenu();
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

@@ -769,6 +769,7 @@ Food* HE_Controller :: chooseFood() {
         Food *item = new Food(it->first);
         return item;
     }
+    return nullptr;
 }
 
 Medicine* HE_Controller :: chooseMedicine() {
@@ -778,41 +779,54 @@ Medicine* HE_Controller :: chooseMedicine() {
         Medicine *item = new Medicine(it->first);
         return item;
     }
+    return nullptr;
+}
+
+void HE_Controller::Attack(Items* weapon){
+    if(static_cast<WarmWeapon*>(weapon)){
+        WarmWeapon *wweapon = static_cast<WarmWeapon*>(weapon);
+        wweapon->Attack(model,*player);
+        view.attackView(model.getName(),*wweapon);
+    }
+    if(static_cast<ColdWeapon*>(weapon)){
+        ColdWeapon *cweapon = static_cast<ColdWeapon*>(weapon);
+        // Enemy.Attack(Enemy.chooseWeapon())
+        cweapon->Attack(model,*player);
+        view.attackView(model.getName(),*cweapon);
+    }
+    if(static_cast<Throwable*>(weapon)){
+        Throwable *tweapon = static_cast<Throwable*>(weapon);
+        tweapon->Throw(model,*player);
+        view.attackView(model.getName(),*tweapon);
+    }
 }
 
 void HE_Controller :: decision() {
+    Medicine *mitem;
+    Food *fitem;
+
     switch(model.getState()){
-    case HumanEnemyState::LOW_POWER:
-        Food *fitem = chooseFood();
-        fitem->use(model);
-        view.updateHealth(model.getName(),fitem->getStrength());
-        break;
-    
     case HumanEnemyState::LOW_HEALTH:
-        Medicine *mitem = chooseMedicine();
-        mitem->use(model);
-        view.updateStamina(model.getName(),mitem->getHeal());
+        mitem = chooseMedicine();
+        if(mitem!=nullptr){
+            mitem->use(model);
+            view.updateStamina(model.getName(),mitem->getHeal());
+        }
+        break;
+
+    case HumanEnemyState::LOW_POWER:
+        fitem = chooseFood();
+        if(fitem!=nullptr){
+            fitem->use(model);
+            view.updateHealth(model.getName(),fitem->getStrength());
+        }
         break;
 
     case HumanEnemyState::FIGHT:
-        Items* weapon = chooseWeapon();
-        if(static_cast<WarmWeapon*>(weapon)){
-            WarmWeapon *wweapon = static_cast<WarmWeapon*>(weapon);
-            wweapon->Attack(model,*player);
-            view.attackView(model.getName(),*wweapon);
-        }
+        Attack(chooseWeapon());
+        break;
 
-        if(static_cast<ColdWeapon*>(weapon)){
-            ColdWeapon *cweapon = static_cast<ColdWeapon*>(weapon);
-            cweapon->Attack(model,*player);
-            view.attackView(model.getName(),*cweapon);
-        }
-
-        if(static_cast<Throwable*>(weapon)){
-            Throwable *tweapon = static_cast<Throwable*>(weapon);
-            tweapon->Throw(model,*player);
-            view.attackView(model.getName(),*tweapon);
-        }
+    default:
         break;
     }
 }
@@ -875,9 +889,7 @@ ZombieState Zombie::getState(){
 BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
 
-void BasicZombie :: bite() override{
-    //bite player
-}
+void BasicZombie :: bite() {}
 
 // *----------------------------------------------------------------*
 
@@ -897,6 +909,9 @@ void BZ_Controller :: showInfo() {
 }
 
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+BZ_View::BZ_View(){}
 
 void BZ_View :: showInfo(BasicZombie model) {
     cout << "Name : " << model.getName() << endl;
@@ -913,13 +928,9 @@ void BZ_View :: showInfo(BasicZombie model) {
 AdvZombie::AdvZombie(Zombie & zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 AdvZombie::AdvZombie(string n,int l) : Zombie(n,l){}
 
-void AdvZombie :: bite() override {
-    
-}
+void AdvZombie :: bite()  {}
 
-void AdvZombie :: scratch() override {
-
-}
+void AdvZombie :: scratch()  {}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -929,20 +940,15 @@ AZ_Controller :: AZ_Controller (AdvZombie AZ) : model(AZ) , view(AZ_View())  {}
 ZombieState AZ_Controller::getState(){
     return model.getState();
 }
-
-void AZ_Controller :: bite() {
-    model.bite();
-}
-
-void AZ_Controller :: scratch() {
-    model.scratch();
-}
  
 void AZ_Controller :: showInfo() {
     view.showInfo(model);
 }
 
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+AZ_View::AZ_View(){}
 
 void AZ_View :: showInfo(AdvZombie model) {
     cout << "Name : " << model.getName() << endl;
@@ -1800,14 +1806,14 @@ void battleGround_humanEnemy(){
             cout<<"Your Turn:\n";
             showPlayerInfo();
             BattleMenu();
+            showPlayerInfo();
         }
         else{
         //enemy turn
 
             cout<<"Enemy Turn:\n";
             Enemy.updateState();
-            // Enemy.Attack(Enemy.chooseWeapon());
-            Enemy.decision(); error 
+            Enemy.decision();
             Enemy.showInfo();
         }
         turn++;
@@ -1824,13 +1830,10 @@ void battleGround_basicZombie(){
         //player turn
             showPlayerInfo();
             BattleMenu();
+            showPlayerInfo();
         }
         else{
         //enemy turn
-            Enemy.updateState();
-            // Enemy.Attack(Enemy.chooseWeapon());
-            Enemy.decision(); error 
-            Enemy.showInfo();
         }
         turn ++;
     }
@@ -1891,18 +1894,18 @@ void BattleMenu() {
             auto chosenweapon = useWeapons();
             if (static_cast<WarmWeapon*>(chosenweapon)){
                 WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
-                wweapon->getwwa().upgradeSkill(creditcard);
-                error!!!!!
+                WarmWeaponAbility wwa = wweapon->getwwa();
+                wwa.upgradeSkill(creditcard);
             }     
             else if (static_cast<ColdWeapon*>(chosenweapon)){
                 ColdWeapon* cweapon = static_cast<ColdWeapon*>(chosenweapon);
-                cweapon->getcwa().upgradeSkill(creditcard);
-                error!!!!!
+                ColdWeaponAbility cwa = cweapon->getcwa();
+                cwa.upgradeSkill(creditcard);
             }
             else{
                 Throwable* tweapon = static_cast<Throwable*>(chosenweapon);
-                tweapon->gettwa().upgradeSkill(creditcard);
-                error!!!!!
+                ThrowableWeaponAbility twa= tweapon->gettwa();
+                twa.upgradeSkill(creditcard);
             }
             BattleMenu();
             break; 
