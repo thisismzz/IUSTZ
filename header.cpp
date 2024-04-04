@@ -875,10 +875,10 @@ ZombieState BZ_Controller::getState(){
     return model.getState();
 }
 
-v
-oi BZ_Controller :: bite() {
+
+void BZ_Controller :: bite() {
     model.bite();
-}d
+}
  
 void BZ_Controller :: showInfo() {
     view.showInfo(model);
