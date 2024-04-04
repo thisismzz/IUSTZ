@@ -679,6 +679,10 @@ string Items::getType(){
     return type; // Returns the type of the item
 }
 
+int Items::getPrice(){
+    return price;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -1092,16 +1096,97 @@ void createItem() {
     createFoods();
 }
 
+void medicineMenu() {
+    system("cls");
+
+    if(player->getMoney() >= 15) {
+        int item,quantity;
+        Medicine *drug;
+        cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl;
+        Medicine::showItems(); // Shows medicines
+        cout << "which one do you want to buy?" << endl;
+        cin >> item;
+        cout << "How many?" << endl;
+        cin >> quantity;
+        drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
+        if(player->getMoney() >= drug->getPrice() * quantity) {
+            drug->buy(*player,quantity); // Buys a medicine
+        }
+        else {
+            cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << drug->getName() << " Items. Buy Less Items ... \n";
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            getch();  // Wait for a key press
+            medicineMenu();
+        }
+    } 
+    else {
+        //the Player Looses.
+        lost;
+    }
+}
+
+void Backpack::consumeForSurvival() {
+    system("cls");
+
+    if(MedicineItems.empty()){
+        cout << "No medicine items left in the backpack." << endl;
+        medicineMenu();
+    }
+
+    cout << "Here are the available medicine items in the backpack:" << endl;
+    int index = 1;
+    vector<Medicine> medicineVector;
+    for(auto i:MedicineItems){
+        Medicine item = i.first;
+        cout << index << ")   " << "\tname : " << item.getName() << "\tstock : " << i.second << '\n'; // Prints medicine items
+        medicineVector.push_back(item);
+        index++;
+    }
+
+    int choice;
+    cout << "Enter the number of the medicine item you want to use: ";
+    cin >> choice;
+
+    if(choice < 1 || choice > medicineVector.size()){
+        cout << "INVALID CHOICE. PLEASE ENTER A VALID NUMBER." << endl;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getch();  // Wait for a key press
+        consumeForSurvival();
+    }
+
+    int quantity;
+    cout << "ENTER THE QUANTITY OF THE MEDICINE ITEM YOU WANT TO USE: ";
+    cin >> quantity;
+
+    Medicine chosenMedicine = medicineVector[choice - 1];
+    if(MedicineItems[chosenMedicine] < quantity){
+        cout << "Not enough stock. You only have " << MedicineItems[chosenMedicine] << "." << endl;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getch();  // Wait for a key press
+        consumeForSurvival();
+    } else {
+        for(int i = 0; i < quantity; i++){
+            chosenMedicine.use(*player);
+        }
+        cout << "You used " << quantity << " many " << chosenMedicine.getName() << " items." << endl;
+    }
+}
+
 void playground() {
     system("cls");
 
+    Backpack *playerBackpack = player->getBackpack();
+    Backpack *enemyBackpack;
+
     //check the player state
     if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOUR hp is 0\n To continue you need to increase your hp";
+        cout<<"YOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... \n"; 
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getch();  // Wait for a key press
+        cout<<"going to your backpack...\n";
+        playerBackpack->consumeForSurvival();
     }
 
-    Backpack *playerBackpack;
-    Backpack *enemyBackpack;
     int choice;
 
     if ((rand() % 100) < 70) {
@@ -1131,7 +1216,7 @@ void playground() {
             cout << "   Level: " << humanEnemy->getLevel() << endl;
             cout << "   Stamina: " << humanEnemy->getStamina() << endl;
             cout << "   Health: " << humanEnemy->getHealthPoints() << endl << endl;
-            cout << "Press any key to Enter to fightground...";
+            cout << "PRESS ANY KEY TO ENTER THE FIGHTGROUND...";
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             getch();  // Wait for a key press
 
