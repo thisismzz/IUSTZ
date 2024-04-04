@@ -259,8 +259,12 @@ class HumanEnemy : public Human {
 
 class HE_View {
     public:
-        HE_View() {}
+        HE_View();
         void showInfo(HumanEnemy);
+        void updateHealth(string,int);     //prints the amount of heal
+        void updateStamina(string,int);    //prints the amount of increased strength
+        void attackView(string,Items);     //prints the weapon name that used to attack player
+
 };
 
 class HE_Controller {
@@ -319,7 +323,7 @@ class BZ_Controller {
     public:
         BZ_Controller(BasicZombie);
         ZombieState getState();
-        void bite();
+        void Attack();
         void showInfo();
 };
 
@@ -336,8 +340,8 @@ class AdvZombie : public Zombie {
     public:
         AdvZombie(string,int);
         AdvZombie(Zombie&);
-        void bite(Player) override;
-        void scratch(Player) override;
+        void bite() override;
+        void scratch() override;
 };
 
 class AZ_Controller {

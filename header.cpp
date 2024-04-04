@@ -734,10 +734,8 @@ Items* HE_Controller :: chooseWeapon() {
         return nullptr; // backpack is empty
     }
 
-    // Keep trying until we successfully get an item
-    while (true) {
-        int itemType = rand() % 3; // Randomly choose between 5 types of items
 
+        int itemType = rand() % 3; // Randomly choose between 5 types of items
         switch (itemType) {
             case 0: // Throwable
                 if (!backpack->ThrowableItems.empty()) {
@@ -762,7 +760,6 @@ Items* HE_Controller :: chooseWeapon() {
                 }
                 break;
         }
-    }
 }
 
 Food* HE_Controller :: chooseFood() {
@@ -788,13 +785,13 @@ void HE_Controller :: decision() {
     case HumanEnemyState::LOW_POWER:
         Food *fitem = chooseFood();
         fitem->use(model);
-        view.updateHealth(fitem->getStrength());
+        view.updateHealth(model.getName(),fitem->getStrength());
         break;
     
     case HumanEnemyState::LOW_HEALTH:
         Medicine *mitem = chooseMedicine();
         mitem->use(model);
-        view.updateStamina(mitem->getHeal());
+        view.updateStamina(model.getName(),mitem->getHeal());
         break;
 
     case HumanEnemyState::FIGHT:
@@ -802,19 +799,19 @@ void HE_Controller :: decision() {
         if(static_cast<WarmWeapon*>(weapon)){
             WarmWeapon *wweapon = static_cast<WarmWeapon*>(weapon);
             wweapon->Attack(model,*player);
-            view.attackView(*wweapon);
+            view.attackView(model.getName(),*wweapon);
         }
 
         if(static_cast<ColdWeapon*>(weapon)){
             ColdWeapon *cweapon = static_cast<ColdWeapon*>(weapon);
             cweapon->Attack(model,*player);
-            view.attackView(*cweapon);
+            view.attackView(model.getName(),*cweapon);
         }
 
         if(static_cast<Throwable*>(weapon)){
             Throwable *tweapon = static_cast<Throwable*>(weapon);
             tweapon->Throw(model,*player);
-            view.attackView(*tweapon);
+            view.attackView(model.getName(),*tweapon);
         }
         break;
     }
@@ -827,6 +824,8 @@ void HE_Controller :: showInfo(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
+HE_View::HE_View(){}
+
 void HE_View :: showInfo(HumanEnemy model){
     cout << "Name : " << model.getName() << endl;
     cout << "Level : " << model.getLevel() << endl;
@@ -835,6 +834,19 @@ void HE_View :: showInfo(HumanEnemy model){
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();  // Wait for a key press
 }
+
+void HE_View::updateHealth(string name,int amount) {
+    cout << name << "'s health increased for "<< amount << "HP\n";
+}
+
+void HE_View::updateStamina(string name,int amount) {
+    cout << name << "'s stamina increased for "<< amount << "STM\n";
+}
+
+void HE_View::attackView(string name,Items weapon) {
+    cout << name << "is attacking you by "<< weapon.getName() << "\n";
+}
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1784,17 +1796,21 @@ void battleGround_humanEnemy(){
     while(Enemy.getState()==HumanEnemyState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
+
+            cout<<"Your Turn:\n";
             showPlayerInfo();
             BattleMenu();
         }
         else{
         //enemy turn
+
+            cout<<"Enemy Turn:\n";
             Enemy.updateState();
             // Enemy.Attack(Enemy.chooseWeapon());
             Enemy.decision(); error 
             Enemy.showInfo();
         }
-        turn ++;
+        turn++;
     }
 }
 
