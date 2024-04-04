@@ -32,7 +32,14 @@ class WarmWeapon;
 class ColdWeapon; 
 class Throwable; 
 class Medicine; 
-class Food; 
+class Food;
+
+class HE_View;
+class HE_Controller;
+class BZ_Controller;
+class BZ_View;
+class AZ_Controller;
+class AZ_View;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -249,12 +256,14 @@ class HumanEnemy : public Human {
         void takeDamage(int) override;        //show damage amount
 };
 
-class HE_Controller {
+class HE_View {
 
 };
 
-class HE_View {
-
+class HE_Controller {
+    private:
+        HumanEnemy  HE;
+        
 };
 
 // *----------------------------------------------------------------*
@@ -300,7 +309,7 @@ class AdvZombie : public Zombie {
 };
 
 class AZ_Controller {
-
+    
 };
 
 class AZ_View {
@@ -488,9 +497,9 @@ void Show_Throwable_Items();
 void Show_Consumable_Items();
 void Shop_PermanentItems_Menu();
 void goodbye();
-void battleGround_humanEnemy(HumanEnemy);
-void battleGround_basicZombie(BasicZombie);
-void battleGround_advZombie(AdvZombie);
+void battleGround_humanEnemy();
+void battleGround_basicZombie();
+void battleGround_advZombie();
 void BattleMenu();
 Items* useWeapons();
 Items* useConsumableItems();

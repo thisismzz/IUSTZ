@@ -14,6 +14,9 @@ using namespace std;
 
 //*****************************
 Player* player = nullptr;
+HumanEnemy* humanEnemy=nullptr;
+BasicZombie* basicZombie=nullptr;
+AdvZombie* advZombie=nullptr;
 vector <string> characterTypes = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
 //*****************************
 
@@ -1214,7 +1217,7 @@ void playground() {
             //create random humanEnemy from characters
             int index = rand() % characterTypes.size();
             Human *character=Factory::createCharacter(characterTypes[index]);
-            HumanEnemy* humanEnemy = new HumanEnemy(*character,player->getLevel());
+            humanEnemy = new HumanEnemy(*character,player->getLevel());
 
             // Add items to the humanEnemy's backpack
             Backpack *bp = humanEnemy->getBackpack();
@@ -1246,7 +1249,7 @@ void playground() {
                 //fight with basic zombie
 
                 //create basic zombie
-                BasicZombie* basicZombie = Factory::createBasicZombie(player->getLevel());
+                basicZombie = Factory::createBasicZombie(player->getLevel());
 
                 //show enemy's info
                 cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
@@ -1264,7 +1267,7 @@ void playground() {
             //fight with advance zombie
 
                 //create advance zombie
-                AdvZombie* advZombie = Factory::createAdvanceZombie(player->getLevel());
+                advZombie = Factory::createAdvanceZombie(player->getLevel());
 
                 //show enemy's info
                 cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
@@ -1546,12 +1549,15 @@ void goodbye(){
     }
 }
 
-void battleGround_humanEnemy(HumanEnemy Enemy){
+void battleGround_humanEnemy(
+
+){
     int turn = 1;        //odd turn for player even turn for enemy
 
     while(Enemy.getState()==HumanEnemyState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
+            BattleMenu();
         
 
         }
@@ -1563,9 +1569,9 @@ void battleGround_humanEnemy(HumanEnemy Enemy){
     }
 }
 
-void battleGround_basicZombie(BasicZombie zombie){}
+void battleGround_basicZombie(){}
 
-void battleGround_advZombie(AdvZombie zombie){}
+void battleGround_advZombie(){}
 
 void BattleMenu() {
     int number;
@@ -1580,15 +1586,15 @@ void BattleMenu() {
             auto weapon = useWeapons();
             if (static_cast<WarmWeapon*>(weapon)){
                 wweapon = static_cast<WarmWeapon*>(weapon);
-                wweapon->Attack(*player,humanEnemy);
+                wweapon->Attack(*player,*humanEnemy);
             }
             else if (static_cast<ColdWeapon*>(weapon)){
                 cweapon = static_cast<ColdWeapon*>(weapon);
-                cweapon->Attack(*player,humanEnemy);
+                cweapon->Attack(*player,*humanEnemy);
             }
             else{
                 tweapon = static_cast<Throwable*>(weapon);
-                tweapon->Throw(*player,humanenmy);
+                tweapon->Throw(*player,*humanEnemy);
             }
             break;
             
@@ -1602,6 +1608,7 @@ void BattleMenu() {
                 Food* food = static_cast<Food*>(consumable);
                 food->use(*player);
             }
+            BattleMenu();
             break; 
 
         case 3: 
@@ -1626,6 +1633,7 @@ void BattleMenu() {
                 tweapon->gettwa().upgradeSkill(creditcard);
                 error!!!!!
             }
+            BattleMenu();
             break; 
 
         default:
