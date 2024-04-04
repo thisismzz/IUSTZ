@@ -236,7 +236,6 @@ class Player : public Human {
         void takeDamage(int) override;  //show detail of entry damage
         void newLife();     //set the state ALIVE
         PlayerState getState();
-        void showInfo();
 };
 
 // *----------------------------------------------------------------*
@@ -253,13 +252,15 @@ class HumanEnemy : public Human {
         HumanEnemyState state;
     public:
         HumanEnemy(Human&,int);
-        HumanEnemyState getState();
         void setState(HumanEnemyState);
+        HumanEnemyState getState();
         void takeDamage(int) override;        //show damage amount
 };
 
 class HE_View {
-
+    public:
+        HE_View() {}
+        void showInfo(HumanEnemy);
 };
 
 class HE_Controller {
@@ -267,19 +268,26 @@ class HE_Controller {
         HumanEnemy  model;
         HE_View view;
         Backpack* backpack;
+        void Attack(Items*);
     public:
         HE_Controller(HumanEnemy);
-        void updateState();
+        void updateState();      // Method to update the state of the human enemy
+        HumanEnemyState getState();
         Items* chooseWeapon();
-        void showInfo();         // Method to update the state of the human enemy
-        void Attack(Items*);
+        Food* chooseFood();
+        Medicine* chooseMedicine();
+        void showInfo();
+        void decision();
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
 enum class ZombieState{
     SCRATCH,BITE,DEFEATED,ALIVE
 };
+
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -289,6 +297,9 @@ class Zombie : public Person {
     public:
         Zombie(string,int);
         void takeDamage(int) override;     //show damage amount
+        ZombieState getState();
+        virtual void bite();
+        virtual void scratch();
 };
 
 // *----------------------------------------------------------------*
@@ -298,14 +309,24 @@ class BasicZombie : public Zombie {
     public:
         BasicZombie(string,int);
         BasicZombie(Zombie&);
+        void bite() override;
 };
 
 class BZ_Controller {
-
+    private:
+        BasicZombie model;
+        BZ_View view;
+    public:
+        BZ_Controller(BasicZombie);
+        ZombieState getState();
+        void bite();
+        void showInfo();
 };
 
 class BZ_View {
-
+    public:
+        BZ_View() {}
+        void showInfo(BasicZombie);
 };
 
 // *----------------------------------------------------------------*
@@ -315,6 +336,8 @@ class AdvZombie : public Zombie {
     public:
         AdvZombie(string,int);
         AdvZombie(Zombie&);
+        void bite(Player) override;
+        void scratch(Player) override;
 };
 
 class AZ_Controller {
@@ -463,7 +486,8 @@ class Medicine : public Items {
         static void showItems();                     //show the available items to buy
         void buy(Player&, int);
         void addToVectors() override;
-        void use(Human&);
+        void use(Human);
+        int getHeal();
         friend ostream& operator<<(ostream&,Medicine&);
         friend void Show_Consumable_Items();
         friend void playground();
@@ -483,7 +507,8 @@ class Food : public Items {
         static void showItems();                     //show the available items to buy
         void buy(Player&, int);
         void addToVectors() override;
-        void use(Human&);
+        void use(Human);
+        int getStrength();
         friend ostream& operator<<(ostream&, Food&);
         friend void Show_Consumable_Items();
         friend void playground();

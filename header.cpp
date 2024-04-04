@@ -78,6 +78,7 @@ int Stamina::getMaximumStamina(){
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 Experience::Experience(Player *h):humanObj(h),maximum(100),currentExp(0){} // Constructor
 
@@ -140,6 +141,7 @@ int Skills::getCurrentSkill(){
 
 
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 WarmWeaponAbility::WarmWeaponAbility(int n):Skills(n,n*10){} // Constructor
 
@@ -147,6 +149,7 @@ ColdWeaponAbility::ColdWeaponAbility(int n):Skills(n,n*15){} // Constructor
 
 ThrowableWeaponAbility::ThrowableWeaponAbility(int n):Skills(n,n*20){} // Constructor
 
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -184,6 +187,7 @@ void Backpack::addColdWeaponItem(const ColdWeapon coldWeaponItem){
 
 
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 bool Backpack::warmWeaponExistence(const WarmWeapon warmWeaponItem){
     for (const auto &item : WarmWeaponItems) {
@@ -203,6 +207,7 @@ bool Backpack::coldWeaponExistence(const ColdWeapon coldWeaponItem){
     return false; // Returns false if cold weapon item does not exist
 }
 
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack::removeFoodItem(const Food foodItem) {
@@ -235,6 +240,7 @@ void Backpack::useThrowableItemCount(const Throwable throwableItem) {
         removeThrowableItem(throwableItem); // Removes throwable item if count is 0
 }
 
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack::showItems(){
@@ -285,6 +291,8 @@ void Backpack::showItems(){
     }
 }
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 void Backpack::showWarmWeaponItems(){
     int index = 1;
@@ -329,6 +337,9 @@ void Backpack::showFoodItems(){
         index++;
     }
 }
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 void Backpack::consumeForSurvival() {
     system("cls");
@@ -379,6 +390,7 @@ void Backpack::consumeForSurvival() {
     }
 }
 
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 Items* Backpack::useWeapons() {
@@ -469,7 +481,9 @@ Items* Backpack::useWeapons() {
     }
     return nullptr;
 }
-    
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 Items* Backpack::useConsumableItems() {
     int number;
@@ -548,6 +562,7 @@ Items* Backpack::useConsumableItems() {
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 BankAccount::BankAccount(int n){
     this->balance = n; // Constructor that initializes balance to n
@@ -609,6 +624,7 @@ int Human::getStamina() {
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 BankAccount* Player::getBankAccount(){
     BankAccount* p = &bankAccount;
@@ -660,28 +676,18 @@ PlayerState Player::getState(){
     return state;
 }
 
-void Player :: showInfo() {
-    cout << "Name : " << player->getName() << endl;
-    cout << "Level : " << player->getLevel() << endl;
-    cout << "Experience : " << player->getExperience() << endl;
-    cout << "Stamina : " << player->getStamina() << endl;
-    cout << "Health : " << player->getHealthPoints() << endl;
-    cout << "Money : " << player->getMoney() << " $" << endl << endl;
-    cout << "Press any key to go back...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();  // Wait for a key press
-}
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 HumanEnemy::HumanEnemy(Human& human,int l=1): Human(human.getName(), human.getStamina(),l),state(HumanEnemyState::FIGHT){} // Constructor that initializes name and stamina from a Human object
 
-HumanEnemyState HumanEnemy::getState(){
-    return state;
-}
-
 void HumanEnemy::setState(HumanEnemyState newState){
     state = newState;
+}
+
+HumanEnemyState HumanEnemy::getState(){
+    return state;
 }
 
 void HumanEnemy::takeDamage(int amount) {
@@ -695,6 +701,7 @@ void HumanEnemy::takeDamage(int amount) {
     
 }
 
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 HE_Controller :: HE_Controller (HumanEnemy HE) : model(HE) , backpack(HE.getBackpack()) , view(HE_View())  {}
@@ -712,6 +719,10 @@ void HE_Controller::updateState() {
 
     else
         model.setState(HumanEnemyState :: FIGHT);
+}
+
+HumanEnemyState HE_Controller::getState(){
+    return model.getState();
 }
 
 Items* HE_Controller :: chooseWeapon() {
@@ -754,12 +765,78 @@ Items* HE_Controller :: chooseWeapon() {
     }
 }
 
-void HE_Controller :: showInfo(){
-    cout << "Name : " << HE->getName() << endl;
-    cout << "Level : " << HE->getLevel() << endl;
-    cout << "Stamina : " << HE->getStamina() << endl;
-    cout << "Health : " << HE->getHealthPoints() << endl << endl;
+Food* HE_Controller :: chooseFood() {
+    if (!backpack->FoodItems.empty()) {
+        int index = rand() % backpack->FoodItems.size();
+        auto it = next(backpack->FoodItems.begin(),index);;
+        Food *item = new Food(it->first);
+        return item;
+    }
 }
+
+Medicine* HE_Controller :: chooseMedicine() {
+    if (!backpack->MedicineItems.empty()) {
+        int index = rand() % backpack->MedicineItems.size();
+        auto it = next(backpack->MedicineItems.begin(),index);
+        Medicine *item = new Medicine(it->first);
+        return item;
+    }
+}
+
+void HE_Controller :: decision() {
+    switch(model.getState()){
+    case HumanEnemyState::LOW_POWER:
+        Food *fitem = chooseFood();
+        fitem->use(model);
+        view.updateHealth(fitem->getStrength());
+        break;
+    
+    case HumanEnemyState::LOW_HEALTH:
+        Medicine *mitem = chooseMedicine();
+        mitem->use(model);
+        view.updateStamina(mitem->getHeal());
+        break;
+
+    case HumanEnemyState::FIGHT:
+        Items* weapon = chooseWeapon();
+        if(static_cast<WarmWeapon*>(weapon)){
+            WarmWeapon *wweapon = static_cast<WarmWeapon*>(weapon);
+            wweapon->Attack(model,*player);
+            view.attackView(*wweapon);
+        }
+
+        if(static_cast<ColdWeapon*>(weapon)){
+            ColdWeapon *cweapon = static_cast<ColdWeapon*>(weapon);
+            cweapon->Attack(model,*player);
+            view.attackView(*cweapon);
+        }
+
+        if(static_cast<Throwable*>(weapon)){
+            Throwable *tweapon = static_cast<Throwable*>(weapon);
+            tweapon->Throw(model,*player);
+            view.attackView(*tweapon);
+        }
+        break;
+    }
+}
+
+void HE_Controller :: showInfo(){
+    view.showInfo(model);
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+void HE_View :: showInfo(HumanEnemy model){
+    cout << "Name : " << model.getName() << endl;
+    cout << "Level : " << model.getLevel() << endl;
+    cout << "Stamina : " << model.getStamina() << endl;
+    cout << "Health : " << model.getHealthPoints() << endl << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getch();  // Wait for a key press
+}
+
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -770,23 +847,98 @@ void Zombie::takeDamage(int amount) {
         cout << name << " has been defeated!" << endl; // Prints a message if the zombie has been defeated
         state=ZombieState::DEFEATED;
     } 
-
-    else 
+    else {
         cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl; // Prints a message if the zombie takes damage
-    
+    }
 }
 
+ZombieState Zombie::getState(){
+    return state;
+}
+
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
 
+void BasicZombie :: bite() override{
+    //bite player
+}
+
+// *----------------------------------------------------------------*
+
+BZ_Controller :: BZ_Controller (BasicZombie BZ) : model(BZ) , view(BZ_View())  {}
+
+ZombieState BZ_Controller::getState(){
+    return model.getState();
+}
+
+v
+oi BZ_Controller :: bite() {
+    model.bite();
+}d
+ 
+void BZ_Controller :: showInfo() {
+    view.showInfo(model);
+}
+
+// *----------------------------------------------------------------*
+
+void BZ_View :: showInfo(BasicZombie model) {
+    cout << "Name : " << model.getName() << endl;
+    cout << "Level : " << model.getLevel() << endl;
+    cout << "Health : " << model.getHealthPoints() << endl << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getch();  // Wait for a key press
+}
+
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 AdvZombie::AdvZombie(Zombie & zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 AdvZombie::AdvZombie(string n,int l) : Zombie(n,l){}
+
+void AdvZombie :: bite() override {
+    
+}
+
+void AdvZombie :: scratch() override {
+
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+AZ_Controller :: AZ_Controller (AdvZombie AZ) : model(AZ) , view(AZ_View())  {}
+
+ZombieState AZ_Controller::getState(){
+    return model.getState();
+}
+
+void AZ_Controller :: bite() {
+    model.bite();
+}
+
+void AZ_Controller :: scratch() {
+    model.scratch();
+}
+ 
+void AZ_Controller :: showInfo() {
+    view.showInfo(model);
+}
+
+// *----------------------------------------------------------------*
+
+void AZ_View :: showInfo(AdvZombie model) {
+    cout << "Name : " << model.getName() << endl;
+    cout << "Level : " << model.getLevel() << endl;
+    cout << "Health : " << model.getHealthPoints() << endl << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getch();  // Wait for a key press
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1068,10 +1220,14 @@ void Medicine::addToVectors(){
     shop_items.push_back(*this); // Adds this medicine to the items vector
 }
 
-void Medicine::use(Human& human){
+void Medicine::use(Human human){
     human.hp.increaseHealth(heal); // Increases the human's health
     Backpack *b=human.getBackpack();
     b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
+}
+
+int Medicine::getHeal() {
+    return heal;
 }
 
 ostream& operator<<(ostream& os,Medicine& obj) {
@@ -1112,10 +1268,14 @@ void Food::addToVectors(){
     shop_items.push_back(*this); // Adds this food to the items vector
 }
 
-void Food::use(Human& human){
+void Food::use(Human human){
     human.stamina.increaseStamina(strength); // Increases the human's stamina
     Backpack *b=human.getBackpack();
     b->useFoodItemCount(*this); // Uses a food item from the human's backpack
+}
+
+int Food::getStrength (){
+    return strength;
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
@@ -1304,7 +1464,7 @@ void playground() {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
 
-            battleGround_humanEnemy(*humanEnemy);
+            battleGround_humanEnemy();
         }
 
         else{
@@ -1325,7 +1485,7 @@ void playground() {
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
 
-                battleGround_basicZombie(*basicZombie);
+                battleGround_basicZombie();
             }
 
             else{
@@ -1343,7 +1503,7 @@ void playground() {
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
 
-                battleGround_advZombie(*advZombie);
+                battleGround_advZombie();
             }
         }
     }
@@ -1597,9 +1757,10 @@ void Shop_PermanentItems_Menu() {
     }
 }
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
 void goodbye(){
-
-
     if(player->getState()==PlayerState::DEFEATED){
         cout<<"GAME OVER!";
         exit(0);
@@ -1614,29 +1775,58 @@ void goodbye(){
     }
 }
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
 void battleGround_humanEnemy(){
     int turn = 1;        //odd turn for player even turn for enemy
     HE_Controller Enemy(*humanEnemy);
     while(Enemy.getState()==HumanEnemyState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
+            showPlayerInfo();
             BattleMenu();
-        
-
         }
-
         else{
         //enemy turn
-            Enemy.Attack(Enemy.chooseWeapon());
+            Enemy.updateState();
+            // Enemy.Attack(Enemy.chooseWeapon());
+            Enemy.decision(); error 
             Enemy.showInfo();
-            player.showInfo();
         }
+        turn ++;
     }
 }
 
-void battleGround_basicZombie(){}
+// *----------------------------------------------------------------*
+
+void battleGround_basicZombie(){
+    int turn = 1;        //odd turn for player even turn for enemy
+    BZ_Controller Enemy(*basicZombie);
+    while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
+        if(turn%2!=0){
+        //player turn
+            showPlayerInfo();
+            BattleMenu();
+        }
+        else{
+        //enemy turn
+            Enemy.updateState();
+            // Enemy.Attack(Enemy.chooseWeapon());
+            Enemy.decision(); error 
+            Enemy.showInfo();
+        }
+        turn ++;
+    }
+}
+
+// *----------------------------------------------------------------*
 
 void battleGround_advZombie(){}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 void BattleMenu() {
     int number;
