@@ -144,6 +144,13 @@ class Backpack {
         void useMedicineItemCount(const Medicine specificItem);
         void useThrowableItemCount(const Throwable specificItem);
         void showItems();
+        void showWarmWeaponItems();
+        void showColdWeaponItems();
+        void showThrowableItems();
+        void showMedicineItems();
+        void showFoodItems();
+        Items* useWeapons();
+        Items* useConsumableItems();
 };
 
 // *----------------------------------------------------------------*
@@ -241,6 +248,14 @@ class HumanEnemy : public Human {
         void takeDamage(int) override;        //show damage amount
 };
 
+class HE_Controller {
+
+};
+
+class HE_View {
+
+};
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 enum class ZombieState{
@@ -266,6 +281,14 @@ class BasicZombie : public Zombie {
         BasicZombie(Zombie&);
 };
 
+class BZ_Controller {
+
+};
+
+class BZ_View {
+
+};
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -273,6 +296,14 @@ class AdvZombie : public Zombie {
     public:
         AdvZombie(string,int);
         AdvZombie(Zombie&);
+};
+
+class AZ_Controller {
+
+};
+
+class AZ_View {
+    
 };
 
 // *----------------------------------------------------------------*
@@ -352,6 +383,8 @@ class WarmWeapon : public Permanent {
         friend ostream& operator<<(ostream&, WarmWeapon&);
         friend void Show_Permanent_Items();
         friend void playground();
+        friend void Shop_PermanentItems_Menu();
+        WarmWeaponAbility getwwa();
 };
 vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
@@ -371,6 +404,8 @@ class ColdWeapon : public Permanent {
         friend ostream& operator<<(ostream&, ColdWeapon&);
         friend void Show_Permanent_Items();
         friend void playground();
+        friend void Shop_PermanentItems_Menu();
+        ColdWeaponAbility getcwa();
 };
 vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
 
@@ -392,6 +427,7 @@ class Throwable : public Items {
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
         friend void playground();
+        ThrowableWeaponAbility gettwa();
 };
 vector <Throwable> Throwable::shop_items_throwable;
 
@@ -440,21 +476,26 @@ vector <Food> Food::shop_items_food;
 void printWithDelay(string);
 void getUserInfo(int&, string&, string&);
 void showPlayerInfo();
+void createItem(); 
 void playground();
 void Menu();
 void ShopMenu();
 void Show_Permanent_Items();
 void Show_Throwable_Items();
 void Show_Consumable_Items();
+void Shop_PermanentItems_Menu();
+void goodbye();
+void battleGround_humanEnemy(HumanEnemy);
+void battleGround_basicZombie(BasicZombie);
+void battleGround_advZombie(AdvZombie);
+void BattleMenu();
+Items* useWeapons();
+Items* useConsumableItems();
 void createWarmWeapons();
 void createColdWeapons();
 void createThrowableItems();
 void createMedicines();
 void createFoods();
-void goodbye();
-void battleGround_humanEnemy(HumanEnemy);
-void battleGround_basicZombie(BasicZombie);
-void battleGround_advZombie(AdvZombie);
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

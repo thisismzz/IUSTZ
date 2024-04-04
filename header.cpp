@@ -239,7 +239,7 @@ void Backpack::showItems(){
     if(!ColdWeaponItems.empty()){
         index=1;
         for(auto i:ColdWeaponItems){
-            cout<<index<<")   "<<"type : "<<i.getType()<<"\tname : "<<i.getName()<<'\n'; // Prints cold weapon items
+            cout << index << ")   " << "type : " << i.getType() << "\tname : " << i.getName() << '\n'; // Prints cold weapon items
             index++;
         }
     }
@@ -282,6 +282,203 @@ void Backpack::showItems(){
     }
 }
 
+
+void Backpack::showWarmWeaponItems(){
+    int index = 1;
+    for(auto i: WarmWeaponItems){
+        cout << index << ")" << i.getName() << '\n';
+        index++;
+    }
+}
+
+void Backpack::showColdWeaponItems(){
+    int index = 1;
+    for(auto i: ColdWeaponItems){
+        cout << index << ")" << i.getName() << '\n'; 
+        index++;
+    }
+}
+
+void Backpack::showThrowableItems(){
+    int index = 1;
+    for(auto pair : ThrowableItems){
+    Throwable item = pair.first;
+    cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n';
+    index++;
+    }
+
+}
+
+void Backpack::showMedicineItems(){}
+
+void Backpack::showFoodItems(){}
+
+// *----------------------------------------------------------------*
+
+Items* Backpack::useWeapons() {
+    int number;
+    int index;
+    int ChosenWeapon;
+    cout << "Enter the index of the Weapon you want to attack with:" << endl 
+    << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl << "[4].Back" << endl;
+    cin >> number;
+    switch(number){
+        case 1: 
+            if(!WarmWeaponItems.empty()){
+                while(true){
+                    cout << "Choose the WarmWeapon you want to attack with:" << endl;
+                    index = 1;
+                    showWarmWeaponItems();    // Prints warm weapon items
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= WarmWeaponItems.size()) {
+                        WarmWeapon *wweapon=new WarmWeapon(WarmWeaponItems.at(ChosenWeapon-1));
+                        //cout << *wweapon;
+                        return wweapon;
+                    } 
+                    else {
+                        cout << "Invalid index. Please try again." << endl;
+                    }
+                }
+            }
+            else{
+                cout << "No WarmWeapon exists!" << endl;
+                useWeapons();
+            }
+            break;
+
+        case 2:
+            if(!ColdWeaponItems.empty()){
+                while(true){
+                    cout << "Choose the ColdWeapon you want to attack with:" << endl;
+                    index = 1;
+                    showColdWeaponItems();      // Prints cold weapon items
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= ColdWeaponItems.size()) {
+                        ColdWeapon* cweapon=new ColdWeapon(ColdWeaponItems.at(ChosenWeapon-1));
+                        //cout << *cweapon;
+                        return cweapon;
+                    }
+                    else {
+                        cout << "Invalid index. Please try again." << endl;
+                    }
+                }
+            }
+            else{
+                cout << "No ColdWeapon exists!" << endl;
+                useWeapons();
+            }
+            break;
+
+        case 3:
+            if(!ThrowableItems.empty()){
+                while(true){
+                    cout << "Choose the ThrowableWeapon you want to attack with:" << endl;
+                    index = 1;
+                    showThrowableItems();      // Prints throwable items
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
+                        auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
+                        Throwable* tweapon = new Throwable(iter->first);
+                        //cout << *tweapon;
+                        return tweapon;
+                    }
+                    else {
+                        cout << "Invalid index. Please try again." << endl;
+                        useWeapons();
+                    }
+                }
+            }
+            else{
+                cout << "No ThrowableWeapon exists!" << endl;
+            }
+            break;
+
+        case 4:
+            BattleMenu();
+            break;
+
+        default:
+            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
+            useWeapons();
+    }
+    return nullptr;
+}
+    
+
+Items* Backpack::useConsumableItems() {
+    int number;
+    int index;
+    int ChosenConsumableItem;
+    cout << "Enter the index of the Consumable Item you want to use:" << endl 
+    << "[1].Medicine" << endl << "[2].Food" << endl << "[3].Back" << endl;
+    cin >> number;
+    switch(number){
+        case 1: 
+            if(!MedicineItems.empty()){
+                while(true){
+                    cout << "Choose the Medicine you want to use:" << endl;
+                    index = 1;
+                    for(auto i: MedicineItems){
+                        Medicine item = i.first;
+                        cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints medicine items
+                        index++;
+                    }
+                    cin >> ChosenConsumableItem;
+                    if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
+                        auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
+                        Medicine* medicine = new Medicine(iter->first);
+                        //cout << *medicine;
+                        return medicine;
+                    }
+                    else {
+                        cout << "Invalid index. Please try again." << endl;
+                    }
+                }
+            }
+            else{
+                cout << "No Medicine exists!" << endl;
+                useConsumableItems();
+            }
+            break;
+
+        case 2:
+            if(!FoodItems.empty()){
+                while(true){
+                    cout << "Choose the Food you want to use:" << endl;
+                    index = 1;
+                    for(auto i: FoodItems) {
+                        Food item = i.first;
+                        cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints food items
+                        index++;
+                    }
+                    cin >> ChosenConsumableItem;
+                    if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
+                        auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
+                        Food* food = new Food(iter->first);
+                        //cout << *food;
+                        return food;
+                    }
+                    else{
+                        cout << "Invalid index. Please try again." << endl;
+                    }
+                }
+            }
+            else{
+                cout << "No Food exists!" << endl;
+                useConsumableItems();
+            }
+            break;
+
+        case 3:
+            BattleMenu();
+            break;
+
+        default:
+            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
+            useConsumableItems();
+    }
+    return nullptr;
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -553,6 +750,10 @@ ostream& operator<<(ostream &os,WarmWeapon &obj){
     return os; // Prints the warm weapon's details
 }
 
+WarmWeaponAbility WarmWeapon::getwwa(){
+    return wwa;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -627,6 +828,9 @@ ostream& operator<<(ostream& os,ColdWeapon& obj){
     return os; // Prints the cold weapon's details
 }
 
+ColdWeaponAbility ColdWeapon::getcwa(){
+    return cwa;
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -690,6 +894,10 @@ void Throwable::Throw(Human attacker, Human attacked){
 ostream& operator<<(ostream& os,Throwable& obj) {
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
     return os; // Prints the throwable weapon's details
+}
+
+ThrowableWeaponAbility Throwable::gettwa(){
+    return twa;
 }
 
 // *----------------------------------------------------------------*
@@ -876,12 +1084,20 @@ void showPlayerInfo() {
     getch();  // Wait for a key press
 }
 
+void createItem() {
+    createWarmWeapons();
+    createColdWeapons();
+    createThrowableItems();
+    createMedicines();
+    createFoods();
+}
+
 void playground() {
     system("cls");
 
     //check the player state
     if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOUR hp is 0\n To continue you need to increase your hp"; 
+        cout<<"YOUR hp is 0\n To continue you need to increase your hp";
     }
 
     Backpack *playerBackpack;
@@ -978,6 +1194,15 @@ void Menu() {
     int age;
     string gender,username;
     getUserInfo(age , gender , username);
+
+    system("cls");
+
+    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nIn this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
+    cout << endl << "Press any key to continue...";
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    getch();
+
+    system("cls");
     
     // Creating the Player's Character Choices
     int chosenIndex;
@@ -985,7 +1210,7 @@ void Menu() {
 
     // Show all the different options a user has for the characters
     Human *character;
-    
+    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
     for (int i = 0; i < 6; i++) {
         character = Factory::createCharacter(characterTypes[i]);
         cout << i+1 << ". " << characterTypes[i] << endl;
@@ -994,9 +1219,9 @@ void Menu() {
     }
 
     // Get the user's choice
-    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
     cin >> chosenIndex;
     chosenIndex--;  // Adjust for 0-based indexing
+
     system("cls");
 
     // Create Player Character
@@ -1012,45 +1237,21 @@ void Menu() {
     cout << "\t" << "Stamina : " << player->getStamina() << endl;
     cout << "\t" << "Health : " << player->getHealthPoints() << endl;
     cout << "\t" << "Money : " << money[chosenIndex] << " $" << endl << endl;
+
+    cout << "Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with." << endl;
     cout << "Press any key to continue...";
     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     getch();  // Wait for a key press
-    
-    system("cls");
 
-    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nIn this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
-    cout << endl << "Press any key to continue...";
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    getch();
-
-    system("cls");
-
-    // *----------------------------------------------------------------*
-    // *----------------------------------------------------------------*
-    // *----------------------------------------------------------------*
-
-    int number = 0;
-    while(number != 3) {
-        cout << "[1] : SHOW PLAYER INFO" << endl;
-        cout << "[2] : CONTINUE THE GAME" << endl;
-        cout << "[3] : Shop" << endl;
-        cout << "[4] : QUIT THE GAME" << endl;
-        cout << "Choose One Of The Options Above : ";
-        cin >> number;
-        switch(number) {
-            case 1 : showPlayerInfo(); break;
-            case 2 : playground(); break;
-            case 3 : ShopMenu(); break;
-            case 4 : goodbye(); break;
-        }
-        system("cls");
-    }
+    createItem();
+    Shop_PermanentItems_Menu();
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void ShopMenu(){
+void ShopMenu() {
     while(true){
         system("cls");
         int number;
@@ -1083,7 +1284,7 @@ void ShopMenu(){
     }
 }
 
-void Show_Permanent_Items(){
+void Show_Permanent_Items() {
     system("cls");
     int number,item;
     WarmWeapon *wweapon;
@@ -1122,7 +1323,7 @@ void Show_Permanent_Items(){
     }
 }
 
-void Show_Throwable_Items(){
+void Show_Throwable_Items() {
     system("cls");
     int item,quantity;
     Throwable *tweapon;
@@ -1140,7 +1341,7 @@ void Show_Throwable_Items(){
     tweapon->buy(*player,quantity); // Buys a throwable item
 }
 
-void Show_Consumable_Items(){
+void Show_Consumable_Items() {
     system("cls");
     int number,item,quantity;
     Medicine *drug;
@@ -1182,6 +1383,51 @@ void Show_Consumable_Items(){
     }
 }
 
+void Shop_PermanentItems_Menu() {
+    system("cls");
+    int number,item;
+    WarmWeapon *wweapon;
+    ColdWeapon *cweapon;
+    cout << "You enter the shop to buy atleast one Permanent Item to fight with." << endl << "What do you want to buy?" << "(your money : " << player->getMoney() << ")" << endl
+    << "Permanent Items:" << endl << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl;
+    cin >> number;
+    switch(number){
+        case 1: 
+            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
+            WarmWeapon::showItems(); // Shows warm weapons
+            cout << "[0] : Back" << endl;
+            cout << "which one do you want to buy?" << endl;
+            cin >> item;
+            if ( item == 0) {
+                Shop_PermanentItems_Menu();
+            }
+            wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
+            wweapon->buy(*player); // Buys a warm weapon
+            cout << "Ok, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want." << endl;
+            cout << "Press any key to continue shopping...";
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            getch();  // Wait for a key press
+            ShopMenu();
+        
+        case 2:
+            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
+            ColdWeapon::showItems(); // Shows cold weapons
+            cout << "[0] : Back" << endl;
+            cout << "which one do you want to buy?" << endl;
+            cin >> item;
+            if ( item == 0) {
+                Shop_PermanentItems_Menu();
+            }
+            cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
+            cweapon->buy(*player); // Buys a cold weapon
+            cout << "Ok, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want." << endl;
+            cout << "Press any key to continue shopping...";
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            getch();  // Wait for a key press
+            ShopMenu();
+    }
+}
+
 void goodbye(){
     cout<<"Really?\n";
     Sleep(1000);
@@ -1212,6 +1458,72 @@ void battleGround_basicZombie(BasicZombie zombie){}
 
 void battleGround_advZombie(AdvZombie zombie){}
 
+void BattleMenu() {
+    int number;
+    cout << "What do you want to do? (Attack ends your turn.)" << endl
+    << "[1].Attack" << endl << "[2].BackPack" << endl << "[3].Player Info" << endl << "[4].Upgrade Weapon's Skill" << endl ;
+    cin >> number;
+    WarmWeapon* wweapon;
+    ColdWeapon* cweapon;
+    Throwable* tweapon;
+    switch(number){
+        case 1: 
+            auto weapon = useWeapons();
+            if (static_cast<WarmWeapon*>(weapon)){
+                wweapon = static_cast<WarmWeapon*>(weapon);
+                wweapon->Attack(*player,humanEnemy);
+            }
+            else if (static_cast<ColdWeapon*>(weapon)){
+                cweapon = static_cast<ColdWeapon*>(weapon);
+                cweapon->Attack(*player,humanEnemy);
+            }
+            else{
+                tweapon = static_cast<Throwable*>(weapon);
+                tweapon->Throw(*player,humanenmy);
+            }
+            break;
+            
+        case 2:
+            auto consumable = useConsumableItems();
+            if (static_cast<Medicine*>(consumable)){
+                Medicine* medicine = static_cast<Medicine*>(consumable);
+                medicine->use(*player);
+            }
+            else{
+                Food* food = static_cast<Food*>(consumable);
+                food->use(*player);
+            }
+            break; 
+
+        case 3: 
+            showPlayerInfo();
+            break; 
+
+        case 4:
+            BankAccount* creditcard = player->getBankAccount();
+            auto chosenweapon = useWeapons();
+            if (static_cast<WarmWeapon*>(chosenweapon)){
+                WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
+                wweapon->getwwa().upgradeSkill(creditcard);
+                error!!!!!
+            }     
+            else if (static_cast<ColdWeapon*>(chosenweapon)){
+                ColdWeapon* cweapon = static_cast<ColdWeapon*>(chosenweapon);
+                cweapon->getcwa().upgradeSkill(creditcard);
+                error!!!!!
+            }
+            else{
+                Throwable* tweapon = static_cast<Throwable*>(chosenweapon);
+                tweapon->gettwa().upgradeSkill(creditcard);
+                error!!!!!
+            }
+            break; 
+
+        default:
+            cout << "Invalid choice. Please choose a number between 1 and 4." << endl;
+            BattleMenu(); 
+    }
+}
 
 
 
