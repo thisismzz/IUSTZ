@@ -959,13 +959,13 @@ void playground() {
 
     Backpack *playerBackpack = player->getBackpack();
     Backpack *enemyBackpack;
-    BankAccount *creditCard = player->getBankAccount();
 
     //check the player state
     if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... "; 
+        cout<<"YOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... \n"; 
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         getch();  // Wait for a key press
+        cout<<"going to your backpack...\n";
         playerBackpack->consumeForSurvival();
     }
 
