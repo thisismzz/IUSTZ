@@ -378,8 +378,7 @@ Items* Backpack::useWeapons() {
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
                         auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
-                        Throwable chosenThrowable = iter->first;
-                        Throwable* tweapon = new Throwable(chosenThrowable);
+                        Throwable* tweapon = new Throwable(iter->first);
                         //cout << *tweapon;
                         return tweapon;
                     }
@@ -415,25 +414,25 @@ Items* Backpack::useConsumableItems() {
     cin >> number;
     switch(number){
         case 1: 
-            cout << "Choose the Medicine you want to use:" << endl;
             if(!MedicineItems.empty()){
-                index = 1;
-                for(auto i: MedicineItems){
-                    Medicine item = i.first;
-                    cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints medicine items
-                    index++;
-                }
-                cin >> ChosenConsumableItem;
-                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
-                    auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
-                    Medicine chosenMedicine = iter->first;
-                    Medicine* medicine = new Medicine(chosenMedicine);
-                    //cout << *medicine;
-                    return medicine;
-                }
-                else {
-                    cout << "Invalid index. Please try again." << endl;
-                    useConsumableItems();
+                while(true){
+                    cout << "Choose the Medicine you want to use:" << endl;
+                    index = 1;
+                    for(auto i: MedicineItems){
+                        Medicine item = i.first;
+                        cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints medicine items
+                        index++;
+                    }
+                    cin >> ChosenConsumableItem;
+                    if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
+                        auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
+                        Medicine* medicine = new Medicine(iter->first);
+                        //cout << *medicine;
+                        return medicine;
+                    }
+                    else {
+                        cout << "Invalid index. Please try again." << endl;
+                    }
                 }
             }
             else{
@@ -443,25 +442,25 @@ Items* Backpack::useConsumableItems() {
             break;
 
         case 2:
-            cout << "Choose the Food you want to use:" << endl;
             if(!FoodItems.empty()){
-                index = 1;
-                for(auto i: FoodItems) {
-                    Food item = i.first;
-                    cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints food items
-                    index++;
-                }
-                cin >> ChosenConsumableItem;
-                if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
-                    auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
-                    Food chosenFood = iter->first;
-                    Food* food = new Food(chosenFood);
-                    //cout << *food;
-                    return food;
-                }
-                else{
-                    cout << "Invalid index. Please try again." << endl;
-                    useConsumableItems();
+                while(true){
+                    cout << "Choose the Food you want to use:" << endl;
+                    index = 1;
+                    for(auto i: FoodItems) {
+                        Food item = i.first;
+                        cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints food items
+                        index++;
+                    }
+                    cin >> ChosenConsumableItem;
+                    if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
+                        auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
+                        Food* food = new Food(iter->first);
+                        //cout << *food;
+                        return food;
+                    }
+                    else{
+                        cout << "Invalid index. Please try again." << endl;
+                    }
                 }
             }
             else{
