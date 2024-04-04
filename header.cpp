@@ -309,9 +309,72 @@ void Backpack::showThrowableItems(){
 
 }
 
-void Backpack::showMedicineItems(){}
+void Backpack::showMedicineItems(){
+    int index = 1;
+    for(auto pair : MedicineItems){
+        Medicine item = pair.first;
+        cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n';
+        index++;
+    }
+}
 
-void Backpack::showFoodItems(){}
+void Backpack::showFoodItems(){
+    int index = 1;
+    for(auto pair : FoodItems){
+        Food item = pair.first;
+        cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n';
+        index++;
+    }
+}
+
+void Backpack::consumeForSurvival() {
+    system("cls");
+
+    if(MedicineItems.empty()){
+        cout << "No medicine items left in the backpack." << endl;
+        medicineMenu();
+    }
+
+    cout << "Here are the available medicine items in the backpack:" << endl;
+    int index = 1;
+    vector<Medicine> medicineVector;
+    for(auto i:MedicineItems){
+        Medicine item = i.first;
+        cout << index << ")   " << "\tname : " << item.getName() << "\tstock : " << i.second << '\n'; // Prints medicine items
+        medicineVector.push_back(item);
+        index++;
+    }
+
+    int choice;
+    cout << "Enter the number of the medicine item you want to use: ";
+    cin >> choice;
+
+    if(choice < 1 || choice > medicineVector.size()){
+        cout << "INVALID CHOICE. PLEASE ENTER A VALID NUMBER." << endl;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getch();  // Wait for a key press
+        consumeForSurvival();
+    }
+
+    int quantity;
+    cout << "ENTER THE QUANTITY OF THE MEDICINE ITEM YOU WANT TO USE: ";
+    cin >> quantity;
+
+    Medicine chosenMedicine = medicineVector[choice - 1];
+    if(MedicineItems[chosenMedicine] < quantity){
+        cout << "Not enough stock. You only have " << MedicineItems[chosenMedicine] << "." << endl;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getch();  // Wait for a key press
+        consumeForSurvival();
+    } 
+    else {
+        for(int i = 0; i < quantity; i++){
+            chosenMedicine.use(*player);
+        }
+        cout << "You used " << quantity << " many " << chosenMedicine.getName() << " items." << endl;
+        player->newLife();   //change the state from DEFEATED to ALIVE
+    }
+}
 
 // *----------------------------------------------------------------*
 
@@ -1121,54 +1184,7 @@ void medicineMenu() {
     } 
     else {
         //the Player Looses.
-        lost;
-    }
-}
-
-void Backpack::consumeForSurvival() {
-    system("cls");
-
-    if(MedicineItems.empty()){
-        cout << "No medicine items left in the backpack." << endl;
-        medicineMenu();
-    }
-
-    cout << "Here are the available medicine items in the backpack:" << endl;
-    int index = 1;
-    vector<Medicine> medicineVector;
-    for(auto i:MedicineItems){
-        Medicine item = i.first;
-        cout << index << ")   " << "\tname : " << item.getName() << "\tstock : " << i.second << '\n'; // Prints medicine items
-        medicineVector.push_back(item);
-        index++;
-    }
-
-    int choice;
-    cout << "Enter the number of the medicine item you want to use: ";
-    cin >> choice;
-
-    if(choice < 1 || choice > medicineVector.size()){
-        cout << "INVALID CHOICE. PLEASE ENTER A VALID NUMBER." << endl;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        getch();  // Wait for a key press
-        consumeForSurvival();
-    }
-
-    int quantity;
-    cout << "ENTER THE QUANTITY OF THE MEDICINE ITEM YOU WANT TO USE: ";
-    cin >> quantity;
-
-    Medicine chosenMedicine = medicineVector[choice - 1];
-    if(MedicineItems[chosenMedicine] < quantity){
-        cout << "Not enough stock. You only have " << MedicineItems[chosenMedicine] << "." << endl;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        getch();  // Wait for a key press
-        consumeForSurvival();
-    } else {
-        for(int i = 0; i < quantity; i++){
-            chosenMedicine.use(*player);
-        }
-        cout << "You used " << quantity << " many " << chosenMedicine.getName() << " items." << endl;
+        goodbye();
     }
 }
 
@@ -1514,12 +1530,20 @@ void Shop_PermanentItems_Menu() {
 }
 
 void goodbye(){
-    cout<<"Really?\n";
-    Sleep(1000);
-    cout<<"It to soon!\n";
-    Sleep(1000);
-    cout<<"fine i let you go :(\nbye bye "<<player->getUsername()<<"hope to see you again:)";
-    exit(0);
+
+
+    if(player->getState()==PlayerState::DEFEATED){
+        cout<<"GAME OVER!";
+        exit(0);
+    }
+    else{
+        cout<<"Really?\n";
+        Sleep(1000);
+        cout<<"It to soon!\n";
+        Sleep(1000);
+        cout<<"fine i let you go :(\nbye bye "<<player->getUsername()<<"hope to see you again:)";
+        exit(0);
+    }
 }
 
 void battleGround_humanEnemy(HumanEnemy Enemy){
