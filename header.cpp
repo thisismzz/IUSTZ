@@ -393,7 +393,7 @@ void Backpack::consumeForSurvival() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Items* Backpack::useWeapons() {
+Items* useWeapons() {
     int number;
     int index;
     int ChosenWeapon;
@@ -485,7 +485,7 @@ Items* Backpack::useWeapons() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Items* Backpack::useConsumableItems() {
+Items* useConsumableItems() {
     int number;
     int index;
     int ChosenConsumableItem;
@@ -695,10 +695,9 @@ void HumanEnemy::takeDamage(int amount) {
         cout << name << " has been defeated!" << endl; // Prints a message if the human enemy has been defeated
         state = HumanEnemyState :: DEFEATED;
     } 
-
-    else 
+    else{ 
         cout << name << " takes " << amount << " damage. Remaining enemy HP: " << hp.getCurrentHealth() << endl; // Prints a message if the human enemy takes damage
-    
+    }
 }
 
 // *----------------------------------------------------------------*
@@ -727,39 +726,40 @@ HumanEnemyState HE_Controller::getState(){
 
 Items* HE_Controller :: chooseWeapon() {
     srand(time(0)); // use current time as seed for random generator
-
     // Check if backpack is empty
     if (backpack->ThrowableItems.empty() && backpack->WarmWeaponItems.empty() && 
         backpack->ColdWeaponItems.empty()) {
         return nullptr; // backpack is empty
-    }
-
-
+    }else {
         int itemType = rand() % 3; // Randomly choose between 5 types of items
         switch (itemType) {
             case 0: // Throwable
-                if (!backpack->ThrowableItems.empty()) {
+                {if (!backpack->ThrowableItems.empty()) {
                     int index = rand() % backpack->ThrowableItems.size();
                     auto it = next(backpack->ThrowableItems.begin(),index);
                     Throwable *item = new Throwable(it->first);
                     return item;
                 }
-                break;
+                break;}
             case 1: // WarmWeapon
-                if (!backpack->WarmWeaponItems.empty()) {
+                {if (!backpack->WarmWeaponItems.empty()) {
                     int index = rand() % backpack->WarmWeaponItems.size();
                     WarmWeapon *item = new WarmWeapon(backpack->WarmWeaponItems[index]);
                     return item;
                 }
-                break;
+                break;}
             case 2: // ColdWeapon
-                if (!backpack->ColdWeaponItems.empty()) {
+                {if (!backpack->ColdWeaponItems.empty()) {
                     int index = rand() % backpack->ColdWeaponItems.size();
                     ColdWeapon *item = new ColdWeapon(backpack->ColdWeaponItems[index]);
                     return item;
                 }
-                break;
+                break;}
+            default:
+                {return nullptr;} 
         }
+        return nullptr;
+    }
 }
 
 Food* HE_Controller :: chooseFood() {
@@ -768,8 +768,9 @@ Food* HE_Controller :: chooseFood() {
         auto it = next(backpack->FoodItems.begin(),index);;
         Food *item = new Food(it->first);
         return item;
+    } else {
+        return nullptr;
     }
-    return nullptr;
 }
 
 Medicine* HE_Controller :: chooseMedicine() {
@@ -778,8 +779,9 @@ Medicine* HE_Controller :: chooseMedicine() {
         auto it = next(backpack->MedicineItems.begin(),index);
         Medicine *item = new Medicine(it->first);
         return item;
+    } else {
+        return nullptr;
     }
-    return nullptr;
 }
 
 void HE_Controller::Attack(Items* weapon){
@@ -889,7 +891,7 @@ ZombieState Zombie::getState(){
 BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
 
-void BasicZombie :: bite() {}
+// void BasicZombie :: bite() {}
 
 // *----------------------------------------------------------------*
 
@@ -900,9 +902,9 @@ ZombieState BZ_Controller::getState(){
 }
 
 
-void BZ_Controller :: bite() {
-    model.bite();
-}
+// void BZ_Controller :: bite() {
+//     model.bite();
+// }
  
 void BZ_Controller :: showInfo() {
     view.showInfo(model);
@@ -928,9 +930,9 @@ void BZ_View :: showInfo(BasicZombie model) {
 AdvZombie::AdvZombie(Zombie & zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 AdvZombie::AdvZombie(string n,int l) : Zombie(n,l){}
 
-void AdvZombie :: bite()  {}
+// void AdvZombie :: bite()  {}
 
-void AdvZombie :: scratch()  {}
+// void AdvZombie :: scratch()  {}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1857,7 +1859,7 @@ void BattleMenu() {
     Throwable* tweapon;
     switch(number){
         case 1: 
-            auto weapon = useWeapons();
+            {auto weapon = useWeapons();
             if (static_cast<WarmWeapon*>(weapon)){
                 wweapon = static_cast<WarmWeapon*>(weapon);
                 wweapon->Attack(*player,*humanEnemy);
@@ -1870,10 +1872,10 @@ void BattleMenu() {
                 tweapon = static_cast<Throwable*>(weapon);
                 tweapon->Throw(*player,*humanEnemy);
             }
-            break;
+            break;}
             
         case 2:
-            auto consumable = useConsumableItems();
+            {auto consumable = useConsumableItems();
             if (static_cast<Medicine*>(consumable)){
                 Medicine* medicine = static_cast<Medicine*>(consumable);
                 medicine->use(*player);
@@ -1883,14 +1885,14 @@ void BattleMenu() {
                 food->use(*player);
             }
             BattleMenu();
-            break; 
+            break; }
 
         case 3: 
-            showPlayerInfo();
-            break; 
+            {showPlayerInfo();
+            break; }
 
         case 4:
-            BankAccount* creditcard = player->getBankAccount();
+            {BankAccount* creditcard = player->getBankAccount();
             auto chosenweapon = useWeapons();
             if (static_cast<WarmWeapon*>(chosenweapon)){
                 WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
@@ -1908,11 +1910,11 @@ void BattleMenu() {
                 twa.upgradeSkill(creditcard);
             }
             BattleMenu();
-            break; 
+            break; }
 
         default:
-            cout << "Invalid choice. Please choose a number between 1 and 4." << endl;
-            BattleMenu(); 
+            {cout << "Invalid choice. Please choose a number between 1 and 4." << endl;
+            BattleMenu(); }
     }
 }
 
