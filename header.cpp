@@ -401,11 +401,11 @@ Items* Backpack::useWeapons() {
     cout << "Enter the index of the Weapon you want to attack with:" << endl 
     << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl << "[4].Back" << endl;
     cin >> number;
-    system("cls");
     switch(number){
         case 1: 
             if(!WarmWeaponItems.empty()){
                 while(true){
+                    system("cls");
                     cout << "Choose the WarmWeapon you want to attack with:" << endl;
                     index = 1;
                     showWarmWeaponItems();    // Prints warm weapon items
@@ -416,12 +416,18 @@ Items* Backpack::useWeapons() {
                         return wweapon;
                     } 
                     else {
-                        cout << "Invalid index. Please try again." << endl;
+                        cout << "Invalid index. Try again." << endl;
+                        cout << "Please press any key to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "No WarmWeapon exists!" << endl;
+                cout << "Please press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getch();  // Wait for a key press
                 useWeapons();
             }
             break;
@@ -429,6 +435,7 @@ Items* Backpack::useWeapons() {
         case 2:
             if(!ColdWeaponItems.empty()){
                 while(true){
+                    system("cls");
                     cout << "Choose the ColdWeapon you want to attack with:" << endl;
                     index = 1;
                     showColdWeaponItems();      // Prints cold weapon items
@@ -439,12 +446,18 @@ Items* Backpack::useWeapons() {
                         return cweapon;
                     }
                     else {
-                        cout << "Invalid index. Please try again." << endl;
+                        cout << "Invalid index. Try again." << endl;
+                        cout << "Please press any key to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "No ColdWeapon exists!" << endl;
+                cout << "Please press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getch();  // Wait for a key press
                 useWeapons();
             }
             break;
@@ -452,6 +465,7 @@ Items* Backpack::useWeapons() {
         case 3:
             if(!ThrowableItems.empty()){
                 while(true){
+                    system("cls");
                     cout << "Choose the ThrowableWeapon you want to attack with:" << endl;
                     index = 1;
                     showThrowableItems();      // Prints throwable items
@@ -463,13 +477,19 @@ Items* Backpack::useWeapons() {
                         return tweapon;
                     }
                     else {
-                        cout << "Invalid index. Please try again." << endl;
-                        useWeapons();
+                        cout << "Invalid index. Try again." << endl;
+                        cout << "Please press any key to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "No ThrowableWeapon exists!" << endl;
+                cout << "Please press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getch();  // Wait for a key press
+                useWeapons();
             }
             break;
 
@@ -478,7 +498,10 @@ Items* Backpack::useWeapons() {
             break;
 
         default:
-            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
+            cout << "Invalid choice. Choose a number between 1 and 3." << endl;
+            cout << "Please press any key to continue...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getch();  // Wait for a key press
             useWeapons();
     }
     return nullptr;
@@ -495,11 +518,11 @@ Items* Backpack::useConsumableItems() {
     cout << "Enter the index of the Consumable Item you want to use:" << endl 
     << "[1].Medicine" << endl << "[2].Food" << endl << "[3].Back" << endl;
     cin >> number;
-    system("cls");
     switch(number){
         case 1: 
             if(!MedicineItems.empty()){
                 while(true){
+                    system("cls");
                     cout << "Choose the Medicine you want to use:" << endl;
                     index = 1;
                     showMedicineItems();
@@ -511,12 +534,18 @@ Items* Backpack::useConsumableItems() {
                         return medicine;
                     }
                     else {
-                        cout << "Invalid index. Please try again." << endl;
+                        cout << "Invalid index. Try again." << endl;
+                        cout << "Please press any key to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "No Medicine exists!" << endl;
+                cout << "Please press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getch();  // Wait for a key press
                 useConsumableItems();
             }
             break;
@@ -524,6 +553,7 @@ Items* Backpack::useConsumableItems() {
         case 2:
             if(!FoodItems.empty()){
                 while(true){
+                    system("cls");
                     cout << "Choose the Food you want to use:" << endl;
                     index = 1;
                     showFoodItems();
@@ -535,12 +565,18 @@ Items* Backpack::useConsumableItems() {
                         return food;
                     }
                     else{
-                        cout << "Invalid index. Please try again." << endl;
+                        cout << "Invalid index. Try again." << endl;
+                        cout << "Please press any key to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "No Food exists!" << endl;
+                cout << "Please press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getch();  // Wait for a key press
                 useConsumableItems();
             }
             break;
@@ -550,7 +586,10 @@ Items* Backpack::useConsumableItems() {
             break;
 
         default:
-            cout << "Invalid choice. Please choose a number between 1 and 3." << endl;
+            cout << "Invalid choice. Choose a number between 1 and 3." << endl;
+            cout << "Please press any key to continue...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getch();  // Wait for a key press
             useConsumableItems();
     }
     return nullptr;
