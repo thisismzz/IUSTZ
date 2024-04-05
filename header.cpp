@@ -626,7 +626,7 @@ BankAccount* Player::getBankAccount(){
 Player::Player(string n, string g,string un, int a,int m,int s) : Human(n,s), age(a), gender(g), bankAccount(m) , username(un), exp(this), state(PlayerState::ALIVE){}
 // Constructor that initializes name, gender, username, age, money, and stamina
 
-Player::Player(Human & human,string g,string un,int a,int m) : Human(human.getName(), human.getStamina()), age(a), gender(g), bankAccount(m), username(un),exp(this) {}
+Player::Player(Human & human,string g,string un,int a,int m) : Human(human.getName(), human.getStamina()), age(a), gender(g), bankAccount(m), username(un),exp(this), state(PlayerState::ALIVE) {}
 // Constructor that initializes name, gender, username, age, and money from a Human object
 
 int Player::getAge() {
@@ -877,6 +877,10 @@ void Zombie::takeDamage(int amount) {
 ZombieState Zombie::getState(){
     return state;
 }
+
+void Zombie::bite(){}
+
+void Zombie::scratch(){}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
