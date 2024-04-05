@@ -282,7 +282,6 @@ class HE_Controller {
         Medicine* chooseMedicine();
         void decision();
         void showInfo();
-
 };
 
 // *----------------------------------------------------------------*
@@ -303,8 +302,8 @@ class Zombie : public Person {
         Zombie(string,int);
         void takeDamage(int) override;     //show damage amount
         ZombieState getState();
-        // virtual void bite();
-        // virtual void scratch();
+        virtual void bite();
+        virtual void scratch();
 };
 
 // *----------------------------------------------------------------*
@@ -314,7 +313,7 @@ class BasicZombie : public Zombie {
     public:
         BasicZombie(string,int);
         BasicZombie(Zombie&);
-        // void bite() override;
+        void bite() override;
 };
 
 class BZ_View {
@@ -330,7 +329,7 @@ class BZ_Controller {
     public:
         BZ_Controller(BasicZombie);
         ZombieState getState();
-        // void bite();
+        void bite();
         void showInfo();
 };
 
@@ -341,8 +340,8 @@ class AdvZombie : public Zombie {
     public:
         AdvZombie(string,int);
         AdvZombie(Zombie&);
-        // void bite() override;
-        // void scratch() override;
+        void bite() override;
+        void scratch() override;
 };
 
 class AZ_View {

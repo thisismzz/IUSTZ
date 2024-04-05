@@ -714,7 +714,7 @@ void HE_Controller::updateState() {
         model.setState(HumanEnemyState :: LOW_HEALTH);
 
     else if (healthRatio <= 0.4)
-        model.setState(HumanEnemyState :: LOW_POWER); 
+        model.setState(HumanEnemyState :: LOW_POWER);
 
     else
         model.setState(HumanEnemyState :: FIGHT);
@@ -893,7 +893,7 @@ ZombieState Zombie::getState(){
 BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
 
-// void BasicZombie :: bite() {}
+void BasicZombie :: bite() {}
 
 // *----------------------------------------------------------------*
 
@@ -904,9 +904,7 @@ ZombieState BZ_Controller::getState(){
 }
 
 
-// void BZ_Controller :: bite() {
-//     model.bite();
-// }
+void BZ_Controller :: bite() {}
  
 void BZ_Controller :: showInfo() {
     view.showInfo(model);
@@ -932,9 +930,9 @@ void BZ_View :: showInfo(BasicZombie model) {
 AdvZombie::AdvZombie(Zombie & zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 AdvZombie::AdvZombie(string n,int l) : Zombie(n,l){}
 
-// void AdvZombie :: bite()  {}
+void AdvZombie :: bite()  {}
 
-// void AdvZombie :: scratch()  {}
+void AdvZombie :: scratch()  {}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
