@@ -498,11 +498,7 @@ Items* Backpack::useConsumableItems() {
                 while(true){
                     cout << "Choose the Medicine you want to use:" << endl;
                     index = 1;
-                    for(auto i: MedicineItems){
-                        Medicine item = i.first;
-                        cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints medicine items
-                        index++;
-                    }
+                    showMedicineItems();
                     cin >> ChosenConsumableItem;
                     if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
                         auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
@@ -526,11 +522,7 @@ Items* Backpack::useConsumableItems() {
                 while(true){
                     cout << "Choose the Food you want to use:" << endl;
                     index = 1;
-                    for(auto i: FoodItems) {
-                        Food item = i.first;
-                        cout << index << ")   " << item.getName() << "(stock : " << i.second << ")" << '\n'; // Prints food items
-                        index++;
-                    }
+                    showFoodItems();
                     cin >> ChosenConsumableItem;
                     if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
                         auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
@@ -1006,7 +998,7 @@ void WarmWeapon::showItems(){
     }
 }
 
-void WarmWeapon::buy(Player& player){
+void WarmWeapon::buy(Player player){
     BankAccount *creditcard=player.getBankAccount();
     Backpack *backpack=player.getBackpack();
 
@@ -1076,7 +1068,7 @@ void ColdWeapon::showItems(){
     }
 }
 
-void ColdWeapon::buy(Player& player){
+void ColdWeapon::buy(Player player){
     BankAccount *creditcard=player.getBankAccount();
     Backpack *backpack=player.getBackpack();
 
@@ -1154,7 +1146,7 @@ void Throwable::showItems(){
     }
 }
 
-void Throwable::buy(Player& player,int quantity){
+void Throwable::buy(Player player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
     Backpack *backpack=player.getBackpack();
 
@@ -1222,7 +1214,7 @@ void Medicine::showItems(){
     }
 }
 
-void Medicine::buy(Player& player,int quantity){
+void Medicine::buy(Player player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
     Backpack *backpack=player.getBackpack();
 
@@ -1270,7 +1262,7 @@ void Food::showItems(){
     }
 }
 
-void Food::buy(Player& player,int quantity){
+void Food::buy(Player player,int quantity){
     BankAccount *creditcard=player.getBankAccount();
     Backpack *backpack=player.getBackpack();
 
@@ -1857,9 +1849,10 @@ void BattleMenu() {
     WarmWeapon* wweapon;
     ColdWeapon* cweapon;
     Throwable* tweapon;
+    Backpack *backpack = player->getBackpack();
     switch(number){
         case 1: 
-            {auto weapon = useWeapons();
+            {auto weapon = backpack->useWeapons();
             if (static_cast<WarmWeapon*>(weapon)){
                 wweapon = static_cast<WarmWeapon*>(weapon);
                 wweapon->Attack(*player,*humanEnemy);
@@ -1875,7 +1868,7 @@ void BattleMenu() {
             break;}
             
         case 2:
-            {auto consumable = useConsumableItems();
+            {auto consumable = backpack->useConsumableItems();
             if (static_cast<Medicine*>(consumable)){
                 Medicine* medicine = static_cast<Medicine*>(consumable);
                 medicine->use(*player);
@@ -1893,7 +1886,7 @@ void BattleMenu() {
 
         case 4:
             {BankAccount* creditcard = player->getBankAccount();
-            auto chosenweapon = useWeapons();
+            auto chosenweapon = backpack->useWeapons();
             if (static_cast<WarmWeapon*>(chosenweapon)){
                 WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
                 WarmWeaponAbility wwa = wweapon->getwwa();

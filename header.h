@@ -127,8 +127,7 @@ class ThrowableWeaponAbility : public Skills {
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-Items* useWeapons();
-Items* useConsumableItems();
+
 class Backpack {
     private:
         map <Food , int> FoodItems;
@@ -304,6 +303,7 @@ class Zombie : public Person {
         ZombieState getState();
         virtual void bite();
         virtual void scratch();
+        ~Zombie(){}
 };
 
 // *----------------------------------------------------------------*
@@ -314,6 +314,7 @@ class BasicZombie : public Zombie {
         BasicZombie(string,int);
         BasicZombie(Zombie&);
         void bite() override;
+        ~BasicZombie(){}
 };
 
 class BZ_View {
@@ -404,6 +405,7 @@ class Items {
         string getName();
         string getType();
         int getPrice();
+        ~Items(){}
 }; 
 vector <Items> Items::shop_items;     
 
@@ -417,8 +419,9 @@ class Permanent : public Items {
         static vector <Permanent> shop_items_permanent;
         Permanent(string, int, string, int, int);
     public:       
-        virtual void buy(Player&){}                      //buy item and add it into player's backpack
+        virtual void buy(Player){}                      //buy item and add it into player's backpack
         virtual void Attack(Human, Person){}               //calculate the damage of attacker and reduce it from attacked health
+        ~Permanent(){}
 };
 vector <Permanent> Permanent::shop_items_permanent;
 
@@ -432,7 +435,7 @@ class WarmWeapon : public Permanent {
     public:
         WarmWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player&) override;
+        void buy(Player) override;
         void addToVectors() override;
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, WarmWeapon&);
@@ -440,6 +443,7 @@ class WarmWeapon : public Permanent {
         friend void playground();
         friend void Shop_PermanentItems_Menu();
         WarmWeaponAbility getwwa();
+        ~WarmWeapon(){}
 };
 vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
@@ -453,7 +457,7 @@ class ColdWeapon : public Permanent {
     public:
         ColdWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player&) override;
+        void buy(Player) override;
         void addToVectors() override;
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, ColdWeapon&);
@@ -461,6 +465,7 @@ class ColdWeapon : public Permanent {
         friend void playground();
         friend void Shop_PermanentItems_Menu();
         ColdWeaponAbility getcwa();
+        ~ColdWeapon(){}
 };
 vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
 
@@ -476,13 +481,14 @@ class Throwable : public Items {
     public:
         Throwable(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player&, int);
+        void buy(Player, int);
         void addToVectors() override;
         void Throw(Human, Human);
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
         friend void playground();
         ThrowableWeaponAbility gettwa();
+        ~Throwable(){}
 };
 vector <Throwable> Throwable::shop_items_throwable;
 
@@ -496,7 +502,7 @@ class Medicine : public Items {
     public:
         Medicine(string,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player&, int);
+        void buy(Player, int);
         void addToVectors() override;
         void use(Human);
         int getHeal();
@@ -504,6 +510,7 @@ class Medicine : public Items {
         friend void Show_Consumable_Items();
         friend void playground();
         friend void medicineMenu();
+        ~Medicine(){}
 };
 vector <Medicine> Medicine::shop_items_medicine;
 
@@ -517,13 +524,14 @@ class Food : public Items {
     public:
         Food(string, int, int);
         static void showItems();                     //show the available items to buy
-        void buy(Player&, int);
+        void buy(Player, int);
         void addToVectors() override;
         void use(Human);
         int getStrength();
         friend ostream& operator<<(ostream&, Food&);
         friend void Show_Consumable_Items();
         friend void playground();
+        ~Food(){}
 };
 vector <Food> Food::shop_items_food;
 
