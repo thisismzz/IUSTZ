@@ -397,9 +397,11 @@ Items* Backpack::useWeapons() {
     int number;
     int index;
     int ChosenWeapon;
+    system("cls");
     cout << "Enter the index of the Weapon you want to attack with:" << endl 
     << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl << "[4].Back" << endl;
     cin >> number;
+    system("cls");
     switch(number){
         case 1: 
             if(!WarmWeaponItems.empty()){
@@ -489,9 +491,11 @@ Items* Backpack::useConsumableItems() {
     int number;
     int index;
     int ChosenConsumableItem;
+    system("cls");
     cout << "Enter the index of the Consumable Item you want to use:" << endl 
     << "[1].Medicine" << endl << "[2].Food" << endl << "[3].Back" << endl;
     cin >> number;
+    system("cls");
     switch(number){
         case 1: 
             if(!MedicineItems.empty()){
@@ -1368,13 +1372,16 @@ void print_with_delay(string text, int delay=4) {
 }
 
 void getUserInfo(int& age , string& gender , string& username) {
-    system("cls");
     cout << "Please Enter your Name : ";
     cin >> username;
     cout << "Please Enter your Age : ";
     cin >> age;
     cout << "Please Enter your Gender : ";
     cin >> gender;
+    cout << "Thanks for introducing yourself";
+    cout << endl << "Please press any key to continue...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getch();
     system("cls");
 }
 
@@ -1534,12 +1541,14 @@ void Menu() {
     // just getting user info :)))
     int age;
     string gender,username;
-    getUserInfo(age , gender , username);
 
     system("cls");
 
-    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nIn this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
-    cout << endl << "Press any key to continue...";
+    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\nSo who are you?\n");
+    getUserInfo(age , gender , username);
+
+    print_with_delay("In this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
+    cout << endl << "Please press any key to continue...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();
 
@@ -1551,7 +1560,7 @@ void Menu() {
 
     // Show all the different options a user has for the characters
     Human *character;
-    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
+    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : " << endl;
     for (int i = 0; i < 6; i++) {
         character = Factory::createCharacter(characterTypes[i]);
         cout << i+1 << ". " << characterTypes[i] << endl;
@@ -1579,7 +1588,7 @@ void Menu() {
     cout << "\t" << "Health : " << player->getHealthPoints() << endl;
     cout << "\t" << "Money : " << money[chosenIndex] << " $" << endl << endl;
 
-    cout << "Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with." << endl;
+    print_with_delay("Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with.\n");
     cout << "Press any key to continue...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();  // Wait for a key press
@@ -1611,13 +1620,13 @@ void ShopMenu() {
         
             case 4: 
                 cout << "You left the shop." << endl; // Exits the shop
-                cout << "Press any key to continue...";
+                cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
                 playground();
 
             default: 
-                cout << "Wrong number!" << endl << "Press enter to continue" << endl;
+                cout << "Wrong number!" << endl << "Please press enter to continue..." << endl;
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch(); // Handles invalid input
                 break;
@@ -1632,6 +1641,7 @@ void Show_Permanent_Items() {
     ColdWeapon *cweapon;
     cout << "Permanent Items:" << endl << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].back" << endl;
     cin>>number;
+    system("cls");
     switch(number){
         case 1: 
             cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
@@ -1644,6 +1654,9 @@ void Show_Permanent_Items() {
             }
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
             wweapon->buy(*player); // Buys a warm weapon
+            cout << "Please press any key to continue shopping...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getch();  // Wait for a key press
             break;
         
         case 2:
@@ -1657,6 +1670,9 @@ void Show_Permanent_Items() {
             }
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
             cweapon->buy(*player); // Buys a cold weapon
+            cout << "Please press any key to continue shopping...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getch();  // Wait for a key press
             break;
         
         case 3: 
@@ -1680,6 +1696,9 @@ void Show_Throwable_Items() {
     cin >> quantity;
     tweapon=new Throwable(Throwable::shop_items_throwable.at(item-1));
     tweapon->buy(*player,quantity); // Buys a throwable item
+    cout << "Please press any key to continue shopping...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getch();  // Wait for a key press
 }
 
 void Show_Consumable_Items() {
@@ -1689,6 +1708,7 @@ void Show_Consumable_Items() {
     Food *food;
     cout << "Consumable Items:" << endl << "[1].Medicines" << endl << "[2].Foods" << endl << "[3].back" << endl;
     cin>>number;
+    system("cls");
     switch(number){
         case 1: 
             cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl;
@@ -1703,6 +1723,9 @@ void Show_Consumable_Items() {
             cin >> quantity;
             drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
             drug->buy(*player,quantity); // Buys a medicine
+            cout << "Please press any key to continue shopping...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getch();  // Wait for a key press
             break;
             
         case 2:
@@ -1718,6 +1741,9 @@ void Show_Consumable_Items() {
             cin >> quantity;
             food=new Food(Food::shop_items_food.at(item-1));
             food->buy(*player,quantity); // Buys a food
+            cout << "Please press any key to continue shopping...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getch();  // Wait for a key press
             break;
         case 3: 
             ShopMenu(); // Returns to the previous menu
@@ -1732,6 +1758,7 @@ void Shop_PermanentItems_Menu() {
     cout << "You enter the shop to buy atleast one Permanent Item to fight with." << endl << "What do you want to buy?" << "(your money : " << player->getMoney() << ")" << endl
     << "Permanent Items:" << endl << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl;
     cin >> number;
+    system("cls");
     switch(number){
         case 1: 
             cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
@@ -1744,8 +1771,8 @@ void Shop_PermanentItems_Menu() {
             }
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
             wweapon->buy(*player); // Buys a warm weapon
-            cout << "Ok, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want." << endl;
-            cout << "Press any key to continue shopping...";
+            print_with_delay("Ok, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want.\n");
+            cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
             ShopMenu();
@@ -1761,8 +1788,8 @@ void Shop_PermanentItems_Menu() {
             }
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
             cweapon->buy(*player); // Buys a cold weapon
-            cout << "Ok, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want." << endl;
-            cout << "Press any key to continue shopping...";
+            print_with_delay("Ok, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want.\n");
+            cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
             ShopMenu();
@@ -1842,6 +1869,7 @@ void battleGround_advZombie(){}
 // *----------------------------------------------------------------*
 
 void BattleMenu() {
+    system("cls");
     int number;
     cout << "What do you want to do? (Attack ends your turn.)" << endl
     << "[1].Attack" << endl << "[2].BackPack" << endl << "[3].Player Info" << endl << "[4].Upgrade Weapon's Skill" << endl ;
