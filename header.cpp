@@ -760,6 +760,7 @@ Items* HE_Controller :: chooseWeapon() {
                 }
                 break;
         }
+        return nullptr;
 }
 
 Food* HE_Controller :: chooseFood() {
