@@ -159,8 +159,8 @@ class Backpack {
         void showMedicineItems();
         void showFoodItems();
         void consumeForSurvival();
-        friend Items* useWeapons();
-        friend Items* useConsumableItems();
+        Items* useWeapons();
+        Items* useConsumableItems();
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

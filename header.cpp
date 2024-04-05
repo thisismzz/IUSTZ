@@ -393,7 +393,7 @@ void Backpack::consumeForSurvival() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Items* useWeapons() {
+Items* Backpack::useWeapons() {
     int number;
     int index;
     int ChosenWeapon;
@@ -485,7 +485,7 @@ Items* useWeapons() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Items* useConsumableItems() {
+Items* Backpack::useConsumableItems() {
     int number;
     int index;
     int ChosenConsumableItem;
@@ -730,7 +730,8 @@ Items* HE_Controller :: chooseWeapon() {
     if (backpack->ThrowableItems.empty() && backpack->WarmWeaponItems.empty() && 
         backpack->ColdWeaponItems.empty()) {
         return nullptr; // backpack is empty
-    }else {
+    }
+    else {
         int itemType = rand() % 3; // Randomly choose between 5 types of items
         switch (itemType) {
             case 0: // Throwable
@@ -740,14 +741,16 @@ Items* HE_Controller :: chooseWeapon() {
                     Throwable *item = new Throwable(it->first);
                     return item;
                 }
-                break;}
+                break;
+                }
             case 1: // WarmWeapon
                 {if (!backpack->WarmWeaponItems.empty()) {
                     int index = rand() % backpack->WarmWeaponItems.size();
                     WarmWeapon *item = new WarmWeapon(backpack->WarmWeaponItems[index]);
                     return item;
                 }
-                break;}
+                break;
+                }
             case 2: // ColdWeapon
                 {if (!backpack->ColdWeaponItems.empty()) {
                     int index = rand() % backpack->ColdWeaponItems.size();
@@ -755,8 +758,10 @@ Items* HE_Controller :: chooseWeapon() {
                     return item;
                 }
                 break;
+                }
         }
-        return nullptr;
+    }
+    return nullptr;
 }
 
 Food* HE_Controller :: chooseFood() {
@@ -765,9 +770,9 @@ Food* HE_Controller :: chooseFood() {
         auto it = next(backpack->FoodItems.begin(),index);;
         Food *item = new Food(it->first);
         return item;
-    } else {
-        return nullptr;
     }
+
+    return nullptr;
 }
 
 Medicine* HE_Controller :: chooseMedicine() {
