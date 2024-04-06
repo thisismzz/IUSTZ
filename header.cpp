@@ -900,6 +900,50 @@ void HE_Controller :: decision() {
     }
 }
 
+void HE_Controller :: transferItems() {
+    Backpack *playerBackpack = player->getBackpack();
+    Backpack *enemyBackpack = model.getBackpack();
+    
+    // Transfer Food Items
+    if(!enemyBackpack->FoodItems.empty()) {
+        for(auto& item : enemyBackpack->FoodItems) {
+            playerBackpack->addFoodItem(item.first, item.second);
+        }
+    }
+
+    // Transfer Medicine Items
+    if(!enemyBackpack->MedicineItems.empty()) {
+        for(auto& item : enemyBackpack->MedicineItems) {
+            playerBackpack->addMedicineItem(item.first, item.second);
+        }
+    }
+
+    // Transfer Throwable Items
+    if(!enemyBackpack->ThrowableItems.empty()) {
+        for(auto& item : enemyBackpack->ThrowableItems) {
+            playerBackpack->addThrowableItem(item.first, item.second);
+        }
+    }
+
+    // Transfer Warm Weapon Items
+    if(!enemyBackpack->WarmWeaponItems.empty()) {
+        for(auto& item : enemyBackpack->WarmWeaponItems) {
+            if(!playerBackpack->warmWeaponExistence(item)) {
+                playerBackpack->addWarmWeaponItem(item);
+            }
+        }
+    }
+
+    // Transfer Cold Weapon Items
+    if(!enemyBackpack->ColdWeaponItems.empty()) {
+        for(auto& item : enemyBackpack->ColdWeaponItems) {
+            if(!playerBackpack->coldWeaponExistence(item)) {
+                playerBackpack->addColdWeaponItem(item);
+            }
+        }
+    }
+}
+
 void HE_Controller :: showInfo(){
     view.showInfo(model);
 }

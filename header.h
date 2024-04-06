@@ -290,6 +290,7 @@ class HE_Controller {
         Items* chooseWeapon();
         Food* chooseFood();
         Medicine* chooseMedicine();
+        void transferItems();
         void decision();
         void showInfo();
 };
