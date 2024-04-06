@@ -774,7 +774,7 @@ HE_Controller :: HE_Controller (HumanEnemy HE) : model(HE) , backpack(HE.getBack
 void HE_Controller::updateState() {
     double healthRatio = model.getHealthPoints() / model.hp.getMaxHealth();
     double staminaRatio = model.stamina.getCurrentStamina() / model.stamina.getMaxStamina();
-    cout<<healthRatio<<"\t"<<staminaRatio<<"\n";
+    cout<<model.getHealthPoints()<<"\t"<<model.stamina.getCurrentStamina()<<"\n";
     Sleep(3000);
 
     // Check if health or stamina is below 0.4
@@ -1197,17 +1197,20 @@ void WarmWeapon::Attack(Human attacker, Person attacked){
 
         if(static_cast<HumanEnemy*>(&attacked)){
             HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
+            cout<<"[TESTER]"<<he->getName()<<endl;
             he->takeDamage(damage); // The attacked human enemy takes damage
         }
 
         else if(static_cast<Zombie*>(&attacked)){
             Zombie *z=static_cast<Zombie*>(&attacked);
+            cout<<"[TESTER]"<<z->getName()<<endl;
             z->takeDamage(damage); // The attacked zombie takes damage
         }
     }
     else{
         Player *p=static_cast<Player*>(&attacked);
         p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's experience
+        p->takeDamage(damage);
     }
 }
 
@@ -1275,17 +1278,20 @@ void ColdWeapon::Attack(Human attacker, Person attacked){
 
         if(static_cast<HumanEnemy*>(&attacked)){
             HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
+            cout<<"[TESTER]"<<he->getName()<<endl;
             he->takeDamage(damage); // The attacked human enemy takes damage
         }
 
         else if(static_cast<Zombie*>(&attacked)){
             Zombie *z=static_cast<Zombie*>(&attacked);
+            cout<<"[TESTER]"<<z->getName()<<endl;
             z->takeDamage(damage); // The attacked zombie takes damage
         }
     }
     else{
         Player *p=static_cast<Player*>(&attacked);
         p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's experience
+        p->takeDamage(damage);
     }
 }
 
@@ -1350,11 +1356,13 @@ void Throwable::Throw(Human attacker, Person attacked){
 
         if(static_cast<HumanEnemy*>(&attacked)){
             HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
+            cout<<"[TESTER]"<<he->getName()<<endl;
             he->takeDamage(damage); // The attacked human enemy takes damage
         }
 
         else if(static_cast<Zombie*>(&attacked)){
             Zombie *z=static_cast<Zombie*>(&attacked);
+            cout<<"[TESTER]"<<z->getName()<<endl;
             z->takeDamage(damage); // The attacked zombie takes damage
         }
     }
@@ -1363,6 +1371,7 @@ void Throwable::Throw(Human attacker, Person attacked){
         p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's experience
         Backpack *b=attacker.getBackpack();
         b->useThrowableItemCount(*this); // Uses a throwable item from the attacked person's backpack
+        p->takeDamage(damage);
     }
 }
 
