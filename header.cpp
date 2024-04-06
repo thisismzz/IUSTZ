@@ -935,7 +935,11 @@ ZombieState Zombie::getState(){
 BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
 
-void BasicZombie :: bite() {}
+void BasicZombie :: bite() {
+    player->hp.decreaseHealth(this->getLevel()*5);
+    cout<<this->getName()<<" bites you!\n";
+    player->takeDamage(this->getLevel());
+}
 
 // *----------------------------------------------------------------*
 
@@ -945,8 +949,9 @@ ZombieState BZ_Controller::getState(){
     return model.getState();
 }
 
-
-void BZ_Controller :: bite() {}
+void BZ_Controller :: bite() {
+    model.bite();
+}
  
 void BZ_Controller :: showInfo() {
     view.showInfo(model);
@@ -1483,7 +1488,7 @@ void medicineMenu() {
 
 void playground() {
     system("cls");
-
+    srand(time(0));
     Backpack *playerBackpack = player->getBackpack();
     Backpack *enemyBackpack;
 
@@ -1497,7 +1502,6 @@ void playground() {
     }
 
     int choice;
-
     if ((rand() % 100) < 70) {
     //fight ground
 
@@ -1871,7 +1875,6 @@ void battleGround_humanEnemy(){
         //player turn
 
             cout<<"Your Turn:\n";
-            showPlayerInfo();
             BattleMenu();
             showPlayerInfo();
         }
