@@ -1008,14 +1008,6 @@ ZombieState Zombie::getState(){
     return state;
 }
 
-void BasicZombie :: bite() {
-    player->hp.decreaseHealth(this->getLevel()*5);
-    cout<<this->getName()<<" bites you!\n";
-    player->takeDamage(this->getLevel());
-}
-
-void Zombie::scratch(){}
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
