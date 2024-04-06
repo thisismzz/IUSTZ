@@ -774,6 +774,8 @@ HE_Controller :: HE_Controller (HumanEnemy HE) : model(HE) , backpack(HE.getBack
 void HE_Controller::updateState() {
     double healthRatio = model.getHealthPoints() / model.hp.getMaxHealth();
     double staminaRatio = model.stamina.getCurrentStamina() / model.stamina.getMaxStamina();
+    cout<<healthRatio<<"\t"<<staminaRatio<<"\n";
+    Sleep(3000);
 
     // Check if health or stamina is below 0.4
     if (staminaRatio <= 0.4)
@@ -884,7 +886,7 @@ void HE_Controller :: decision() {
         mitem = chooseMedicine();
         if(mitem!=nullptr){
             mitem->use(model);
-            view.updateStamina(model.getName(),mitem->getHeal());
+            view.updateHealth(model.getName(),mitem->getHeal());
         }
         break;
 
@@ -892,7 +894,7 @@ void HE_Controller :: decision() {
         fitem = chooseFood();
         if(fitem!=nullptr){
             fitem->use(model);
-            view.updateHealth(model.getName(),fitem->getStrength());
+            view.updateStamina(model.getName(),fitem->getStrength());
         }
         break;
 
@@ -1187,16 +1189,25 @@ void WarmWeapon::Attack(Human attacker, Person attacked){
     int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (wwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
     attacker.stamina.decreaseStamina(10*wwa.getCurrentSkill()); // Decreases the attacker's stamina
     attacked.hp.decreaseHealth(damage); // Decreases the attacked person's health
-    attacked.takeDamage(damage);  //attacked takes damage 
+   
 
     if(static_cast<Player*>(&attacker)){
         Player *p=static_cast<Player*>(&attacker);
-        p->exp.setCurrentExp(0,damage,10*wwa.getCurrentSkill()); // Updates the player's as attacker experience
-    }
+        p->exp.setCurrentExp(0,damage,10*wwa.getCurrentSkill()); // Updates the attacker's experience
 
+        if(static_cast<HumanEnemy*>(&attacked)){
+            HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
+            he->takeDamage(damage); // The attacked human enemy takes damage
+        }
+
+        else if(static_cast<Zombie*>(&attacked)){
+            Zombie *z=static_cast<Zombie*>(&attacked);
+            z->takeDamage(damage); // The attacked zombie takes damage
+        }
+    }
     else{
         Player *p=static_cast<Player*>(&attacked);
-        p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's as attacked experience
+        p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's experience
     }
 }
 
@@ -1330,13 +1341,22 @@ void Throwable::Throw(Human attacker, Person attacked){
     int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (twa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
     attacker.stamina.decreaseStamina(10*twa.getCurrentSkill()); // Decreases the attacker's stamina
     attacked.hp.decreaseHealth(damage); // Decreases the attacked person's health
-    attacked.takeDamage(damage);
 
     if(static_cast<Player*>(&attacker)){
         Player *p=static_cast<Player*>(&attacker);
         p->exp.setCurrentExp(0,damage,10*twa.getCurrentSkill()); // Updates the attacker's experience
         Backpack *b=p->getBackpack();
         b->useThrowableItemCount(*this); // Uses a throwable item from the attacker's backpack
+
+        if(static_cast<HumanEnemy*>(&attacked)){
+            HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
+            he->takeDamage(damage); // The attacked human enemy takes damage
+        }
+
+        else if(static_cast<Zombie*>(&attacked)){
+            Zombie *z=static_cast<Zombie*>(&attacked);
+            z->takeDamage(damage); // The attacked zombie takes damage
+        }
     }
     else{
         Player *p=static_cast<Player*>(&attacked);
