@@ -3,6 +3,6 @@
 holder.txt
 /.idea
 run.cpp
-header.o
-main.o
-my_program.exe
+# header.o
+# main.o
+# my_program.exe
