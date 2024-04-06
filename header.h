@@ -418,7 +418,7 @@ class Permanent : public Items {
         static vector <Permanent> shop_items_permanent;
         Permanent(string, int, string, int, int);
     public:       
-        virtual void buy(Player){}                      //buy item and add it into player's backpack
+        virtual void buy(){}                      //buy item and add it into player's backpack
         virtual void Attack(Human, Person){}               //calculate the damage of attacker and reduce it from attacked health
         ~Permanent(){}
 };
@@ -433,7 +433,7 @@ class WarmWeapon : public Permanent {
     public:
         WarmWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player) override;
+        void buy() override;
         void addToVectors() override;
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, WarmWeapon&);
@@ -454,7 +454,7 @@ class ColdWeapon : public Permanent {
     public:
         ColdWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player) override;
+        void buy() override;
         void addToVectors() override;
         void Attack(Human, Person) override;
         friend ostream& operator<<(ostream&, ColdWeapon&);
@@ -477,7 +477,7 @@ class Throwable : public Items {
     public:
         Throwable(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player, int);
+        void buy(int);
         void addToVectors() override;
         void Throw(Human, Human);
         friend ostream& operator<<(ostream&, Throwable&);
@@ -497,7 +497,7 @@ class Medicine : public Items {
     public:
         Medicine(string,int,int);
         static void showItems();                     //show the available items to buy
-        void buy(Player, int);
+        void buy(int);
         void addToVectors() override;
         void use(Human);
         int getHeal();
@@ -518,7 +518,7 @@ class Food : public Items {
     public:
         Food(string, int, int);
         static void showItems();                     //show the available items to buy
-        void buy(Player, int);
+        void buy(int);
         void addToVectors() override;
         void use(Human);
         int getStrength();

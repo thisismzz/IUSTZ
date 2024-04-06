@@ -676,7 +676,7 @@ BankAccount* Player::getBankAccount(){
 Player::Player(string n, string g,string un, int a,int m,int s) : Human(n,s), age(a), gender(g), bankAccount(m) , username(un), exp(this), state(PlayerState::ALIVE){}
 // Constructor that initializes name, gender, username, age, money, and stamina
 
-Player::Player(Human & human,string g,string un,int a,int m) : Human(human.getName(), human.getStamina()), age(a), gender(g), bankAccount(m), username(un),exp(this) {}
+Player::Player(Human & human,string g,string un,int a,int m) : Human(human.getName(), human.getStamina()), age(a), gender(g), bankAccount(m), username(un),exp(this), state(PlayerState::ALIVE) {}
 // Constructor that initializes name, gender, username, age, and money from a Human object
 
 int Player::getAge() {
@@ -1048,9 +1048,9 @@ void WarmWeapon::showItems(){
     }
 }
 
-void WarmWeapon::buy(Player player){
-    BankAccount *creditcard=player.getBankAccount();
-    Backpack *backpack=player.getBackpack();
+void WarmWeapon::buy(){
+    BankAccount *creditcard=player->getBankAccount();
+    Backpack *backpack=player->getBackpack();
 
     if(backpack->warmWeaponExistence(*this)){
         cout<<"This item already exist in you backpack!\n"; // Prints a message if the item already exists in the backpack
@@ -1060,7 +1060,7 @@ void WarmWeapon::buy(Player player){
         cout << "Item bought successfully!\n"; // Prints a message if the item was bought successfully
         backpack->addWarmWeaponItem(*this); // Adds the item to the backpack
         cout<<"Item added to your backpack!\n"; // Prints a message that the item was added to the backpack
-        player.exp.increaseExp(exp); // Increases the player's experience
+        player->exp.increaseExp(exp); // Increases the player's experience
         cout<<"EXP increased!\n"; // Prints a message that the experience was increased
     }
     else
@@ -1118,9 +1118,9 @@ void ColdWeapon::showItems(){
     }
 }
 
-void ColdWeapon::buy(Player player){
-    BankAccount *creditcard=player.getBankAccount();
-    Backpack *backpack=player.getBackpack();
+void ColdWeapon::buy(){
+    BankAccount *creditcard=player->getBankAccount();
+    Backpack *backpack=player->getBackpack();
 
     if(backpack->coldWeaponExistence(*this)){
         cout<<"This item already exist in you backpack!\n"; // Prints a message if the item already exists in the backpack
@@ -1130,7 +1130,7 @@ void ColdWeapon::buy(Player player){
         cout << "Item bought successfully!\n"; // Prints a message if the item was bought successfully
         backpack->addColdWeaponItem(*this); // Adds the item to the backpack
         cout<<"Item added to your backpack!\n"; // Prints a message that the item was added to the backpack
-        player.exp.increaseExp(exp); // Increases the player's experience
+        player->exp.increaseExp(exp); // Increases the player's experience
         cout<<"EXP increased!\n"; // Prints a message that the experience was increased
     }
     else
@@ -1196,15 +1196,15 @@ void Throwable::showItems(){
     }
 }
 
-void Throwable::buy(Player player,int quantity){
-    BankAccount *creditcard=player.getBankAccount();
-    Backpack *backpack=player.getBackpack();
+void Throwable::buy(int quantity){
+    BankAccount *creditcard=player->getBankAccount();
+    Backpack *backpack=player->getBackpack();
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n"; // Prints a message if the item was bought successfully
         backpack->addThrowableItem(*this,quantity); // Adds the item to the backpack
         cout<<"Item added to your backpack!\n"; // Prints a message that the item was added to the backpack
-        player.exp.increaseExp(exp*quantity); // Increases the player's experience
+        player->exp.increaseExp(exp*quantity); // Increases the player's experience
         cout<<"EXP increased!\n"; // Prints a message that the experience was increased
     }
     else
@@ -1264,9 +1264,9 @@ void Medicine::showItems(){
     }
 }
 
-void Medicine::buy(Player player,int quantity){
-    BankAccount *creditcard=player.getBankAccount();
-    Backpack *backpack=player.getBackpack();
+void Medicine::buy(int quantity){
+    BankAccount *creditcard=player->getBankAccount();
+    Backpack *backpack=player->getBackpack();
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n"; // Prints a message if the item was bought successfully
@@ -1312,9 +1312,9 @@ void Food::showItems(){
     }
 }
 
-void Food::buy(Player player,int quantity){
-    BankAccount *creditcard=player.getBankAccount();
-    Backpack *backpack=player.getBackpack();
+void Food::buy(int quantity){
+    BankAccount *creditcard=player->getBankAccount();
+    Backpack *backpack=player->getBackpack();
 
     if(creditcard->withdraw(price*quantity)){
         cout << "Item bought successfully!\n"; // Prints a message if the item was bought successfully
@@ -1466,7 +1466,7 @@ void medicineMenu() {
         cin >> quantity;
         drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
         if(player->getMoney() >= drug->getPrice() * quantity) {
-            drug->buy(*player,quantity); // Buys a medicine
+            drug->buy(quantity); // Buys a medicine
         }
         else {
             cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << drug->getName() << " Items. Buy Less Items ... \n";
@@ -1699,7 +1699,7 @@ void Show_Permanent_Items() {
                 Show_Permanent_Items();
             }
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
-            wweapon->buy(*player); // Buys a warm weapon
+            wweapon->buy(); // Buys a warm weapon
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
@@ -1715,7 +1715,7 @@ void Show_Permanent_Items() {
                 Show_Permanent_Items();
             }
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
-            cweapon->buy(*player); // Buys a cold weapon
+            cweapon->buy(); // Buys a cold weapon
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
@@ -1741,7 +1741,7 @@ void Show_Throwable_Items() {
     cout << "How many?" << endl;
     cin >> quantity;
     tweapon=new Throwable(Throwable::shop_items_throwable.at(item-1));
-    tweapon->buy(*player,quantity); // Buys a throwable item
+    tweapon->buy(quantity); // Buys a throwable item
     cout << "Please press any key to continue shopping...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();  // Wait for a key press
@@ -1768,7 +1768,7 @@ void Show_Consumable_Items() {
             cout << "How many?" << endl;
             cin >> quantity;
             drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
-            drug->buy(*player,quantity); // Buys a medicine
+            drug->buy(quantity); // Buys a medicine
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
@@ -1786,7 +1786,7 @@ void Show_Consumable_Items() {
             cout << "How many?" << endl;
             cin >> quantity;
             food=new Food(Food::shop_items_food.at(item-1));
-            food->buy(*player,quantity); // Buys a food
+            food->buy(quantity); // Buys a food
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
@@ -1816,7 +1816,7 @@ void Shop_PermanentItems_Menu() {
                 Shop_PermanentItems_Menu();
             }
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
-            wweapon->buy(*player); // Buys a warm weapon
+            wweapon->buy(); // Buys a warm weapon
             print_with_delay("Ok, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want.\n");
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -1833,7 +1833,7 @@ void Shop_PermanentItems_Menu() {
                 Shop_PermanentItems_Menu();
             }
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
-            cweapon->buy(*player); // Buys a cold weapon
+            cweapon->buy(); // Buys a cold weapon
             print_with_delay("Ok, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want.\n");
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
