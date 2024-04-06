@@ -70,7 +70,7 @@ class Stamina {
         void increaseStamina(int);
         void updateMaximumStamina();
         int getCurrentStamina();
-        int getMaximumStamina();
+        int getMaxStamina();
 };
 
 // *----------------------------------------------------------------*
@@ -87,6 +87,7 @@ class Experience {
         void setCurrentExp(int, int, int);
         void increaseExp(int);
         int getCurrentExp();
+        int getMaxExp();
 };
 
 // *----------------------------------------------------------------*
@@ -189,6 +190,7 @@ class Person {
         int getLevel();
         string getName();  // Getter for name
         int getHealthPoints();  // Getter for health points
+        int getMaxHealth();
         virtual void takeDamage(int){}  //show detail of entry damage
 };
 
@@ -203,6 +205,7 @@ class Human : public Person {
         Human(string,int,int);
         Backpack* getBackpack();
         int getStamina();
+        int getMaxStamina();
 };
 
 // *----------------------------------------------------------------*
@@ -231,6 +234,7 @@ class Player : public Human {
         string getGender();  // Getter for gender
         int getMoney();  // Getter for money
         int getExperience();  // Getter for current experience
+        int getMaxExperience();
         string getUsername();  //Getter for username
         void takeDamage(int) override;  //show detail of entry damage
         void newLife();     //set the state ALIVE
@@ -287,7 +291,7 @@ class HE_Controller {
 // *----------------------------------------------------------------*
 
 enum class ZombieState{
-    SCRATCH,BITE,DEFEATED,ALIVE
+    DEFEATED,ALIVE
 };
 
 // *----------------------------------------------------------------*
@@ -358,6 +362,7 @@ class AZ_Controller {
     public:
         AZ_Controller(AdvZombie);
         ZombieState getState();
+        void Attack();
         void showInfo();
 };
 

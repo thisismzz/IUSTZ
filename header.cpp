@@ -79,7 +79,7 @@ int Stamina::getCurrentStamina(){
     return currentStamina; // Returns current stamina
 }
 
-int Stamina::getMaximumStamina(){
+int Stamina::getMaxStamina(){
     return maximum; // Returns maximum stamina
 }
 
@@ -117,6 +117,9 @@ int Experience::getCurrentExp(){
     return currentExp; // Returns current experience
 }
 
+int Experience :: getMaxExp() {
+    return maximum;
+}
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -650,6 +653,10 @@ int Person::getHealthPoints() {
     return hp.getCurrentHealth(); // Returns the current health points
 }
 
+int Person::getMaxHealth() {
+    return hp.getMaxHealth();
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -662,6 +669,10 @@ Backpack* Human::getBackpack() {
 
 int Human::getStamina() {
     return stamina.getCurrentStamina(); // Returns the current stamina
+}
+
+int Human::getMaxStamina() {
+    return stamina.getMaxStamina();
 }
 
 // *----------------------------------------------------------------*
@@ -693,6 +704,10 @@ int Player::getMoney() {
 
 int Player::getExperience() {
     return exp.getCurrentExp(); // Returns the current experience
+}
+
+int Player::getMaxExperience() {
+    return exp.getMaxExp();
 }
 
 string Player::getUsername(){
@@ -749,7 +764,7 @@ HE_Controller :: HE_Controller (HumanEnemy HE) : model(HE) , backpack(HE.getBack
 
 void HE_Controller::updateState() {
     double healthRatio = model.getHealthPoints() / model.hp.getMaxHealth();
-    double staminaRatio = model.stamina.getCurrentStamina() / model.stamina.getMaximumStamina();
+    double staminaRatio = model.stamina.getCurrentStamina() / model.stamina.getMaxStamina();
 
     // Check if health or stamina is below 0.4
     if (staminaRatio <= 0.4)
@@ -836,7 +851,7 @@ void HE_Controller::Attack(Items* weapon){
     }
     if(static_cast<ColdWeapon*>(weapon)){
         ColdWeapon *cweapon = static_cast<ColdWeapon*>(weapon);
-        // Enemy.Attack(Enemy.chooseWeapon())
+
         cweapon->Attack(model,*player);
         view.attackView(model.getName(),*cweapon);
     }
@@ -889,8 +904,8 @@ HE_View::HE_View(){}
 void HE_View :: showInfo(HumanEnemy model){
     cout << "Name : " << model.getName() << endl;
     cout << "Level : " << model.getLevel() << endl;
-    cout << "Stamina : " << model.getStamina() << endl;
-    cout << "Health : " << model.getHealthPoints() << endl << endl;
+    cout << "Stamina : " << model.getStamina() <<  " / ( " << model.getMaxStamina() << " )" << endl;
+    cout << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();  // Wait for a key press
 }
@@ -939,7 +954,11 @@ void Zombie::scratch(){}
 BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
 
-void BasicZombie :: bite() {}
+void BasicZombie :: bite() {
+    player->hp.decreaseHealth(this->getLevel()*5);
+    cout<<"You have been bitten by "<<this->getName();
+    player->takeDamage(this->getLevel()*5);
+}
 
 // *----------------------------------------------------------------*
 
@@ -949,8 +968,9 @@ ZombieState BZ_Controller::getState(){
     return model.getState();
 }
 
-
-void BZ_Controller :: bite() {}
+void BZ_Controller :: bite() {
+    model.bite();
+}
  
 void BZ_Controller :: showInfo() {
     view.showInfo(model);
@@ -964,7 +984,7 @@ BZ_View::BZ_View(){}
 void BZ_View :: showInfo(BasicZombie model) {
     cout << "Name : " << model.getName() << endl;
     cout << "Level : " << model.getLevel() << endl;
-    cout << "Health : " << model.getHealthPoints() << endl << endl;
+    cout << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();  // Wait for a key press
 }
@@ -976,9 +996,17 @@ void BZ_View :: showInfo(BasicZombie model) {
 AdvZombie::AdvZombie(Zombie & zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 AdvZombie::AdvZombie(string n,int l) : Zombie(n,l){}
 
-void AdvZombie :: bite()  {}
+void AdvZombie :: bite() {
+    player->hp.decreaseHealth(this->getLevel()*7);
+    cout<<"You have been bitten by "<<this->getName();
+    player->takeDamage(this->getLevel()*7);
+}
 
-void AdvZombie :: scratch()  {}
+void AdvZombie :: scratch() {
+    player->hp.decreaseHealth(this->getLevel()*8);
+    cout<<"You have been scratched by "<<this->getName();
+    player->takeDamage(this->getLevel()*8);
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -993,6 +1021,19 @@ void AZ_Controller :: showInfo() {
     view.showInfo(model);
 }
 
+void AZ_Controller::Attack(){
+    srand(time(0));
+    int randomNum = rand();
+
+    if(randomNum % 2 == 0){
+        model.bite();
+    }
+
+    else{
+        model.scratch();
+    }
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -1001,7 +1042,7 @@ AZ_View::AZ_View(){}
 void AZ_View :: showInfo(AdvZombie model) {
     cout << "Name : " << model.getName() << endl;
     cout << "Level : " << model.getLevel() << endl;
-    cout << "Health : " << model.getHealthPoints() << endl << endl;
+    cout << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getch();  // Wait for a key press
 }
@@ -1057,7 +1098,7 @@ void WarmWeapon::buy(){
     Backpack *backpack=player->getBackpack();
 
     if(backpack->warmWeaponExistence(*this)){
-        cout<<"This item already exist in you backpack!\n"; // Prints a message if the item already exists in the backpack
+        cout<<"This item already exist in your backpack!\n"; // Prints a message if the item already exists in the backpack
     }
 
     else if(creditcard->withdraw(price)){
@@ -1127,7 +1168,7 @@ void ColdWeapon::buy(){
     Backpack *backpack=player->getBackpack();
 
     if(backpack->coldWeaponExistence(*this)){
-        cout<<"This item already exist in you backpack!\n"; // Prints a message if the item already exists in the backpack
+        cout<<"This item already exist in your backpack!\n"; // Prints a message if the item already exists in the backpack
     }
 
     else if(creditcard->withdraw(price)){
@@ -1436,16 +1477,12 @@ void getUserInfo(int& age , string& gender , string& username) {
 }
 
 void showPlayerInfo() {
-    system("cls");
     cout << "Name : " << player->getName() << endl;
     cout << "Level : " << player->getLevel() << endl;
-    cout << "Experience : " << player->getExperience() << endl;
-    cout << "Stamina : " << player->getStamina() << endl;
-    cout << "Health : " << player->getHealthPoints() << endl;
+    cout << "Experience : " << player->getExperience() << " / ( " << player->getMaxExperience() << " )" << endl;
+    cout << "Stamina : " << player->getStamina() <<  " / ( " << player->getMaxStamina() << " )" << endl;
+    cout << "Health : " << player->getHealthPoints() << " / ( " << player->getMaxHealth() << " )" << endl;
     cout << "Money : " << player->getMoney() << " $" << endl << endl;
-    cout << "Press any key to go back...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();  // Wait for a key press
 }
 
 void createItem() {
@@ -1487,13 +1524,13 @@ void medicineMenu() {
 
 void playground() {
     system("cls");
-
+    srand(time(0));
     Backpack *playerBackpack = player->getBackpack();
     Backpack *enemyBackpack;
-
+    int randomNum = rand();
     //check the player state
     if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... \n"; 
+        cout<<"YOU HAVE BEEN DEFEATED\nYOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... \n"; 
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getch();  // Wait for a key press
         cout<<"going to your backpack...\n";
@@ -1501,11 +1538,11 @@ void playground() {
     }
 
     int choice;
-
-    if ((rand() % 100) < 70) {
+    if ((randomNum % 100) < 70) {
     //fight ground
+        randomNum=rand();
 
-        if (rand() % 2 == 0) {
+        if (randomNum % 2 == 0) {
         //fight with human enemy
 
             //create random humanEnemy from characters
@@ -1525,21 +1562,23 @@ void playground() {
 
             //show enemy's info
             cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl;
-            cout << "   Name: " << humanEnemy->getName() << endl;
-            cout << "   Level: " << humanEnemy->getLevel() << endl;
-            cout << "   Stamina: " << humanEnemy->getStamina() << endl;
-            cout << "   Health: " << humanEnemy->getHealthPoints() << endl << endl;
+            cout << "Name : " << humanEnemy->getName() << endl;
+            cout << "Level : " << humanEnemy->getLevel() << endl;
+            cout << "Stamina : " << humanEnemy->getStamina() <<  " / ( " << humanEnemy->getMaxStamina() << " )" << endl;
+            cout << "Health : " << humanEnemy->getHealthPoints() << " / ( " << humanEnemy->getMaxHealth() << " )" << endl << endl;
             cout << "PRESS ANY KEY TO ENTER THE FIGHTGROUND...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
+
+            system("cls");
 
             battleGround_humanEnemy();
         }
 
         else{
         //fight with zombie
-
-            if ((rand() % 100) < 50) {
+            randomNum = rand();
+            if ((randomNum % 100) < 50) {
                 //fight with basic zombie
 
                 //create basic zombie
@@ -1547,12 +1586,14 @@ void playground() {
 
                 //show enemy's info
                 cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
-                cout << "   Name: " << basicZombie->getName() << endl;
-                cout << "   Level: " << basicZombie->getLevel() << endl;
-                cout << "   Health: " << basicZombie->getHealthPoints() << endl << endl;
+                cout << "Name : " << basicZombie->getName() << endl;
+                cout << "Level : " << basicZombie->getLevel() << endl;
+                cout << "Health : " << basicZombie->getHealthPoints() << " / ( " << basicZombie->getMaxHealth() << " )" << endl << endl;
                 cout << "Press any key to Enter to fightground...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
+
+                system("cls");
 
                 battleGround_basicZombie();
             }
@@ -1565,12 +1606,14 @@ void playground() {
 
                 //show enemy's info
                 cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
-                cout << "   Name: " << advZombie->getName() << endl;
-                cout << "   Level: " << advZombie->getLevel() << endl;
-                cout << "   Health: " << advZombie->getHealthPoints() << endl << endl;
+                cout << "Name : " << advZombie->getName() << endl;
+                cout << "Level : " << advZombie->getLevel() << endl;
+                cout << "Health : " << advZombie->getHealthPoints() << " / ( " << advZombie->getMaxHealth() << " )" << endl << endl;
                 cout << "Press any key to Enter to fightground...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
+                
+                system("cls");
 
                 battleGround_advZombie();
             }
@@ -1610,14 +1653,15 @@ void Menu() {
 
     // Show all the different options a user has for the characters
     Human *character;
-    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : " << endl;
+    
     for (int i = 0; i < 6; i++) {
         character = Factory::createCharacter(characterTypes[i]);
         cout << i+1 << ". " << characterTypes[i] << endl;
         cout << "   " << "Stamina : " << character->getStamina() << endl;
         cout << "   " << "Money : " << money[i] << " $" << endl;
     }
-
+    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : " << endl;
+    
     // Get the user's choice
     cin >> chosenIndex;
     chosenIndex--;  // Adjust for 0-based indexing
@@ -1876,19 +1920,30 @@ void battleGround_humanEnemy(){
 
             cout<<"Your Turn:\n";
             showPlayerInfo();
+            Enemy.showInfo();
             BattleMenu();
-            showPlayerInfo();
         }
         else{
         //enemy turn
 
-            cout<<"Enemy Turn:\n";
+            cout<<"Enemy's Turn:\n";
             Enemy.updateState();
             Enemy.decision();
             Enemy.showInfo();
         }
         turn++;
     }
+
+    if(player->getState() == PlayerState::ALIVE){
+        cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n The following item's will add to you backpack : \n";
+        
+        //show Enemy's item
+        //method to add to player backpack;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getch();
+    }
+
 }
 
 // *----------------------------------------------------------------*
@@ -1899,30 +1954,68 @@ void battleGround_basicZombie(){
     while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
+
+            cout<<"Your Turn:\n";
             showPlayerInfo();
+            Enemy.showInfo();
             BattleMenu();
-            showPlayerInfo();
         }
         else{
         //enemy turn
+            cout<<"Enemy's Turn:\n";
+            Enemy.bite();
+            Enemy.showInfo();
         }
         turn ++;
+    }
+
+    if(player->getState() == PlayerState::ALIVE){
+        cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getch();
     }
 }
 
 // *----------------------------------------------------------------*
 
-void battleGround_advZombie(){}
+void battleGround_advZombie(){
+    int turn = 1;        //odd turn for player even turn for enemy
+    AZ_Controller Enemy(*advZombie);
+    while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
+        if(turn%2!=0){
+        //player turn
+        
+            cout<<"Your Turn:\n";
+            showPlayerInfo();
+            Enemy.showInfo();
+            BattleMenu();
+        }
+        else{
+        //enemy turn
+        cout<<"Enemy's Turn:\n";
+        Enemy.Attack();
+        Enemy.showInfo();
+        }
+        turn ++;
+    }
+
+    if(player->getState() == PlayerState::ALIVE){
+        cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getch();
+    }
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void BattleMenu() {
-    system("cls");
+    cout << endl << endl; 
     int number;
     cout << "What do you want to do? (Attack ends your turn.)" << endl
     << "[1].Attack" << endl << "[2].BackPack" << endl << "[3].Player Info" << endl << "[4].Upgrade Weapon's Skill" << endl ;
+    cout << "ENTER YOUR CHOICE OF ACTION : " ;
     cin >> number;
     WarmWeapon* wweapon;
     ColdWeapon* cweapon;
@@ -1960,6 +2053,9 @@ void BattleMenu() {
 
         case 3: 
             {showPlayerInfo();
+            cout << "\nPress any key to go back...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getch();  // Wait for a key press
             break; }
 
         case 4:
