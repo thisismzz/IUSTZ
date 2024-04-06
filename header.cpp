@@ -737,7 +737,7 @@ PlayerState Player::getState(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-HumanEnemy::HumanEnemy(Human& human,int l=1): Human(human.getName(), human.getStamina(),l),state(HumanEnemyState::FIGHT){} // Constructor that initializes name and stamina from a Human object
+HumanEnemy::HumanEnemy(Human& human,int l=1): Human(human.getName(), human.getStamina(),l),state(HumanEnemyState::FIGHT),status(HumanEnemyStatus::ALIVE){} // Constructor that initializes name and stamina from a Human object
 
 void HumanEnemy::setState(HumanEnemyState newState){
     state = newState;
@@ -747,10 +747,14 @@ HumanEnemyState HumanEnemy::getState(){
     return state;
 }
 
+HumanEnemyState HumanEnemy::getStatus(){
+    return status;
+}
+
 void HumanEnemy::takeDamage(int amount) {
     if (hp.getCurrentHealth() <= 0) {
         cout << name << " has been defeated!" << endl; // Prints a message if the human enemy has been defeated
-        state = HumanEnemyState :: DEFEATED;
+        status = HumanEnemyStatus :: DEFEATED;
     } 
     else{ 
         cout << name << " takes " << amount << " damage. Remaining enemy HP: " << hp.getCurrentHealth() << endl; // Prints a message if the human enemy takes damage
@@ -779,6 +783,10 @@ void HE_Controller::updateState() {
 
 HumanEnemyState HE_Controller::getState(){
     return model.getState();
+}
+
+HumanEnemyState HE_Controller::getStatus(){
+    return model.getStatus();
 }
 
 Items* HE_Controller :: chooseWeapon() {
@@ -1910,7 +1918,7 @@ void goodbye(){
 void battleGround_humanEnemy(){
     int turn = 1;        //odd turn for player even turn for enemy
     HE_Controller Enemy(*humanEnemy);
-    while(Enemy.getState()==HumanEnemyState::ALIVE and player->getState()==PlayerState::ALIVE){
+    while(Enemy.getStatus()==HumanEnemyStatus::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
 

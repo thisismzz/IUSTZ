@@ -245,7 +245,11 @@ class Player : public Human {
 // *----------------------------------------------------------------*
 enum class HumanEnemyState{
     LOW_HEALTH,LOW_POWER,FIGHT
-    ,DEFEATED,ALIVE
+
+};
+
+enum class HumanEnemyStatus{
+    DEFEATED,ALIVE
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -253,10 +257,12 @@ enum class HumanEnemyState{
 class HumanEnemy : public Human {
     private:
         HumanEnemyState state;
+        HumanEnemyStatus status;
     public:
         HumanEnemy(Human&,int);
         void setState(HumanEnemyState);
         HumanEnemyState getState();
+        HumanEnemyStatus getStatus();
         void takeDamage(int) override;        //show damage amount
 };
 
@@ -280,6 +286,7 @@ class HE_Controller {
         HE_Controller(HumanEnemy);
         void updateState();      // Method to update the state of the human enemy
         HumanEnemyState getState();
+        HumanEnemyStatus getStatus();
         Items* chooseWeapon();
         Food* chooseFood();
         Medicine* chooseMedicine();
