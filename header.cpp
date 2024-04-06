@@ -985,7 +985,7 @@ void HE_View::attackView(string name,Items weapon) {
 
 void HE_View :: showBackpackItems() {
     Backpack *HE_Backpack = humanEnemy->getBackpack();
-    HE_Backpack.showItems();
+    HE_Backpack->showItems();
 }
 
 // *----------------------------------------------------------------*
@@ -1008,7 +1008,11 @@ ZombieState Zombie::getState(){
     return state;
 }
 
-void Zombie::bite(){}
+void BasicZombie :: bite() {
+    player->hp.decreaseHealth(this->getLevel()*5);
+    cout<<this->getName()<<" bites you!\n";
+    player->takeDamage(this->getLevel());
+}
 
 void Zombie::scratch(){}
 
