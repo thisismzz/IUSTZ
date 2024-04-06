@@ -431,7 +431,7 @@ class Permanent : public Items {
         Permanent(string, int, string, int, int);
     public:       
         virtual void buy(){}                      //buy item and add it into player's backpack
-        virtual void Attack(Human, Person){}               //calculate the damage of attacker and reduce it from attacked health
+        virtual void Attack(Human,Person){}               //calculate the damage of attacker and reduce it from attacked health
         ~Permanent(){}
 };
 
@@ -491,7 +491,7 @@ class Throwable : public Items {
         static void showItems();                     //show the available items to buy
         void buy(int);
         void addToVectors() override;
-        void Throw(Human, Human);
+        void Throw(Human,Person);
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
         friend void playground();
@@ -511,7 +511,7 @@ class Medicine : public Items {
         static void showItems();                     //show the available items to buy
         void buy(int);
         void addToVectors() override;
-        void use(Human);
+        void use(Human&);
         int getHeal();
         friend ostream& operator<<(ostream&,Medicine&);
         friend void Show_Consumable_Items();
@@ -532,7 +532,7 @@ class Food : public Items {
         static void showItems();                     //show the available items to buy
         void buy(int);
         void addToVectors() override;
-        void use(Human);
+        void use(Human&);
         int getStrength();
         friend ostream& operator<<(ostream&, Food&);
         friend void Show_Consumable_Items();

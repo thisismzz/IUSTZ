@@ -17,6 +17,7 @@ Player* player = nullptr;
 HumanEnemy* humanEnemy=nullptr;
 BasicZombie* basicZombie=nullptr;
 AdvZombie* advZombie=nullptr;
+Person *enemy=nullptr;
 vector <string> characterTypes = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
 vector <Items> Items::shop_items={};
 vector <Permanent> Permanent::shop_items_permanent={};
@@ -50,6 +51,7 @@ void Health::decreaseHealth(int damage){
 
 void Health::increaseHealth (int amount){
     currentHealth += amount; // Increases health
+    cout<<"Health increased for "<< amount << "HP\n";
     if(currentHealth >= maxHealth)
         currentHealth = maxHealth; // Ensures health doesn't exceed maxHealth
 }
@@ -61,12 +63,14 @@ Stamina::Stamina(int cs):maximum(100),currentStamina(cs){} // Constructor
 
 void Stamina::decreaseStamina(int amount) {
     currentStamina -= amount; // Decreases stamina
+    cout<<"Stamina decreased! for "<< amount <<"STM\n";
     if (currentStamina < 0)
         currentStamina = 0; // Ensures stamina doesn't go below 0
 }
 
 void Stamina::increaseStamina(int amount) {
     currentStamina += amount; // Increases stamina
+    cout<<"Stamina increased! for "<< amount <<"STM\n";
     if ( currentStamina > maximum)
         currentStamina = maximum; // Ensures stamina doesn't exceed maximum
 }
@@ -105,6 +109,7 @@ void Experience::setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
 
 void Experience::increaseExp(int amount){
     currentExp+=amount; // Increases current experience
+    cout<<"Experience increased for "<< amount << "EXP\n";
     if(currentExp>=maximum){
         currentExp=0; // Resets current experience if it exceeds maximum
         humanObj->exp.updateMaximum(); // Updates maximum experience
@@ -747,7 +752,7 @@ HumanEnemyState HumanEnemy::getState(){
     return state;
 }
 
-HumanEnemyState HumanEnemy::getStatus(){
+HumanEnemyStatus HumanEnemy::getStatus(){
     return status;
 }
 
@@ -785,7 +790,7 @@ HumanEnemyState HE_Controller::getState(){
     return model.getState();
 }
 
-HumanEnemyState HE_Controller::getStatus(){
+HumanEnemyStatus HE_Controller::getStatus(){
     return model.getStatus();
 }
 
@@ -1265,7 +1270,7 @@ void Throwable::addToVectors(){
     shop_items.push_back(*this); // Adds this throwable weapon to the items vector
 }
 
-void Throwable::Throw(Human attacker, Human attacked){
+void Throwable::Throw(Human attacker, Person attacked){
     double staminaFactor = 0.3;
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;
@@ -1331,7 +1336,7 @@ void Medicine::addToVectors(){
     shop_items.push_back(*this); // Adds this medicine to the items vector
 }
 
-void Medicine::use(Human human){
+void Medicine::use(Human &human){
     human.hp.increaseHealth(heal); // Increases the human's health
     Backpack *b=human.getBackpack();
     b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
@@ -1379,7 +1384,7 @@ void Food::addToVectors(){
     shop_items.push_back(*this); // Adds this food to the items vector
 }
 
-void Food::use(Human human){
+void Food::use(Human& human){
     human.stamina.increaseStamina(strength); // Increases the human's stamina
     Backpack *b=human.getBackpack();
     b->useFoodItemCount(*this); // Uses a food item from the human's backpack
@@ -1555,13 +1560,13 @@ void playground() {
             humanEnemy = new HumanEnemy(*character,player->getLevel());
 
             // Add items to the humanEnemy's backpack
-            Backpack *bp = humanEnemy->getBackpack();
-            bp->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
-            bp->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
+            enemyBackpack = humanEnemy->getBackpack();
+            enemyBackpack->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
+            enemyBackpack->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
             for (int j = 0; j < 100; j++) {
-                bp->addThrowableItem(Throwable::shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
-                bp->addFoodItem(Food::shop_items_food.at(rand() % Food::shop_items_food.size()), 1);
-                bp->addMedicineItem(Medicine::shop_items_medicine.at(rand() % Medicine::shop_items_medicine.size()), 1);
+                enemyBackpack->addThrowableItem(Throwable::shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
+                enemyBackpack->addFoodItem(Food::shop_items_food.at(rand() % Food::shop_items_food.size()), 1);
+                enemyBackpack->addMedicineItem(Medicine::shop_items_medicine.at(rand() % Medicine::shop_items_medicine.size()), 1);
             }
 
             //show enemy's info
@@ -1918,6 +1923,7 @@ void goodbye(){
 void battleGround_humanEnemy(){
     int turn = 1;        //odd turn for player even turn for enemy
     HE_Controller Enemy(*humanEnemy);
+    enemy = humanEnemy;
     while(Enemy.getStatus()==HumanEnemyStatus::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
@@ -1955,6 +1961,7 @@ void battleGround_humanEnemy(){
 void battleGround_basicZombie(){
     int turn = 1;        //odd turn for player even turn for enemy
     BZ_Controller Enemy(*basicZombie);
+    enemy = basicZombie;
     while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
@@ -1985,6 +1992,7 @@ void battleGround_basicZombie(){
 void battleGround_advZombie(){
     int turn = 1;        //odd turn for player even turn for enemy
     AZ_Controller Enemy(*advZombie);
+    enemy = advZombie;
     while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
@@ -2030,15 +2038,15 @@ void BattleMenu() {
             {auto weapon = backpack->useWeapons();
             if (static_cast<WarmWeapon*>(weapon)){
                 wweapon = static_cast<WarmWeapon*>(weapon);
-                wweapon->Attack(*player,*humanEnemy);
+                wweapon->Attack(*player,*enemy);
             }
             else if (static_cast<ColdWeapon*>(weapon)){
                 cweapon = static_cast<ColdWeapon*>(weapon);
-                cweapon->Attack(*player,*humanEnemy);
+                cweapon->Attack(*player,*enemy);
             }
             else{
                 tweapon = static_cast<Throwable*>(weapon);
-                tweapon->Throw(*player,*humanEnemy);
+                tweapon->Throw(*player,*enemy);
             }
             break;}
             
