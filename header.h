@@ -301,8 +301,8 @@ class Zombie : public Person {
         Zombie(string,int);
         void takeDamage(int) override;     //show damage amount
         ZombieState getState();
-        virtual void bite();
-        virtual void scratch();
+        virtual void bite(){}
+        virtual void scratch(){}
         ~Zombie(){}
 };
 
@@ -407,7 +407,6 @@ class Items {
         int getPrice();
         ~Items(){}
 }; 
-vector <Items> Items::shop_items;     
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -423,7 +422,6 @@ class Permanent : public Items {
         virtual void Attack(Human, Person){}               //calculate the damage of attacker and reduce it from attacked health
         ~Permanent(){}
 };
-vector <Permanent> Permanent::shop_items_permanent;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -445,7 +443,6 @@ class WarmWeapon : public Permanent {
         WarmWeaponAbility getwwa();
         ~WarmWeapon(){}
 };
-vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -467,7 +464,6 @@ class ColdWeapon : public Permanent {
         ColdWeaponAbility getcwa();
         ~ColdWeapon(){}
 };
-vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -490,7 +486,6 @@ class Throwable : public Items {
         ThrowableWeaponAbility gettwa();
         ~Throwable(){}
 };
-vector <Throwable> Throwable::shop_items_throwable;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -512,7 +507,6 @@ class Medicine : public Items {
         friend void medicineMenu();
         ~Medicine(){}
 };
-vector <Medicine> Medicine::shop_items_medicine;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -533,7 +527,6 @@ class Food : public Items {
         friend void playground();
         ~Food(){}
 };
-vector <Food> Food::shop_items_food;
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

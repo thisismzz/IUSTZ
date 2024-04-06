@@ -18,6 +18,13 @@ HumanEnemy* humanEnemy=nullptr;
 BasicZombie* basicZombie=nullptr;
 AdvZombie* advZombie=nullptr;
 vector <string> characterTypes = {"JonSnow", "JaimeLannister", "Daenerys", "Stannis", "Joffrey", "TheonGreyjoy"};
+vector <Items> Items::shop_items={};
+vector <Permanent> Permanent::shop_items_permanent={};
+vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon={};
+vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon={};
+vector <Throwable> Throwable::shop_items_throwable={};
+vector <Medicine> Medicine::shop_items_medicine={};
+vector <Food> Food::shop_items_food={};
 //*****************************
 
 // *----------------------------------------------------------------*

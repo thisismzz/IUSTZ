@@ -1,6 +1,8 @@
 
 /.vscode
 holder.txt
-main.exe
 /.idea
 run.cpp
+header.o
+main.o
+my_program.exe
