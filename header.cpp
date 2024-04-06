@@ -1181,7 +1181,7 @@ void WarmWeapon::addToVectors(){
     shop_items.push_back(*this); // Adds this warm weapon to the items vector
 }
 
-void WarmWeapon::Attack(Human attacker, Person attacked){
+void WarmWeapon::Attack(Human& attacker, Person& attacked){
     double staminaFactor = 0.3;
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;
@@ -1189,7 +1189,6 @@ void WarmWeapon::Attack(Human attacker, Person attacked){
     int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (wwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
     attacker.stamina.decreaseStamina(10*wwa.getCurrentSkill()); // Decreases the attacker's stamina
     attacked.hp.decreaseHealth(damage); // Decreases the attacked person's health
-   
 
     if(static_cast<Player*>(&attacker)){
         Player *p=static_cast<Player*>(&attacker);
@@ -1263,7 +1262,7 @@ void ColdWeapon::addToVectors(){
     shop_items.push_back(*this); // Adds this cold weapon to the items vector
 }
 
-void ColdWeapon::Attack(Human attacker, Person attacked){
+void ColdWeapon::Attack(Human& attacker, Person& attacked){
     double staminaFactor = 0.3;
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;
@@ -1339,7 +1338,7 @@ void Throwable::addToVectors(){
     shop_items.push_back(*this); // Adds this throwable weapon to the items vector
 }
 
-void Throwable::Throw(Human attacker, Person attacked){
+void Throwable::Throw(Human& attacker, Person& attacked){
     double staminaFactor = 0.3;
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;

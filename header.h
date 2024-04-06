@@ -433,7 +433,7 @@ class Permanent : public Items {
         Permanent(string, int, string, int, int);
     public:       
         virtual void buy(){}                      //buy item and add it into player's backpack
-        virtual void Attack(Human,Person){}               //calculate the damage of attacker and reduce it from attacked health
+        virtual void Attack(Human&,Person&){}               //calculate the damage of attacker and reduce it from attacked health
         ~Permanent(){}
 };
 
@@ -449,7 +449,7 @@ class WarmWeapon : public Permanent {
         static void showItems();                     //show the available items to buy
         void buy() override;
         void addToVectors() override;
-        void Attack(Human, Person) override;
+        void Attack(Human&, Person&) override;
         friend ostream& operator<<(ostream&, WarmWeapon&);
         friend void Show_Permanent_Items();
         friend void playground();
@@ -470,7 +470,7 @@ class ColdWeapon : public Permanent {
         static void showItems();                     //show the available items to buy
         void buy() override;
         void addToVectors() override;
-        void Attack(Human, Person) override;
+        void Attack(Human&, Person&) override;
         friend ostream& operator<<(ostream&, ColdWeapon&);
         friend void Show_Permanent_Items();
         friend void playground();
@@ -493,7 +493,7 @@ class Throwable : public Items {
         static void showItems();                     //show the available items to buy
         void buy(int);
         void addToVectors() override;
-        void Throw(Human,Person);
+        void Throw(Human&,Person&);
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
         friend void playground();
