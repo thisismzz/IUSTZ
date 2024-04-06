@@ -903,7 +903,7 @@ void HE_Controller :: decision() {
 void HE_Controller :: transferItems() {
     Backpack *playerBackpack = player->getBackpack();
     Backpack *enemyBackpack = model.getBackpack();
-    
+
     // Transfer Food Items
     if(!enemyBackpack->FoodItems.empty()) {
         for(auto& item : enemyBackpack->FoodItems) {
@@ -944,6 +944,10 @@ void HE_Controller :: transferItems() {
     }
 }
 
+void HE_Controller :: showBackpackItems() {
+    view.showBackpackItems();
+}
+
 void HE_Controller :: showInfo(){
     view.showInfo(model);
 }
@@ -974,6 +978,10 @@ void HE_View::attackView(string name,Items weapon) {
     cout << name << "is attacking you by "<< weapon.getName() << "\n";
 }
 
+void HE_View :: showBackpackItems() {
+    Backpack *HE_Backpack = humanEnemy->getBackpack();
+    HE_Backpack.showItems();
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1991,9 +1999,11 @@ void battleGround_humanEnemy(){
         
         //show Enemy's item
         //method to add to player backpack;
-
+        cout << "THE FOLLOWING ITEMS WILL BE ADDED TO YOUR BACKPACK : \n";
+        Enemy.showBackpackItems();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getch();
+        Enemy.transferItems();
     }
 
 }

@@ -273,7 +273,7 @@ class HE_View {
         void updateHealth(string,int);     //prints the amount of heal
         void updateStamina(string,int);    //prints the amount of increased strength
         void attackView(string,Items);     //prints the weapon name that used to attack player
-
+        void showBackpackItems();
 };
 
 class HE_Controller {
@@ -293,6 +293,7 @@ class HE_Controller {
         void transferItems();
         void decision();
         void showInfo();
+        void showBackpackItems();
 };
 
 // *----------------------------------------------------------------*
