@@ -525,7 +525,7 @@ Items* Backpack::useWeapons() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Items* Backpack::useConsumableItems() {
+void Backpack::useConsumableItems() {
     int number;
     int index;
     int ChosenConsumableItem;
@@ -545,8 +545,9 @@ Items* Backpack::useConsumableItems() {
                     if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
                         auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
                         Medicine* medicine = new Medicine(iter->first);
-                        //cout << *medicine;
-                        return medicine;
+                        medicine->use(*player);
+                        break;
+                        // return medicine;
                     }
                     else {
                         cout << "Invalid index. Try again." << endl;
@@ -576,8 +577,9 @@ Items* Backpack::useConsumableItems() {
                     if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
                         auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
                         Food* food = new Food(iter->first);
-                        //cout << *food;
-                        return food;
+                        food->use(*player);
+                        break;
+                        // return food;
                     }
                     else{
                         cout << "Invalid index. Try again." << endl;
@@ -607,7 +609,7 @@ Items* Backpack::useConsumableItems() {
             getch();  // Wait for a key press
             useConsumableItems();
     }
-    return nullptr;
+    // return nullptr;
 }
 
 // *----------------------------------------------------------------*
@@ -2064,6 +2066,7 @@ void battleGround_basicZombie(){
 
     if(player->getState() == PlayerState::ALIVE){
         cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
+        cout << "\nPress any key to go continue...";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getch();
     }
@@ -2133,21 +2136,25 @@ void BattleMenu() {
             break;}
             
         case 2:
-            {auto consumable = backpack->useConsumableItems();
-            if (static_cast<Medicine*>(consumable)){
-                Medicine* medicine = static_cast<Medicine*>(consumable);
-                medicine->use(*player);
-            }
-            else{
-                Food* food = static_cast<Food*>(consumable);
-                food->use(*player);
-            }
+            {
+            // auto consumable = backpack->useConsumableItems();
+            // if (static_cast<Medicine*>(consumable)){
+            //     Medicine* medicine = static_cast<Medicine*>(consumable);
+            //     medicine->use(*player);
+            // }
+            // else{
+            //     Food* food = static_cast<Food*>(consumable);
+            //     food->use(*player);
+            // }
+            backpack->useConsumableItems();
             BattleMenu();
-            break; }
+            break; 
+            }
 
         case 3: 
             {showPlayerInfo();
             cout << "\nPress any key to go back...";
+            BattleMenu();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
             break; }

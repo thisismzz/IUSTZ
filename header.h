@@ -160,7 +160,7 @@ class Backpack {
         void showFoodItems();
         void consumeForSurvival();
         Items* useWeapons();
-        Items* useConsumableItems();
+        void useConsumableItems();
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
