@@ -159,7 +159,7 @@ class Backpack {
         void showMedicineItems();
         void showFoodItems();
         void consumeForSurvival();
-        Items* useWeapons();
+        void useWeaponsAttack();
         void useConsumableItems();
 };
 // *----------------------------------------------------------------*
@@ -287,7 +287,7 @@ class HE_Controller {
         void updateState();      // Method to update the state of the human enemy
         HumanEnemyState getState();
         HumanEnemyStatus getStatus();
-        Items* chooseWeapon();
+        void chooseWeapon();
         Food* chooseFood();
         Medicine* chooseMedicine();
         void transferItems();

@@ -408,7 +408,7 @@ void Backpack::consumeForSurvival() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Items* Backpack::useWeapons() {
+void Backpack::useWeaponsAttack() {
     int number;
     int index;
     int ChosenWeapon;
@@ -427,8 +427,9 @@ Items* Backpack::useWeapons() {
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= WarmWeaponItems.size()) {
                         WarmWeapon *wweapon=new WarmWeapon(WarmWeaponItems.at(ChosenWeapon-1));
-                        //cout << *wweapon;
-                        return wweapon;
+                        wweapon->Attack(*player,*enemy);
+                        break;
+                        // return wweapon;
                     } 
                     else {
                         cout << "Invalid index. Try again." << endl;
@@ -443,7 +444,7 @@ Items* Backpack::useWeapons() {
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
-                useWeapons();
+                useWeaponsAttack();
             }
             break;
 
@@ -457,8 +458,9 @@ Items* Backpack::useWeapons() {
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= ColdWeaponItems.size()) {
                         ColdWeapon* cweapon=new ColdWeapon(ColdWeaponItems.at(ChosenWeapon-1));
-                        //cout << *cweapon;
-                        return cweapon;
+                        cweapon->Attack(*player,*enemy);
+                        break;
+                        // return cweapon;
                     }
                     else {
                         cout << "Invalid index. Try again." << endl;
@@ -473,7 +475,7 @@ Items* Backpack::useWeapons() {
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
-                useWeapons();
+                useWeaponsAttack();
             }
             break;
 
@@ -488,8 +490,9 @@ Items* Backpack::useWeapons() {
                     if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
                         auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
                         Throwable* tweapon = new Throwable(iter->first);
-                        //cout << *tweapon;
-                        return tweapon;
+                        tweapon->Throw(*player,*enemy);
+                        break;
+                        // return tweapon;
                     }
                     else {
                         cout << "Invalid index. Try again." << endl;
@@ -504,7 +507,7 @@ Items* Backpack::useWeapons() {
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getch();  // Wait for a key press
-                useWeapons();
+                useWeaponsAttack();
             }
             break;
 
@@ -517,9 +520,9 @@ Items* Backpack::useWeapons() {
             cout << "Please press any key to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             getch();  // Wait for a key press
-            useWeapons();
+            useWeaponsAttack();
     }
-    return nullptr;
+    // return nullptr;
 }
 
 // *----------------------------------------------------------------*
@@ -774,10 +777,8 @@ void HumanEnemy::takeDamage(int amount) {
 HE_Controller :: HE_Controller (HumanEnemy *HE) : model(HE) , backpack(HE->getBackpack()) , view(HE_View())  {}
 
 void HE_Controller::updateState() {
-    double healthRatio = model->getHealthPoints() / model->hp.getMaxHealth();
-    double staminaRatio = model->stamina.getCurrentStamina() / model->stamina.getMaxStamina();
-    cout<<model->getHealthPoints() / model->hp.getMaxHealth()<<"\t"<<model->stamina.getCurrentStamina() / model->stamina.getMaxStamina()<<"\n";
-    Sleep(3000);
+    double healthRatio = model->getHealthPoints() * 1.0 / model->hp.getMaxHealth();
+    double staminaRatio = model->stamina.getCurrentStamina() * 1.0 / model->stamina.getMaxStamina();
 
     // Check if health or stamina is below 0.4
     if (healthRatio <= 0.4)
@@ -798,12 +799,13 @@ HumanEnemyStatus HE_Controller::getStatus(){
     return model->getStatus();
 }
 
-Items* HE_Controller :: chooseWeapon() {
+void HE_Controller :: chooseWeapon() {
     srand(time(0)); // use current time as seed for random generator
     // Check if backpack is empty
     if (backpack->ThrowableItems.empty() && backpack->WarmWeaponItems.empty() && 
         backpack->ColdWeaponItems.empty()) {
-        return nullptr; // backpack is empty
+        cout<<model->getName()<<" have no weapons!\n";
+        // return nullptr; // backpack is empty
     }
     else {
         int itemType = rand() % 3; // Randomly choose between 5 types of items
@@ -812,30 +814,36 @@ Items* HE_Controller :: chooseWeapon() {
                 {if (!backpack->ThrowableItems.empty()) {
                     int index = rand() % backpack->ThrowableItems.size();
                     auto it = next(backpack->ThrowableItems.begin(),index);
-                    Throwable *item = new Throwable(it->first);
-                    return item;
+                    Throwable *tweapon = new Throwable(it->first);
+                    tweapon->Throw(*model,*player);
+                    view.attackView(model->getName(),*tweapon);
+                    // return item;
                 }
                 break;
                 }
             case 1: // WarmWeapon
                 {if (!backpack->WarmWeaponItems.empty()) {
                     int index = rand() % backpack->WarmWeaponItems.size();
-                    WarmWeapon *item = new WarmWeapon(backpack->WarmWeaponItems[index]);
-                    return item;
+                    WarmWeapon *wweapon = new WarmWeapon(backpack->WarmWeaponItems[index]);
+                    wweapon->Attack(*model,*player);
+                    view.attackView(model->getName(),*wweapon);
+                    // return item;
                 }
                 break;
                 }
             case 2: // ColdWeapon
                 {if (!backpack->ColdWeaponItems.empty()) {
                     int index = rand() % backpack->ColdWeaponItems.size();
-                    ColdWeapon *item = new ColdWeapon(backpack->ColdWeaponItems[index]);
-                    return item;
+                    ColdWeapon *cweapon = new ColdWeapon(backpack->ColdWeaponItems[index]);
+                    cweapon->Attack(*model,*player);
+                    view.attackView(model->getName(),*cweapon);
+                    // return item;
                 }
                 break;
                 }
         }
     }
-    return nullptr;
+    // return nullptr;
 }
 
 Food* HE_Controller :: chooseFood() {
@@ -901,7 +909,8 @@ void HE_Controller :: decision() {
         break;
 
     case HumanEnemyState::FIGHT:
-        Attack(chooseWeapon());
+        // Attack(chooseWeapon());
+        chooseWeapon();
         break;
 
     default:
@@ -2038,6 +2047,8 @@ void battleGround_humanEnemy(){
         Enemy.transferItems();
     }
 
+    playground();
+
 }
 
 // *----------------------------------------------------------------*
@@ -2070,6 +2081,7 @@ void battleGround_basicZombie(){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getch();
     }
+    playground();
 }
 
 // *----------------------------------------------------------------*
@@ -2101,6 +2113,7 @@ void battleGround_advZombie(){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getch();
     }
+    playground();
 }
 
 // *----------------------------------------------------------------*
@@ -2120,32 +2133,12 @@ void BattleMenu() {
     Backpack *backpack = player->getBackpack();
     switch(number){
         case 1: 
-            {auto weapon = backpack->useWeapons();
-            if (static_cast<WarmWeapon*>(weapon)){
-                wweapon = static_cast<WarmWeapon*>(weapon);
-                wweapon->Attack(*player,*enemy);
-            }
-            else if (static_cast<ColdWeapon*>(weapon)){
-                cweapon = static_cast<ColdWeapon*>(weapon);
-                cweapon->Attack(*player,*enemy);
-            }
-            else{
-                tweapon = static_cast<Throwable*>(weapon);
-                tweapon->Throw(*player,*enemy);
-            }
+            {
+            backpack->useWeaponsAttack();
             break;}
             
         case 2:
             {
-            // auto consumable = backpack->useConsumableItems();
-            // if (static_cast<Medicine*>(consumable)){
-            //     Medicine* medicine = static_cast<Medicine*>(consumable);
-            //     medicine->use(*player);
-            // }
-            // else{
-            //     Food* food = static_cast<Food*>(consumable);
-            //     food->use(*player);
-            // }
             backpack->useConsumableItems();
             BattleMenu();
             break; 
@@ -2160,23 +2153,24 @@ void BattleMenu() {
             break; }
 
         case 4:
-            {BankAccount* creditcard = player->getBankAccount();
-            auto chosenweapon = backpack->useWeapons();
-            if (static_cast<WarmWeapon*>(chosenweapon)){
-                WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
-                WarmWeaponAbility wwa = wweapon->getwwa();
-                wwa.upgradeSkill(creditcard);
-            }     
-            else if (static_cast<ColdWeapon*>(chosenweapon)){
-                ColdWeapon* cweapon = static_cast<ColdWeapon*>(chosenweapon);
-                ColdWeaponAbility cwa = cweapon->getcwa();
-                cwa.upgradeSkill(creditcard);
-            }
-            else{
-                Throwable* tweapon = static_cast<Throwable*>(chosenweapon);
-                ThrowableWeaponAbility twa= tweapon->gettwa();
-                twa.upgradeSkill(creditcard);
-            }
+            {
+            // BankAccount* creditcard = player->getBankAccount();
+            // auto chosenweapon = backpack->useWeapons();
+            // if (static_cast<WarmWeapon*>(chosenweapon)){
+            //     WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
+            //     WarmWeaponAbility wwa = wweapon->getwwa();
+            //     wwa.upgradeSkill(creditcard);
+            // }     
+            // else if (static_cast<ColdWeapon*>(chosenweapon)){
+            //     ColdWeapon* cweapon = static_cast<ColdWeapon*>(chosenweapon);
+            //     ColdWeaponAbility cwa = cweapon->getcwa();
+            //     cwa.upgradeSkill(creditcard);
+            // }
+            // else{
+            //     Throwable* tweapon = static_cast<Throwable*>(chosenweapon);
+            //     ThrowableWeaponAbility twa= tweapon->gettwa();
+            //     twa.upgradeSkill(creditcard);
+            // }
             BattleMenu();
             break; }
 
