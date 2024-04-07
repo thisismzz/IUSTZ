@@ -278,12 +278,12 @@ class HE_View {
 
 class HE_Controller {
     private:
-        HumanEnemy  model;
+        HumanEnemy  *model;
         HE_View view;
         Backpack* backpack;
         void Attack(Items*);
     public:
-        HE_Controller(HumanEnemy);
+        HE_Controller(HumanEnemy*);
         void updateState();      // Method to update the state of the human enemy
         HumanEnemyState getState();
         HumanEnemyStatus getStatus();
@@ -338,10 +338,10 @@ class BZ_View {
 
 class BZ_Controller {
     private:
-        BasicZombie model;
+        BasicZombie *model;
         BZ_View view;
     public:
-        BZ_Controller(BasicZombie);
+        BZ_Controller(BasicZombie*);
         ZombieState getState();
         void bite();
         void showInfo();
@@ -366,10 +366,10 @@ class AZ_View {
 
 class AZ_Controller {
     private:
-        AdvZombie model;
+        AdvZombie *model;
         AZ_View view;
     public:
-        AZ_Controller(AdvZombie);
+        AZ_Controller(AdvZombie*);
         ZombieState getState();
         void Attack();
         void showInfo();

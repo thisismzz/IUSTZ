@@ -769,31 +769,31 @@ void HumanEnemy::takeDamage(int amount) {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-HE_Controller :: HE_Controller (HumanEnemy HE) : model(HE) , backpack(HE.getBackpack()) , view(HE_View())  {}
+HE_Controller :: HE_Controller (HumanEnemy *HE) : model(HE) , backpack(HE->getBackpack()) , view(HE_View())  {}
 
 void HE_Controller::updateState() {
-    double healthRatio = model.getHealthPoints() / model.hp.getMaxHealth();
-    double staminaRatio = model.stamina.getCurrentStamina() / model.stamina.getMaxStamina();
-    cout<<model.getHealthPoints()<<"\t"<<model.stamina.getCurrentStamina()<<"\n";
+    double healthRatio = model->getHealthPoints() / model->hp.getMaxHealth();
+    double staminaRatio = model->stamina.getCurrentStamina() / model->stamina.getMaxStamina();
+    cout<<model->getHealthPoints()<<"\t"<<model->stamina.getCurrentStamina()<<"\n";
     Sleep(3000);
 
     // Check if health or stamina is below 0.4
     if (staminaRatio <= 0.4)
-        model.setState(HumanEnemyState :: LOW_HEALTH);
+        model->setState(HumanEnemyState :: LOW_HEALTH);
 
     else if (healthRatio <= 0.4)
-        model.setState(HumanEnemyState :: LOW_POWER);
+        model->setState(HumanEnemyState :: LOW_POWER);
 
     else
-        model.setState(HumanEnemyState :: FIGHT);
+        model->setState(HumanEnemyState :: FIGHT);
 }
 
 HumanEnemyState HE_Controller::getState(){
-    return model.getState();
+    return model->getState();
 }
 
 HumanEnemyStatus HE_Controller::getStatus(){
-    return model.getStatus();
+    return model->getStatus();
 }
 
 Items* HE_Controller :: chooseWeapon() {
@@ -861,19 +861,19 @@ Medicine* HE_Controller :: chooseMedicine() {
 void HE_Controller::Attack(Items* weapon){
     if(static_cast<WarmWeapon*>(weapon)){
         WarmWeapon *wweapon = static_cast<WarmWeapon*>(weapon);
-        wweapon->Attack(model,*player);
-        view.attackView(model.getName(),*wweapon);
+        wweapon->Attack(*model,*player);
+        view.attackView(model->getName(),*wweapon);
     }
     if(static_cast<ColdWeapon*>(weapon)){
         ColdWeapon *cweapon = static_cast<ColdWeapon*>(weapon);
 
-        cweapon->Attack(model,*player);
-        view.attackView(model.getName(),*cweapon);
+        cweapon->Attack(*model,*player);
+        view.attackView(model->getName(),*cweapon);
     }
     if(static_cast<Throwable*>(weapon)){
         Throwable *tweapon = static_cast<Throwable*>(weapon);
-        tweapon->Throw(model,*player);
-        view.attackView(model.getName(),*tweapon);
+        tweapon->Throw(*model,*player);
+        view.attackView(model->getName(),*tweapon);
     }
 }
 
@@ -881,20 +881,20 @@ void HE_Controller :: decision() {
     Medicine *mitem;
     Food *fitem;
 
-    switch(model.getState()){
+    switch(model->getState()){
     case HumanEnemyState::LOW_HEALTH:
         mitem = chooseMedicine();
         if(mitem!=nullptr){
-            mitem->use(model);
-            view.updateHealth(model.getName(),mitem->getHeal());
+            mitem->use(*model);
+            view.updateHealth(model->getName(),mitem->getHeal());
         }
         break;
 
     case HumanEnemyState::LOW_POWER:
         fitem = chooseFood();
         if(fitem!=nullptr){
-            fitem->use(model);
-            view.updateStamina(model.getName(),fitem->getStrength());
+            fitem->use(*model);
+            view.updateStamina(model->getName(),fitem->getStrength());
         }
         break;
 
@@ -909,7 +909,7 @@ void HE_Controller :: decision() {
 
 void HE_Controller :: transferItems() {
     Backpack *playerBackpack = player->getBackpack();
-    Backpack *enemyBackpack = model.getBackpack();
+    Backpack *enemyBackpack = model->getBackpack();
 
     // Transfer Food Items
     if(!enemyBackpack->FoodItems.empty()) {
@@ -956,7 +956,7 @@ void HE_Controller :: showBackpackItems() {
 }
 
 void HE_Controller :: showInfo(){
-    view.showInfo(model);
+    view.showInfo(*model);
 }
 
 // *----------------------------------------------------------------*
@@ -1025,18 +1025,18 @@ void BasicZombie :: bite() {
 
 // *----------------------------------------------------------------*
 
-BZ_Controller :: BZ_Controller (BasicZombie BZ) : model(BZ) , view(BZ_View())  {}
+BZ_Controller :: BZ_Controller (BasicZombie* BZ) : model(BZ) , view(BZ_View())  {}
 
 ZombieState BZ_Controller::getState(){
-    return model.getState();
+    return model->getState();
 }
 
 void BZ_Controller :: bite() {
-    model.bite();
+    model->bite();
 }
  
 void BZ_Controller :: showInfo() {
-    view.showInfo(model);
+    view.showInfo(*model);
 }
 
 // *----------------------------------------------------------------*
@@ -1074,14 +1074,14 @@ void AdvZombie :: scratch() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-AZ_Controller :: AZ_Controller (AdvZombie AZ) : model(AZ) , view(AZ_View())  {}
+AZ_Controller :: AZ_Controller (AdvZombie* AZ) : model(AZ) , view(AZ_View())  {}
 
 ZombieState AZ_Controller::getState(){
-    return model.getState();
+    return model->getState();
 }
  
 void AZ_Controller :: showInfo() {
-    view.showInfo(model);
+    view.showInfo(*model);
 }
 
 void AZ_Controller::Attack(){
@@ -1089,11 +1089,11 @@ void AZ_Controller::Attack(){
     int randomNum = rand();
 
     if(randomNum % 2 == 0){
-        model.bite();
+        model->bite();
     }
 
     else{
-        model.scratch();
+        model->scratch();
     }
 }
 
@@ -2002,7 +2002,7 @@ void goodbye(){
 
 void battleGround_humanEnemy(){
     int turn = 1;        //odd turn for player even turn for enemy
-    HE_Controller Enemy(*humanEnemy);
+    HE_Controller Enemy(humanEnemy);
     enemy = humanEnemy;
     while(Enemy.getStatus()==HumanEnemyStatus::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
@@ -2042,7 +2042,7 @@ void battleGround_humanEnemy(){
 
 void battleGround_basicZombie(){
     int turn = 1;        //odd turn for player even turn for enemy
-    BZ_Controller Enemy(*basicZombie);
+    BZ_Controller Enemy(basicZombie);
     enemy = basicZombie;
     while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
@@ -2073,7 +2073,7 @@ void battleGround_basicZombie(){
 
 void battleGround_advZombie(){
     int turn = 1;        //odd turn for player even turn for enemy
-    AZ_Controller Enemy(*advZombie);
+    AZ_Controller Enemy(advZombie);
     enemy = advZombie;
     while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
