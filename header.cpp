@@ -225,32 +225,32 @@ bool Backpack::coldWeaponExistence(const ColdWeapon coldWeaponItem){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void Backpack::removeFoodItem(const Food foodItem) {
+void Backpack::removeFoodItem(Food foodItem) {
     FoodItems.erase(foodItem); // Removes food item
 }
 
-void Backpack::removeMedicineItem(const Medicine medicineItem) {
+void Backpack::removeMedicineItem(Medicine medicineItem) {
     MedicineItems.erase(medicineItem); // Removes medicine item
 }
 
-void Backpack::removeThrowableItem(const Throwable throwableItem) {
+void Backpack::removeThrowableItem(Throwable throwableItem) {
     ThrowableItems.erase(throwableItem); // Removes throwable item
 }
 
-void Backpack::useFoodItemCount(const Food foodItem) {
-    FoodItems[foodItem]-=1; // Decreases food item count
+void Backpack::useFoodItemCount(Food foodItem) {
+    FoodItems[foodItem]=FoodItems[foodItem]-1; // Decreases food item count
     if(FoodItems[foodItem]==0)
         removeFoodItem(foodItem); // Removes food item if count is 0
 }
 
-void Backpack::useMedicineItemCount(const Medicine medicineItem) {
-    MedicineItems[medicineItem]-=1; // Decreases medicine item count
+void Backpack::useMedicineItemCount(Medicine medicineItem) {
+    MedicineItems[medicineItem]=MedicineItems[medicineItem]-1; // Decreases medicine item count
     if(MedicineItems[medicineItem]==0)
         removeMedicineItem(medicineItem); // Removes medicine item if count is 0
 }
 
-void Backpack::useThrowableItemCount(const Throwable throwableItem) {
-    ThrowableItems[throwableItem]-=1; // Decreases throwable item count
+void Backpack::useThrowableItemCount(Throwable throwableItem) {
+    ThrowableItems[throwableItem]=ThrowableItems[throwableItem]-1; // Decreases throwable item count
     if(ThrowableItems[throwableItem]==0)
         removeThrowableItem(throwableItem); // Removes throwable item if count is 0
 }
@@ -774,14 +774,14 @@ HE_Controller :: HE_Controller (HumanEnemy *HE) : model(HE) , backpack(HE->getBa
 void HE_Controller::updateState() {
     double healthRatio = model->getHealthPoints() / model->hp.getMaxHealth();
     double staminaRatio = model->stamina.getCurrentStamina() / model->stamina.getMaxStamina();
-    cout<<model->getHealthPoints()<<"\t"<<model->stamina.getCurrentStamina()<<"\n";
+    cout<<model->getHealthPoints() / model->hp.getMaxHealth()<<"\t"<<model->stamina.getCurrentStamina() / model->stamina.getMaxStamina()<<"\n";
     Sleep(3000);
 
     // Check if health or stamina is below 0.4
-    if (staminaRatio <= 0.4)
+    if (healthRatio <= 0.4)
         model->setState(HumanEnemyState :: LOW_HEALTH);
 
-    else if (healthRatio <= 0.4)
+    else if (staminaRatio <= 0.4)
         model->setState(HumanEnemyState :: LOW_POWER);
 
     else

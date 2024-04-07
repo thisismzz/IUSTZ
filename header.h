@@ -136,9 +136,9 @@ class Backpack {
         map <Throwable , int> ThrowableItems;
         vector <WarmWeapon> WarmWeaponItems;
         vector <ColdWeapon> ColdWeaponItems;
-        void removeFoodItem(const Food);
-        void removeMedicineItem(const Medicine);
-        void removeThrowableItem(const Throwable);
+        void removeFoodItem(Food);
+        void removeMedicineItem(Medicine);
+        void removeThrowableItem(Throwable);
         friend class HE_Controller;
     public:
         Backpack(){}
@@ -149,9 +149,9 @@ class Backpack {
         void addColdWeaponItem(const ColdWeapon);
         bool warmWeaponExistence(const WarmWeapon);
         bool coldWeaponExistence(const ColdWeapon);
-        void useFoodItemCount(const Food specificItem);
-        void useMedicineItemCount(const Medicine specificItem);
-        void useThrowableItemCount(const Throwable specificItem);
+        void useFoodItemCount(Food);
+        void useMedicineItemCount(Medicine);
+        void useThrowableItemCount(Throwable);
         void showItems();
         void showWarmWeaponItems();
         void showColdWeaponItems();
