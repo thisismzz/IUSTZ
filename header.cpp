@@ -1878,6 +1878,36 @@ void medicineMenu() {
     }
 }
 
+void foodMenu() {
+    system("cls");
+
+    if(player->getMoney() >= 15) {
+        int item,quantity;
+        Food *meal;
+        cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl;
+        Food::showItems(); // Shows foods
+        cout << "which one do you want to buy?" << endl;
+        cin >> item;
+        cout << "How many?" << endl;
+        cin >> quantity;
+        meal=new Food(Food::shop_items_food.at(item-1));
+        if(player->getMoney() >= meal->getPrice() * quantity) {
+            meal->buy(quantity); // Buys a food
+        }
+        else {
+            cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << meal->getName() << " Items. Buy Less Items ... \n";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            foodMenu();
+        }
+        BattleMenu();
+    } 
+    else {
+        //the Player Looses.
+        goodbye();
+    }
+}
+
 void playground() {
     system("cls");
     srand(time(0));
