@@ -420,7 +420,10 @@ void Backpack::ConsumeMedForSurvival() {
         for(int i = 0; i < quantity; i++){
             chosenMedicine.use(*player);
         }
+        cout << "MEDICINE ITEMS CONSUME SUCCESSFULLY. " << endl;
         cout << "You used " << quantity << " many " << chosenMedicine.getName() << " items." << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
         player->newLife();   //change the state from DEFEATED to ALIVE
         BattleMenu();
     }
@@ -473,7 +476,10 @@ void Backpack::ConsumeFoodForSurvival() {
         for(int i = 0; i < quantity; i++){
             chosenFood.use(*player);
         }
+        cout << "FOOD ITEMS CONSUMED SUCCESSFULLY. " << endl;
         cout << "You used " << quantity << " many " << chosenFood.getName() << " items." << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
         player->newLife();   //change the state from DEFEATED to ALIVE
         BattleMenu();
     }
@@ -1661,11 +1667,7 @@ void Medicine::use(Human &human){
         human.hp.increaseHealth(heal); // Increases the human's health
         Backpack *b=human.getBackpack();
         b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
-        cout << "MEDICINE CONSUME SUCCESSFULLY. " << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-         _getch();  // Wait for a key press
     }
-    
     else{
         cout << "YOUR HP IS FULL. NO NEED TO MEDICINE."<< endl;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -1723,9 +1725,6 @@ void Food::use(Human& human){
         human.stamina.increaseStamina(strength); // Increases the human's stamina
         Backpack *b=human.getBackpack();
         b->useFoodItemCount(*this); // Uses a food item from the human's backpack
-        cout << "FOOD CONSUME SUCCESSFULLY." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-         _getch();  // Wait for a key press
     }
     else{
         cout << "YOUR STAMINA IS FULL. NO NEED TO FOOD." << endl;
