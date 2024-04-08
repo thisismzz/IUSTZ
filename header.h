@@ -65,7 +65,7 @@ class Stamina {
         int currentStamina;
         int maximum;
     public:
-        Stamina(int);
+        Stamina(int,int);
         void decreaseStamina(int);
         void increaseStamina(int);
         void updateMaximumStamina();

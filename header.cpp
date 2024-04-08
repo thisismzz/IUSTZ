@@ -59,7 +59,7 @@ void Health::increaseHealth (int amount){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Stamina::Stamina(int cs):maximum(100),currentStamina(cs){} // Constructor
+Stamina::Stamina(int cs,int l=1):maximum(100+(50*(l-1))),currentStamina(cs){} // Constructor
 
 void Stamina::decreaseStamina(int amount) {
     currentStamina -= amount; // Decreases stamina
@@ -481,7 +481,7 @@ void Backpack::ConsumeFoodForSurvival() {
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();  // Wait for a key press
         player->newLife();   //change the state from DEFEATED to ALIVE
-        playground();
+        BattleMenu();
     }
 }
 
@@ -892,7 +892,7 @@ int Person::getMaxHealth() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Human::Human(string n,int s,int l=1):Person(n,l),stamina(s){} // Constructor that initializes name and stamina
+Human::Human(string n,int s,int l=1):Person(n,l),stamina(s,l){} // Constructor that initializes name and stamina
 
 Backpack* Human::getBackpack() {
     Backpack *p=&backpack;
@@ -1870,7 +1870,6 @@ void medicineMenu() {
             _getch();  // Wait for a key press
             medicineMenu();
         }
-        BattleMenu();
     } 
     else {
         //the Player Looses.
@@ -1900,7 +1899,6 @@ void foodMenu() {
             _getch();  // Wait for a key press
             foodMenu();
         }
-        BattleMenu();
     } 
     else {
         //the Player Looses.
@@ -2349,6 +2347,11 @@ void battleGround_humanEnemy(){
         
         Enemy.transferItems();
     }
+    else{
+        cout<<"YOU HAVE LOST THIS MATCH!\n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();
+    }
     playground();
 }
 
@@ -2386,6 +2389,11 @@ void battleGround_basicZombie(){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
     }
+    else{
+        cout<<"YOU HAVE LOST THIS MATCH!\n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();
+    }
     playground();
 }
 
@@ -2420,6 +2428,11 @@ void battleGround_advZombie(){
 
     if(player->getState() == PlayerState::ALIVE){
         cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();
+    }
+    else{
+        cout<<"YOU HAVE LOST THIS MATCH!\n";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
     } 
