@@ -405,27 +405,13 @@ void Backpack::ConsumeMedForSurvival() {
         ConsumeMedForSurvival();
     }
 
-    int quantity;
-    cout << "ENTER THE QUANTITY OF THE MEDICINE ITEM YOU WANT TO USE: ";
-    cin >> quantity;
-
     Medicine chosenMedicine = medicineVector[choice - 1];
-    if(MedicineItems[chosenMedicine] < quantity){
-        cout << "Not enough stock. You only have " << MedicineItems[chosenMedicine] << "." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
-        ConsumeMedForSurvival();
-    } 
-    else {
-        for(int i = 0; i < quantity; i++){
-            chosenMedicine.use(*player);
-        }
-        cout << "MEDICINE ITEMS CONSUME SUCCESSFULLY. " << endl;
-        cout << "You used " << quantity << " many " << chosenMedicine.getName() << " items." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
-        player->newLife();   //change the state from DEFEATED to ALIVE
-        playground();
+    chosenMedicine.use(*player);
+    cout << "You used " << chosenMedicine.getName() << " item." << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    _getch();  // Wait for a key press
+    player->newLife();   //change the state from DEFEATED to ALIVE
+    playground();
     }
 }
 
@@ -461,27 +447,13 @@ void Backpack::ConsumeFoodForSurvival() {
         ConsumeFoodForSurvival();
     }
 
-    int quantity;
-    cout << "ENTER THE QUANTITY OF THE FOOD ITEM YOU WANT TO USE: ";
-    cin >> quantity;
-
     Food chosenFood = foodVector[choice - 1];
-    if(FoodItems[chosenFood] < quantity){
-        cout << "Not enough stock. You only have " << FoodItems[chosenFood] << "." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
-        ConsumeFoodForSurvival();
-    } 
-    else {
-        for(int i = 0; i < quantity; i++){
-            chosenFood.use(*player);
-        }
-        cout << "FOOD ITEMS CONSUMED SUCCESSFULLY. " << endl;
-        cout << "You used " << quantity << " many " << chosenFood.getName() << " items." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
-        player->newLife();   //change the state from DEFEATED to ALIVE
-        BattleMenu();
+    chosenFood.use(*player);
+    cout << "You used " << chosenFood.getName() << " item." << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    _getch();  // Wait for a key press
+    player->newLife();   //change the state from DEFEATED to ALIVE
+    BattleMenu();
     }
 }
 
@@ -1672,15 +1644,15 @@ void Medicine::use(Human &human){
         human.hp.increaseHealth(heal); // Increases the human's health
         Backpack *b=human.getBackpack();
         b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
+        cout << "MEDICINE CONSUME SUCCESSFULLY. " << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
     }
     else{
         cout << "YOUR HP IS FULL. NO NEED TO MEDICINE."<< endl;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
          _getch();  // Wait for a key press
     }
-        
-        
-    
 }
 
 int Medicine::getHeal() {
@@ -1730,6 +1702,9 @@ void Food::use(Human& human){
         human.stamina.increaseStamina(strength); // Increases the human's stamina
         Backpack *b=human.getBackpack();
         b->useFoodItemCount(*this); // Uses a food item from the human's backpack
+        cout << "FOOD CONSUME SUCCESSFULLY." << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
     }
     else{
         cout << "YOUR STAMINA IS FULL. NO NEED TO FOOD." << endl;
