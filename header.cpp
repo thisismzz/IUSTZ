@@ -438,6 +438,7 @@ void Backpack::ConsumeMedForSurvival() {
     _getch();  // Wait for a key press
     player->newLife();   //change the state from DEFEATED to ALIVE
     playground();
+    
 }
 
 // *----------------------------------------------------------------*
@@ -479,6 +480,7 @@ void Backpack::ConsumeFoodForSurvival() {
     _getch();  // Wait for a key press
     player->newLife();   //change the state from DEFEATED to ALIVE
     BattleMenu();
+    
 }
 
 // *----------------------------------------------------------------*
