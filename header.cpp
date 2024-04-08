@@ -943,6 +943,10 @@ PlayerState Player::getState(){
     return state;
 }
 
+void Player::setState(PlayerState s){
+    state=s;
+}
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1087,8 +1091,11 @@ void HE_Controller :: decision() {
         if(mitem!=nullptr){
             mitem->use(*model);
             view.updateHealth(model->getName(),mitem->getHeal());
+            break;
         }
-        break;
+        else{
+            
+        }
 
     case HumanEnemyState::LOW_POWER:
         fitem = chooseFood();
@@ -1820,7 +1827,7 @@ void createItem() {
 void medicineMenu() {
     system("cls");
 
-    if(player->getMoney() >= 15) {
+    if(player->getMoney() >= 1000) {
         int item,quantity;
         Medicine *drug;
         cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl;
@@ -1850,7 +1857,7 @@ void medicineMenu() {
 void foodMenu() {
     system("cls");
 
-    if(player->getMoney() >= 15) {
+    if(player->getMoney() >= 1000) {
         int item,quantity;
         Food *meal;
         cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl;
@@ -1884,6 +1891,14 @@ void playground() {
     Backpack *playerBackpack = player->getBackpack();
     Backpack *enemyBackpack;
     int randomNum = rand();
+
+    if (player->getState() == PlayerState::DEFEATED) {
+        cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
+        cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
+        playerBackpack->ConsumeMedForSurvival();
+    }
 
     int choice;
     if ((randomNum % 100) < 50) {
@@ -2306,22 +2321,7 @@ void battleGround_humanEnemy(){
         
         Enemy.transferItems();
     }
-    else{
-        if (player->getHealthPoints() <= 0) {
-            cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
-            cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
-            playerBackpack->ConsumeMedForSurvival();
-        }
-        else if (player->getStamina() <= 0) {
-            cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
-            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
-            playerBackpack->ConsumeFoodForSurvival();
-        }
-    }        
+
 }
 
 // *----------------------------------------------------------------*
@@ -2358,22 +2358,6 @@ void battleGround_basicZombie(){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
     }
-    else{
-        if (player->getHealthPoints() <= 0) {
-            cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
-            cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
-            playerBackpack->ConsumeMedForSurvival();
-        }
-        else if (player->getStamina() <= 0) {
-            cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
-            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
-            playerBackpack->ConsumeFoodForSurvival();
-        }
-    }  
 }
 
 // *----------------------------------------------------------------*
@@ -2409,23 +2393,7 @@ void battleGround_advZombie(){
         cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
-    }
-    else{
-        if (player->getHealthPoints() <= 0) {
-            cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
-            cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
-            playerBackpack->ConsumeMedForSurvival();
-        }
-        else if (player->getStamina() <= 0) {
-            cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
-            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
-            playerBackpack->ConsumeFoodForSurvival();
-        }
-    }  
+    } 
 }
 
 // *----------------------------------------------------------------*
@@ -2444,6 +2412,15 @@ void BattleMenu() {
     
     switch (number) {
         case 1: {
+            if (player->getStamina() <= 0) {
+            cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
+            player->setState(PlayerState::DEFEATED);
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
+            backpack->ConsumeFoodForSurvival();
+            }
+
             auto weapon = backpack->useWeapons();
             if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(weapon)) {
                 wweapon->Attack(*player, *enemy);
