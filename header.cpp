@@ -1881,7 +1881,7 @@ void medicineMenu() {
 void foodMenu() {
     system("cls");
 
-    if(player->getMoney() >= 15) {
+    if(player->getMoney() >= 1000) {
         int item,quantity;
         Food *meal;
         cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl;
@@ -2349,7 +2349,7 @@ void battleGround_humanEnemy(){
         
         Enemy.transferItems();
     }
-
+    playground();
 }
 
 // *----------------------------------------------------------------*
@@ -2386,6 +2386,7 @@ void battleGround_basicZombie(){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
     }
+    playground();
 }
 
 // *----------------------------------------------------------------*
@@ -2422,6 +2423,7 @@ void battleGround_advZombie(){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
     } 
+    playground();
 }
 
 // *----------------------------------------------------------------*
