@@ -177,6 +177,7 @@ class BankAccount {
         int getBalance();
         void deposit(int amount);
         bool withdraw(int amount);
+        void prize(int);
 };
 
 // *----------------------------------------------------------------*

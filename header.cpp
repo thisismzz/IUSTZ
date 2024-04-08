@@ -849,7 +849,7 @@ int BankAccount::getBalance() {
 }
 
 void BankAccount::deposit(int amount) { 
-    this->balance += amount; // Increases the balance by the deposit amount
+    balance += amount; // Increases the balance by the deposit amount
 }
 
 bool BankAccount::withdraw(int amount) {
@@ -859,6 +859,11 @@ bool BankAccount::withdraw(int amount) {
     }    
     else
         return false; // Returns false if there's not enough balance for withdrawal
+}
+
+void BankAccount::prize(int amount){
+    balance+=amount;
+    cout<<"YOU TOOK A "<<amount<<"$ PRIZE"<<endl;
 }
 
 
@@ -2341,11 +2346,12 @@ void battleGround_humanEnemy(){
         cout << "THE FOLLOWING ITEMS WILL BE ADDED TO YOUR BACKPACK : \n";
         
         Enemy.showBackpackItems();
+        Enemy.transferItems();
+
+        player->getBankAccount()->prize(player->getLevel()*1000);
         
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
-        
-        Enemy.transferItems();
     }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
@@ -2386,6 +2392,7 @@ void battleGround_basicZombie(){
 
     if(player->getState() == PlayerState::ALIVE){
         cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
+        player->getBankAccount()->prize(player->getLevel()*500);
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
     }
@@ -2428,6 +2435,7 @@ void battleGround_advZombie(){
 
     if(player->getState() == PlayerState::ALIVE){
         cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
+        player->getBankAccount()->prize(player->getLevel()*800);
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         _getch();
     }
