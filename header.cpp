@@ -133,14 +133,20 @@ Skills::Skills(int n,int m):maximum(5),currentSkill(n),upgradePrice(m){} // Cons
 void Skills::upgradeSkill(BankAccount *creditcard){
     try{
         if(creditcard->getBalance()>=upgradePrice){
-            creditcard->withdraw(upgradePrice); // Withdraws the upgrade price from the credit card
-            currentSkill++; // Increases the current skill level
-            cout << "WEAPON UPGRADE SUCCESSFULLY. " << upgradePrice << "$ WAS DEDUCTED FROM YOUR ACCOUNT";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch(); 
-            setUpgradePrice(); // Sets the new upgrade price
+            if(currentSkill<maximum){
+                creditcard->withdraw(upgradePrice); // Withdraws the upgrade price from the credit card
+                currentSkill++; // Increases the current skill level
+                cout << "WEAPON UPGRADE SUCCESSFULLY. " << upgradePrice << "$ WAS DEDUCTED FROM YOUR ACCOUNT";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                _getch(); 
+                setUpgradePrice(); // Sets the new upgrade price
+            }
+            else{
+                cout<<"WEAPON'S LEVEL IS MAXIMUM\n";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                _getch();  // Wait for a key press
+            }
             
-
         }
         else{
             throw 0; // Throws an exception if there's not enough money
@@ -271,25 +277,28 @@ void Backpack::showItems(){
     int index;
     if(!ColdWeaponItems.empty()){
         index=1;
+        cout<<"COLD WEAPONS: \n";
         for(auto i:ColdWeaponItems){
-            cout << index << ")   " << "type : " << i.getType() << "\tname : " << i.getName() << '\n'; // Prints cold weapon items
+            cout <<'\t'<< index << ")   " << "type : " << i.getType() << "\tname : " << i.getName() << '\n'; // Prints cold weapon items
             index++;
         }
     }
 
     if(!WarmWeaponItems.empty()){
         index=1;
+        cout<<"Warm WEAPONS: \n";
         for(auto i:WarmWeaponItems){
-            cout<<index<<")   "<<"type : "<<i.getType()<<"\tname : "<<i.getName()<<'\n'; // Prints warm weapon items
+            cout<<'\t'<<index<<")   "<<"type : "<<i.getType()<<"\tname : "<<i.getName()<<'\n'; // Prints warm weapon items
             index++;
         }
     }
 
     if(!ThrowableItems.empty()){
         index=1;
+        cout<<"THROWABLE WEAPONS: \n";
         for(auto i:ThrowableItems){
             Throwable item=i.first;
-            cout<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints throwable items
+            cout<<'\t'<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints throwable items
             index++;
         }
 
@@ -298,18 +307,20 @@ void Backpack::showItems(){
 
     if(!MedicineItems.empty()){
         index=1;
+        cout<<"MEDICINES: \n";
         for(auto i:MedicineItems){
             Medicine item=i.first;
-            cout<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints medicine items
+            cout<<'\t'<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints medicine items
             index++;
         }
     }
 
     if(!FoodItems.empty()){
         index=1;
+        cout<<"FOODS: \n";
         for(auto i:FoodItems){
             Food item=i.first;
-            cout<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints food items
+            cout<<'\t'<<index<<")   "<<"type : "<<item.getType()<<"\tname : "<<item.getName()<<"\tstock : "<<i.second<<'\n'; // Prints food items
             index++;
         }
     }
@@ -321,7 +332,7 @@ void Backpack::showItems(){
 void Backpack::showWarmWeaponItems(){
     int index = 1;
     for(auto i: WarmWeaponItems){
-        cout << index << ")" <<"  Name: "<< i.getName() << "\tlvl " << i.getwwa().getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getwwa().getCurrentSkill()*10<<"STM\n";
+        cout << index << ")" <<"  Name: "<< i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getwwa()->getCurrentSkill()*10<<"STM\n";
         index++;
     }
 }
@@ -329,7 +340,7 @@ void Backpack::showWarmWeaponItems(){
 void Backpack::showColdWeaponItems(){
     int index = 1;
     for(auto i: ColdWeaponItems){
-        cout << index << ")" <<"  Name: "<< i.getName() << "\tlvl " << i.getcwa().getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getcwa().getCurrentSkill()*10<<"STM\n"; 
+        cout << index << ")" <<"  Name: "<< i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getcwa()->getCurrentSkill()*10<<"STM\n"; 
         index++;
     }
 }
@@ -338,7 +349,7 @@ void Backpack::showThrowableItems(){
     int index = 1;
     for(auto pair : ThrowableItems){
     Throwable item = pair.first;
-    cout << index << ")" <<"  Name: "<< item.getName()<< "\tlvl " << item.gettwa().getCurrentSkill() <<"\tharm: "<<item.getHarm()<<"\t-"<<item.gettwa().getCurrentSkill()*10 << "STM\t(stock : " << pair.second << ")" << '\n';
+    cout << index << ")" <<"  Name: "<< item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tharm: "<<item.getHarm()<<"\t-"<<item.gettwa()->getCurrentSkill()*10 << "STM\t(stock : " << pair.second << ")" << '\n';
     index++;
     }
 
@@ -1354,7 +1365,7 @@ int Permanent::getHarm(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-WarmWeapon::WarmWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Warm Weapon",e,h),wwa(x){
+WarmWeapon::WarmWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Warm Weapon",e,h),wwa(new WarmWeaponAbility(x)){
     WarmWeapon::addToVectors(); // Adds this warm weapon to vectors
 }
 
@@ -1397,16 +1408,16 @@ void WarmWeapon::Attack(Human& attacker, Person& attacked) {
     double playerLevelFactor = 0.8;
 
     int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) +
-                 (wwa.getCurrentSkill() * weaponLevelFactor) +
+                 (wwa->getCurrentSkill() * weaponLevelFactor) +
                  (attacker.getLevel() * playerLevelFactor);
 
-    attacker.stamina.decreaseStamina(10 * wwa.getCurrentSkill()); // Decrease attacker's stamina
+    attacker.stamina.decreaseStamina(10 * wwa->getCurrentSkill()); // Decrease attacker's stamina
     attacked.hp.decreaseHealth(damage); // Decrease attacked person's health
 
     Player* pAttacker = dynamic_cast<Player*>(&attacker);
     if (pAttacker) {
         // Attacker is a Player
-        pAttacker->exp.setCurrentExp(0, damage, 10 * wwa.getCurrentSkill()); // Update attacker's experience
+        pAttacker->exp.setCurrentExp(0, damage, 10 * wwa->getCurrentSkill()); // Update attacker's experience
 
         if (HumanEnemy* he = dynamic_cast<HumanEnemy*>(&attacked)) {
             // Attacked is a HumanEnemy
@@ -1428,18 +1439,18 @@ void WarmWeapon::Attack(Human& attacker, Person& attacked) {
 
 
 ostream& operator<<(ostream &os,WarmWeapon &obj){
-    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.wwa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
+    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.wwa->getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
     return os; // Prints the warm weapon's details
 }
 
-WarmWeaponAbility WarmWeapon::getwwa(){
+WarmWeaponAbility* WarmWeapon::getwwa(){
     return wwa;
 }
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-ColdWeapon::ColdWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Cold Weapon",e,h),cwa(x){
+ColdWeapon::ColdWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Cold Weapon",e,h),cwa(new ColdWeaponAbility(x)){
     ColdWeapon::addToVectors(); // Adds this cold weapon to vectors
 }
 
@@ -1482,16 +1493,16 @@ void ColdWeapon::Attack(Human& attacker, Person& attacked) {
     double playerLevelFactor = 0.8;
 
     int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) +
-                 (cwa.getCurrentSkill() * weaponLevelFactor) +
+                 (cwa->getCurrentSkill() * weaponLevelFactor) +
                  (attacker.getLevel() * playerLevelFactor);
 
-    attacker.stamina.decreaseStamina(10 * cwa.getCurrentSkill()); // Decrease attacker's stamina
+    attacker.stamina.decreaseStamina(10 * cwa->getCurrentSkill()); // Decrease attacker's stamina
     attacked.hp.decreaseHealth(damage); // Decrease attacked person's health
 
     Player* pAttacker = dynamic_cast<Player*>(&attacker);
     if (pAttacker) {
         // Attacker is a Player
-        pAttacker->exp.setCurrentExp(0, damage, 10 * cwa.getCurrentSkill()); // Update attacker's experience
+        pAttacker->exp.setCurrentExp(0, damage, 10 * cwa->getCurrentSkill()); // Update attacker's experience
 
         if (HumanEnemy* he = dynamic_cast<HumanEnemy*>(&attacked)) {
             // Attacked is a HumanEnemy
@@ -1516,18 +1527,18 @@ void ColdWeapon::Attack(Human& attacker, Person& attacked) {
 
 
 ostream& operator<<(ostream& os,ColdWeapon& obj){
-    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.cwa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
+    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.cwa->getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
     return os; // Prints the cold weapon's details
 }
 
-ColdWeaponAbility ColdWeapon::getcwa(){
+ColdWeaponAbility* ColdWeapon::getcwa(){
     return cwa;
 }
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Throwable::Throwable(string n,int p,int x,int e,int h):Items(n,p,"Throwable Weapon"),twa(x),exp(e),harm(h){
+Throwable::Throwable(string n,int p,int x,int e,int h):Items(n,p,"Throwable Weapon"),twa(new ThrowableWeaponAbility(x)),exp(e),harm(h){
     Throwable::addToVectors(); // Adds this throwable weapon to vectors
 }
 
@@ -1565,16 +1576,16 @@ void Throwable::Throw(Human& attacker, Person& attacked) {
     double playerLevelFactor = 0.8;
 
     int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) +
-                 (twa.getCurrentSkill() * weaponLevelFactor) +
+                 (twa->getCurrentSkill() * weaponLevelFactor) +
                  (attacker.getLevel() * playerLevelFactor);
 
-    attacker.stamina.decreaseStamina(10 * twa.getCurrentSkill()); // Decrease attacker's stamina
+    attacker.stamina.decreaseStamina(10 * twa->getCurrentSkill()); // Decrease attacker's stamina
     attacked.hp.decreaseHealth(damage); // Decrease attacked person's health
 
     Player* pAttacker = dynamic_cast<Player*>(&attacker);
     if (pAttacker) {
         // Attacker is a Player
-        pAttacker->exp.setCurrentExp(0, damage, 10 * twa.getCurrentSkill()); // Update attacker's experience
+        pAttacker->exp.setCurrentExp(0, damage, 10 * twa->getCurrentSkill()); // Update attacker's experience
         Backpack* b = pAttacker->getBackpack();
         b->useThrowableItemCount(*this); // Use a throwable item from the attacker's backpack
 
@@ -1597,7 +1608,7 @@ void Throwable::Throw(Human& attacker, Person& attacked) {
     }
 }
 
-ThrowableWeaponAbility Throwable::gettwa(){
+ThrowableWeaponAbility* Throwable::gettwa(){
     return twa;
 }
 
@@ -1606,7 +1617,7 @@ int Throwable::getHarm(){
 }
 
 ostream& operator<<(ostream& os,Throwable& obj) {
-    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
+    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa->getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
     return os; // Prints the throwable weapon's details
 }
 
@@ -2288,7 +2299,7 @@ void goodbye(){
         Sleep(1000);
         cout<<"It's to soon!\n";
         Sleep(1000);
-        cout<<"fine i let you go :(\tbye bye "<<player->getUsername()<<"hope to see you again:)";
+        cout<<"fine i let you go :(\tbye bye "<<player->getUsername()<<" hope to see you again:)";
         Sleep(3000);
         exit(0);
     }
@@ -2485,16 +2496,16 @@ void BattleMenu() {
             BankAccount* creditcard = player->getBankAccount();
             auto chosenweapon = backpack->upgradeWeapons();
             if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(chosenweapon)) {
-                cout<<"IT COSTS "<<wweapon->getwwa().getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
-                wweapon->getwwa().upgradeSkill(creditcard);
+                cout<<"IT COSTS "<<wweapon->getwwa()->getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
+                wweapon->getwwa()->upgradeSkill(creditcard);
             } 
 			else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(chosenweapon)) {
-                cout<<"IT COSTS "<<cweapon->getcwa().getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
-                cweapon->getcwa().upgradeSkill(creditcard);
+                cout<<"IT COSTS "<<cweapon->getcwa()->getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
+                cweapon->getcwa()->upgradeSkill(creditcard);
             } 
 			else if (Throwable* tweapon = dynamic_cast<Throwable*>(chosenweapon)) {
-                cout<<"IT COSTS "<<tweapon->gettwa().getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
-                tweapon->gettwa().upgradeSkill(creditcard);
+                cout<<"IT COSTS "<<tweapon->gettwa()->getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
+                tweapon->gettwa()->upgradeSkill(creditcard);
             }
             BattleMenu(); // Recursive call
             break;

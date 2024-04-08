@@ -450,7 +450,7 @@ class Permanent : public Items {
 class WarmWeapon : public Permanent {
     private:
         static vector <WarmWeapon> shop_items_permanent_warmweapon;
-        WarmWeaponAbility wwa;
+        WarmWeaponAbility* wwa;
     public:
         WarmWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
@@ -461,7 +461,7 @@ class WarmWeapon : public Permanent {
         friend void Show_Permanent_Items();
         friend void playground();
         friend void Shop_PermanentItems_Menu();
-        WarmWeaponAbility getwwa();
+        WarmWeaponAbility* getwwa();
         ~WarmWeapon(){}
 };
 
@@ -471,7 +471,7 @@ class WarmWeapon : public Permanent {
 class ColdWeapon : public Permanent {
     private:
         static vector <ColdWeapon> shop_items_permanent_coldweapon;
-        ColdWeaponAbility cwa;
+        ColdWeaponAbility* cwa;
     public:
         ColdWeapon(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
@@ -482,7 +482,7 @@ class ColdWeapon : public Permanent {
         friend void Show_Permanent_Items();
         friend void playground();
         friend void Shop_PermanentItems_Menu();
-        ColdWeaponAbility getcwa();
+        ColdWeaponAbility* getcwa();
         ~ColdWeapon(){}
 };
 
@@ -494,7 +494,7 @@ class Throwable : public Items {
         int harm;
         int exp;
         static vector <Throwable> shop_items_throwable;
-        ThrowableWeaponAbility twa;
+        ThrowableWeaponAbility* twa;
     public:
         Throwable(string,int,int,int,int);
         static void showItems();                     //show the available items to buy
@@ -504,7 +504,7 @@ class Throwable : public Items {
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
         friend void playground();
-        ThrowableWeaponAbility gettwa();
+        ThrowableWeaponAbility* gettwa();
         int getHarm();
         ~Throwable(){}
 };
