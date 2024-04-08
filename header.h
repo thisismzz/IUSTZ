@@ -159,6 +159,9 @@ class Backpack {
         void showThrowableItems();
         void showMedicineItems();
         void showFoodItems();
+        void showUpgradeWarmWeapon();
+        void showUpgradeColdWeapon();
+        void showUpgradeThrowable();
         void ConsumeMedForSurvival();
         void ConsumeFoodForSurvival();
         Items* useWeapons();

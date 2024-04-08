@@ -332,7 +332,7 @@ void Backpack::showItems(){
 void Backpack::showWarmWeaponItems(){
     int index = 1;
     for(auto i: WarmWeaponItems){
-        cout << index << ")" <<"  Name: "<< i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getwwa()->getCurrentSkill()*10<<"STM\n";
+        cout << index << ")" << i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getwwa()->getCurrentSkill()*10<<"STM\n";
         index++;
     }
 }
@@ -340,7 +340,7 @@ void Backpack::showWarmWeaponItems(){
 void Backpack::showColdWeaponItems(){
     int index = 1;
     for(auto i: ColdWeaponItems){
-        cout << index << ")" <<"  Name: "<< i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getcwa()->getCurrentSkill()*10<<"STM\n"; 
+        cout << index << ")" << i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getcwa()->getCurrentSkill()*10<<"STM\n"; 
         index++;
     }
 }
@@ -352,14 +352,13 @@ void Backpack::showThrowableItems(){
     cout << index << ")" <<"  Name: "<< item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tharm: "<<item.getHarm()<<"\t-"<<item.gettwa()->getCurrentSkill()*10 << "STM\t(stock : " << pair.second << ")" << '\n';
     index++;
     }
-
 }
 
 void Backpack::showMedicineItems(){
     int index = 1;
     for(auto pair : MedicineItems){
         Medicine item = pair.first;
-        cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n';
+        cout << index << ")" << item.getName() << "(+" << item.getHeal() << "HP)(stock : " << pair.second << ")"  << '\n';
         index++;
     }
 }
@@ -368,10 +367,37 @@ void Backpack::showFoodItems(){
     int index = 1;
     for(auto pair : FoodItems){
         Food item = pair.first;
-        cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n';
+        cout << index << ")" << item.getName() << "(+" << item.getStrength() << "HP)(stock : " << pair.second << ")" << '\n';
         index++;
     }
 }
+
+void Backpack::showUpgradeWarmWeapon(){
+    int index = 1;
+    for(auto i: WarmWeaponItems){
+        cout << index << ")" << i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getwwa()->getUpgradePrice();
+        index++;
+    }
+}
+
+void Backpack::showUpgradeColdWeapon(){
+    int index = 1;
+    for(auto i: ColdWeaponItems){
+        cout << index << ")" << i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getcwa()->getUpgradePrice(); 
+        index++;
+    }
+}
+
+void Backpack::showUpgradeThrowable(){
+    int index = 1;
+    for(auto pair : ThrowableItems){
+    Throwable item = pair.first;
+    cout << index << ")" << item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<item.gettwa()->getUpgradePrice(); 
+    index++;
+    }
+}
+
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -412,7 +438,6 @@ void Backpack::ConsumeMedForSurvival() {
     _getch();  // Wait for a key press
     player->newLife();   //change the state from DEFEATED to ALIVE
     playground();
-    }
 }
 
 // *----------------------------------------------------------------*
@@ -454,7 +479,6 @@ void Backpack::ConsumeFoodForSurvival() {
     _getch();  // Wait for a key press
     player->newLife();   //change the state from DEFEATED to ALIVE
     BattleMenu();
-    }
 }
 
 // *----------------------------------------------------------------*
@@ -697,7 +721,7 @@ Items* Backpack::upgradeWeapons() {
                     system("cls");
                     cout << "Choose the WarmWeapon you want to upgrade it:" << endl;
                     index = 1;
-                    showWarmWeaponItems(); // Prints warm weapon items
+                    showUpgradeWarmWeapon(); // Prints warm weapon items
                     cout << "0)Back" << endl; 
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= WarmWeaponItems.size()) {
@@ -731,7 +755,7 @@ Items* Backpack::upgradeWeapons() {
                     system("cls");
                     cout << "Choose the ColdWeapon you want to upgrade it:" << endl;
                     index = 1;
-                    showColdWeaponItems();      // Prints cold weapon items
+                    showUpgradeColdWeapon();      // Prints cold weapon items
                     cout << "0)Back" << endl; 
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= ColdWeaponItems.size()) {
@@ -765,7 +789,7 @@ Items* Backpack::upgradeWeapons() {
                     system("cls");
                     cout << "Choose the ThrowableWeapon you want to upgrade it:" << endl;
                     index = 1;
-                    showThrowableItems();      // Prints throwable items
+                    showUpgradeThrowable();      // Prints throwable items
                     cout << "0)Back" << endl; 
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
