@@ -135,10 +135,11 @@ void Skills::upgradeSkill(BankAccount *creditcard){
         if(creditcard->getBalance()>=upgradePrice){
             creditcard->withdraw(upgradePrice); // Withdraws the upgrade price from the credit card
             currentSkill++; // Increases the current skill level
-            setUpgradePrice(); // Sets the new upgrade price
             cout << "WEAPON UPGRADE SUCCESSFULLY. " << upgradePrice << "$ WAS DEDUCTED FROM YOUR ACCOUNT";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-           _getch(); 
+            _getch(); 
+            setUpgradePrice(); // Sets the new upgrade price
+            
 
         }
         else{
@@ -1885,11 +1886,11 @@ void playground() {
     int randomNum = rand();
 
     int choice;
-    if ((randomNum % 100) < 95) {
+    if ((randomNum % 100) < 50) {
     //fight ground
         randomNum=rand();
 
-        if ((randomNum % 100) < 95) {
+        if ((randomNum % 100) < 50) {
         //fight with human enemy
 
             //create random humanEnemy from characters
