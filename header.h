@@ -242,6 +242,7 @@ class Player : public Human {
         void takeDamage(int) override;  //show detail of entry damage
         void newLife();     //set the state ALIVE
         PlayerState getState();
+        void setState(PlayerState);
 };
 
 // *----------------------------------------------------------------*
