@@ -9,10 +9,12 @@
 #include <windows.h>
 
 #include "header.h"
+#include "header.cpp"
 
 using namespace std;
 
 int main(){
+	
     Menu();
 
 }

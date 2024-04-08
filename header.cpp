@@ -136,6 +136,10 @@ void Skills::upgradeSkill(BankAccount *creditcard){
             creditcard->withdraw(upgradePrice); // Withdraws the upgrade price from the credit card
             currentSkill++; // Increases the current skill level
             setUpgradePrice(); // Sets the new upgrade price
+            cout << "WEAPON UPGRADE SUCCESSFULLY. " << upgradePrice << "$ WAS DEDUCTED FROM YOUR ACCOUNT";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+           _getch(); 
+
         }
         else{
             throw 0; // Throws an exception if there's not enough money
@@ -225,32 +229,32 @@ bool Backpack::coldWeaponExistence(const ColdWeapon coldWeaponItem){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void Backpack::removeFoodItem(Food foodItem) {
+void Backpack::removeFoodItem(const Food foodItem) {
     FoodItems.erase(foodItem); // Removes food item
 }
 
-void Backpack::removeMedicineItem(Medicine medicineItem) {
+void Backpack::removeMedicineItem(const Medicine medicineItem) {
     MedicineItems.erase(medicineItem); // Removes medicine item
 }
 
-void Backpack::removeThrowableItem(Throwable throwableItem) {
+void Backpack::removeThrowableItem(const Throwable throwableItem) {
     ThrowableItems.erase(throwableItem); // Removes throwable item
 }
 
-void Backpack::useFoodItemCount(Food foodItem) {
-    FoodItems[foodItem]=FoodItems[foodItem]-1; // Decreases food item count
+void Backpack::useFoodItemCount(const Food foodItem) {
+    FoodItems[foodItem]-=1; // Decreases food item count
     if(FoodItems[foodItem]==0)
         removeFoodItem(foodItem); // Removes food item if count is 0
 }
 
-void Backpack::useMedicineItemCount(Medicine medicineItem) {
-    MedicineItems[medicineItem]=MedicineItems[medicineItem]-1; // Decreases medicine item count
+void Backpack::useMedicineItemCount(const Medicine medicineItem) {
+    MedicineItems[medicineItem]-=1; // Decreases medicine item count
     if(MedicineItems[medicineItem]==0)
         removeMedicineItem(medicineItem); // Removes medicine item if count is 0
 }
 
-void Backpack::useThrowableItemCount(Throwable throwableItem) {
-    ThrowableItems[throwableItem]=ThrowableItems[throwableItem]-1; // Decreases throwable item count
+void Backpack::useThrowableItemCount(const Throwable throwableItem) {
+    ThrowableItems[throwableItem]-=1; // Decreases throwable item count
     if(ThrowableItems[throwableItem]==0)
         removeThrowableItem(throwableItem); // Removes throwable item if count is 0
 }
@@ -356,7 +360,7 @@ void Backpack::showFoodItems(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void Backpack::consumeForSurvival() {
+void Backpack::ConsumeMedForSurvival() {
     system("cls");
 
     if(MedicineItems.empty()){
@@ -381,8 +385,8 @@ void Backpack::consumeForSurvival() {
     if(choice < 1 || choice > medicineVector.size()){
         cout << "INVALID CHOICE. PLEASE ENTER A VALID NUMBER." << endl;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getch();  // Wait for a key press
-        consumeForSurvival();
+        _getch();  // Wait for a key press
+        ConsumeMedForSurvival();
     }
 
     int quantity;
@@ -393,8 +397,8 @@ void Backpack::consumeForSurvival() {
     if(MedicineItems[chosenMedicine] < quantity){
         cout << "Not enough stock. You only have " << MedicineItems[chosenMedicine] << "." << endl;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getch();  // Wait for a key press
-        consumeForSurvival();
+        _getch();  // Wait for a key press
+        ConsumeMedForSurvival();
     } 
     else {
         for(int i = 0; i < quantity; i++){
@@ -402,13 +406,67 @@ void Backpack::consumeForSurvival() {
         }
         cout << "You used " << quantity << " many " << chosenMedicine.getName() << " items." << endl;
         player->newLife();   //change the state from DEFEATED to ALIVE
+        BattleMenu();
     }
 }
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void Backpack::useWeaponsAttack() {
+void Backpack::ConsumeFoodForSurvival() {
+    system("cls");
+
+    if(FoodItems.empty()){
+        cout << "No food items left in the backpack." << endl;
+        foodMenu();
+    }
+
+    cout << "Here are the available food items in the backpack:" << endl;
+    int index = 1;
+    vector<Food> foodVector;
+    for(auto i:FoodItems){
+        Food item = i.first;
+        cout << index << ")   " << "\tname : " << item.getName() << "\tstock : " << i.second << '\n'; // Prints food items
+        foodVector.push_back(item);
+        index++;
+    }
+
+    int choice;
+    cout << "Enter the number of the food item you want to use: ";
+    cin >> choice;
+
+    if(choice < 1 || choice > foodVector.size()){
+        cout << "INVALID CHOICE. PLEASE ENTER A VALID NUMBER." << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
+        ConsumeFoodForSurvival();
+    }
+
+    int quantity;
+    cout << "ENTER THE QUANTITY OF THE FOOD ITEM YOU WANT TO USE: ";
+    cin >> quantity;
+
+    Food chosenFood = foodVector[choice - 1];
+    if(FoodItems[chosenFood] < quantity){
+        cout << "Not enough stock. You only have " << FoodItems[chosenFood] << "." << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
+        ConsumeFoodForSurvival();
+    } 
+    else {
+        for(int i = 0; i < quantity; i++){
+            chosenFood.use(*player);
+        }
+        cout << "You used " << quantity << " many " << chosenFood.getName() << " items." << endl;
+        player->newLife();   //change the state from DEFEATED to ALIVE
+        BattleMenu();
+    }
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+Items* Backpack::useWeapons() {
     int number;
     int index;
     int ChosenWeapon;
@@ -423,19 +481,22 @@ void Backpack::useWeaponsAttack() {
                     system("cls");
                     cout << "Choose the WarmWeapon you want to attack with:" << endl;
                     index = 1;
-                    showWarmWeaponItems();    // Prints warm weapon items
+                    showWarmWeaponItems(); // Prints warm weapon items
+                    cout << "0)Back" << endl; 
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= WarmWeaponItems.size()) {
                         WarmWeapon *wweapon=new WarmWeapon(WarmWeaponItems.at(ChosenWeapon-1));
-                        wweapon->Attack(*player,*enemy);
-                        break;
-                        // return wweapon;
+                        //cout << *wweapon;
+                        return wweapon;
                     } 
+                    else if(ChosenWeapon == 0){
+                        useWeapons();
+                    }
                     else {
                         cout << "Invalid index. Try again." << endl;
                         cout << "Please press any key to continue...";
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        getch();  // Wait for a key press
+                        _getch();  // Wait for a key press
                     }
                 }
             }
@@ -443,8 +504,8 @@ void Backpack::useWeaponsAttack() {
                 cout << "No WarmWeapon exists!" << endl;
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch();  // Wait for a key press
-                useWeaponsAttack();
+                _getch();  // Wait for a key press
+                useWeapons();
             }
             break;
 
@@ -455,18 +516,21 @@ void Backpack::useWeaponsAttack() {
                     cout << "Choose the ColdWeapon you want to attack with:" << endl;
                     index = 1;
                     showColdWeaponItems();      // Prints cold weapon items
+                    cout << "0)Back" << endl; 
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= ColdWeaponItems.size()) {
                         ColdWeapon* cweapon=new ColdWeapon(ColdWeaponItems.at(ChosenWeapon-1));
-                        cweapon->Attack(*player,*enemy);
-                        break;
-                        // return cweapon;
+                        //cout << *cweapon;
+                        return cweapon;
+                    }
+                    else if(ChosenWeapon == 0){
+                        useWeapons();
                     }
                     else {
                         cout << "Invalid index. Try again." << endl;
                         cout << "Please press any key to continue...";
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        getch();  // Wait for a key press
+                        _getch();  // Wait for a key press
                     }
                 }
             }
@@ -474,8 +538,8 @@ void Backpack::useWeaponsAttack() {
                 cout << "No ColdWeapon exists!" << endl;
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch();  // Wait for a key press
-                useWeaponsAttack();
+                _getch();  // Wait for a key press
+                useWeapons();
             }
             break;
 
@@ -486,19 +550,22 @@ void Backpack::useWeaponsAttack() {
                     cout << "Choose the ThrowableWeapon you want to attack with:" << endl;
                     index = 1;
                     showThrowableItems();      // Prints throwable items
+                    cout << "0)Back" << endl; 
                     cin >> ChosenWeapon;
                     if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
                         auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
                         Throwable* tweapon = new Throwable(iter->first);
-                        tweapon->Throw(*player,*enemy);
-                        break;
-                        // return tweapon;
+                        //cout << *tweapon;
+                        return tweapon;
+                    }
+                    else if(ChosenWeapon == 0){
+                        useWeapons();
                     }
                     else {
                         cout << "Invalid index. Try again." << endl;
                         cout << "Please press any key to continue...";
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        getch();  // Wait for a key press
+                        _getch();  // Wait for a key press
                     }
                 }
             }
@@ -506,8 +573,8 @@ void Backpack::useWeaponsAttack() {
                 cout << "No ThrowableWeapon exists!" << endl;
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch();  // Wait for a key press
-                useWeaponsAttack();
+                _getch();  // Wait for a key press
+                useWeapons();
             }
             break;
 
@@ -519,16 +586,16 @@ void Backpack::useWeaponsAttack() {
             cout << "Invalid choice. Choose a number between 1 and 3." << endl;
             cout << "Please press any key to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
-            useWeaponsAttack();
+            _getch();  // Wait for a key press
+            useWeapons();
     }
-    // return nullptr;
+    return nullptr;
 }
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-void Backpack::useConsumableItems() {
+Items* Backpack::useConsumableItems() {
     int number;
     int index;
     int ChosenConsumableItem;
@@ -544,19 +611,22 @@ void Backpack::useConsumableItems() {
                     cout << "Choose the Medicine you want to use:" << endl;
                     index = 1;
                     showMedicineItems();
+                    cout << "0)Back" << endl; 
                     cin >> ChosenConsumableItem;
                     if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
                         auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
                         Medicine* medicine = new Medicine(iter->first);
-                        medicine->use(*player);
-                        break;
-                        // return medicine;
+                        //cout << *medicine;
+                        return medicine;
+                    }
+                    else if(ChosenConsumableItem == 0){
+                        useConsumableItems();
                     }
                     else {
                         cout << "Invalid index. Try again." << endl;
                         cout << "Please press any key to continue...";
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        getch();  // Wait for a key press
+                        _getch();  // Wait for a key press
                     }
                 }
             }
@@ -564,7 +634,7 @@ void Backpack::useConsumableItems() {
                 cout << "No Medicine exists!" << endl;
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch();  // Wait for a key press
+                _getch();  // Wait for a key press
                 useConsumableItems();
             }
             break;
@@ -576,19 +646,22 @@ void Backpack::useConsumableItems() {
                     cout << "Choose the Food you want to use:" << endl;
                     index = 1;
                     showFoodItems();
+                    cout << "0)Back" << endl; 
                     cin >> ChosenConsumableItem;
                     if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
                         auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
                         Food* food = new Food(iter->first);
-                        food->use(*player);
-                        break;
-                        // return food;
+                        //cout << *food;
+                        return food;
+                    }
+                    else if(ChosenConsumableItem == 0){
+                        useConsumableItems();
                     }
                     else{
                         cout << "Invalid index. Try again." << endl;
                         cout << "Please press any key to continue...";
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        getch();  // Wait for a key press
+                        _getch();  // Wait for a key press
                     }
                 }
             }
@@ -596,7 +669,7 @@ void Backpack::useConsumableItems() {
                 cout << "No Food exists!" << endl;
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch();  // Wait for a key press
+                _getch();  // Wait for a key press
                 useConsumableItems();
             }
             break;
@@ -609,10 +682,136 @@ void Backpack::useConsumableItems() {
             cout << "Invalid choice. Choose a number between 1 and 3." << endl;
             cout << "Please press any key to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
             useConsumableItems();
     }
-    // return nullptr;
+    return nullptr;
+}
+
+Items* Backpack::upgradeWeapons() {
+    int number;
+    int index;
+    int ChosenWeapon;
+    system("cls");
+    cout << "Enter the index of the Weapon you want to upgrade it:" << endl 
+    << "[1].WarmWeapons" << endl << "[2].ColdWeapons" << endl << "[3].ThrowableWeapons" << endl << "[4].Back" << endl;
+    cin >> number;
+    switch(number){
+        case 1: 
+            if(!WarmWeaponItems.empty()){
+                while(true){
+                    system("cls");
+                    cout << "Choose the WarmWeapon you want to upgrade it:" << endl;
+                    index = 1;
+                    showWarmWeaponItems(); // Prints warm weapon items
+                    cout << "0)Back" << endl; 
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= WarmWeaponItems.size()) {
+                        WarmWeapon *wweapon=new WarmWeapon(WarmWeaponItems.at(ChosenWeapon-1));
+                        //cout << *wweapon;
+                        return wweapon;
+                    } 
+                    else if(ChosenWeapon == 0){
+                        upgradeWeapons();
+                    }
+                    else {
+                        cout << "Invalid index. Try again." << endl;
+                        cout << "Please press any key to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        _getch();  // Wait for a key press
+                    }
+                }
+            }
+            else{
+                cout << "No WarmWeapon exists!" << endl;
+                cout << "Please press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                _getch();  // Wait for a key press
+                upgradeWeapons();
+            }
+            break;
+
+        case 2:
+            if(!ColdWeaponItems.empty()){
+                while(true){
+                    system("cls");
+                    cout << "Choose the ColdWeapon you want to upgrade it:" << endl;
+                    index = 1;
+                    showColdWeaponItems();      // Prints cold weapon items
+                    cout << "0)Back" << endl; 
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= ColdWeaponItems.size()) {
+                        ColdWeapon* cweapon=new ColdWeapon(ColdWeaponItems.at(ChosenWeapon-1));
+                        //cout << *cweapon;
+                        return cweapon;
+                    }
+                    else if(ChosenWeapon == 0){
+                        upgradeWeapons();
+                    }
+                    else {
+                        cout << "Invalid index. Try again." << endl;
+                        cout << "Please press any key to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        _getch();  // Wait for a key press
+                    }
+                }
+            }
+            else{
+                cout << "No ColdWeapon exists!" << endl;
+                cout << "Please press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                _getch();  // Wait for a key press
+                upgradeWeapons();
+            }
+            break;
+
+        case 3:
+            if(!ThrowableItems.empty()){
+                while(true){
+                    system("cls");
+                    cout << "Choose the ThrowableWeapon you want to upgrade it:" << endl;
+                    index = 1;
+                    showThrowableItems();      // Prints throwable items
+                    cout << "0)Back" << endl; 
+                    cin >> ChosenWeapon;
+                    if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
+                        auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
+                        Throwable* tweapon = new Throwable(iter->first);
+                        //cout << *tweapon;
+                        return tweapon;
+                    }
+                    else if(ChosenWeapon == 0){
+                        upgradeWeapons();
+                    }
+                    else {
+                        cout << "Invalid index. Try again." << endl;
+                        cout << "Please press any key to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        _getch();  // Wait for a key press
+                    }
+                }
+            }
+            else{
+                cout << "No ThrowableWeapon exists!" << endl;
+                cout << "Please press any key to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                _getch();  // Wait for a key press
+                upgradeWeapons();
+            }
+            break;
+
+        case 4:
+            BattleMenu();
+            break;
+
+        default:
+            cout << "Invalid choice. Choose a number between 1 and 3." << endl;
+            cout << "Please press any key to continue...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            upgradeWeapons();
+    }
+    return nullptr;
 }
 
 // *----------------------------------------------------------------*
@@ -774,7 +973,7 @@ void HumanEnemy::takeDamage(int amount) {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-HE_Controller :: HE_Controller (HumanEnemy *HE) : model(HE) , backpack(HE->getBackpack()) , view(HE_View())  {}
+HE_Controller :: HE_Controller (HumanEnemy *HE) : model(HE) , backpack(HE->getBackpack()) , view(HE_View()) {}
 
 void HE_Controller::updateState() {
     double healthRatio = model->getHealthPoints() * 1.0 / model->hp.getMaxHealth();
@@ -799,13 +998,12 @@ HumanEnemyStatus HE_Controller::getStatus(){
     return model->getStatus();
 }
 
-void HE_Controller :: chooseWeapon() {
+Items* HE_Controller :: chooseWeapon() {
     srand(time(0)); // use current time as seed for random generator
     // Check if backpack is empty
     if (backpack->ThrowableItems.empty() && backpack->WarmWeaponItems.empty() && 
         backpack->ColdWeaponItems.empty()) {
-        cout<<model->getName()<<" have no weapons!\n";
-        // return nullptr; // backpack is empty
+        return nullptr; // backpack is empty
     }
     else {
         int itemType = rand() % 3; // Randomly choose between 5 types of items
@@ -814,36 +1012,30 @@ void HE_Controller :: chooseWeapon() {
                 {if (!backpack->ThrowableItems.empty()) {
                     int index = rand() % backpack->ThrowableItems.size();
                     auto it = next(backpack->ThrowableItems.begin(),index);
-                    Throwable *tweapon = new Throwable(it->first);
-                    tweapon->Throw(*model,*player);
-                    view.attackView(model->getName(),*tweapon);
-                    // return item;
+                    Throwable *item = new Throwable(it->first);
+                    return item;
                 }
                 break;
                 }
             case 1: // WarmWeapon
                 {if (!backpack->WarmWeaponItems.empty()) {
                     int index = rand() % backpack->WarmWeaponItems.size();
-                    WarmWeapon *wweapon = new WarmWeapon(backpack->WarmWeaponItems[index]);
-                    wweapon->Attack(*model,*player);
-                    view.attackView(model->getName(),*wweapon);
-                    // return item;
+                    WarmWeapon *item = new WarmWeapon(backpack->WarmWeaponItems[index]);
+                    return item;
                 }
                 break;
                 }
             case 2: // ColdWeapon
                 {if (!backpack->ColdWeaponItems.empty()) {
                     int index = rand() % backpack->ColdWeaponItems.size();
-                    ColdWeapon *cweapon = new ColdWeapon(backpack->ColdWeaponItems[index]);
-                    cweapon->Attack(*model,*player);
-                    view.attackView(model->getName(),*cweapon);
-                    // return item;
+                    ColdWeapon *item = new ColdWeapon(backpack->ColdWeaponItems[index]);
+                    return item;
                 }
                 break;
                 }
         }
     }
-    // return nullptr;
+    return nullptr;
 }
 
 Food* HE_Controller :: chooseFood() {
@@ -868,22 +1060,19 @@ Medicine* HE_Controller :: chooseMedicine() {
     }
 }
 
-void HE_Controller::Attack(Items* weapon){
-    if(static_cast<WarmWeapon*>(weapon)){
-        WarmWeapon *wweapon = static_cast<WarmWeapon*>(weapon);
-        wweapon->Attack(*model,*player);
-        view.attackView(model->getName(),*wweapon);
-    }
-    if(static_cast<ColdWeapon*>(weapon)){
-        ColdWeapon *cweapon = static_cast<ColdWeapon*>(weapon);
-
-        cweapon->Attack(*model,*player);
-        view.attackView(model->getName(),*cweapon);
-    }
-    if(static_cast<Throwable*>(weapon)){
-        Throwable *tweapon = static_cast<Throwable*>(weapon);
-        tweapon->Throw(*model,*player);
-        view.attackView(model->getName(),*tweapon);
+void HE_Controller::Attack(Items* weapon) {
+    if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(weapon)) {
+        // Successfully cast to WarmWeapon
+        wweapon->Attack(*model, *player);
+        view.attackView(model->getName(), *wweapon);
+    } else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(weapon)) {
+        // Successfully cast to ColdWeapon
+        cweapon->Attack(*model, *player);
+        view.attackView(model->getName(), *cweapon);
+    } else if (Throwable* tweapon = dynamic_cast<Throwable*>(weapon)) {
+        // Successfully cast to Throwable
+        tweapon->Throw(*model, *player);
+        view.attackView(model->getName(), *tweapon);
     }
 }
 
@@ -909,8 +1098,7 @@ void HE_Controller :: decision() {
         break;
 
     case HumanEnemyState::FIGHT:
-        // Attack(chooseWeapon());
-        chooseWeapon();
+        Attack(chooseWeapon());
         break;
 
     default:
@@ -975,13 +1163,11 @@ void HE_Controller :: showInfo(){
 
 HE_View::HE_View(){}
 
-void HE_View :: showInfo(HumanEnemy model){
-    cout << "Name : " << model.getName() << endl;
-    cout << "Level : " << model.getLevel() << endl;
-    cout << "Stamina : " << model.getStamina() <<  " / ( " << model.getMaxStamina() << " )" << endl;
-    cout << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();  // Wait for a key press
+void HE_View::showInfo(HumanEnemy& model) {
+    cout << "   " << "Name: " << model.getName() << endl;
+    cout << "   " << "Level: " << model.getLevel() << endl;
+    cout << "   " << "Stamina: " << model.getStamina() << " / (" << model.getMaxStamina() << ")" << endl;
+    cout << "   " << "Health: " << model.getHealthPoints() << " / (" << model.getMaxHealth() << ")" << endl;
 }
 
 void HE_View::updateHealth(string name,int amount) {
@@ -1055,12 +1241,10 @@ void BZ_Controller :: showInfo() {
 
 BZ_View::BZ_View(){}
 
-void BZ_View :: showInfo(BasicZombie model) {
-    cout << "Name : " << model.getName() << endl;
-    cout << "Level : " << model.getLevel() << endl;
-    cout << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();  // Wait for a key press
+void BZ_View :: showInfo(BasicZombie& model) {
+    cout  << "   " << "Name : " << model.getName() << endl;
+    cout  << "   " << "Level : " << model.getLevel() << endl;
+    cout  << "   " << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
 }
 
 // *----------------------------------------------------------------*
@@ -1113,12 +1297,10 @@ void AZ_Controller::Attack(){
 
 AZ_View::AZ_View(){}
 
-void AZ_View :: showInfo(AdvZombie model) {
-    cout << "Name : " << model.getName() << endl;
-    cout << "Level : " << model.getLevel() << endl;
-    cout << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();  // Wait for a key press
+void AZ_View :: showInfo(AdvZombie& model) {
+    cout  << "   " << "Name : " << model.getName() << endl;
+    cout  << "   " << "Level : " << model.getLevel() << endl;
+    cout  << "   " << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
 }
 
 // *----------------------------------------------------------------*
@@ -1192,37 +1374,41 @@ void WarmWeapon::addToVectors(){
     shop_items.push_back(*this); // Adds this warm weapon to the items vector
 }
 
-void WarmWeapon::Attack(Human& attacker, Person& attacked){
+void WarmWeapon::Attack(Human& attacker, Person& attacked) {
     double staminaFactor = 0.3;
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;
 
-    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (wwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
-    attacker.stamina.decreaseStamina(10*wwa.getCurrentSkill()); // Decreases the attacker's stamina
-    attacked.hp.decreaseHealth(damage); // Decreases the attacked person's health
+    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) +
+                 (wwa.getCurrentSkill() * weaponLevelFactor) +
+                 (attacker.getLevel() * playerLevelFactor);
 
-    if(static_cast<Player*>(&attacker)){
-        Player *p=static_cast<Player*>(&attacker);
-        p->exp.setCurrentExp(0,damage,10*wwa.getCurrentSkill()); // Updates the attacker's experience
+    attacker.stamina.decreaseStamina(10 * wwa.getCurrentSkill()); // Decrease attacker's stamina
+    attacked.hp.decreaseHealth(damage); // Decrease attacked person's health
 
-        if(static_cast<HumanEnemy*>(&attacked)){
-            HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
-            cout<<"[TESTER]"<<he->getName()<<endl;
-            he->takeDamage(damage); // The attacked human enemy takes damage
+    Player* pAttacker = dynamic_cast<Player*>(&attacker);
+    if (pAttacker) {
+        // Attacker is a Player
+        pAttacker->exp.setCurrentExp(0, damage, 10 * wwa.getCurrentSkill()); // Update attacker's experience
+
+        if (HumanEnemy* he = dynamic_cast<HumanEnemy*>(&attacked)) {
+            // Attacked is a HumanEnemy
+            he->takeDamage(damage); // HumanEnemy takes damage
+        } else if (Zombie* z = dynamic_cast<Zombie*>(&attacked)) {
+            // Attacked is a Zombie
+            z->takeDamage(damage); // Zombie takes damage
         }
-
-        else if(static_cast<Zombie*>(&attacked)){
-            Zombie *z=static_cast<Zombie*>(&attacked);
-            cout<<"[TESTER]"<<z->getName()<<endl;
-            z->takeDamage(damage); // The attacked zombie takes damage
+    } else {
+        // Attacked is a Player
+        Player* pAttacked = dynamic_cast<Player*>(&attacked);
+        if (pAttacked) {
+            pAttacked->takeDamage(damage);
+            pAttacked->exp.setCurrentExp(damage, 0, 0); // Update attacked player's experience
+            
         }
-    }
-    else{
-        Player *p=static_cast<Player*>(&attacked);
-        p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's experience
-        p->takeDamage(damage);
     }
 }
+
 
 ostream& operator<<(ostream &os,WarmWeapon &obj){
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.wwa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
@@ -1273,37 +1459,44 @@ void ColdWeapon::addToVectors(){
     shop_items.push_back(*this); // Adds this cold weapon to the items vector
 }
 
-void ColdWeapon::Attack(Human& attacker, Person& attacked){
+void ColdWeapon::Attack(Human& attacker, Person& attacked) {
     double staminaFactor = 0.3;
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;
 
-    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (cwa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
-    attacker.stamina.decreaseStamina(10*cwa.getCurrentSkill()); // Decreases the attacker's stamina
-    attacked.hp.decreaseHealth(damage); // Decreases the attacked person's health
+    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) +
+                 (cwa.getCurrentSkill() * weaponLevelFactor) +
+                 (attacker.getLevel() * playerLevelFactor);
 
-    if(static_cast<Player*>(&attacker)){
-        Player *p=static_cast<Player*>(&attacker);
-        p->exp.setCurrentExp(0,damage,10*cwa.getCurrentSkill()); // Updates the attacker's experience
+    attacker.stamina.decreaseStamina(10 * cwa.getCurrentSkill()); // Decrease attacker's stamina
+    attacked.hp.decreaseHealth(damage); // Decrease attacked person's health
 
-        if(static_cast<HumanEnemy*>(&attacked)){
-            HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
-            cout<<"[TESTER]"<<he->getName()<<endl;
-            he->takeDamage(damage); // The attacked human enemy takes damage
+    Player* pAttacker = dynamic_cast<Player*>(&attacker);
+    if (pAttacker) {
+        // Attacker is a Player
+        pAttacker->exp.setCurrentExp(0, damage, 10 * cwa.getCurrentSkill()); // Update attacker's experience
+
+        if (HumanEnemy* he = dynamic_cast<HumanEnemy*>(&attacked)) {
+            // Attacked is a HumanEnemy
+            he->takeDamage(damage); // HumanEnemy takes damage
+        } else if (Zombie* z = dynamic_cast<Zombie*>(&attacked)) {
+            // Attacked is a Zombie
+            z->takeDamage(damage); // Zombie takes damage
         }
-
-        else if(static_cast<Zombie*>(&attacked)){
-            Zombie *z=static_cast<Zombie*>(&attacked);
-            cout<<"[TESTER]"<<z->getName()<<endl;
-            z->takeDamage(damage); // The attacked zombie takes damage
+    } else {
+        // Attacked is a Player
+        Player* pAttacked = dynamic_cast<Player*>(&attacked);
+        if (pAttacked) {
+            pAttacked->exp.setCurrentExp(damage, 0, 0); // Update attacked player's experience
+            pAttacked->takeDamage(damage);
+        } else {
+            // Handle unsupported attacker type (optional)
+            // You can add custom logic here, e.g., logging an error message.
+            // For now, I'll leave this part empty.
         }
-    }
-    else{
-        Player *p=static_cast<Player*>(&attacked);
-        p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's experience
-        p->takeDamage(damage);
     }
 }
+
 
 ostream& operator<<(ostream& os,ColdWeapon& obj){
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.cwa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
@@ -1349,41 +1542,44 @@ void Throwable::addToVectors(){
     shop_items.push_back(*this); // Adds this throwable weapon to the items vector
 }
 
-void Throwable::Throw(Human& attacker, Person& attacked){
+void Throwable::Throw(Human& attacker, Person& attacked) {
     double staminaFactor = 0.3;
     double weaponLevelFactor = 1.0;
     double playerLevelFactor = 0.8;
 
-    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) + (twa.getCurrentSkill() * weaponLevelFactor) + (attacker.getLevel() * playerLevelFactor);
-    attacker.stamina.decreaseStamina(10*twa.getCurrentSkill()); // Decreases the attacker's stamina
-    attacked.hp.decreaseHealth(damage); // Decreases the attacked person's health
+    int damage = harm + (attacker.stamina.getCurrentStamina() * staminaFactor) +
+                 (twa.getCurrentSkill() * weaponLevelFactor) +
+                 (attacker.getLevel() * playerLevelFactor);
 
-    if(static_cast<Player*>(&attacker)){
-        Player *p=static_cast<Player*>(&attacker);
-        p->exp.setCurrentExp(0,damage,10*twa.getCurrentSkill()); // Updates the attacker's experience
-        Backpack *b=p->getBackpack();
-        b->useThrowableItemCount(*this); // Uses a throwable item from the attacker's backpack
+    attacker.stamina.decreaseStamina(10 * twa.getCurrentSkill()); // Decrease attacker's stamina
+    attacked.hp.decreaseHealth(damage); // Decrease attacked person's health
 
-        if(static_cast<HumanEnemy*>(&attacked)){
-            HumanEnemy *he=static_cast<HumanEnemy*>(&attacked);
-            cout<<"[TESTER]"<<he->getName()<<endl;
-            he->takeDamage(damage); // The attacked human enemy takes damage
+    Player* pAttacker = dynamic_cast<Player*>(&attacker);
+    if (pAttacker) {
+        // Attacker is a Player
+        pAttacker->exp.setCurrentExp(0, damage, 10 * twa.getCurrentSkill()); // Update attacker's experience
+        Backpack* b = pAttacker->getBackpack();
+        b->useThrowableItemCount(*this); // Use a throwable item from the attacker's backpack
+
+        if (HumanEnemy* he = dynamic_cast<HumanEnemy*>(&attacked)) {
+            // Attacked is a HumanEnemy
+            he->takeDamage(damage); // HumanEnemy takes damage
+        } else if (Zombie* z = dynamic_cast<Zombie*>(&attacked)) {
+            // Attacked is a Zombie
+            z->takeDamage(damage); // Zombie takes damage
         }
-
-        else if(static_cast<Zombie*>(&attacked)){
-            Zombie *z=static_cast<Zombie*>(&attacked);
-            cout<<"[TESTER]"<<z->getName()<<endl;
-            z->takeDamage(damage); // The attacked zombie takes damage
+    } else {
+        // Attacked is a Player
+        Player* pAttacked = dynamic_cast<Player*>(&attacked);
+        if (pAttacked) {
+            pAttacked->exp.setCurrentExp(damage, 0, 0); // Update attacked player's experience
+            Backpack* b = attacker.getBackpack();
+            b->useThrowableItemCount(*this); // Use a throwable item from the attacked person's backpack
+            pAttacked->takeDamage(damage);
         }
-    }
-    else{
-        Player *p=static_cast<Player*>(&attacked);
-        p->exp.setCurrentExp(damage,0,0); // Updates the attacked player's experience
-        Backpack *b=attacker.getBackpack();
-        b->useThrowableItemCount(*this); // Uses a throwable item from the attacked person's backpack
-        p->takeDamage(damage);
     }
 }
+
 
 ostream& operator<<(ostream& os,Throwable& obj) {
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
@@ -1428,9 +1624,23 @@ void Medicine::addToVectors(){
 }
 
 void Medicine::use(Human &human){
-    human.hp.increaseHealth(heal); // Increases the human's health
-    Backpack *b=human.getBackpack();
-    b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
+    if(human.hp.getCurrentHealth() < human.hp.getMaxHealth()){
+        human.hp.increaseHealth(heal); // Increases the human's health
+        Backpack *b=human.getBackpack();
+        b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
+        cout << "MEDICINE CONSUME SUCCESSFULLY. " << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+         _getch();  // Wait for a key press
+    }
+    
+    else{
+        cout << "YOUR HP IS FULL. NO NEED TO MEDICINE."<< endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+         _getch();  // Wait for a key press
+    }
+        
+        
+    
 }
 
 int Medicine::getHeal() {
@@ -1476,9 +1686,19 @@ void Food::addToVectors(){
 }
 
 void Food::use(Human& human){
-    human.stamina.increaseStamina(strength); // Increases the human's stamina
-    Backpack *b=human.getBackpack();
-    b->useFoodItemCount(*this); // Uses a food item from the human's backpack
+    if(human.stamina.getCurrentStamina() < human.stamina.getMaxStamina()){
+        human.stamina.increaseStamina(strength); // Increases the human's stamina
+        Backpack *b=human.getBackpack();
+        b->useFoodItemCount(*this); // Uses a food item from the human's backpack
+        cout << "FOOD CONSUME SUCCESSFULLY." << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+         _getch();  // Wait for a key press
+    }
+    else{
+        cout << "YOUR STAMINA IS FULL. NO NEED TO FOOD." << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
+    }
 }
 
 int Food::getStrength (){
@@ -1569,20 +1789,23 @@ void getUserInfo(int& age , string& gender , string& username) {
     cin >> age;
     cout << "Please Enter your Gender : ";
     cin >> gender;
-    cout << "Thanks for introducing yourself";
-    cout << endl << "Please press any key to continue...";
+    cout << "\nTHANKS FOR INTRODUCING YOURSELF\n";
+
+    cout << "\nPlease press any key to continue...";
+
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();
+    _getch();
+
     system("cls");
 }
 
 void showPlayerInfo() {
-    cout << "Name : " << player->getName() << endl;
-    cout << "Level : " << player->getLevel() << endl;
-    cout << "Experience : " << player->getExperience() << " / ( " << player->getMaxExperience() << " )" << endl;
-    cout << "Stamina : " << player->getStamina() <<  " / ( " << player->getMaxStamina() << " )" << endl;
-    cout << "Health : " << player->getHealthPoints() << " / ( " << player->getMaxHealth() << " )" << endl;
-    cout << "Money : " << player->getMoney() << " $" << endl << endl;
+    cout  << "   "<< "Name : " << player->getName() << endl;
+    cout  << "   "<< "Level : " << player->getLevel() << endl;
+    cout  << "   "<< "Experience : " << player->getExperience() << " / ( " << player->getMaxExperience() << " )" << endl;
+    cout  << "   "<< "Stamina : " << player->getStamina() <<  " / ( " << player->getMaxStamina() << " )" << endl;
+    cout  << "   "<< "Health : " << player->getHealthPoints() << " / ( " << player->getMaxHealth() << " )" << endl;
+    cout  << "   "<< "Money : " << player->getMoney() << " $" << endl << endl;
 }
 
 void createItem() {
@@ -1612,9 +1835,10 @@ void medicineMenu() {
         else {
             cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << drug->getName() << " Items. Buy Less Items ... \n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
             medicineMenu();
         }
+        BattleMenu();
     } 
     else {
         //the Player Looses.
@@ -1622,27 +1846,50 @@ void medicineMenu() {
     }
 }
 
+void foodMenu() {
+    system("cls");
+
+    if(player->getMoney() >= 15) {
+        int item,quantity;
+        Food *meal;
+        cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl;
+        Food::showItems(); // Shows foods
+        cout << "which one do you want to buy?" << endl;
+        cin >> item;
+        cout << "How many?" << endl;
+        cin >> quantity;
+        meal=new Food(Food::shop_items_food.at(item-1));
+        if(player->getMoney() >= meal->getPrice() * quantity) {
+            meal->buy(quantity); // Buys a food
+        }
+        else {
+            cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << meal->getName() << " Items. Buy Less Items ... \n";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            foodMenu();
+        }
+        BattleMenu();
+    } 
+    else {
+        //the Player Looses.
+        goodbye();
+    }
+}
+
+
 void playground() {
     system("cls");
     srand(time(0));
     Backpack *playerBackpack = player->getBackpack();
     Backpack *enemyBackpack;
     int randomNum = rand();
-    //check the player state
-    if(player->getState()==PlayerState::DEFEATED){
-        cout<<"YOU HAVE BEEN DEFEATED\nYOUR HP IS 0 \nTO CONTINUE YOU NEED TO INCREASE YOUR HP... \n"; 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getch();  // Wait for a key press
-        cout<<"going to your backpack...\n";
-        playerBackpack->consumeForSurvival();
-    }
 
     int choice;
-    if ((randomNum % 100) < 70) {
+    if ((randomNum % 100) < 95) {
     //fight ground
         randomNum=rand();
 
-        if (randomNum % 2 == 0) {
+        if ((randomNum % 100) < 95) {
         //fight with human enemy
 
             //create random humanEnemy from characters
@@ -1662,13 +1909,13 @@ void playground() {
 
             //show enemy's info
             cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl;
-            cout << "Name : " << humanEnemy->getName() << endl;
-            cout << "Level : " << humanEnemy->getLevel() << endl;
-            cout << "Stamina : " << humanEnemy->getStamina() <<  " / ( " << humanEnemy->getMaxStamina() << " )" << endl;
-            cout << "Health : " << humanEnemy->getHealthPoints() << " / ( " << humanEnemy->getMaxHealth() << " )" << endl << endl;
+            cout  << "   " << "Name : " << humanEnemy->getName() << endl;
+            cout  << "   " << "Level : " << humanEnemy->getLevel() << endl;
+            cout  << "   " << "Stamina : " << humanEnemy->getStamina() <<  " / ( " << humanEnemy->getMaxStamina() << " )" << endl;
+            cout  << "   " << "Health : " << humanEnemy->getHealthPoints() << " / ( " << humanEnemy->getMaxHealth() << " )" << endl << endl;
             cout << "PRESS ANY KEY TO ENTER THE FIGHTGROUND...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
 
             system("cls");
 
@@ -1686,12 +1933,12 @@ void playground() {
 
                 //show enemy's info
                 cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
-                cout << "Name : " << basicZombie->getName() << endl;
-                cout << "Level : " << basicZombie->getLevel() << endl;
-                cout << "Health : " << basicZombie->getHealthPoints() << " / ( " << basicZombie->getMaxHealth() << " )" << endl << endl;
+                cout  << "   " << "Name : " << basicZombie->getName() << endl;
+                cout  << "   " << "Level : " << basicZombie->getLevel() << endl;
+                cout  << "   " << "Health : " << basicZombie->getHealthPoints() << " / ( " << basicZombie->getMaxHealth() << " )" << endl << endl;
                 cout << "Press any key to Enter to fightground...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch();  // Wait for a key press
+                _getch();  // Wait for a key press
 
                 system("cls");
 
@@ -1706,12 +1953,12 @@ void playground() {
 
                 //show enemy's info
                 cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
-                cout << "Name : " << advZombie->getName() << endl;
-                cout << "Level : " << advZombie->getLevel() << endl;
-                cout << "Health : " << advZombie->getHealthPoints() << " / ( " << advZombie->getMaxHealth() << " )" << endl << endl;
+                cout  << "   " << "Name : " << advZombie->getName() << endl;
+                cout  << "   " << "Level : " << advZombie->getLevel() << endl;
+                cout  << "   " << "Health : " << advZombie->getHealthPoints() << " / ( " << advZombie->getMaxHealth() << " )" << endl << endl;
                 cout << "Press any key to Enter to fightground...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch();  // Wait for a key press
+                _getch();  // Wait for a key press
                 
                 system("cls");
 
@@ -1737,13 +1984,15 @@ void Menu() {
 
     system("cls");
 
-    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed. But now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission. You must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\nSo who are you?\n");
+    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed.\nBut now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission.\nYou must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\nSo who are you?\n\n");
     getUserInfo(age , gender , username);
 
-    print_with_delay("In this journey, you must choose your character. Will Jon Snow, the strong and just commander, seize the fate of the land? Or will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles? Or perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?");
+    print_with_delay("In this journey, you must choose your character.\nWill Jon Snow, the strong and just commander, seize the fate of the land?\nOr will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles?\nOr perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?\n");
+    
     cout << endl << "Please press any key to continue...";
+    
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();
+    _getch();
 
     system("cls");
     
@@ -1758,9 +2007,9 @@ void Menu() {
         character = Factory::createCharacter(characterTypes[i]);
         cout << i+1 << ". " << characterTypes[i] << endl;
         cout << "   " << "Stamina : " << character->getStamina() << endl;
-        cout << "   " << "Money : " << money[i] << " $" << endl;
+        cout << "   " << "Money : " << money[i] << " $" << endl << endl;
     }
-    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : " << endl;
+    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
     
     // Get the user's choice
     cin >> chosenIndex;
@@ -1774,18 +2023,20 @@ void Menu() {
     characterTypes.erase(characterTypes.begin()+chosenIndex);
 
     // Show the details of the Player
-    cout << "CHARACTER YOU HAVE CHOSEN IS : " << endl;
-    cout << "\t" << "Name : " << player->getName() << endl;
-    cout << "\t" << "Level : " << player->getLevel() << endl;
-    cout << "\t" << "Experience : " << player->getExperience() << endl;
-    cout << "\t" << "Stamina : " << player->getStamina() << endl;
-    cout << "\t" << "Health : " << player->getHealthPoints() << endl;
-    cout << "\t" << "Money : " << money[chosenIndex] << " $" << endl << endl;
+    cout << "CHARACTER YOU HAVE CHOSEN IS : " << endl << endl;
+    cout << "   " << "Name : " << player->getName() << endl;
+    cout << "   " << "Level : " << player->getLevel() << endl;
+    cout << "   " << "Experience : " << player->getExperience() << endl;
+    cout << "   " << "Stamina : " << player->getStamina() << endl;
+    cout << "   " << "Health : " << player->getHealthPoints() << endl;
+    cout << "   " << "Money : " << money[chosenIndex] << " $" << endl << endl;
 
-    print_with_delay("Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with.\n");
+    print_with_delay("Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with.\n\n");
+
     cout << "Press any key to continue...";
+
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();  // Wait for a key press
+    _getch();  // Wait for a key press
 
     createItem();
     Shop_PermanentItems_Menu();
@@ -1816,13 +2067,13 @@ void ShopMenu() {
                 cout << "You left the shop." << endl; // Exits the shop
                 cout << "Please press any key to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch();  // Wait for a key press
+                _getch();  // Wait for a key press
                 playground();
 
             default: 
                 cout << "Wrong number!" << endl << "Please press enter to continue..." << endl;
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getch(); // Handles invalid input
+                _getch(); // Handles invalid input
                 break;
         }
     }
@@ -1850,7 +2101,7 @@ void Show_Permanent_Items() {
             wweapon->buy(); // Buys a warm weapon
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
             break;
         
         case 2:
@@ -1866,7 +2117,7 @@ void Show_Permanent_Items() {
             cweapon->buy(); // Buys a cold weapon
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
             break;
         
         case 3: 
@@ -1892,7 +2143,7 @@ void Show_Throwable_Items() {
     tweapon->buy(quantity); // Buys a throwable item
     cout << "Please press any key to continue shopping...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getch();  // Wait for a key press
+    _getch();  // Wait for a key press
 }
 
 void Show_Consumable_Items() {
@@ -1919,7 +2170,7 @@ void Show_Consumable_Items() {
             drug->buy(quantity); // Buys a medicine
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
             break;
             
         case 2:
@@ -1937,7 +2188,7 @@ void Show_Consumable_Items() {
             food->buy(quantity); // Buys a food
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
             break;
         case 3: 
             ShopMenu(); // Returns to the previous menu
@@ -1968,7 +2219,7 @@ void Shop_PermanentItems_Menu() {
             print_with_delay("Ok, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want.\n");
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
             ShopMenu();
         
         case 2:
@@ -1985,7 +2236,7 @@ void Shop_PermanentItems_Menu() {
             print_with_delay("Ok, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want.\n");
             cout << "Please press any key to continue shopping...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
+            _getch();  // Wait for a key press
             ShopMenu();
     }
 }
@@ -2010,45 +2261,66 @@ void goodbye(){
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
 
 void battleGround_humanEnemy(){
     int turn = 1;        //odd turn for player even turn for enemy
     HE_Controller Enemy(humanEnemy);
     enemy = humanEnemy;
+    Backpack *playerBackpack = player->getBackpack();
     while(Enemy.getStatus()==HumanEnemyStatus::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
 
             cout<<"Your Turn:\n";
-            showPlayerInfo();
-            Enemy.showInfo();
             BattleMenu();
         }
         else{
         //enemy turn
 
-            cout<<"Enemy's Turn:\n";
+            cout<<"\nEnemy's Turn:\n";
             Enemy.updateState();
             Enemy.decision();
             Enemy.showInfo();
         }
         turn++;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
+
+        system("cls");
     }
 
-    if(player->getState() == PlayerState::ALIVE){
+    if (player->getState()==PlayerState::ALIVE) {
         cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n The following item's will add to you backpack : \n";
         
         //show Enemy's item
         //method to add to player backpack;
         cout << "THE FOLLOWING ITEMS WILL BE ADDED TO YOUR BACKPACK : \n";
+        
         Enemy.showBackpackItems();
+        
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getch();
+        _getch();
+        
         Enemy.transferItems();
     }
-
-    playground();
-
+    else{
+        if (player->getHealthPoints() <= 0) {
+            cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
+            playerBackpack->ConsumeMedForSurvival();
+        }
+        else if (player->getStamina() <= 0) {
+            cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
+            playerBackpack->ConsumeFoodForSurvival();
+        }
+    }        
 }
 
 // *----------------------------------------------------------------*
@@ -2057,31 +2329,50 @@ void battleGround_basicZombie(){
     int turn = 1;        //odd turn for player even turn for enemy
     BZ_Controller Enemy(basicZombie);
     enemy = basicZombie;
+    Backpack *playerBackpack = player->getBackpack();
     while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
 
             cout<<"Your Turn:\n";
-            showPlayerInfo();
-            Enemy.showInfo();
             BattleMenu();
         }
         else{
         //enemy turn
-            cout<<"Enemy's Turn:\n";
+            cout<<"\nEnemy's Turn:\n";
             Enemy.bite();
+			//Enemy.updateState();
             Enemy.showInfo();
         }
         turn ++;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
+
+        system("cls");
     }
 
     if(player->getState() == PlayerState::ALIVE){
         cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
-        cout << "\nPress any key to go continue...";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getch();
+        _getch();
     }
-    playground();
+    else{
+        if (player->getHealthPoints() <= 0) {
+            cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
+            playerBackpack->ConsumeMedForSurvival();
+        }
+        else if (player->getStamina() <= 0) {
+            cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
+            playerBackpack->ConsumeFoodForSurvival();
+        }
+    }  
 }
 
 // *----------------------------------------------------------------*
@@ -2090,30 +2381,50 @@ void battleGround_advZombie(){
     int turn = 1;        //odd turn for player even turn for enemy
     AZ_Controller Enemy(advZombie);
     enemy = advZombie;
+    Backpack *playerBackpack = player->getBackpack();
     while(Enemy.getState()==ZombieState::ALIVE and player->getState()==PlayerState::ALIVE){
         if(turn%2!=0){
         //player turn
-        
             cout<<"Your Turn:\n";
-            showPlayerInfo();
             Enemy.showInfo();
             BattleMenu();
         }
         else{
         //enemy turn
         cout<<"Enemy's Turn:\n";
-        Enemy.Attack();
-        Enemy.showInfo();
+			//Enemy.updateState();
+            Enemy.Attack();
+            Enemy.showInfo();
         }
         turn ++;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        _getch();  // Wait for a key press
+
+        system("cls");
     }
 
     if(player->getState() == PlayerState::ALIVE){
         cout<<"Congratulations !! , YOU HAVE WON THE MATCH \n";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getch();
+        _getch();
     }
-    playground();
+    else{
+        if (player->getHealthPoints() <= 0) {
+            cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
+            playerBackpack->ConsumeMedForSurvival();
+        }
+        else if (player->getStamina() <= 0) {
+            cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch();  // Wait for a key press
+            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
+            playerBackpack->ConsumeFoodForSurvival();
+        }
+    }  
 }
 
 // *----------------------------------------------------------------*
@@ -2121,66 +2432,80 @@ void battleGround_advZombie(){
 // *----------------------------------------------------------------*
 
 void BattleMenu() {
-    cout << endl << endl; 
+    system("cls");
     int number;
     cout << "What do you want to do? (Attack ends your turn.)" << endl
-    << "[1].Attack" << endl << "[2].BackPack" << endl << "[3].Player Info" << endl << "[4].Upgrade Weapon's Skill" << endl ;
-    cout << "ENTER YOUR CHOICE OF ACTION : " ;
+         << "[1].Attack" << endl << "[2].Consume Food Or Medicine" << endl << "[3].Show Player Info" << endl << "[4].Show Backpack Items" << endl << "[5].Upgrade Weapon's Skill" << endl;
+    cout << "ENTER YOUR CHOICE OF ACTION: ";
     cin >> number;
-    WarmWeapon* wweapon;
-    ColdWeapon* cweapon;
-    Throwable* tweapon;
-    Backpack *backpack = player->getBackpack();
-    switch(number){
-        case 1: 
-            {
-            backpack->useWeaponsAttack();
-            break;}
-            
-        case 2:
-            {
-            backpack->useConsumableItems();
-            BattleMenu();
-            break; 
+
+    Backpack* backpack = player->getBackpack();
+    
+    switch (number) {
+        case 1: {
+            auto weapon = backpack->useWeapons();
+            if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(weapon)) {
+                wweapon->Attack(*player, *enemy);
+            } else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(weapon)) {
+                cweapon->Attack(*player, *enemy);
+            } else if (Throwable* tweapon = dynamic_cast<Throwable*>(weapon)) {
+                tweapon->Throw(*player, *enemy);
             }
+            break;
+        }
 
-        case 3: 
-            {showPlayerInfo();
+        case 2: {
+            auto consumable = backpack->useConsumableItems();
+            if (Medicine* medicine = dynamic_cast<Medicine*>(consumable)) {
+                medicine->use(*player);
+            } else if (Food* food = dynamic_cast<Food*>(consumable)) {
+                food->use(*player);
+            }
+            BattleMenu(); // Recursive call
+            break;
+        }
+
+        case 3: {
+            system("cls");
+            showPlayerInfo();
             cout << "\nPress any key to go back...";
-            BattleMenu();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getch();  // Wait for a key press
-            break; }
+            _getch(); // Wait for a key press
+            BattleMenu(); // Recursive call
+            break;
+        }
 
-        case 4:
-            {
-            // BankAccount* creditcard = player->getBankAccount();
-            // auto chosenweapon = backpack->useWeapons();
-            // if (static_cast<WarmWeapon*>(chosenweapon)){
-            //     WarmWeapon* wweapon = static_cast<WarmWeapon*>(chosenweapon);
-            //     WarmWeaponAbility wwa = wweapon->getwwa();
-            //     wwa.upgradeSkill(creditcard);
-            // }     
-            // else if (static_cast<ColdWeapon*>(chosenweapon)){
-            //     ColdWeapon* cweapon = static_cast<ColdWeapon*>(chosenweapon);
-            //     ColdWeaponAbility cwa = cweapon->getcwa();
-            //     cwa.upgradeSkill(creditcard);
-            // }
-            // else{
-            //     Throwable* tweapon = static_cast<Throwable*>(chosenweapon);
-            //     ThrowableWeaponAbility twa= tweapon->gettwa();
-            //     twa.upgradeSkill(creditcard);
-            // }
-            BattleMenu();
-            break; }
+        case 4 : {
+            system("cls");
+            backpack->showItems();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            _getch(); // Wait for a key press
+            BattleMenu(); // Recursive call
+            break;
+        }
+        
+        case 5: {
+            BankAccount* creditcard = player->getBankAccount();
+            auto chosenweapon = backpack->upgradeWeapons();
+            if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(chosenweapon)) {
+                wweapon->getwwa().upgradeSkill(creditcard);
+            } 
+			else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(chosenweapon)) {
+                cweapon->getcwa().upgradeSkill(creditcard);
+            } 
+			else if (Throwable* tweapon = dynamic_cast<Throwable*>(chosenweapon)) {
+                tweapon->gettwa().upgradeSkill(creditcard);
+            }
+            BattleMenu(); // Recursive call
+            break;
+        }
 
-        default:
-            {cout << "Invalid choice. Please choose a number between 1 and 4." << endl;
-            BattleMenu(); }
+        default: {
+            cout << "Invalid choice. Please choose a number between 1 and 4." << endl;
+            BattleMenu(); // Recursive call
+        }
     }
 }
-
-
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

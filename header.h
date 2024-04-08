@@ -136,9 +136,9 @@ class Backpack {
         map <Throwable , int> ThrowableItems;
         vector <WarmWeapon> WarmWeaponItems;
         vector <ColdWeapon> ColdWeaponItems;
-        void removeFoodItem(Food);
-        void removeMedicineItem(Medicine);
-        void removeThrowableItem(Throwable);
+        void removeFoodItem(const Food);
+        void removeMedicineItem(const Medicine);
+        void removeThrowableItem(const Throwable);
         friend class HE_Controller;
     public:
         Backpack(){}
@@ -149,19 +149,22 @@ class Backpack {
         void addColdWeaponItem(const ColdWeapon);
         bool warmWeaponExistence(const WarmWeapon);
         bool coldWeaponExistence(const ColdWeapon);
-        void useFoodItemCount(Food);
-        void useMedicineItemCount(Medicine);
-        void useThrowableItemCount(Throwable);
+        void useFoodItemCount(const Food specificItem);
+        void useMedicineItemCount(const Medicine specificItem);
+        void useThrowableItemCount(const Throwable specificItem);
         void showItems();
         void showWarmWeaponItems();
         void showColdWeaponItems();
         void showThrowableItems();
         void showMedicineItems();
         void showFoodItems();
-        void consumeForSurvival();
-        void useWeaponsAttack();
-        void useConsumableItems();
+        void ConsumeMedForSurvival();
+        void ConsumeFoodForSurvival();
+        Items* useWeapons();
+        Items* useConsumableItems();
+        Items* upgradeWeapons();
 };
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -243,9 +246,10 @@ class Player : public Human {
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-enum class HumanEnemyState{
-    LOW_HEALTH,LOW_POWER,FIGHT
-
+enum class HumanEnemyState {
+    LOW_HEALTH,
+    LOW_POWER,
+    FIGHT
 };
 
 enum class HumanEnemyStatus{
@@ -269,7 +273,7 @@ class HumanEnemy : public Human {
 class HE_View {
     public:
         HE_View();
-        void showInfo(HumanEnemy);
+        void showInfo(HumanEnemy&);
         void updateHealth(string,int);     //prints the amount of heal
         void updateStamina(string,int);    //prints the amount of increased strength
         void attackView(string,Items);     //prints the weapon name that used to attack player
@@ -287,7 +291,7 @@ class HE_Controller {
         void updateState();      // Method to update the state of the human enemy
         HumanEnemyState getState();
         HumanEnemyStatus getStatus();
-        void chooseWeapon();
+        Items* chooseWeapon();
         Food* chooseFood();
         Medicine* chooseMedicine();
         void transferItems();
@@ -333,7 +337,7 @@ class BasicZombie : public Zombie {
 class BZ_View {
     public:
         BZ_View();
-        void showInfo(BasicZombie);
+        void showInfo(BasicZombie&);
 };
 
 class BZ_Controller {
@@ -361,12 +365,12 @@ class AdvZombie : public Zombie {
 class AZ_View {
     public:
     AZ_View();
-    void showInfo(AdvZombie);
+    void showInfo(AdvZombie&);
 };
 
 class AZ_Controller {
     private:
-        AdvZombie *model;
+        AdvZombie * model;
         AZ_View view;
     public:
         AZ_Controller(AdvZombie*);
@@ -433,7 +437,7 @@ class Permanent : public Items {
         Permanent(string, int, string, int, int);
     public:       
         virtual void buy(){}                      //buy item and add it into player's backpack
-        virtual void Attack(Human&,Person&){}               //calculate the damage of attacker and reduce it from attacked health
+        virtual void Attack(Human&, Person&){}               //calculate the damage of attacker and reduce it from attacked health
         ~Permanent(){}
 };
 
@@ -493,7 +497,7 @@ class Throwable : public Items {
         static void showItems();                     //show the available items to buy
         void buy(int);
         void addToVectors() override;
-        void Throw(Human&,Person&);
+        void Throw(Human&, Person&);
         friend ostream& operator<<(ostream&, Throwable&);
         friend void Show_Throwable_Items();
         friend void playground();
@@ -539,6 +543,7 @@ class Food : public Items {
         friend ostream& operator<<(ostream&, Food&);
         friend void Show_Consumable_Items();
         friend void playground();
+        friend void foodMenu();
         ~Food(){}
 };
 
@@ -568,6 +573,7 @@ void createThrowableItems();
 void createMedicines();
 void createFoods();
 void medicineMenu();
+void foodMenu();
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
