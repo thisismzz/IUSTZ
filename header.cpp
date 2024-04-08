@@ -375,7 +375,7 @@ void Backpack::showFoodItems(){
 void Backpack::showUpgradeWarmWeapon(){
     int index = 1;
     for(auto i: WarmWeaponItems){
-        cout << index << ")" << i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getwwa()->getUpgradePrice();
+        cout << index << ")" << i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getwwa()->getUpgradePrice() << endl;
         index++;
     }
 }
@@ -383,7 +383,7 @@ void Backpack::showUpgradeWarmWeapon(){
 void Backpack::showUpgradeColdWeapon(){
     int index = 1;
     for(auto i: ColdWeaponItems){
-        cout << index << ")" << i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getcwa()->getUpgradePrice(); 
+        cout << index << ")" << i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getcwa()->getUpgradePrice() << endl; 
         index++;
     }
 }
@@ -392,7 +392,7 @@ void Backpack::showUpgradeThrowable(){
     int index = 1;
     for(auto pair : ThrowableItems){
     Throwable item = pair.first;
-    cout << index << ")" << item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<item.gettwa()->getUpgradePrice(); 
+    cout << index << ")" << item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<item.gettwa()->getUpgradePrice() << endl;
     index++;
     }
 }
@@ -2518,15 +2518,12 @@ void BattleMenu() {
             BankAccount* creditcard = player->getBankAccount();
             auto chosenweapon = backpack->upgradeWeapons();
             if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(chosenweapon)) {
-                cout<<"IT COSTS "<<wweapon->getwwa()->getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
                 wweapon->getwwa()->upgradeSkill(creditcard);
             } 
 			else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(chosenweapon)) {
-                cout<<"IT COSTS "<<cweapon->getcwa()->getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
                 cweapon->getcwa()->upgradeSkill(creditcard);
             } 
 			else if (Throwable* tweapon = dynamic_cast<Throwable*>(chosenweapon)) {
-                cout<<"IT COSTS "<<tweapon->gettwa()->getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
                 tweapon->gettwa()->upgradeSkill(creditcard);
             }
             BattleMenu(); // Recursive call
