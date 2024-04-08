@@ -159,6 +159,10 @@ int Skills::getCurrentSkill(){
     return currentSkill; // Returns the current skill level
 }
 
+int Skills::getUpgradePrice(){
+    return upgradePrice;
+}
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -317,7 +321,7 @@ void Backpack::showItems(){
 void Backpack::showWarmWeaponItems(){
     int index = 1;
     for(auto i: WarmWeaponItems){
-        cout << index << ")" << i.getName() << '\n';
+        cout << index << ")" <<"  Name: "<< i.getName() << "\tlvl " << i.getwwa().getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getwwa().getCurrentSkill()*10<<"STM\n";
         index++;
     }
 }
@@ -325,7 +329,7 @@ void Backpack::showWarmWeaponItems(){
 void Backpack::showColdWeaponItems(){
     int index = 1;
     for(auto i: ColdWeaponItems){
-        cout << index << ")" << i.getName() << '\n'; 
+        cout << index << ")" <<"  Name: "<< i.getName() << "\tlvl " << i.getcwa().getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getcwa().getCurrentSkill()*10<<"STM\n"; 
         index++;
     }
 }
@@ -334,7 +338,7 @@ void Backpack::showThrowableItems(){
     int index = 1;
     for(auto pair : ThrowableItems){
     Throwable item = pair.first;
-    cout << index << ")" << item.getName() << "(stock : " << pair.second << ")" << '\n';
+    cout << index << ")" <<"  Name: "<< item.getName()<< "\tlvl " << item.gettwa().getCurrentSkill() <<"\tharm: "<<item.getHarm()<<"\t-"<<item.gettwa().getCurrentSkill()*10 << "STM\t(stock : " << pair.second << ")" << '\n';
     index++;
     }
 
@@ -849,6 +853,7 @@ Person::Person(string n,int l=1):name(n),level(l){} // Constructor that initiali
 
 void Person::updateLevel() {
     level++; // Increases level by 1
+    cout<<"[!] NEW LEVEL!\tYOUR LEVEL : "<<level<<endl;
 }
 
 int Person::getLevel() {
@@ -951,7 +956,7 @@ void Player::setState(PlayerState s){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-HumanEnemy::HumanEnemy(Human& human,int l=1): Human(human.getName(), human.getStamina(),l),state(HumanEnemyState::FIGHT),status(HumanEnemyStatus::ALIVE){} // Constructor that initializes name and stamina from a Human object
+HumanEnemy::HumanEnemy(Human& human,int l=1): Human(human.getName(), human.getStamina()*l,l),state(HumanEnemyState::FIGHT),status(HumanEnemyStatus::ALIVE){} // Constructor that initializes name and stamina from a Human object
 
 void HumanEnemy::setState(HumanEnemyState newState){
     state = newState;
@@ -1223,7 +1228,7 @@ BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLev
 BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
 
 void BasicZombie :: bite() {
-    player->hp.decreaseHealth(this->getLevel()*5);
+    player->hp.decreaseHealth(this->getLevel()*10);
     cout<<"You have been bitten by "<<this->getName();
     player->takeDamage(this->getLevel()*5);
 }
@@ -1263,13 +1268,13 @@ AdvZombie::AdvZombie(Zombie & zombie) : Zombie(zombie.getName(),zombie.getLevel(
 AdvZombie::AdvZombie(string n,int l) : Zombie(n,l){}
 
 void AdvZombie :: bite() {
-    player->hp.decreaseHealth(this->getLevel()*7);
+    player->hp.decreaseHealth(this->getLevel()*15);
     cout<<"You have been bitten by "<<this->getName();
     player->takeDamage(this->getLevel()*7);
 }
 
 void AdvZombie :: scratch() {
-    player->hp.decreaseHealth(this->getLevel()*8);
+    player->hp.decreaseHealth(this->getLevel()*18);
     cout<<"You have been scratched by "<<this->getName();
     player->takeDamage(this->getLevel()*8);
 }
@@ -1341,6 +1346,10 @@ int Items::getPrice(){
 // *----------------------------------------------------------------*
 
 Permanent::Permanent(string n,int p,string t,int e,int h):Items(n,p,t),exp(e),harm(h){} // Constructor that initializes name, price, type, exp, and harm from an Items object
+
+int Permanent::getHarm(){
+    return harm;
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1588,15 +1597,20 @@ void Throwable::Throw(Human& attacker, Person& attacked) {
     }
 }
 
+ThrowableWeaponAbility Throwable::gettwa(){
+    return twa;
+}
+
+int Throwable::getHarm(){
+    return harm;
+}
 
 ostream& operator<<(ostream& os,Throwable& obj) {
     os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa.getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
     return os; // Prints the throwable weapon's details
 }
 
-ThrowableWeaponAbility Throwable::gettwa(){
-    return twa;
-}
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1756,7 +1770,7 @@ Human* Factory::createJaimeLannister(const string& type) {
 }
 
 Human* Factory::createDaenerys(const string& type) {
-    return new Human(type, /*stamina*/ 110); // Creates a Daenerys character with 110 stamina
+    return new Human(type, /*stamina*/ 100); // Creates a Daenerys character with 110 stamina
 }
 
 Human* Factory::createStannis(const string& type) {
@@ -2067,7 +2081,7 @@ void ShopMenu() {
         system("cls");
         int number;
         cout << "You enter the shop." << endl << "What do you want to buy?" << "(your money : " << player->getMoney() << ")" << endl 
-        << "[1].Permanent Items" << endl << "[2].Throwable Items" << endl << "[3].Consumable Items" << endl << "[4].Exit" << endl;
+        << "[1].Permanent Items" << endl << "[2].Throwable Items" << endl << "[3].Consumable Items" << endl << "[4].Exit Shop" << endl << "[5].Quit" << endl;
         cin >> number;
         switch(number){
             case 1: Show_Permanent_Items(); // Shows permanent items
@@ -2085,6 +2099,9 @@ void ShopMenu() {
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 _getch();  // Wait for a key press
                 playground();
+
+            case 5:
+                goodbye();
 
             default: 
                 cout << "Wrong number!" << endl << "Please press enter to continue..." << endl;
@@ -2263,14 +2280,16 @@ void Shop_PermanentItems_Menu() {
 void goodbye(){
     if(player->getState()==PlayerState::DEFEATED){
         cout<<"GAME OVER!";
+        Sleep(3000);
         exit(0);
     }
     else{
         cout<<"Really?\n";
         Sleep(1000);
-        cout<<"It to soon!\n";
+        cout<<"It's to soon!\n";
         Sleep(1000);
-        cout<<"fine i let you go :(\nbye bye "<<player->getUsername()<<"hope to see you again:)";
+        cout<<"fine i let you go :(\tbye bye "<<player->getUsername()<<"hope to see you again:)";
+        Sleep(3000);
         exit(0);
     }
 }
@@ -2404,7 +2423,7 @@ void BattleMenu() {
     system("cls");
     int number;
     cout << "What do you want to do? (Attack ends your turn.)" << endl
-         << "[1].Attack" << endl << "[2].Consume Food Or Medicine" << endl << "[3].Show Player Info" << endl << "[4].Show Backpack Items" << endl << "[5].Upgrade Weapon's Skill" << endl;
+         << "[1].Attack" << endl << "[2].Consume Food Or Medicine" << endl << "[3].Show Player Info" << endl << "[4].Show Backpack Items" << endl << "[5].Upgrade Weapon's Skill"<< endl <<"[6].Quit"<< endl;
     cout << "ENTER YOUR CHOICE OF ACTION: ";
     cin >> number;
 
@@ -2466,16 +2485,23 @@ void BattleMenu() {
             BankAccount* creditcard = player->getBankAccount();
             auto chosenweapon = backpack->upgradeWeapons();
             if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(chosenweapon)) {
+                cout<<"IT COSTS "<<wweapon->getwwa().getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
                 wweapon->getwwa().upgradeSkill(creditcard);
             } 
 			else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(chosenweapon)) {
+                cout<<"IT COSTS "<<cweapon->getcwa().getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
                 cweapon->getcwa().upgradeSkill(creditcard);
             } 
 			else if (Throwable* tweapon = dynamic_cast<Throwable*>(chosenweapon)) {
+                cout<<"IT COSTS "<<tweapon->gettwa().getUpgradePrice()<<"$ TO UPGRADE THIS WEAPON\n";
                 tweapon->gettwa().upgradeSkill(creditcard);
             }
             BattleMenu(); // Recursive call
             break;
+        }
+
+        case 6: {
+            goodbye();
         }
 
         default: {

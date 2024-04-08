@@ -103,6 +103,7 @@ class Skills {
         void upgradeSkill(BankAccount*);
         void setUpgradePrice();
         int getCurrentSkill();
+        int getUpgradePrice();
 };
 
 // *----------------------------------------------------------------*
@@ -439,6 +440,7 @@ class Permanent : public Items {
     public:       
         virtual void buy(){}                      //buy item and add it into player's backpack
         virtual void Attack(Human&, Person&){}               //calculate the damage of attacker and reduce it from attacked health
+        int getHarm();
         ~Permanent(){}
 };
 
@@ -503,6 +505,7 @@ class Throwable : public Items {
         friend void Show_Throwable_Items();
         friend void playground();
         ThrowableWeaponAbility gettwa();
+        int getHarm();
         ~Throwable(){}
 };
 
