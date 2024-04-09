@@ -513,7 +513,7 @@ Items* Backpack::useWeapons() {
                         WarmWeapon *wweapon=new WarmWeapon(WarmWeaponItems.at(ChosenWeapon-1));
                         //cout << *wweapon;
                         return wweapon;
-                    } 
+                    }
                     else if(ChosenWeapon == 0){
                         useWeapons();
                     }
@@ -1404,7 +1404,6 @@ void WarmWeapon::buy(){
         backpack->addWarmWeaponItem(*this); // Adds the item to the backpack
         cout<<"Item added to your backpack!\n"; // Prints a message that the item was added to the backpack
         player->exp.increaseExp(exp); // Increases the player's experience
-        cout<<"EXP increased!\n"; // Prints a message that the experience was increased
     }
     else
         cout<<"Not enough money!\n"; // Prints a message if there's not enough money to buy the item
@@ -1489,7 +1488,6 @@ void ColdWeapon::buy(){
         backpack->addColdWeaponItem(*this); // Adds the item to the backpack
         cout<<"Item added to your backpack!\n"; // Prints a message that the item was added to the backpack
         player->exp.increaseExp(exp); // Increases the player's experience
-        cout<<"EXP increased!\n"; // Prints a message that the experience was increased
     }
     else
         cout<<"Not enough money!\n"; // Prints a message if there's not enough money to buy the item
@@ -2482,6 +2480,12 @@ void BattleMenu() {
     cout << "ENTER YOUR CHOICE OF ACTION: ";
     cin >> number;
 
+    WarmWeapon* wweapon;
+    ColdWeapon* cweapon;
+    Throwable* tweapon;
+    Medicine* medicine;
+    Food* food;
+
     Backpack* backpack = player->getBackpack();
     
     switch (number) {
@@ -2496,11 +2500,11 @@ void BattleMenu() {
             }
 
             auto weapon = backpack->useWeapons();
-            if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(weapon)) {
+            if (wweapon = dynamic_cast<WarmWeapon*>(weapon)) {
                 wweapon->Attack(*player, *enemy);
-            } else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(weapon)) {
+            } else if (cweapon = dynamic_cast<ColdWeapon*>(weapon)) {
                 cweapon->Attack(*player, *enemy);
-            } else if (Throwable* tweapon = dynamic_cast<Throwable*>(weapon)) {
+            } else if (tweapon = dynamic_cast<Throwable*>(weapon)) {
                 tweapon->Throw(*player, *enemy);
             }
             break;
@@ -2508,9 +2512,9 @@ void BattleMenu() {
 
         case 2: {
             auto consumable = backpack->useConsumableItems();
-            if (Medicine* medicine = dynamic_cast<Medicine*>(consumable)) {
+            if (medicine = dynamic_cast<Medicine*>(consumable)) {
                 medicine->use(*player);
-            } else if (Food* food = dynamic_cast<Food*>(consumable)) {
+            } else if (food = dynamic_cast<Food*>(consumable)) {
                 food->use(*player);
             }
             BattleMenu(); // Recursive call
@@ -2539,13 +2543,13 @@ void BattleMenu() {
         case 5: {
             BankAccount* creditcard = player->getBankAccount();
             auto chosenweapon = backpack->upgradeWeapons();
-            if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(chosenweapon)) {
+            if (wweapon = dynamic_cast<WarmWeapon*>(chosenweapon)) {
                 wweapon->getwwa()->upgradeSkill(creditcard);
             } 
-			else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(chosenweapon)) {
+			else if (cweapon = dynamic_cast<ColdWeapon*>(chosenweapon)) {
                 cweapon->getcwa()->upgradeSkill(creditcard);
             } 
-			else if (Throwable* tweapon = dynamic_cast<Throwable*>(chosenweapon)) {
+			else if (tweapon = dynamic_cast<Throwable*>(chosenweapon)) {
                 tweapon->gettwa()->upgradeSkill(creditcard);
             }
             BattleMenu(); // Recursive call
