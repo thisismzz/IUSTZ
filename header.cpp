@@ -32,7 +32,7 @@ vector <Food> Food::shop_items_food={};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Health::Health() : maxHealth(100) , currentHealth(100) {} // Constructor
+Health::Health(int l=1) : maxHealth(100+(50*(l-1))) , currentHealth(100) {} // Constructor
 
 int Health::getCurrentHealth() {
     return currentHealth; // Returns current health
@@ -54,6 +54,10 @@ void Health::increaseHealth (int amount){
     cout<<"Health increased for "<< amount << "HP\n";
     if(currentHealth >= maxHealth)
         currentHealth = maxHealth; // Ensures health doesn't exceed maxHealth
+}
+
+void Health::updateMaxHealth(){
+    maxHealth+=50;
 }
 
 // *----------------------------------------------------------------*
@@ -104,6 +108,7 @@ void Experience::setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
         updateMaximum(); // Updates maximum experience
         humanObj->updateLevel(); // Updates player's level
         humanObj->stamina.updateMaximumStamina(); // Updates player's maximum stamina
+        humanObj->hp.updateMaxHealth();
     }
 }
 
@@ -721,7 +726,7 @@ Items* Backpack::upgradeWeapons() {
             if(!WarmWeaponItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the WarmWeapon you want to upgrade it:" << endl;
+                    cout << "Choose the WarmWeapon you want to upgrade it:\t" <<player->getMoney()<< endl;
                     index = 1;
                     showUpgradeWarmWeapon(); // Prints warm weapon items
                     cout << "0)Back" << endl; 
@@ -755,7 +760,7 @@ Items* Backpack::upgradeWeapons() {
             if(!ColdWeaponItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the ColdWeapon you want to upgrade it:" << endl;
+                    cout << "Choose the ColdWeapon you want to upgrade it:\t" <<player->getMoney()<< endl;
                     index = 1;
                     showUpgradeColdWeapon();      // Prints cold weapon items
                     cout << "0)Back" << endl; 
@@ -789,7 +794,7 @@ Items* Backpack::upgradeWeapons() {
             if(!ThrowableItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the ThrowableWeapon you want to upgrade it:" << endl;
+                    cout << "Choose the ThrowableWeapon you want to upgrade it:" <<player->getMoney()<< endl;
                     index = 1;
                     showUpgradeThrowable();      // Prints throwable items
                     cout << "0)Back" << endl; 
@@ -869,7 +874,7 @@ void BankAccount::prize(int amount){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Person::Person(string n,int l=1):name(n),level(l){} // Constructor that initializes name and level
+Person::Person(string n,int l=1):name(n),level(l),hp(l){} // Constructor that initializes name and level
 
 void Person::updateLevel() {
     level++; // Increases level by 1
@@ -1944,7 +1949,7 @@ void playground() {
             enemyBackpack = humanEnemy->getBackpack();
             enemyBackpack->addWarmWeaponItem(WarmWeapon::shop_items_permanent_warmweapon.at(rand() % WarmWeapon::shop_items_permanent_warmweapon.size()));
             enemyBackpack->addColdWeaponItem(ColdWeapon::shop_items_permanent_coldweapon.at(rand() % ColdWeapon::shop_items_permanent_coldweapon.size()));
-            for (int j = 0; j < 100; j++) {
+            for (int j = 0; j < player->getLevel()*4; j++) {
                 enemyBackpack->addThrowableItem(Throwable::shop_items_throwable.at(rand() % Throwable::shop_items_throwable.size()), 1);
                 enemyBackpack->addFoodItem(Food::shop_items_food.at(rand() % Food::shop_items_food.size()), 1);
                 enemyBackpack->addMedicineItem(Medicine::shop_items_medicine.at(rand() % Medicine::shop_items_medicine.size()), 1);
@@ -2090,11 +2095,12 @@ void Menu() {
 // *----------------------------------------------------------------*
 
 void ShopMenu() {
+    string temp;
     while(true){
         system("cls");
         int number;
         cout << "You enter the shop." << endl << "What do you want to buy?" << "(your money : " << player->getMoney() << ")" << endl 
-        << "[1].Permanent Items" << endl << "[2].Throwable Items" << endl << "[3].Consumable Items" << endl << "[4].Exit Shop" << endl << "[5].Quit" << endl;
+        << "[1].Permanent Items" << endl << "[2].Throwable Items" << endl << "[3].Consumable Items" << endl << "[4].Exit Shop" << endl << "[5].Show backpack" << endl << "[6].Quit" << endl;
         cin >> number;
         switch(number){
             case 1: Show_Permanent_Items(); // Shows permanent items
@@ -2114,7 +2120,23 @@ void ShopMenu() {
                 playground();
 
             case 5:
-                goodbye();
+                system("cls");
+                player->getBackpack()->showItems();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                _getch(); // Wait for a key press
+                BattleMenu(); // Recursive call
+                break;
+
+            case 6:
+                cout<<"[!] ARE YOU SURE? (Y/N)";
+                cin>>temp;
+                if(temp=="Y"){
+                    goodbye();
+                }
+                else{
+                    ShopMenu();
+                }
+                break;
 
             default: 
                 cout << "Wrong number!" << endl << "Please press enter to continue..." << endl;

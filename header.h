@@ -50,11 +50,12 @@ private:
     int currentHealth;
     int maxHealth;
 public:
-    Health();
+    Health(int);
     int getCurrentHealth();
     int getMaxHealth();
     void decreaseHealth(int);
     void increaseHealth(int);
+    void updateMaxHealth();
 };
 
 // *----------------------------------------------------------------*
