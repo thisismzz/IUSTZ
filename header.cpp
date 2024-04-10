@@ -114,7 +114,7 @@ void Experience::setCurrentExp(int selfDamage,int enemyDamage,int usedStamina){
 
 void Experience::increaseExp(int amount){
     currentExp+=amount; // Increases current experience
-    cout<<"EXPERIENCE ENCREASED FOR " << amount << " EXP!\n";
+    cout<<"EXPERIENCE INCREASED FOR " << amount << " EXP!\n";
     if(currentExp>=maximum){
         currentExp=0; // Resets current experience if it exceeds maximum
         humanObj->exp.updateMaximum(); // Updates maximum experience
@@ -2022,35 +2022,38 @@ void Menu() {
     cout << endl << "Please press any key to continue...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     _getch();
-
-    system("cls");
-
-    // Creating the Player's Character Choices
-    int chosenIndex;
-    int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
-
-    // Show all the different options a user has for the characters
-    Human *character;
-    cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
-    for (int i = 0; i < 6; i++) {
-        character = Factory::createCharacter(characterTypes[i]);
-        cout << i+1 << ". " << characterTypes[i] << endl;
-        cout << "   " << "Stamina : " << character->getStamina() << endl;
-        cout << "   " << "Money : " << money[i] << " $" << endl << endl;
-    }
     
-    // Get the user's choice
-    cin >> chosenIndex;
-    if (chosenIndex > 6){
-        cout << "INVALID INDEX! PLEASE TRY AGAIN.";
+    while (true){
+        system("cls");
+
+        // Creating the Player's Character Choices
+        int chosenIndex;
+        int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
+
+        // Show all the different options a user has for the characters
+        Human *character;
+        cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : ";
+        for (int i = 0; i < 6; i++) {
+            character = Factory::createCharacter(characterTypes[i]);
+            cout << i+1 << ". " << characterTypes[i] << endl;
+            cout << "   " << "Stamina : " << character->getStamina() << endl;
+            cout << "   " << "Money : " << money[i] << " $" << endl << endl;
+        }
+    
+        // Get the user's choice
         cin >> chosenIndex;
+        if (chosenIndex > 0 and chosenIndex < 7){
+            chosenIndex--;
+            // Create Player Character
+            character = Factory::createCharacter(characterTypes[chosenIndex]);
+            player = new Player(*character,gender,username,age,money[chosenIndex]);
+            characterTypes.erase(characterTypes.begin()+chosenIndex);
+            break;
+        }
+        else{
+            cout << "INVALID INDEX! PLEASE TRY AGAIN."; 
+        }
     }
-    chosenIndex--;  // Adjust for 0-based indexing
-}
-    // Create Player Character
-    character = Factory::createCharacter(characterTypes[chosenIndex]);
-    player = new Player(*character,gender,username,age,money[chosenIndex]);
-    characterTypes.erase(characterTypes.begin()+chosenIndex);
 
     system("cls");
 
