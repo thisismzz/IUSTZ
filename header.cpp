@@ -436,8 +436,6 @@ void Backpack::ConsumeMedForSurvival() {
         auto iter = next(MedicineItems.begin(), choice - 1);
         Medicine* medicine = new Medicine(iter->first);
         medicine->use(*player);
-        cout << "YOU USED " << medicine->getName() << " ITEM." << endl;
-        getch();  // Wait for a key press
         player->newLife();   //change the state from DEFEATED to ALIVE
         playground();
     }
@@ -472,8 +470,6 @@ void Backpack::ConsumeFoodForSurvival() {
         auto iter = next(FoodItems.begin(), choice - 1);
         Food* food = new Food(iter->first);
         food->use(*player);
-        cout << "YOU USED " << food->getName() << " ITEM." << endl;
-        getch();  // Wait for a key press
         player->newLife();   //change the state from DEFEATED to ALIVE
         BattleMenu();
     }
@@ -1637,10 +1633,10 @@ void Medicine::addToVectors(){
 
 void Medicine::use(Human &human){
     if(human.hp.getCurrentHealth() < human.hp.getMaxHealth()){
+        cout << "MEDICINE CONSUME SUCCESSFULLY." << endl;
         human.hp.increaseHealth(heal); // Increases the human's health
         Backpack *b=human.getBackpack();
         b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
-        cout << "MEDICINE CONSUME SUCCESSFULLY." << endl;
         getch();
     }
     else{
@@ -1692,10 +1688,10 @@ void Food::addToVectors(){
 
 void Food::use(Human& human){
     if(human.stamina.getCurrentStamina() < human.stamina.getMaxStamina()){
+        cout << "FOOD CONSUME SUCCESSFULLY." << endl;
         human.stamina.increaseStamina(strength); // Increases the human's stamina
         Backpack *b=human.getBackpack();
         b->useFoodItemCount(*this); // Uses a food item from the human's backpack
-        cout << "FOOD CONSUME SUCCESSFULLY." << endl;
         getch();
     }
     else{
@@ -2270,7 +2266,6 @@ void goodbye(){
     system("cls");
     if(player->getState()==PlayerState::DEFEATED){
         cout<<"GAME OVER!";
-        Sleep(3000);
         exit(0);
     }
     else{
