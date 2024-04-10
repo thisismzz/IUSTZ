@@ -426,25 +426,25 @@ void Backpack::ConsumeMedForSurvival() {
     system("cls");
     cout << "Here are the available medicine items in the backpack:" << endl;
     int index = 1;
-    vector<Medicine> medicineVector;
     showMedicineItems();
 
     int choice;
     cout << "Enter the number of the medicine item you want to use: ";
     cin >> choice;
 
-    if(choice < 1 || choice > medicineVector.size()){
+    if (choice >= 1 && choice <= MedicineItems.size()){
+        auto iter = next(MedicineItems.begin(), choice - 1);
+        Medicine* medicine = new Medicine(iter->first);
+        medicine->use(*player);
+        cout << "YOU USED " << medicine->getName() << " ITEM." << endl;
+        getch();  // Wait for a key press
+        player->newLife();   //change the state from DEFEATED to ALIVE
+        playground();
+    }
+    else{
         cout << "INVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl;
         getch();
         ConsumeMedForSurvival();
-    }
-    else{
-    Medicine chosenMedicine = medicineVector[choice - 1];
-    chosenMedicine.use(*player);
-    cout << "YOU USED " << chosenMedicine.getName() << " ITEM." << endl;
-   getch();  // Wait for a key press
-    player->newLife();   //change the state from DEFEATED to ALIVE
-    playground();
     }
     
 }
@@ -462,25 +462,25 @@ void Backpack::ConsumeFoodForSurvival() {
     system("cls");
     cout << "Here are the available food items in the backpack:" << endl;
     int index = 1;
-    vector<Food> foodVector;
     showFoodItems();  
 
     int choice;
     cout << "Enter the number of the food item you want to use: ";
     cin >> choice;
 
-    if(choice < 1 || choice > foodVector.size()){
+    if (choice >= 1 && choice <= FoodItems.size()){
+        auto iter = next(FoodItems.begin(), choice - 1);
+        Food* food = new Food(iter->first);
+        food->use(*player);
+        cout << "YOU USED " << food->getName() << " ITEM." << endl;
+        getch();  // Wait for a key press
+        player->newLife();   //change the state from DEFEATED to ALIVE
+        BattleMenu();
+    }
+    else{
         cout << "INVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl;
         getch();
         ConsumeFoodForSurvival();
-    }
-    else{
-    Food chosenFood = foodVector[choice - 1];
-    chosenFood.use(*player);
-    cout << "YOU USED " << chosenFood.getName() << " ITEM." << endl;
-   getch();  // Wait for a key press
-    player->newLife();   //change the state from DEFEATED to ALIVE
-    BattleMenu();
     }
 }
 
@@ -707,7 +707,7 @@ Items* Backpack::upgradeWeapons() {
             if(!WarmWeaponItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the WarmWeapon you want to upgrade it:(your money : " << player->getMoney() << ")" << endl;
+                    cout << "Choose the WarmWeapon you want to upgrade it:(your money : " << player->getMoney() << "$)" << endl;
                     index = 1;
                     showUpgradeWarmWeapon(); // Prints warm weapon items
                     cout << "0)Back" << endl; 
@@ -738,7 +738,7 @@ Items* Backpack::upgradeWeapons() {
             if(!ColdWeaponItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the ColdWeapon you want to upgrade it:(your money : " << player->getMoney() << ")" << endl;
+                    cout << "Choose the ColdWeapon you want to upgrade it:(your money : " << player->getMoney() << "$)" << endl;
                     index = 1;
                     showUpgradeColdWeapon();      // Prints cold weapon items
                     cout << "0)Back" << endl; 
@@ -769,7 +769,7 @@ Items* Backpack::upgradeWeapons() {
             if(!ThrowableItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the ThrowableWeapon you want to upgrade it:(your money : " << player->getMoney() << ")" << endl;
+                    cout << "Choose the ThrowableWeapon you want to upgrade it:(your money : " << player->getMoney() << "$)" << endl;
                     index = 1;
                     showUpgradeThrowable();      // Prints throwable items
                     cout << "0)Back" << endl; 
@@ -1918,7 +1918,7 @@ void playground() {
             }
 
             //show enemy's info
-            cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl;
+            cout << "THE HUMAN ENEMY YOU ARE FACING IS : " << endl << endl;
             cout  << "   " << "Name : " << humanEnemy->getName() << endl;
             cout  << "   " << "Level : " << humanEnemy->getLevel() << endl;
             cout  << "   " << "Stamina : " << humanEnemy->getStamina() <<  " / ( " << humanEnemy->getMaxStamina() << " )" << endl;
@@ -1941,7 +1941,7 @@ void playground() {
                 basicZombie = Factory::createBasicZombie(player->getLevel());
 
                 //show enemy's info
-                cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl;
+                cout << "THE BASIC ZOMBIE YOU ARE FACING IS : " << endl << endl;
                 cout  << "   " << "Name : " << basicZombie->getName() << endl;
                 cout  << "   " << "Level : " << basicZombie->getLevel() << endl;
                 cout  << "   " << "Health : " << basicZombie->getHealthPoints() << " / ( " << basicZombie->getMaxHealth() << " )" << endl << endl;
@@ -1960,7 +1960,7 @@ void playground() {
                 advZombie = Factory::createAdvanceZombie(player->getLevel());
 
                 //show enemy's info
-                cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl;
+                cout << "THE ADVANCED ZOMBIE YOU ARE FACING IS : " << endl << endl;
                 cout  << "   " << "Name : " << advZombie->getName() << endl;
                 cout  << "   " << "Level : " << advZombie->getLevel() << endl;
                 cout  << "   " << "Health : " << advZombie->getHealthPoints() << " / ( " << advZombie->getMaxHealth() << " )" << endl << endl;
@@ -2076,7 +2076,7 @@ void ShopMenu() {
         
             case 4: 
                 system("cls");
-                cout << "Here are the available medicine items in the backpack:" << endl << endl;
+                cout << "Here are the available items in the backpack:" << endl << endl;
                 player->getBackpack()->showItems();
                 cout << "\nPress any key to go back...";
                 getch(); // Wait for a key press
@@ -2118,7 +2118,7 @@ void Show_Permanent_Items() {
     system("cls");
     switch(number){
         case 1: 
-            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
+            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << "$)" << endl;
             WarmWeapon::showItems(); // Shows warm weapons
             cout << "[0]. Back" << endl;
             cout << "which one do you want to buy?" << endl;
@@ -2133,7 +2133,7 @@ void Show_Permanent_Items() {
             break;
         
         case 2:
-            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
+            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << "$)" << endl;
             ColdWeapon::showItems(); // Shows cold weapons
             cout << "[0]. Back" << endl;
             cout << "which one do you want to buy?" << endl;
@@ -2156,7 +2156,7 @@ void Show_Throwable_Items() {
     system("cls");
     int item,quantity;
     Throwable *tweapon;
-    cout << "You go to take a look at the Throwable Items:" << "(your money : " << player->getMoney() << ")" << endl;
+    cout << "You go to take a look at the Throwable Items:" << "(your money : " << player->getMoney() << "$)" << endl;
     Throwable::showItems(); // Shows throwable items
     cout << "[0]. Back" << endl;
     cout<<"which one do you want to buy?" << endl;
@@ -2182,7 +2182,7 @@ void Show_Consumable_Items() {
     system("cls");
     switch(number){
         case 1: 
-            cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl;
+            cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << "$)" << endl;
             Medicine::showItems(); // Shows medicines
             cout << "[0]. Back" << endl;
             cout << "which one do you want to buy?" << endl;
@@ -2199,7 +2199,7 @@ void Show_Consumable_Items() {
             break;
             
         case 2:
-            cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl;
+            cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << "$)" << endl;
             Food::showItems(); // Shows foods
             cout << "[0]. Back" << endl;
             cout << "which one do you want to buy?" << endl;
@@ -2230,7 +2230,7 @@ void Shop_PermanentItems_Menu() {
     system("cls");
     switch(number){
         case 1: 
-            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
+            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << "$)" << endl;
             WarmWeapon::showItems(); // Shows warm weapons
             cout << "[0]. Back" << endl;
             cout << "which one do you want to buy?" << endl;
@@ -2246,7 +2246,7 @@ void Shop_PermanentItems_Menu() {
             ShopMenu();
         
         case 2:
-            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << ")" << endl;
+            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << "$)" << endl;
             ColdWeapon::showItems(); // Shows cold weapons
             cout << "[0]. Back" << endl;
             cout << "which one do you want to buy?" << endl;
@@ -2317,7 +2317,7 @@ void battleGround_humanEnemy(){
     }
 
     if (player->getState()==PlayerState::ALIVE) {
-        cout<<"CONGRATULATIONS!! \n YOU HAVE WON THE MATCH \n THE FOLLOWING ITEM'S ITEMS WILL ADD TO YOUR BACKPACK: \n";
+        cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH. \nTHE FOLLOWING ITEM'S ITEMS WILL ADD TO YOUR BACKPACK: \n";
         
         //show Enemy's item
         //method to add to player backpack;
@@ -2364,7 +2364,7 @@ void battleGround_basicZombie(){
     }
 
     if(player->getState() == PlayerState::ALIVE){
-        cout<<"CONGRATULATIONS!! \n YOU HAVE WON THE MATCH \n";
+        cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n";
         player->getBankAccount()->prize(player->getLevel()*500);
         getch();
             }
@@ -2404,7 +2404,7 @@ void battleGround_advZombie(){
     }
 
     if(player->getState() == PlayerState::ALIVE){
-        cout<<"Congratulations \n YOU HAVE WON THE MATCH \n";
+        cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n";
         player->getBankAccount()->prize(player->getLevel()*800);
         getch();
             }
@@ -2479,7 +2479,7 @@ void BattleMenu() {
 
         case 4 : {
             system("cls");
-            cout << "Here are the available medicine items in the backpack:" << endl << endl;
+            cout << "Here are the available items in the backpack:" << endl << endl;
             backpack->showItems();
             cout << "\nPress any key to go back...";
             getch();// Wait for a key press
