@@ -1803,19 +1803,19 @@ void print_with_delay(string text, int delay=4) {
 }
 
 void getUserInfo(int& age , string& gender , string& username) {
-    cout << endl << "I am your guide, kid."<< " first of all I need to know you" << endl;
-    cout << "what they call you kid ? (enter your name)" << endl;
+    cout << endl << "I'm your guide, kid!"<< "First of all I need to know you:" << endl;
+    cout << "What they call you? (enter your name)" << endl;
     cin >> username;
-    cout <<  endl << "and you are older than 15 right? if not fuck off!!! (enter your age)" << endl;
+    cout <<  endl << "And you are older than 15 right? if not fuck off!!! (enter your age)" << endl;
     cin >> age;
     if (age < 15){
-        cout << endl << "sorry kid , we don`t have time to deal with your parents` complaint" << endl;
+        cout << endl << "Sorry kid, we don`t have time to deal with your parent's complaint!" << endl;
         Sleep(3000);
         exit(0);
     }
-    cout << endl << "and last question what do you have down there? this is the only thing matters. (enter your gender)"<<endl;
+    cout << endl << "And the last question! What do you have down there?! this is the only thing matters. (enter your gender)"<<endl;
     cin >> gender;
-    cout << endl << "you can go now. I hope you are still alive next time I see you, kid." ;
+    cout << endl << "Ok, you can go now. I hope you are still alive next time I see you, kid." ;
 
     cout << "\nPlease press any key to continue...";
 
@@ -2022,13 +2022,13 @@ void Menu() {
     cout << endl << "Please press any key to continue...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     _getch();
+
+     // Creating the Player's Character Choices
+    int chosenIndex;
+    int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
     
     while (true){
         system("cls");
-
-        // Creating the Player's Character Choices
-        int chosenIndex;
-        int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
 
         // Show all the different options a user has for the characters
         Human *character;
