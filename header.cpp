@@ -67,14 +67,14 @@ Stamina::Stamina(int cs,int l=1):maximum(100+(50*(l-1))),currentStamina(cs){} //
 
 void Stamina::decreaseStamina(int amount) {
     currentStamina -= amount; // Decreases stamina
-    cout<<"STAMINA DECREASED FOR "<< amount <<" STM\n";
+    cout<<"STAMINA DECREASED FOR "<< amount <<" STM!\n";
     if (currentStamina < 0)
         currentStamina = 0; // Ensures stamina doesn't go below 0
 }
 
 void Stamina::increaseStamina(int amount) {
     currentStamina += amount; // Increases stamina
-    cout<<"STAMINA INCREASED FOR "<< amount <<" STM\n";
+    cout<<"STAMINA INCREASED FOR "<< amount <<" STM!\n";
     if ( currentStamina > maximum)
         currentStamina = maximum; // Ensures stamina doesn't exceed maximum
 }
@@ -1803,7 +1803,7 @@ void print_with_delay(string text, int delay=4) {
 }
 
 void getUserInfo(int& age , string& gender , string& username) {
-    cout << endl << "I'm your guide, kid! "<< "First of all I need to know you:" << endl;
+    cout << "I'm your guide, kid! "<< "First of all I need to know you:" << endl;
     cout << endl << "What they call you? (enter your name)" << endl;
     cin >> username;
     cout << endl << "And you are older than 15 right? If not fuck off!!! (enter your age)" << endl;
@@ -1813,7 +1813,7 @@ void getUserInfo(int& age , string& gender , string& username) {
         Sleep(3000);
         exit(0);
     }
-    cout << endl << "And the last question!" << cout << "What do you have down there?! this is the only thing matters. (enter your gender)"<<endl;
+    cout << endl << "And the last question!" << endl << "What do you have down there?! this is the only thing matters. (enter your gender)"<<endl;
     cin >> gender;
     cout << endl << "Ok, you can go now. I hope you are still alive next time I see you, kid!" ;
 
@@ -1826,13 +1826,13 @@ void getUserInfo(int& age , string& gender , string& username) {
 }
 
 void showPlayerInfo() {
-    cout << "PLAYER'S INFO:" << endl;
-    cout << "   "<< "Name : " << player->getName() << endl;
-    cout << "   "<< "Level : " << player->getLevel() << endl;
-    cout << "   "<< "Experience : " << player->getExperience() << " / ( " << player->getMaxExperience() << " )" << endl;
-    cout << "   "<< "Stamina : " << player->getStamina() <<  " / ( " << player->getMaxStamina() << " )" << endl;
-    cout << "   "<< "Health : " << player->getHealthPoints() << " / ( " << player->getMaxHealth() << " )" << endl;
-    cout << "   "<< "Money : " << player->getMoney() << " $" << endl << endl;
+    cout << "PLAYER'S INFO:"  endl << endl;
+    cout << "Name : " << player->getName() << endl;
+    cout << "Level : " << player->getLevel() << endl;
+    cout << "Experience : " << player->getExperience() << " / ( " << player->getMaxExperience() << " )" << endl;
+    cout << "Stamina : " << player->getStamina() <<  " / ( " << player->getMaxStamina() << " )" << endl;
+    cout << "Health : " << player->getHealthPoints() << " / ( " << player->getMaxHealth() << " )" << endl;
+    cout << "Money : " << player->getMoney() << " $" << endl;
 }
 
 void createItem() {
@@ -2020,7 +2020,7 @@ void Menu() {
 
     print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed.\nBut now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission.\nYou must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\n");
     getUserInfo(age , gender , username);
-    print_with_delay("In this journey, you must choose your character.\nWill Jon Snow, the strong and just commander, seize the fate of the land?\nOr will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles?\nOr perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\n\nYour decision can change the fate of the land. Are you ready?\n");
+    print_with_delay("In this journey, you must choose your character.\nWill Jon Snow, the strong and just commander, seize the fate of the land?\nOr will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles?\nOr perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\nYour decision can change the fate of the land. Are you ready?\n");
     cout << endl << "Please press any key to continue...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     _getch();
@@ -2034,7 +2034,7 @@ void Menu() {
 
         // Show all the different options a user has for the characters
         Human *character;
-        cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED : " << endl;
+        cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED: " << endl;
         for (int i = 0; i < 6; i++) {
             character = Factory::createCharacter(characterTypes[i]);
             cout << i+1 << ". " << characterTypes[i] << endl;
@@ -2063,13 +2063,13 @@ void Menu() {
     system("cls");
 
     // Show the details of the Player
-    cout << "CHARACTER YOU HAVE CHOSEN IS : " << endl << endl;
-    cout << "   " << "Name : " << player->getName() << endl;
-    cout << "   " << "Level : " << player->getLevel() << endl;
-    cout << "   " << "Experience : " << player->getExperience() << endl;
-    cout << "   " << "Stamina : " << player->getStamina() << endl;
-    cout << "   " << "Health : " << player->getHealthPoints() << endl;
-    cout << "   " << "Money : " << money[chosenIndex] << " $" << endl << endl;
+    cout << "CHARACTER YOU HAVE CHOSEN IS: " << endl << endl;
+    cout << "Name : " << player->getName() << endl;
+    cout << "Level : " << player->getLevel() << endl;
+    cout << "Experience : " << player->getExperience() << endl;
+    cout << "Stamina : " << player->getStamina() << endl;
+    cout << "Health : " << player->getHealthPoints() << endl;
+    cout << "Money : " << money[chosenIndex] << " $" << endl << endl;
 
     cout << "Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with.\n\n";
     cout << "Press any key to continue...";
@@ -2258,7 +2258,7 @@ void Shop_PermanentItems_Menu() {
     int number,item;
     WarmWeapon *wweapon;
     ColdWeapon *cweapon;
-    cout << "YOU ENTER THE SHOP! \nYou should atleast buy one Permanent Item for fighting to continue the game. \nSo... What do you want to buy?" << endl << endl 
+    cout << "YOU ENTER THE SHOP!\nYou should atleast buy one Permanent Item for fighting to continue the game. \nSo... What do you want to buy?" << endl << endl 
     << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl;
     cin >> number;
     system("cls");
