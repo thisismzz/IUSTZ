@@ -436,6 +436,8 @@ void Backpack::ConsumeMedForSurvival() {
         auto iter = next(MedicineItems.begin(), choice - 1);
         Medicine* medicine = new Medicine(iter->first);
         medicine->use(*player);
+        cout << "YOU USED " << medicine->getName() << " ITEM." << endl;
+        getch();  // Wait for a key press
         player->newLife();   //change the state from DEFEATED to ALIVE
         playground();
     }
@@ -470,6 +472,8 @@ void Backpack::ConsumeFoodForSurvival() {
         auto iter = next(FoodItems.begin(), choice - 1);
         Food* food = new Food(iter->first);
         food->use(*player);
+        cout << "YOU USED " << food->getName() << " ITEM." << endl;
+        getch();  // Wait for a key press
         player->newLife();   //change the state from DEFEATED to ALIVE
         BattleMenu();
     }
@@ -1688,10 +1692,10 @@ void Food::addToVectors(){
 
 void Food::use(Human& human){
     if(human.stamina.getCurrentStamina() < human.stamina.getMaxStamina()){
-        cout << "FOOD CONSUME SUCCESSFULLY." << endl;
         human.stamina.increaseStamina(strength); // Increases the human's stamina
         Backpack *b=human.getBackpack();
         b->useFoodItemCount(*this); // Uses a food item from the human's backpack
+        cout << "FOOD CONSUME SUCCESSFULLY." << endl;
         getch();
     }
     else{
@@ -2265,7 +2269,8 @@ void Shop_PermanentItems_Menu() {
 void goodbye(){
     system("cls");
     if(player->getState()==PlayerState::DEFEATED){
-        cout<<"GAME OVER!";
+        gameOVER();
+        Sleep(3000);
         exit(0);
     }
     else{
@@ -2299,7 +2304,7 @@ void battleGround_humanEnemy(){
         else{
         //enemy turn
 
-            cout<<"ENEMY'S TURN:\n";
+            cout<<"\nENEMY'S TURN:\n";
             Enemy.updateState();
             Enemy.decision();
             Enemy.showInfo();
@@ -2312,23 +2317,21 @@ void battleGround_humanEnemy(){
     }
 
     if (player->getState()==PlayerState::ALIVE) {
-        cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n"; 
-        player->getBankAccount()->prize(player->getLevel()*1000);
-        getch();
-
-        system("cls");
-        cout << "THE FOLLOWING ITEMS WILL ADD TO YOUR BACKPACK: \n";
+        cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH. \nTHE FOLLOWING ITEM'S ITEMS WILL ADD TO YOUR BACKPACK: \n";
         
         //show Enemy's item
         //method to add to player backpack;
         Enemy.showBackpackItems();
         Enemy.transferItems();
+
+        player->getBankAccount()->prize(player->getLevel()*1000);
         
-    }
+        getch();
+            }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
         getch();
-    }
+            }
     playground();
 }
 
@@ -2348,7 +2351,7 @@ void battleGround_basicZombie(){
         }
         else{
         //enemy turn
-            cout<<"ENEMY'S TURN:\n";
+            cout<<"\nENEMY'S TURN:\n";
             Enemy.bite();
 			//Enemy.updateState();
             Enemy.showInfo();
@@ -2364,11 +2367,11 @@ void battleGround_basicZombie(){
         cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n";
         player->getBankAccount()->prize(player->getLevel()*500);
         getch();
-    }
+            }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
         getch();
-    }
+            }
     playground();
 }
 
@@ -2404,11 +2407,11 @@ void battleGround_advZombie(){
         cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n";
         player->getBankAccount()->prize(player->getLevel()*800);
         getch();
-    }
+            }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
         getch();
-    } 
+            } 
     playground();
 }
 
@@ -2421,7 +2424,7 @@ void BattleMenu() {
     int number;
     cout << "What do you want to do? (Attack ends your turn.)" << endl
          << "[1].ATTACK" << endl << "[2].CONSUME FOOD OR MEDICINE" << endl << "[3].SHOW PLAYER'S INFO" << endl
-         << "[4].SHOW BACKPACK" << endl << "[5].UPGRADE WEAPON'S SKILL"<< endl <<"[6].QUIT"<< endl;
+        << "[4].SHOW BACKPACK" << endl << "[5].UPGRADE WEAPON'S SKILL"<< endl <<"[6].QUIT"<< endl;
     cin >> number;
 
     string temp;
@@ -2606,3 +2609,15 @@ void intro(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+void gameOver(){
+
+   std:: cout <<"  ____    _    __  __ _____    _____     _______ ____" << '\n' ; 
+   std:: cout <<" / ___|  / \\  |  \\/  | ____|  / _ \\ \\   / / ____|  _ \\ " <<'\n' ;
+   std:: cout <<"| |  _  / _ \\ | |\\/| |  _|   | | | \\ \\ / /|  _| | |_) |"<< '\n';
+   std:: cout <<"| |_| |/ ___ \\| |  | | |___  | |_| |\\ V / | |___|  _ <" << '\n' ;
+   std:: cout <<" \\____/_/   \\_\\_|  |_|_____|  \\___/  \\_/  |_____|_| \\_\\ " << '\n';
+
+   getch();
+
+}
