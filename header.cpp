@@ -12,6 +12,17 @@
 
 using namespace std;
 
+// define colors  
+string Black="\033[0;30m";      
+string Red="\033[0;31m";          
+string Green="\033[0;32m";        
+string Yellow="\033[0;33m";       
+string Blue="\033[0;34m";         
+string Purple="\033[0;35m";       
+string Cyan="\033[0;36m";         
+string White="\033[0;37m";
+string reset = "\033[0m";        
+
 //*****************************
 Player* player = nullptr;
 HumanEnemy* humanEnemy=nullptr;
@@ -1826,7 +1837,7 @@ void getUserInfo(int& age , string& gender , string& username) {
 }
 
 void showPlayerInfo() {
-    cout << "PLAYER'S INFO:"  endl << endl;
+    cout << "PLAYER'S INFO:" << endl << endl;
     cout << "Name : " << player->getName() << endl;
     cout << "Level : " << player->getLevel() << endl;
     cout << "Experience : " << player->getExperience() << " / ( " << player->getMaxExperience() << " )" << endl;
@@ -2650,8 +2661,7 @@ void intro(){
     std:: cout <<"  \\ V  V /  | || |\\  | | | | |___|  _ <   | | ___) | | |__| |_| | |  | || || |\\  | |_| |" << '\n';
     std:: cout <<"   \\_/\\_/  |___|_| \\_| |_| |_____|_| \\_\\ |___|____/   \\____\\___/|_|  |_|___|_| \\_|\\____|" << '\n';
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    _getch();
+    getch();
 }
 
 // *----------------------------------------------------------------*
