@@ -429,7 +429,7 @@ void Backpack::ConsumeMedForSurvival() {
     showMedicineItems();
 
     int choice;
-    cout << "Enter the number of the medicine item you want to use: ";
+    cout << "\nEnter the number of the medicine item you want to use: ";
     cin >> choice;
 
     if (choice >= 1 && choice <= MedicineItems.size()){
@@ -463,7 +463,7 @@ void Backpack::ConsumeFoodForSurvival() {
     showFoodItems();  
 
     int choice;
-    cout << "Enter the number of the food item you want to use: ";
+    cout << "\nEnter the number of the food item you want to use: ";
     cin >> choice;
 
     if (choice >= 1 && choice <= FoodItems.size()){
@@ -2299,7 +2299,7 @@ void battleGround_humanEnemy(){
         else{
         //enemy turn
 
-            cout<<"\nENEMY'S TURN:\n";
+            cout<<"ENEMY'S TURN:\n";
             Enemy.updateState();
             Enemy.decision();
             Enemy.showInfo();
@@ -2312,21 +2312,23 @@ void battleGround_humanEnemy(){
     }
 
     if (player->getState()==PlayerState::ALIVE) {
-        cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH. \nTHE FOLLOWING ITEM'S ITEMS WILL ADD TO YOUR BACKPACK: \n";
+        cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n"; 
+        player->getBankAccount()->prize(player->getLevel()*1000);
+        getch();
+
+        system("cls");
+        cout << "THE FOLLOWING ITEMS WILL ADD TO YOUR BACKPACK: \n";
         
         //show Enemy's item
         //method to add to player backpack;
         Enemy.showBackpackItems();
         Enemy.transferItems();
-
-        player->getBankAccount()->prize(player->getLevel()*1000);
         
-        getch();
-            }
+    }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
         getch();
-            }
+    }
     playground();
 }
 
@@ -2346,7 +2348,7 @@ void battleGround_basicZombie(){
         }
         else{
         //enemy turn
-            cout<<"\nENEMY'S TURN:\n";
+            cout<<"ENEMY'S TURN:\n";
             Enemy.bite();
 			//Enemy.updateState();
             Enemy.showInfo();
@@ -2362,11 +2364,11 @@ void battleGround_basicZombie(){
         cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n";
         player->getBankAccount()->prize(player->getLevel()*500);
         getch();
-            }
+    }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
         getch();
-            }
+    }
     playground();
 }
 
@@ -2402,11 +2404,11 @@ void battleGround_advZombie(){
         cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n";
         player->getBankAccount()->prize(player->getLevel()*800);
         getch();
-            }
+    }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
         getch();
-            } 
+    } 
     playground();
 }
 
@@ -2419,7 +2421,7 @@ void BattleMenu() {
     int number;
     cout << "What do you want to do? (Attack ends your turn.)" << endl
          << "[1].ATTACK" << endl << "[2].CONSUME FOOD OR MEDICINE" << endl << "[3].SHOW PLAYER'S INFO" << endl
-        << "[4].SHOW BACKPACK" << endl << "[5].UPGRADE WEAPON'S SKILL"<< endl <<"[6].QUIT"<< endl;
+         << "[4].SHOW BACKPACK" << endl << "[5].UPGRADE WEAPON'S SKILL"<< endl <<"[6].QUIT"<< endl;
     cin >> number;
 
     string temp;
