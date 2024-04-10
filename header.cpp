@@ -1824,13 +1824,19 @@ void print_with_delay(string text, int delay=4) {
 }
 
 void getUserInfo(int& age , string& gender , string& username) {
-    cout << "Please Enter your Name : ";
+    cout << endl << "I am your guide, kid."<< " first of all I need to know you" << endl;
+    cout << "what they call you kid ? (enter your name)" << endl;
     cin >> username;
-    cout << "Please Enter your Age : ";
+    cout <<  endl << "and you are older than 15 right? if not fuck off!!! (enter your age)" << endl;
     cin >> age;
-    cout << "Please Enter your Gender : ";
+    if (age < 15){
+        cout << endl << "sorry kid , we don`t have time to deal with your parents` complaint" << endl;
+        Sleep(3000);
+        exit(0);
+    }
+    cout << endl << "and last question what do you have down there? this is the only thing matters. (enter your gender)"<<endl;
     cin >> gender;
-    cout << "\nTHANKS FOR INTRODUCING YOURSELF\n";
+    cout << endl << "you can go now. I hope you are still alive next time I see you, kid." ;
 
     cout << "\nPlease press any key to continue...";
 
