@@ -391,7 +391,7 @@ void Backpack::showFoodItems(){
 void Backpack::showUpgradeWarmWeapon(){
     int index = 1;
     for(auto i: WarmWeaponItems){
-        cout << index << ")" << i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getwwa()->getUpgradePrice() << endl;
+        cout << index << ")" << i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getwwa()->getUpgradePrice() << "$" << endl;
         index++;
     }
 }
@@ -399,7 +399,7 @@ void Backpack::showUpgradeWarmWeapon(){
 void Backpack::showUpgradeColdWeapon(){
     int index = 1;
     for(auto i: ColdWeaponItems){
-        cout << index << ")" << i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getcwa()->getUpgradePrice() << endl; 
+        cout << index << ")" << i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getcwa()->getUpgradePrice() << "$" << endl;
         index++;
     }
 }
@@ -408,7 +408,7 @@ void Backpack::showUpgradeThrowable(){
     int index = 1;
     for(auto pair : ThrowableItems){
     Throwable item = pair.first;
-    cout << index << ")" << item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<item.gettwa()->getUpgradePrice() << endl;
+    cout << index << ")" << item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<item.gettwa()->getUpgradePrice() << "$" << endl;
     index++;
     }
 }
@@ -419,13 +419,13 @@ void Backpack::showUpgradeThrowable(){
 // *----------------------------------------------------------------*
 
 void Backpack::ConsumeMedForSurvival() {
-    system("cls");
-
+    
     if(MedicineItems.empty()){
         cout << "NO MEDICINE ITEM LEFT IN BACKPACK!" << endl;
         medicineMenu();
     }
 
+    system("cls");
     cout << "Here are the available medicine items in the backpack:" << endl;
     int index = 1;
     vector<Medicine> medicineVector;
@@ -441,7 +441,7 @@ void Backpack::ConsumeMedForSurvival() {
         _getch();  // Wait for a key press
         ConsumeMedForSurvival();
     }
-
+    else{
     Medicine chosenMedicine = medicineVector[choice - 1];
     chosenMedicine.use(*player);
     cout << "YOU USED " << chosenMedicine.getName() << " ITEM." << endl;
@@ -449,6 +449,7 @@ void Backpack::ConsumeMedForSurvival() {
     _getch();  // Wait for a key press
     player->newLife();   //change the state from DEFEATED to ALIVE
     playground();
+    }
     
 }
 
@@ -456,13 +457,13 @@ void Backpack::ConsumeMedForSurvival() {
 // *----------------------------------------------------------------*
 
 void Backpack::ConsumeFoodForSurvival() {
-    system("cls");
 
     if(FoodItems.empty()){
         cout << "NO FOOD ITEM LEFT IN BACKPACK!" << endl;
         foodMenu();
     }
 
+    system("cls");
     cout << "Here are the available food items in the backpack:" << endl;
     int index = 1;
     vector<Food> foodVector;
@@ -478,7 +479,7 @@ void Backpack::ConsumeFoodForSurvival() {
         _getch();  // Wait for a key press
         ConsumeFoodForSurvival();
     }
-
+    else{
     Food chosenFood = foodVector[choice - 1];
     chosenFood.use(*player);
     cout << "YOU USED " << chosenFood.getName() << " ITEM." << endl;
@@ -486,7 +487,7 @@ void Backpack::ConsumeFoodForSurvival() {
     _getch();  // Wait for a key press
     player->newLife();   //change the state from DEFEATED to ALIVE
     BattleMenu();
-    
+    }
 }
 
 // *----------------------------------------------------------------*
@@ -724,7 +725,7 @@ Items* Backpack::upgradeWeapons() {
             if(!WarmWeaponItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the WarmWeapon you want to upgrade it:\t" <<player->getMoney()<< endl;
+                    cout << "Choose the WarmWeapon you want to upgrade it:(your money : " << player->getMoney() << ")" << endl;
                     index = 1;
                     showUpgradeWarmWeapon(); // Prints warm weapon items
                     cout << "0)Back" << endl; 
@@ -757,7 +758,7 @@ Items* Backpack::upgradeWeapons() {
             if(!ColdWeaponItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the ColdWeapon you want to upgrade it:\t" <<player->getMoney()<< endl;
+                    cout << "Choose the ColdWeapon you want to upgrade it:(your money : " << player->getMoney() << ")" << endl;
                     index = 1;
                     showUpgradeColdWeapon();      // Prints cold weapon items
                     cout << "0)Back" << endl; 
@@ -790,7 +791,7 @@ Items* Backpack::upgradeWeapons() {
             if(!ThrowableItems.empty()){
                 while(true){
                     system("cls");
-                    cout << "Choose the ThrowableWeapon you want to upgrade it:" <<player->getMoney()<< endl;
+                    cout << "Choose the ThrowableWeapon you want to upgrade it:(your money : " << player->getMoney() << ")" << endl;
                     index = 1;
                     showUpgradeThrowable();      // Prints throwable items
                     cout << "0)Back" << endl; 
