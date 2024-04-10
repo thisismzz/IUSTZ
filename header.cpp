@@ -153,14 +153,12 @@ void Skills::upgradeSkill(BankAccount *creditcard){
                 creditcard->withdraw(upgradePrice); // Withdraws the upgrade price from the credit card
                 currentSkill++; // Increases the current skill level
                 cout << "WEAPON UPGRADE SUCCESSFULLY AND " << upgradePrice << "$ WAS DEDUCTED FROM YOUR ACCOUNT!";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch(); 
+                getch(); 
                 setUpgradePrice(); // Sets the new upgrade price
             }
             else{
                 cout<<"WEAPON'S LEVEL IS MAXIMUM\n";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
             }
             
         }
@@ -437,16 +435,14 @@ void Backpack::ConsumeMedForSurvival() {
 
     if(choice < 1 || choice > medicineVector.size()){
         cout << "INVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
         ConsumeMedForSurvival();
     }
     else{
     Medicine chosenMedicine = medicineVector[choice - 1];
     chosenMedicine.use(*player);
     cout << "YOU USED " << chosenMedicine.getName() << " ITEM." << endl;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    _getch();  // Wait for a key press
+   getch();  // Wait for a key press
     player->newLife();   //change the state from DEFEATED to ALIVE
     playground();
     }
@@ -475,16 +471,14 @@ void Backpack::ConsumeFoodForSurvival() {
 
     if(choice < 1 || choice > foodVector.size()){
         cout << "INVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
         ConsumeFoodForSurvival();
     }
     else{
     Food chosenFood = foodVector[choice - 1];
     chosenFood.use(*player);
     cout << "YOU USED " << chosenFood.getName() << " ITEM." << endl;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    _getch();  // Wait for a key press
+   getch();  // Wait for a key press
     player->newLife();   //change the state from DEFEATED to ALIVE
     BattleMenu();
     }
@@ -521,16 +515,14 @@ Items* Backpack::useWeapons() {
                     else {
                         cout << "INVALID INDEX! TRY AGAIN." << endl;
                         cout << "\nPlease press any key to continue...";
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        _getch();  // Wait for a key press
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "NO WARMWEAPON EXISTS!" << endl;
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 useWeapons();
             }
             break;
@@ -555,16 +547,14 @@ Items* Backpack::useWeapons() {
                     else {
                         cout << "INVALID INDEX! TRY AGAIN." << endl;
                         cout << "\nPlease press any key to continue...";
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        _getch();  // Wait for a key press
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "NO COLDWEAPON EXISTS!" << endl;
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 useWeapons();
             }
             break;
@@ -590,16 +580,14 @@ Items* Backpack::useWeapons() {
                     else {
                         cout << "INVALID INDEX! TRY AGAIN." << endl;
                         cout << "\nPlease press any key to continue...";
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        _getch();  // Wait for a key press
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "NO THROWABLE WEAPON EXISTS!" << endl;
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 useWeapons();
             }
             break;
@@ -611,8 +599,7 @@ Items* Backpack::useWeapons() {
         default:
             cout << "INVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 4." << endl; 
             cout << "\nPlease press any key to continue...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             useWeapons();
     }
     return nullptr;
@@ -650,16 +637,14 @@ Items* Backpack::useConsumableItems() {
                     else {
                         cout << "INVALID INDEX! TRY AGAIN." << endl;
                         cout << "\nPlease press any key to continue...";
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        _getch();  // Wait for a key press
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "NO MEDICINE EXISTS!" << endl;
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 useConsumableItems();
             }
             break;
@@ -684,16 +669,14 @@ Items* Backpack::useConsumableItems() {
                     else{
                         cout << "INVALID INDEX! TRY AGAIN." << endl;
                         cout << "\nPlease press any key to continue...";
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        _getch();  // Wait for a key press
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "NO FOOD EXISTS!" << endl;
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 useConsumableItems();
             }
             break;
@@ -705,8 +688,7 @@ Items* Backpack::useConsumableItems() {
         default:
             cout << "INVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 3." << endl;
             cout << "\nPlease press any key to continue...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             useConsumableItems();
     }
     return nullptr;
@@ -740,16 +722,14 @@ Items* Backpack::upgradeWeapons() {
                     else {
                         cout << "INVALID INDEX! TRY AGAIN." << endl;
                         cout << "\nPlease press any key to continue...";
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        _getch();  // Wait for a key press
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "NO WARMWEAPON EXISTS!" << endl;
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 upgradeWeapons();
             }
             break;
@@ -773,16 +753,14 @@ Items* Backpack::upgradeWeapons() {
                     else {
                         cout << "INVALID INDEX! TRY AGAIN." << endl;
                         cout << "\nPlease press any key to continue...";
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        _getch();  // Wait for a key press
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "NO COLDWEAPON EXISTS!" << endl;
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 upgradeWeapons();
             }
             break;
@@ -808,16 +786,14 @@ Items* Backpack::upgradeWeapons() {
                     else {
                         cout << "INVALID INDEX! TRY AGAIN." << endl;
                         cout << "\nPlease press any key to continue...";
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        _getch();  // Wait for a key press
+                        getch();  // Wait for a key press
                     }
                 }
             }
             else{
                 cout << "NO THROWABLE WEAPON EXISTS!" << endl;
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 upgradeWeapons();
             }
             break;
@@ -829,8 +805,7 @@ Items* Backpack::upgradeWeapons() {
         default:
             cout << "INVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 4." << endl;
             cout << "\nPlease press any key to continue...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             upgradeWeapons();
     }
     return nullptr;
@@ -1666,13 +1641,11 @@ void Medicine::use(Human &human){
         Backpack *b=human.getBackpack();
         b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
         cout << "MEDICINE CONSUME SUCCESSFULLY." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
     }
     else{
         cout << "YOUR HP IS FULL. NO NEED TO MEDICINE."<< endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-         _getch();  // Wait for a key press
+        getch();
     }
 }
 
@@ -1723,13 +1696,11 @@ void Food::use(Human& human){
         Backpack *b=human.getBackpack();
         b->useFoodItemCount(*this); // Uses a food item from the human's backpack
         cout << "FOOD CONSUME SUCCESSFULLY." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
     }
     else{
         cout << "YOUR STAMINA IS FULL. NO NEED TO FOOD." << endl;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
     }
 }
 
@@ -1830,8 +1801,7 @@ void getUserInfo(int& age , string& gender , string& username) {
 
     cout << "\n\nPlease press any key to continue...";
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    _getch();
+    getch();
 
     system("cls");
 }
@@ -1872,8 +1842,7 @@ void medicineMenu() {
         }
         else {
             cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << drug->getName() << " Items. Buy Less Items ... \n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             medicineMenu();
         }
     } 
@@ -1901,8 +1870,7 @@ void foodMenu() {
         }
         else {
             cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << meal->getName() << " Items. Buy Less Items ... \n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             foodMenu();
         }
     } 
@@ -1921,8 +1889,7 @@ void playground() {
 
     if (player->getState() == PlayerState::DEFEATED) {
         cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
         cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
         playerBackpack->ConsumeMedForSurvival();
     }
@@ -1957,8 +1924,7 @@ void playground() {
             cout  << "   " << "Stamina : " << humanEnemy->getStamina() <<  " / ( " << humanEnemy->getMaxStamina() << " )" << endl;
             cout  << "   " << "Health : " << humanEnemy->getHealthPoints() << " / ( " << humanEnemy->getMaxHealth() << " )" << endl << endl;
             cout << "Press any key to Enter to fightground...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
 
             system("cls");
 
@@ -1980,8 +1946,7 @@ void playground() {
                 cout  << "   " << "Level : " << basicZombie->getLevel() << endl;
                 cout  << "   " << "Health : " << basicZombie->getHealthPoints() << " / ( " << basicZombie->getMaxHealth() << " )" << endl << endl;
                 cout << "Press any key to Enter to fightground...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
 
                 system("cls");
 
@@ -2000,8 +1965,7 @@ void playground() {
                 cout  << "   " << "Level : " << advZombie->getLevel() << endl;
                 cout  << "   " << "Health : " << advZombie->getHealthPoints() << " / ( " << advZombie->getMaxHealth() << " )" << endl << endl;
                 cout << "Press any key to Enter to fightground...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 
                 system("cls");
 
@@ -2032,9 +1996,8 @@ void Menu() {
     print_with_delay("IN THE LAND OF WESTEROS, WAR AND TENSIONS AMONG POWERFUL FAMILIES HAVE ALWAYS EXISTED.\nBUT NOW, THE WRATH AND UNINVITED POWER HAVE CAST A HARSH SHADOW OVER THIS LAND.\nYOU, A HERO, ARE FACED WITH AN IMPORTANT MISSION.\nYOU MUST NAVIGATE THROUGH THE DANGERS AND IMMENSE OBSTACLES AHEAD AND CONFRONT THE LOOMING THREATS THAT MENACE THE LAND OF WESTEROS.\n\n");
     getUserInfo(age , gender , username);
     print_with_delay("IN THIS JOURNEY, YOU MUST CHOOSE YOUR CHARACTER.\nWILL JON SNOW, THE STRONG AND JUST COMMANDER, SEIZE THE FATE OF THE LAND?\nOR WILL YOU, INSTEAD OF HIM, TRAVEL WITH JAIME LANNISTER, THE INTELLIGENT KNIGHT AND SEASONED STRATEGIST, AND OVERCOME ALL OBSTACLES?\nOR PERHAPS WITH DAENERYS TARGARYEN, THE DANGEROUS AND POWERFUL QUEEN, YOU SEEK TO RULE OVER WESTEROS?\nYOUR DECISION CAN CHANGE THE FATE OF THE LAND. ARE YOU READY?\n");
-    cout << endl << "\nPlease press any key to continue...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    _getch();
+    cout << "\nPlease press any key to continue...";
+   getch();
 
     // Creating the Player's Character Choices
     int chosenIndex;
@@ -2066,8 +2029,7 @@ void Menu() {
         else{
             cout << "INVALID INDEX! PLEASE TRY AGAIN."; 
             cout << endl << "\nPlease press any key to continue...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();
+            getch();
         }
     }
 
@@ -2084,8 +2046,7 @@ void Menu() {
 
     cout << "Now that you have chosen your CHARACTER, you will go to SHOP to buy WEAPONS to fight with.\n\n";
     cout << "Press any key to continue...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    _getch();  // Wait for a key press
+   getch();  // Wait for a key press
 
     createItem();
     Shop_PermanentItems_Menu();
@@ -2115,18 +2076,17 @@ void ShopMenu() {
         
             case 4: 
                 system("cls");
+                cout << "Here are the available medicine items in the backpack:" << endl << endl;
                 player->getBackpack()->showItems();
                 cout << "\nPress any key to go back...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch(); // Wait for a key press
-                BattleMenu(); // Recursive call
+                getch(); // Wait for a key press
+                ShopMenu(); // Recursive call
                 break;
 
             case 5:
                 cout << "YOU LEFT THE SHOP." << endl; // Exits the shop
                 cout << "\nPlease press any key to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch();  // Wait for a key press
+                getch();  // Wait for a key press
                 playground();
         
             case 6:
@@ -2142,8 +2102,7 @@ void ShopMenu() {
 
             default: 
                 cout << "WRONG NUMBER" << endl << "\nPlease press enter to continue..." << endl;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                _getch(); // Handles invalid input
+                getch(); // Handles invalid input
                 break;
         }
     }
@@ -2170,8 +2129,7 @@ void Show_Permanent_Items() {
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
             wweapon->buy(); // Buys a warm weapon
             cout << "\nPlease press any key to continue shopping...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             break;
         
         case 2:
@@ -2186,8 +2144,7 @@ void Show_Permanent_Items() {
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
             cweapon->buy(); // Buys a cold weapon
             cout << "\nPlease press any key to continue shopping...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             break;
         
         case 3: 
@@ -2212,8 +2169,7 @@ void Show_Throwable_Items() {
     tweapon=new Throwable(Throwable::shop_items_throwable.at(item-1));
     tweapon->buy(quantity); // Buys a throwable item
     cout << "\nPlease press any key to continue shopping...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    _getch();  // Wait for a key press
+   getch();  // Wait for a key press
 }
 
 void Show_Consumable_Items() {
@@ -2239,8 +2195,7 @@ void Show_Consumable_Items() {
             drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
             drug->buy(quantity); // Buys a medicine
             cout << "\nPlease press any key to continue shopping...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             break;
             
         case 2:
@@ -2257,8 +2212,7 @@ void Show_Consumable_Items() {
             food=new Food(Food::shop_items_food.at(item-1));
             food->buy(quantity); // Buys a food
             cout << "\nPlease press any key to continue shopping...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             break;
         case 3: 
             ShopMenu(); // Returns to the previous menu
@@ -2288,8 +2242,7 @@ void Shop_PermanentItems_Menu() {
             wweapon->buy(); // Buys a warm weapon
             cout << "\nOk, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want.\n";
             cout << "\nPlease press any key to continue shopping...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             ShopMenu();
         
         case 2:
@@ -2305,8 +2258,7 @@ void Shop_PermanentItems_Menu() {
             cweapon->buy(); // Buys a cold weapon
             cout << "\nOk, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want.\n";
             cout << "\nPlease press any key to continue shopping...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             ShopMenu();
     }
 }
@@ -2359,8 +2311,7 @@ void battleGround_humanEnemy(){
         }
         turn++;
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
 
         system("cls");
     }
@@ -2375,14 +2326,12 @@ void battleGround_humanEnemy(){
 
         player->getBankAccount()->prize(player->getLevel()*1000);
         
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();
-    }
+        getch();
+            }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();
-    }
+        getch();
+            }
     playground();
 }
 
@@ -2409,8 +2358,7 @@ void battleGround_basicZombie(){
         }
         turn ++;
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
 
         system("cls");
     }
@@ -2418,14 +2366,12 @@ void battleGround_basicZombie(){
     if(player->getState() == PlayerState::ALIVE){
         cout<<"CONGRATULATIONS!! \n YOU HAVE WON THE MATCH \n";
         player->getBankAccount()->prize(player->getLevel()*500);
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();
-    }
+        getch();
+            }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();
-    }
+        getch();
+            }
     playground();
 }
 
@@ -2452,8 +2398,7 @@ void battleGround_advZombie(){
         }
         turn ++;
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();  // Wait for a key press
+        getch();
 
         system("cls");
     }
@@ -2461,14 +2406,12 @@ void battleGround_advZombie(){
     if(player->getState() == PlayerState::ALIVE){
         cout<<"Congratulations \n YOU HAVE WON THE MATCH \n";
         player->getBankAccount()->prize(player->getLevel()*800);
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();
-    }
+        getch();
+            }
     else{
         cout<<"YOU HAVE LOST THIS MATCH!\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        _getch();
-    } 
+        getch();
+            } 
     playground();
 }
 
@@ -2498,8 +2441,7 @@ void BattleMenu() {
             if (player->getStamina() <= 0) {
             cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
             player->setState(PlayerState::DEFEATED);
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch();  // Wait for a key press
+            getch(); // Wait for a key press
             cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
             backpack->ConsumeFoodForSurvival();
             }
@@ -2530,18 +2472,17 @@ void BattleMenu() {
             system("cls");
             showPlayerInfo();
             cout << "\nPress any key to go back...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch(); // Wait for a key press
+            getch();// Wait for a key press
             BattleMenu(); // Recursive call
             break;
         }
 
         case 4 : {
             system("cls");
+            cout << "Here are the available medicine items in the backpack:" << endl << endl;
             backpack->showItems();
             cout << "\nPress any key to go back...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            _getch(); // Wait for a key press
+            getch();// Wait for a key press
             BattleMenu(); // Recursive call
             break;
         }
