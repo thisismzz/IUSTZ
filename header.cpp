@@ -2265,7 +2265,7 @@ void Shop_PermanentItems_Menu() {
 void goodbye(){
     system("cls");
     if(player->getState()==PlayerState::DEFEATED){
-        gameOVER();
+        gameOver();
         exit(0);
     }
     else{
@@ -2615,6 +2615,6 @@ void gameOver(){
    std:: cout <<"| |_| |/ ___ \\| |  | | |___  | |_| |\\ V / | |___|  _ <" << '\n' ;
    std:: cout <<" \\____/_/   \\_\\_|  |_|_____|  \\___/  \\_/  |_____|_| \\_\\ " << '\n';
 
-   getch();
+   
 
 }
