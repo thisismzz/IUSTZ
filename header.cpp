@@ -2029,9 +2029,9 @@ void Menu() {
 
     system("cls");
 
-    print_with_delay("In the land of Westeros, war and tensions among powerful families have always existed.\nBut now, the wrath and uninvited power have cast a harsh shadow over this land.\nYou, a hero, are faced with an important mission.\nYou must navigate through the dangers and immense obstacles ahead and confront the looming threats that menace the land of Westeros.\n\n");
+    print_with_delay("IN THE LAND OF WESTEROS, WAR AND TENSIONS AMONG POWERFUL FAMILIES HAVE ALWAYS EXISTED.\nBUT NOW, THE WRATH AND UNINVITED POWER HAVE CAST A HARSH SHADOW OVER THIS LAND.\nYOU, A HERO, ARE FACED WITH AN IMPORTANT MISSION.\nYOU MUST NAVIGATE THROUGH THE DANGERS AND IMMENSE OBSTACLES AHEAD AND CONFRONT THE LOOMING THREATS THAT MENACE THE LAND OF WESTEROS.\n\n");
     getUserInfo(age , gender , username);
-    print_with_delay("In this journey, you must choose your character.\nWill Jon Snow, the strong and just commander, seize the fate of the land?\nOr will you, instead of him, travel with Jaime Lannister, the intelligent knight and seasoned strategist, and overcome all obstacles?\nOr perhaps with Daenerys Targaryen, the dangerous and powerful queen, you seek to rule over Westeros?\nYour decision can change the fate of the land. Are you ready?\n");
+    print_with_delay("IN THIS JOURNEY, YOU MUST CHOOSE YOUR CHARACTER.\nWILL JON SNOW, THE STRONG AND JUST COMMANDER, SEIZE THE FATE OF THE LAND?\nOR WILL YOU, INSTEAD OF HIM, TRAVEL WITH JAIME LANNISTER, THE INTELLIGENT KNIGHT AND SEASONED STRATEGIST, AND OVERCOME ALL OBSTACLES?\nOR PERHAPS WITH DAENERYS TARGARYEN, THE DANGEROUS AND POWERFUL QUEEN, YOU SEEK TO RULE OVER WESTEROS?\nYOUR DECISION CAN CHANGE THE FATE OF THE LAND. ARE YOU READY?\n");
     cout << endl << "Please press any key to continue...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     _getch();
