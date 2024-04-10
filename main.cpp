@@ -14,7 +14,7 @@
 using namespace std;
 
 int main(){
-	
+	intro();
     Menu();
 
 }
