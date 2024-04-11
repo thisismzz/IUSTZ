@@ -1420,7 +1420,7 @@ void WarmWeapon::Attack(Human& attacker, Person& attacked) {
 
 
 ostream& operator<<(ostream &os,WarmWeapon &obj){
-    os << setw(15) << left << obj.name << setw(15) << "+" << obj.exp << "EXP" << setw(15) << "lvl : "<< obj.wwa->getCurrentSkill() << setw(15) << " harm : "<< obj.harm << setw(15) <<" price : " << obj.price << "$";
+    os << setw(40) << left << obj.name << setw(40) << obj.exp  << setw(40) << obj.wwa->getCurrentSkill() << setw(40) << obj.harm << obj.price << "$";
     return os; // Prints the warm weapon's details
 }
 
@@ -1506,7 +1506,7 @@ void ColdWeapon::Attack(Human& attacker, Person& attacked) {
 
 
 ostream& operator<<(ostream& os,ColdWeapon& obj){
-    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.cwa->getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
+    os << setw(40) << left << obj.name << setw(40) << obj.exp  << setw(40) << obj.cwa->getCurrentSkill() << setw(40) << obj.harm << obj.price << "$";
     return os; // Prints the cold weapon's details
 }
 
@@ -1594,7 +1594,7 @@ int Throwable::getHarm(){
 }
 
 ostream& operator<<(ostream& os,Throwable& obj) {
-    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.twa->getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$ (each)";
+    os << setw(40) << left << obj.name << setw(40) << obj.exp  << setw(40) << obj.twa->getCurrentSkill() << setw(40) << obj.harm << obj.price << "$ (each)";
     return os; // Prints the throwable weapon's details
 }
 
@@ -1651,7 +1651,7 @@ int Medicine::getHeal() {
 }
 
 ostream& operator<<(ostream& os,Medicine& obj) {
-    os << obj.name << "(+" << obj.heal << "HP): " << obj.price << "$ (each)";
+    os << setw(40) << left << obj.name << setw(40) << obj.heal << obj.price << "$ (each)";
     return os; // Prints the medicine's details
 }
 
@@ -1706,7 +1706,7 @@ int Food::getStrength (){
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
-    os << obj.name << "(+" << obj.strength << "STM): " << obj.price << "$ (each)";
+    os << setw(40) << left << obj.name << setw(40) << obj.strength << obj.price << "$ (each)";
     return os; // Prints the food's details
 }
 
