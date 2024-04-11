@@ -2494,25 +2494,28 @@ void BattleMenu() {
             }
 
             auto weapon = backpack->useWeapons();
-            if (wweapon = dynamic_cast<WarmWeapon*>(weapon)) {
+            if (dynamic_cast<WarmWeapon*>(weapon)) {
+                wweapon = dynamic_cast<WarmWeapon*>(weapon);
                 wweapon->Attack(*player, *enemy);
-            } else if (cweapon = dynamic_cast<ColdWeapon*>(weapon)) {
+            } else if (dynamic_cast<ColdWeapon*>(weapon)) {
+                cweapon = dynamic_cast<ColdWeapon*>(weapon);
                 cweapon->Attack(*player, *enemy);
-            } else if (tweapon = dynamic_cast<Throwable*>(weapon)) {
+            } else if (dynamic_cast<Throwable*>(weapon)) {
+                tweapon = dynamic_cast<Throwable*>(weapon);
                 tweapon->Throw(*player, *enemy);
             }
-            delete wweapon,cweapon,tweapon;
             break;
         }
 
         case 2: {
             auto consumable = backpack->useConsumableItems();
-            if (medicine = dynamic_cast<Medicine*>(consumable)) {
+            if (dynamic_cast<Medicine*>(consumable)) {
+                medicine = dynamic_cast<Medicine*>(consumable);
                 medicine->use(*player);
-            } else if (food = dynamic_cast<Food*>(consumable)) {
+            } else if (dynamic_cast<Food*>(consumable)) {
+                food = dynamic_cast<Food*>(consumable);
                 food->use(*player);
             }
-            delete medicine,food;
             BattleMenu(); // Recursive call
             break;
         }
@@ -2546,16 +2549,18 @@ void BattleMenu() {
                 BattleMenu();
             }
             else{
-            if (wweapon = dynamic_cast<WarmWeapon*>(chosenweapon)) {
+            if (dynamic_cast<WarmWeapon*>(chosenweapon)) {
+                wweapon = dynamic_cast<WarmWeapon*>(chosenweapon);
                 wweapon->getwwa()->upgradeSkill(creditcard);
             } 
-			else if (cweapon = dynamic_cast<ColdWeapon*>(chosenweapon)) {
+			else if (dynamic_cast<ColdWeapon*>(chosenweapon)) {
+                cweapon = dynamic_cast<ColdWeapon*>(chosenweapon);
                 cweapon->getcwa()->upgradeSkill(creditcard);
             } 
-			else if (tweapon = dynamic_cast<Throwable*>(chosenweapon)) {
+			else if (dynamic_cast<Throwable*>(chosenweapon)) {
+                tweapon = dynamic_cast<Throwable*>(chosenweapon);
                 tweapon->gettwa()->upgradeSkill(creditcard);
             }
-            delete wweapon,cweapon,tweapon;
             BattleMenu(); // Recursive call
             }
             break;
