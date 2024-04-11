@@ -1788,7 +1788,8 @@ void getUserInfo(int& age , string& gender , string& username) {
     cout << endl << "And you are older than 15 right? If not fuck off!!! (enter your age)" << endl;
     cin >> age;
     if (age < 15){
-        cout << endl << "Sorry kid, we don't have time to deal with your parent's complaint!" << endl << endl << "END GAME!" << endl;
+        cout << endl << "Sorry kid, we don't have time to deal with your parent's complaint!" << endl << endl;
+        endGame();
         exit(0);
     }
     cout << endl << "And the last question!" << endl << "What do you have down there?! this is the only thing matters. (enter your gender)"<<endl;
@@ -2275,7 +2276,8 @@ void goodbye(){
         Sleep(1000);
         cout<<"Fine i let you go :(\n";
         Sleep(3000);
-        cout<<"Bye Bye "<<player->getUsername() << "." <<" hope to see you again:)";
+        cout<<"Bye Bye "<<player->getUsername() << "." <<" hope to see you again:)" << endl << endl;
+        endGame();
         exit(0);
     }
 }
@@ -2616,5 +2618,20 @@ void gameOver(){
    std:: cout <<" \\____/_/   \\_\\_|  |_|_____|  \\___/  \\_/  |_____|_| \\_\\ " << '\n';
 
    
+
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+
+void endGame(){
+
+    std ::cout <<" _____ _   _ ____     ____    _    __  __ _____ "<< '\n';
+    std ::cout <<"| ____| \\ | |  _ \\   / ___|  / \\  |  \\/  | ____|"<<'\n';
+    std ::cout <<"|  _| |  \\| | | | | | |  _  / _ \\ | |\\/| |  _|" <<'\n';  
+    std ::cout <<"| |___| |\\  | |_| | | |_| |/ ___ \\| |  | | |___"<<'\n'; 
+    std ::cout <<"|_____|_| \\_|____/   \\____/_/   \\_\\_|  |_|_____|"<<'\n';
 
 }
