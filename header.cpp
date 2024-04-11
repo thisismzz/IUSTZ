@@ -43,7 +43,7 @@ vector <Food> Food::shop_items_food={};
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Health::Health(int l=1) : maxHealth((l-1)*100) , currentHealth(100) {} // Constructor
+Health::Health(int l=1) : maxHealth((l)*100) , currentHealth(100) {} // Constructor
 
 int Health::getCurrentHealth() {
     return currentHealth; // Returns current health
@@ -74,7 +74,7 @@ void Health::updateMaxHealth(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-Stamina::Stamina(int cs,int l=1):maximum((l-1)*100),currentStamina(cs){} // Constructor
+Stamina::Stamina(int cs,int l=1):maximum((l)*100),currentStamina(cs){} // Constructor
 
 void Stamina::decreaseStamina(int amount) {
     currentStamina -= amount; // Decreases stamina
