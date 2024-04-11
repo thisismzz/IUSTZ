@@ -1358,7 +1358,7 @@ WarmWeapon::WarmWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Warm Wea
 
 void WarmWeapon::showItems(){
     int n=1;
-    cout << setw(30) << left << "NAME" << setw(30) << "+EXP"  << setw(30) << "LEVEL" << setw(30) << "HARM" << "PRICE";
+    cout << setw(35) << left << "NAME" << setw(35) << "+EXP"  << setw(35) << "LEVEL" << setw(35) << "HARM" << "PRICE" << endl;
     for(WarmWeapon i : shop_items_permanent_warmweapon){
         cout << "[" << n <<"]. " << i << endl; // Prints each warm weapon item
         n++;
@@ -1425,7 +1425,7 @@ void WarmWeapon::Attack(Human& attacker, Person& attacked) {
 
 
 ostream& operator<<(ostream &os,WarmWeapon &obj){
-    os << setw(30) << left << obj.name << setw(30) << obj.exp  << setw(30) << obj.wwa->getCurrentSkill() << setw(30) << obj.harm << obj.price << "$";
+    os << setw(30) << left << obj.name << setw(20) << obj.exp  << setw(20) << obj.wwa->getCurrentSkill() << setw(20) << obj.harm << obj.price << "$";
     return os; // Prints the warm weapon's details
 }
 
@@ -1442,7 +1442,7 @@ ColdWeapon::ColdWeapon(string n,int p,int x,int e,int h):Permanent(n,p,"Cold Wea
 
 void ColdWeapon::showItems(){
     int n=1;
-    cout << setw(30) << left << "NAME" << setw(30) << "+EXP"  << setw(30) << "LEVEL" << setw(30) << "HARM" << "PRICE";
+    cout << setw(35) << left << "NAME" << setw(35) << "+EXP"  << setw(35) << "LEVEL" << setw(35) << "HARM" << "PRICE" << endl;
     for (ColdWeapon i : shop_items_permanent_coldweapon){
         cout << "[" << n <<"]. " << i << endl; // Prints each cold weapon item
         n++;
@@ -1512,7 +1512,7 @@ void ColdWeapon::Attack(Human& attacker, Person& attacked) {
 
 
 ostream& operator<<(ostream& os,ColdWeapon& obj){
-    os << setw(30) << left << obj.name << setw(30) << obj.exp  << setw(30) << obj.cwa->getCurrentSkill() << setw(30) << obj.harm << obj.price << "$";
+    os << setw(30) << left << obj.name << setw(25) << obj.exp  << setw(25) << obj.cwa->getCurrentSkill() << setw(25) << obj.harm << obj.price << "$";
     return os; // Prints the cold weapon's details
 }
 
@@ -1529,7 +1529,7 @@ Throwable::Throwable(string n,int p,int x,int e,int h):Items(n,p,"Throwable Weap
 
 void Throwable::showItems(){
     int n=1;
-    cout << setw(30) << left << "NAME" << setw(30) << "+EXP"  << setw(30) << "LEVEL" << setw(30) << "HARM" << "PRICE";
+    cout << setw(30) << left << "NAME" << setw(30) << "+EXP"  << setw(30) << "LEVEL" << setw(30) << "HARM" << "PRICE" << endl;
     for (Throwable i : shop_items_throwable){
         cout << "[" << n <<"]. " << i << endl; // Prints each throwable weapon item
         n++;
@@ -1601,7 +1601,7 @@ int Throwable::getHarm(){
 }
 
 ostream& operator<<(ostream& os,Throwable& obj) {
-    os << setw(30) << left << obj.name << setw(30) << obj.exp  << setw(30) << obj.twa->getCurrentSkill() << setw(30) << obj.harm << obj.price << "$ (each)";
+    os << setw(30) << left << obj.name << setw(25) << obj.exp  << setw(25) << obj.twa->getCurrentSkill() << setw(25) << obj.harm << obj.price << "$ (each)";
     return os; // Prints the throwable weapon's details
 }
 
@@ -1616,7 +1616,7 @@ Medicine::Medicine(string n,int p,int h):Items(n,p,"Medicine"),heal(h){
 
 void Medicine::showItems(){
     int n=1;
-    cout << setw(30) << left << "NAME" << setw(30) << "+HP" << "PRICE";
+    cout << setw(30) << left << "NAME" << setw(30) << "+HP" << "PRICE(each)" << endl;
     for (Medicine i : shop_items_medicine){
         cout << "[" << n <<"]. " << i << endl; // Prints each medicine item
         n++;
@@ -1659,7 +1659,7 @@ int Medicine::getHeal() {
 }
 
 ostream& operator<<(ostream& os,Medicine& obj) {
-    os << setw(30) << left << obj.name << setw(30) << obj.heal << obj.price << "$ (each)";
+    os << setw(30) << left << obj.name << setw(25) << obj.heal << obj.price << "$";
     return os; // Prints the medicine's details
 }
 
@@ -1672,7 +1672,7 @@ Food::Food(string n,int p,int s):Items(n,p,"Food"),strength(s){
 
 void Food::showItems(){
     int n=1;
-    cout << setw(30) << left << "NAME" << setw(30) << "+STM" << "PRICE";
+    cout << setw(30) << left << "NAME" << setw(30) << "+STM" << "PRICE(each)" << endl;
     for (Food i : shop_items_food){
         cout << "[" << n <<"]. " << i << endl; // Prints each food item
         n++;
@@ -1715,7 +1715,7 @@ int Food::getStrength (){
 }
 
 ostream& operator<<(ostream& os,Food& obj) {
-    os << setw(30) << left << obj.name << setw(30) << obj.strength << obj.price << "$ (each)";
+    os << setw(30) << left << obj.name << setw(25) << obj.strength << obj.price << "$";
     return os; // Prints the food's details
 }
 
