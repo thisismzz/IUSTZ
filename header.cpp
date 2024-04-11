@@ -295,7 +295,7 @@ void Backpack::showItems(){
         index=1;
         cout<<"COLD WEAPONS: \n";
         for(auto i:ColdWeaponItems){
-            cout <<'\t'<< index << ")" << i.getName() << '\n'; // Prints cold weapon items
+            cout <<'\t' << "[" << index << "]. " << i.getName() << '\n'; // Prints cold weapon items
             index++;
         }
     }
@@ -304,7 +304,7 @@ void Backpack::showItems(){
         index=1;
         cout<<"WARM WEAPONS: \n";
         for(auto i:WarmWeaponItems){
-            cout<<'\t'<<index<<")" <<i.getName()<<'\n'; // Prints warm weapon items
+            cout<<'\t'<< "[" << index << "]. " <<i.getName()<<'\n'; // Prints warm weapon items
             index++;
         }
     }
@@ -314,7 +314,7 @@ void Backpack::showItems(){
         cout<<"THROWABLE WEAPONS: \n";
         for(auto i:ThrowableItems){
             Throwable item=i.first;
-            cout<<'\t'<<index<<")"<<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints throwable items
+            cout<<'\t'<<"[" << index << "]. " <<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints throwable items
             index++;
         }
 
@@ -326,7 +326,7 @@ void Backpack::showItems(){
         cout<<"MEDICINES: \n";
         for(auto i:MedicineItems){
             Medicine item=i.first;
-            cout<<'\t'<<index<<")"<<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints medicine items
+            cout<<'\t' << "[" << index << "]. " <<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints medicine items
             index++;
         }
     }
@@ -336,7 +336,7 @@ void Backpack::showItems(){
         cout<<"FOODS: \n";
         for(auto i:FoodItems){
             Food item=i.first;
-            cout<<'\t'<<index<<")"<<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints food items
+            cout<<'\t'<< "[" << index << "]. " <<item.getName()<<"(stock : "<<i.second<< ")" << '\n'; // Prints food items
             index++;
         }
     }
@@ -348,7 +348,7 @@ void Backpack::showItems(){
 void Backpack::showWarmWeaponItems(){
     int index = 1;
     for(auto i: WarmWeaponItems){
-        cout << index << ")" << i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getwwa()->getCurrentSkill()*10<<" STM\n";
+        cout  << "[" << index << "]. " << i.getName() << "(-" <<i.getwwa()->getCurrentSkill()*10<<"STM): " << "lvl : " << i.getwwa()->getCurrentSkill() <<" , harm : "<<i.getHarm()<< endl;
         index++;
     }
 }
@@ -356,7 +356,7 @@ void Backpack::showWarmWeaponItems(){
 void Backpack::showColdWeaponItems(){
     int index = 1;
     for(auto i: ColdWeaponItems){
-        cout << index << ")" << i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tharm: "<<i.getHarm()<<"\t-"<<i.getcwa()->getCurrentSkill()*10<<" STM\n"; 
+        cout  << "[" << index << "]. " << i.getName() << "(-" <<i.getcwa()->getCurrentSkill()*10<<"STM): " << "lvl : " << i.getcwa()->getCurrentSkill() <<" , harm : "<<i.getHarm() << endl;
         index++;
     }
 }
@@ -365,7 +365,7 @@ void Backpack::showThrowableItems(){
     int index = 1;
     for(auto pair : ThrowableItems){
     Throwable item = pair.first;
-    cout << index << ")" <<"  Name: "<< item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tharm: "<<item.getHarm()<<"\t-"<<item.gettwa()->getCurrentSkill()*10 << "STM\t(stock : " << pair.second << ")" << '\n';
+    cout  << "[" << index << "]. " << item.getName() << "(-" <<item.gettwa()->getCurrentSkill()*10<<"STM): " << "lvl : " << item.gettwa()->getCurrentSkill() <<" , harm : "<<i.getHarm() << " , stock : " << pair.second << endl;
     index++;
     }
 }
@@ -374,7 +374,7 @@ void Backpack::showMedicineItems(){
     int index = 1;
     for(auto pair : MedicineItems){
         Medicine item = pair.first;
-        cout << index << ")" << item.getName() << "(+" << item.getHeal() << "HP)(stock : " << pair.second << ")"  << '\n';
+        cout << "[" << index << "]. " << item.getName() << "(+" << item.getHeal() << "HP)(stock : " << pair.second << ")"  << '\n';
         index++;
     }
 }
@@ -383,7 +383,7 @@ void Backpack::showFoodItems(){
     int index = 1;
     for(auto pair : FoodItems){
         Food item = pair.first;
-        cout << index << ")" << item.getName() << "(+" << item.getStrength() << "STM)(stock : " << pair.second << ")" << '\n';
+        cout << "[" << index << "]. " << item.getName() << "(+" << item.getStrength() << "STM)(stock : " << pair.second << ")" << '\n';
         index++;
     }
 }
@@ -391,7 +391,7 @@ void Backpack::showFoodItems(){
 void Backpack::showUpgradeWarmWeapon(){
     int index = 1;
     for(auto i: WarmWeaponItems){
-        cout << index << ")" << i.getName() << "\tlvl " << i.getwwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getwwa()->getUpgradePrice() << "$" << endl;
+        cout << "[" << index << "]. " << i.getName() << "(lvl " << i.getwwa()->getCurrentSkill()  << ")" <<"(money need for upgrading : "<<i.getwwa()->getUpgradePrice() << "$)" << endl;
         index++;
     }
 }
@@ -399,7 +399,7 @@ void Backpack::showUpgradeWarmWeapon(){
 void Backpack::showUpgradeColdWeapon(){
     int index = 1;
     for(auto i: ColdWeaponItems){
-        cout << index << ")" << i.getName() << "\tlvl " << i.getcwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<i.getcwa()->getUpgradePrice() << "$" << endl;
+        cout << "[" << index << "]. " << i.getName() << "(lvl " << i.getcwa()->getCurrentSkill()  << ")" <<"(money need for upgrading : "<<i.getcwa()->getUpgradePrice() << "$)" << endl;
         index++;
     }
 }
@@ -408,7 +408,7 @@ void Backpack::showUpgradeThrowable(){
     int index = 1;
     for(auto pair : ThrowableItems){
     Throwable item = pair.first;
-    cout << index << ")" << item.getName()<< "\tlvl " << item.gettwa()->getCurrentSkill() <<"\tmoney need for upgrading: "<<item.gettwa()->getUpgradePrice() << "$" << endl;
+    cout << "[" << index << "]. " << item.getName() << "(lvl " << item.gettwa()->getCurrentSkill()  << ")" <<"(money need for upgrading : "<<item.gettwa()->getUpgradePrice() << "$)" << endl;
     index++;
     }
 }
@@ -491,7 +491,7 @@ Items* Backpack::useWeapons() {
     int ChosenWeapon;
     system("cls");
     cout << "Enter the index of the Weapon you want to attack with:" << endl 
-    << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl << "[3].THROWABLE WEAPONS" << endl << "[4].BACK" << endl;
+    << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl << "[3].THROWABLE WEAPONS" << endl << "[0].BACK" << endl;
     cin >> number;
     switch(number){
         case 1: 
@@ -612,7 +612,7 @@ Items* Backpack::useConsumableItems() {
     int ChosenConsumableItem;
     system("cls");
     cout << "Enter the index of the Consumable Item you want to use:" << endl 
-    << "[1].MEDICINE" << endl << "[2].FOOD" << endl << "[3].BACK" << endl;
+    << "[1].MEDICINE" << endl << "[2].FOOD" << endl << "[0].BACK" << endl;
     cin >> number;
     switch(number){
         case 1: 
@@ -622,7 +622,7 @@ Items* Backpack::useConsumableItems() {
                     cout << "Choose the Medicine you want to use:" << endl;
                     index = 1;
                     showMedicineItems();
-                    cout << "[0] Back" << endl; 
+                    cout << "[0]. Back" << endl; 
                     cin >> ChosenConsumableItem;
                     if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= MedicineItems.size()) {
                         auto iter = next(MedicineItems.begin(), ChosenConsumableItem - 1);
@@ -654,7 +654,7 @@ Items* Backpack::useConsumableItems() {
                     cout << "Choose the Food you want to use:" << endl;
                     index = 1;
                     showFoodItems();
-                    cout << "[0] Back" << endl; 
+                    cout << "[0]. Back" << endl; 
                     cin >> ChosenConsumableItem;
                     if (ChosenConsumableItem >= 1 && ChosenConsumableItem <= FoodItems.size()) {
                         auto iter = next(FoodItems.begin(), ChosenConsumableItem - 1);
@@ -698,7 +698,7 @@ Items* Backpack::upgradeWeapons() {
     int ChosenWeapon;
     system("cls");
     cout << "Enter the index of the Weapon you want to upgrade it:" << endl 
-    << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl << "[3].THROWABLE WEAPONS" << endl << "[4].BACK" << endl;
+    << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl << "[3].THROWABLE WEAPONS" << endl << "[0].BACK" << endl;
     cin >> number;
     switch(number){
         case 1: 
@@ -1859,9 +1859,9 @@ void medicineMenu() {
     if(player->getMoney() >= 1000) {
         int item,quantity;
         Medicine *drug;
-        cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl;
+        cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl << endl;
         Medicine::showItems(); // Shows medicines
-        cout << "which one do you want to buy?" << endl;
+        cout << "\nWhich one do you want to buy?" << endl;
         cin >> item;
         cout << "How many?" << endl;
         cin >> quantity;
@@ -1887,9 +1887,9 @@ void foodMenu() {
     if(player->getMoney() >= 1000) {
         int item,quantity;
         Food *meal;
-        cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl;
+        cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl << endl;
         Food::showItems(); // Shows foods
-        cout << "which one do you want to buy?" << endl;
+        cout << "\nWhich one do you want to buy?" << endl;
         cin >> item;
         cout << "How many?" << endl;
         cin >> quantity;
@@ -2051,7 +2051,7 @@ void Menu() {
         cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED: " << endl;
         for (int i = 0; i < 6; i++) {
             character = Factory::createCharacter(characterTypes[i]);
-            cout << i+1 << ". " << characterTypes[i] << endl;
+            cout << "[" << i+1 << "]. " << characterTypes[i] << endl;
             cout << "   " << "Stamina : " << character->getStamina() << endl;
             cout << "   " << "Money : " << money[i] << " $" << endl << endl;
         }
@@ -2158,10 +2158,10 @@ void Show_Permanent_Items() {
     system("cls");
     switch(number){
         case 1: 
-            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << "$)" << endl;
+            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << "$)" << endl << endl;
             WarmWeapon::showItems(); // Shows warm weapons
             cout << "[00]. Back" << endl;
-            cout << "which one do you want to buy?" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
                 Show_Permanent_Items();
@@ -2173,10 +2173,10 @@ void Show_Permanent_Items() {
             break;
         
         case 2:
-            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << "$)" << endl;
+            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << "$)" << endl << endl;
             ColdWeapon::showItems(); // Shows cold weapons
             cout << "[00]. Back" << endl;
-            cout << "which one do you want to buy?" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
                 Show_Permanent_Items();
@@ -2196,10 +2196,10 @@ void Show_Throwable_Items() {
     system("cls");
     int item,quantity;
     Throwable *tweapon;
-    cout << "You go to take a look at the Throwable Items:" << "(your money : " << player->getMoney() << "$)" << endl;
+    cout << "You go to take a look at the Throwable Items:" << "(your money : " << player->getMoney() << "$)" << endl << endl;
     Throwable::showItems(); // Shows throwable items
     cout << "[00]. Back" << endl;
-    cout<<"which one do you want to buy?" << endl;
+    cout<<"\nWhich one do you want to buy?" << endl;
     cin >> item;
     if ( item == 0) {
         ShopMenu();
@@ -2222,10 +2222,10 @@ void Show_Consumable_Items() {
     system("cls");
     switch(number){
         case 1: 
-            cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << "$)" << endl;
+            cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << "$)" << endl << endl;
             Medicine::showItems(); // Shows medicines
             cout << "[00]. Back" << endl;
-            cout << "which one do you want to buy?" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
                 Show_Consumable_Items();
@@ -2239,10 +2239,10 @@ void Show_Consumable_Items() {
             break;
             
         case 2:
-            cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << "$)" << endl;
+            cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << "$)" << endl << endl;
             Food::showItems(); // Shows foods
             cout << "[00]. Back" << endl;
-            cout << "which one do you want to buy?" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
                 Show_Consumable_Items();
@@ -2270,10 +2270,10 @@ void Shop_PermanentItems_Menu() {
     system("cls");
     switch(number){
         case 1: 
-            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << "$)" << endl;
+            cout << "You go to take a look at the WarmWeapons:" << "(your money : " << player->getMoney() << "$)" << endl << endl;
             WarmWeapon::showItems(); // Shows warm weapons
             cout << "[00]. Back" << endl;
-            cout << "which one do you want to buy?" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
                 Shop_PermanentItems_Menu();
@@ -2286,10 +2286,10 @@ void Shop_PermanentItems_Menu() {
             ShopMenu();
         
         case 2:
-            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << "$)" << endl;
+            cout << "You go to take a look at the ColdWeapons:" << "(your money : " << player->getMoney() << "$)" << endl << endl;
             ColdWeapon::showItems(); // Shows cold weapons
             cout << "[00]. Back" << endl;
-            cout << "which one do you want to buy?" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
             if ( item == 0) {
                 Shop_PermanentItems_Menu();
@@ -2486,8 +2486,8 @@ void BattleMenu() {
     int number;
     cout << "YOUR TURN : " << endl << endl;
     cout << "What do you want to do? (Attack ends your turn.)" << endl
-         << "   [1].ATTACK" << endl << "   [2].CONSUME FOOD OR MEDICINE" << endl << "   [3].SHOW PLAYER'S INFO" << endl
-         << "   [4].SHOW BACKPACK" << endl << "   [5].UPGRADE WEAPON'S SKILL"<< endl <<"   [6].QUIT"<< endl;
+         << "[1].ATTACK" << endl << "[2].CONSUME FOOD OR MEDICINE" << endl << "[3].SHOW PLAYER'S INFO" << endl
+         << "[4].SHOW BACKPACK" << endl << "[5].UPGRADE WEAPON'S SKILL"<< endl <<"[6].QUIT"<< endl;
     cin >> number;
 
     string temp;
@@ -2692,8 +2692,6 @@ void gameOver(){
    std:: cout <<"| |  _  / _ \\ | |\\/| |  _|   | | | \\ \\ / /|  _| | |_) |"<< '\n';
    std:: cout <<"| |_| |/ ___ \\| |  | | |___  | |_| |\\ V / | |___|  _ <" << '\n' ;
    std:: cout <<" \\____/_/   \\_\\_|  |_|_____|  \\___/  \\_/  |_____|_| \\_\\ " << '\n';
-
-   
 
 }
 
