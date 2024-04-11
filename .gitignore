@@ -6,3 +6,4 @@ run.cpp
 header.o
 main.o
 my_program.exe
+/.cmake-build-debug\CMakeFiles

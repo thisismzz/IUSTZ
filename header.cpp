@@ -1066,16 +1066,22 @@ Medicine* HE_Controller :: chooseMedicine() {
 }
 
 void HE_Controller::Attack(Items* weapon) {
-    if (WarmWeapon* wweapon = dynamic_cast<WarmWeapon*>(weapon)) {
+    WarmWeapon* wweapon;
+    ColdWeapon* cweapon;
+    Throwable* tweapon;
+    if (dynamic_cast<WarmWeapon*>(weapon)) {
         // Successfully cast to WarmWeapon
+        wweapon=dynamic_cast<WarmWeapon*>(weapon);
         wweapon->Attack(*model, *player);
         view.attackView(model->getName(), *wweapon);
-    } else if (ColdWeapon* cweapon = dynamic_cast<ColdWeapon*>(weapon)) {
+    } else if (dynamic_cast<ColdWeapon*>(weapon)) {
         // Successfully cast to ColdWeapon
+        cweapon = dynamic_cast<ColdWeapon*>(weapon);
         cweapon->Attack(*model, *player);
         view.attackView(model->getName(), *cweapon);
-    } else if (Throwable* tweapon = dynamic_cast<Throwable*>(weapon)) {
+    } else if (dynamic_cast<Throwable*>(weapon)) {
         // Successfully cast to Throwable
+        tweapon = dynamic_cast<Throwable*>(weapon);
         tweapon->Throw(*model, *player);
         view.attackView(model->getName(), *tweapon);
     }
@@ -2495,6 +2501,7 @@ void BattleMenu() {
             } else if (tweapon = dynamic_cast<Throwable*>(weapon)) {
                 tweapon->Throw(*player, *enemy);
             }
+            delete wweapon,cweapon,tweapon;
             break;
         }
 
@@ -2505,6 +2512,7 @@ void BattleMenu() {
             } else if (food = dynamic_cast<Food*>(consumable)) {
                 food->use(*player);
             }
+            delete medicine,food;
             BattleMenu(); // Recursive call
             break;
         }
@@ -2547,6 +2555,7 @@ void BattleMenu() {
 			else if (tweapon = dynamic_cast<Throwable*>(chosenweapon)) {
                 tweapon->gettwa()->upgradeSkill(creditcard);
             }
+            delete wweapon,cweapon,tweapon;
             BattleMenu(); // Recursive call
             }
             break;
