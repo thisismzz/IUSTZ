@@ -1420,7 +1420,7 @@ void WarmWeapon::Attack(Human& attacker, Person& attacked) {
 
 
 ostream& operator<<(ostream &os,WarmWeapon &obj){
-    os << obj.name << left << setw(5) << "+" << obj.exp << "EXP" << left << setw(5) << "lvl : "<< obj.wwa->getCurrentSkill() << left << setw(5) << " harm : "<< obj.harm << left << setw(5) <<" price : " << obj.price << "$";
+    os << setw(15) << left << obj.name << setw(15) << "+" << obj.exp << "EXP" << setw(15) << "lvl : "<< obj.wwa->getCurrentSkill() << setw(15) << " harm : "<< obj.harm << setw(15) <<" price : " << obj.price << "$";
     return os; // Prints the warm weapon's details
 }
 
