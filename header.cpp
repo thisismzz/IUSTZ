@@ -7,6 +7,7 @@
 #include <map>
 #include <conio.h>
 #include <windows.h>
+#include <iomanip>
 
 #include "header.h"
 
@@ -1419,7 +1420,7 @@ void WarmWeapon::Attack(Human& attacker, Person& attacked) {
 
 
 ostream& operator<<(ostream &os,WarmWeapon &obj){
-    os << obj.name << "(+" << obj.exp << "EXP): " << "lvl : "<< obj.wwa->getCurrentSkill() << " , harm : "<< obj.harm << " , price : " << obj.price << "$";
+    os << obj.name << left << setw(5) << "+" << obj.exp << "EXP" << left << setw(5) << "lvl : "<< obj.wwa->getCurrentSkill() << left << setw(5) << " harm : "<< obj.harm << left << setw(5) <<" price : " << obj.price << "$";
     return os; // Prints the warm weapon's details
 }
 
