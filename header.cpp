@@ -426,7 +426,7 @@ void Backpack::ConsumeMedForSurvival() {
     }
 
     system("cls");
-    cout << "Here are the available medicine items in the backpack:" << endl;
+    cout << "Here are the available medicine items in the backpack:" << endl << endl;
     int index = 1;
     showMedicineItems();
 
@@ -460,7 +460,7 @@ void Backpack::ConsumeFoodForSurvival() {
     }
 
     system("cls");
-    cout << "Here are the available food items in the backpack:" << endl;
+    cout << "Here are the available food items in the backpack:" << endl << endl;
     int index = 1;
     showFoodItems();  
 
@@ -931,7 +931,7 @@ void Player::takeDamage(int amount) {
     } 
 
     else 
-        cout << "YOU TOOK " << amount << " DAMAGE." << endl; // Prints a message if the player takes damage
+        cout << "YOU TOOK " << amount << " DAMAGE!" << endl; // Prints a message if the player takes damage
     
 }
 
@@ -1214,7 +1214,7 @@ void Zombie::takeDamage(int amount) {
         state=ZombieState::DEFEATED;
     } 
     else {
-        cout << name << " takes " << amount << " damage. Remaining Zombie HP: " << hp.getCurrentHealth() << endl; // Prints a message if the zombie takes damage
+        cout << name << " TAKES " << amount << " DAMAGE!" << endl; // Prints a message if the zombie takes damage
     }
 }
 
@@ -1231,7 +1231,7 @@ BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
 
 void BasicZombie :: bite() {
     player->hp.decreaseHealth(this->getLevel()*10);
-    cout<<"YOU HAVE BEEN BITTEN BY "<<this->getName();
+    cout<<"YOU HAVE BEEN BITTEN BY "<<this->getName() <<"." << endl;
     player->takeDamage(this->getLevel()*5);
 }
 
@@ -1272,13 +1272,13 @@ AdvZombie::AdvZombie(string n,int l) : Zombie(n,l){}
 
 void AdvZombie :: bite() {
     player->hp.decreaseHealth(this->getLevel()*15);
-    cout<<"YOU HAVE BEEN BITTEN BY "<<this->getName();
+    cout<<"YOU HAVE BEEN BITTEN BY "<<this->getName()<<"." <<endl;
     player->takeDamage(this->getLevel()*7);
 }
 
 void AdvZombie :: scratch() {
     player->hp.decreaseHealth(this->getLevel()*18);
-    cout<<"YOU HAVE BEEN BITTEN BY "<<this->getName()<<endl;
+    cout<<"YOU HAVE BEEN SCRATCHED BY "<<this->getName() <<"." <<endl;
     player->takeDamage(this->getLevel()*8);
 }
 
@@ -1917,7 +1917,7 @@ void playground() {
     int randomNum = rand();
 
     if (player->getState() == PlayerState::DEFEATED) {
-        cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0 " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
+        cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0! " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
         getch();
         cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
         playerBackpack->ConsumeMedForSurvival();
@@ -2318,7 +2318,7 @@ void goodbye(){
         cout<<"It's to soon!\n";
         Sleep(1000);
         cout<<"Fine i let you go :(\n";
-        Sleep(3000);
+        Sleep(1000);
         cout<<"Bye Bye "<<player->getUsername() << "." <<" hope to see you again:)" << endl << endl;
         endGame();
         exit(0);
@@ -2374,10 +2374,6 @@ void battleGround_humanEnemy(){
         //method to add to player backpack;
         Enemy.showBackpackItems();
         Enemy.transferItems();  
-        getch();
-    }
-    else{
-        cout<<"YOU HAVE LOST THIS MATCH!\n";
         getch();
     }
     playground();
@@ -2469,10 +2465,6 @@ void battleGround_advZombie(){
         cout<<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n";
         player->getBankAccount()->prize(player->getLevel()*800);
         getch();
-    }
-    else{
-        cout<<"YOU HAVE LOST THIS MATCH!\n";
-        getch();
     } 
     playground();
 }
@@ -2558,7 +2550,7 @@ void BattleMenu() {
         case 5: {
             BankAccount* creditcard = player->getBankAccount();
             auto chosenweapon = backpack->upgradeWeapons();
-            if(chosenweapon->getPrice() < player->getMoney()){
+            if(chosenweapon->getPrice() > player->getMoney()){
                 cout << "NOT ENOUGHT MONEY TO UPGRADE THE WEAPON!" << endl;
                 cout << "\nPress any key to go back...";
                 getch();
@@ -2583,7 +2575,7 @@ void BattleMenu() {
         }
 
         case 6: {
-            cout<<"[!] ARE YOU SURE? (Y/N)";
+            cout<<"[!] ARE YOU SURE? (Y/N)" << endl;
                 cin>>temp;
                 if(temp=="Y"){
                     goodbye();
