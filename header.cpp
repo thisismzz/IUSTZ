@@ -171,7 +171,7 @@ void Skills::upgradeSkill(BankAccount *creditcard){
         }
     }
     catch(int temp){
-        cout<< Yellow<<"NOT ENOUGH MONEY!\n"<<Reset; // Prints an error message if there's not enough money
+        cout<< Yellow<<"\nNOT ENOUGH MONEY!\n"<<Reset; // Prints an error message if there's not enough money
     } 
 }
 
@@ -1398,7 +1398,7 @@ void WarmWeapon::buy(){
         player->exp.increaseExp(exp); // Increases the player's experience
     }
     else
-        cout<<Yellow<<"NOT ENOUGH MONEY!\n"<< Reset; // Prints a message if there's not enough money to buy the item
+        cout<<Yellow<<"\nNOT ENOUGH MONEY!\n"<< Reset; // Prints a message if there's not enough money to buy the item
 }
 
 void WarmWeapon::addToVectors(){
@@ -1486,7 +1486,7 @@ void ColdWeapon::buy(){
         player->exp.increaseExp(exp); // Increases the player's experience
     }
     else
-        cout<<Yellow<<"NOT ENOUGH MONEY!\n"<< Reset; // Prints a message if there's not enough money to buy the item
+        cout<<Yellow<<"\nNOT ENOUGH MONEY!\n"<< Reset; // Prints a message if there's not enough money to buy the item
 }
 
 void ColdWeapon::addToVectors(){
@@ -1569,7 +1569,7 @@ void Throwable::buy(int quantity){
         player->exp.increaseExp(exp*quantity); // Increases the player's experience
     }
     else
-        cout<<Yellow<<"NOT ENOUGH MONEY!\n"<< Reset; // Prints a message if there's not enough money to buy the item
+        cout<<Yellow<<"\nNOT ENOUGH MONEY!\n"<< Reset; // Prints a message if there's not enough money to buy the item
 }
 
 void Throwable::addToVectors(){
