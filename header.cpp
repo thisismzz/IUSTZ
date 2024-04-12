@@ -421,6 +421,8 @@ void Backpack::showUpgradeThrowable(){
 // *----------------------------------------------------------------*
 
 void Backpack::ConsumeMedForSurvival() {
+    system("cls");
+
     
     if(MedicineItems.empty()){
         cout << "NO MEDICINE ITEM LEFT IN BACKPACK! YOUR ONLY CHANCE OF SURVIVAL IS TO GO TO SHOP AND BUY ANY MEDICINE THAT YOU CAN." << endl << endl;
@@ -1834,7 +1836,7 @@ void getUserInfo(int& age , string& gender , string& username) {
     cin >> gender;
     cout << endl << "Ok, you can go now. I hope you are still alive next time I see you, kid!" ;
 
-    cout << "\n\nPlease press any key to continue...";
+    cout << Red << "\n\nPress any key to continue..." <<Reset;
 
     getch();
 
@@ -1865,7 +1867,7 @@ void medicineMenu() {
     if(player->getMoney() >= 1000) {
         int item,quantity;
         Medicine *drug;
-        cout << "YOU GO TO TAKE A LOOK AT THE MEDICINES:" << "(YOUR MONEY : " << player->getMoney() << ")" << endl << endl;
+        cout  << Purple << "YOU GO TO TAKE A LOOK AT THE MEDICINES:" << "(YOUR MONEY : " << player->getMoney() << ")" << Reset << endl << endl;
 
         Medicine::showItems(); // Shows medicines
         cout << "\nWhich one do you want to buy?" << endl;
@@ -1893,7 +1895,7 @@ void medicineMenu() {
             drug->buy(quantity); // Buys a medicine
         }
         else {
-            cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << drug->getName() << " Items. Buy Less Items ... \n";
+            cout << "NOT ENOUGH MONEY TO PURCHASE " << quantity << " AMOUNTS OF " << drug->getName() << " ITEMS. BUY LESS ITEMS ... \n";
             getch(); // Wait for a key press
             medicineMenu();
         }
@@ -1910,7 +1912,7 @@ void foodMenu() {
     if(player->getMoney() >= 1000) {
         int item,quantity;
         Food *meal;
-        cout << "YOU GO TO TAKE A LOOK AT THE FOODS:" << "(YOUR MONEY : " << player->getMoney() << ")" << endl << endl;
+        cout << Purple<< "YOU GO TO TAKE A LOOK AT THE FOODS:" << "(YOUR MONEY : " << player->getMoney() << ")"<< Reset<< endl << endl;
 
         Food::showItems(); // Shows foods
         cout << "\nWhich one do you want to buy?" << endl;
@@ -2120,7 +2122,6 @@ void Menu() {
             cout << "     " << "Stamina : " << character->getStamina() << endl;
             cout << "     " << "Money : " << money[i] << " $" << endl << endl;
         }
-        cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED: " << endl;
         // Get the user's choice
         cin >> chosenIndex;
         if (chosenIndex > 0 and chosenIndex < 7){
@@ -2133,7 +2134,7 @@ void Menu() {
         }
         else{
             cout << "INVALID INDEX! PLEASE TRY AGAIN."; 
-            cout << endl << "\nPlease press any key to continue...";
+            cout << Red << "\nPress any key to continue..." << Reset;
             getch();
         }
     }
