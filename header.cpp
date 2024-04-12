@@ -2507,6 +2507,14 @@ void Show_Permanent_Items() {
             cout << "[00]. Back" << endl;
             cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
+            while(item<0 && item>10){
+                cout <<Yellow<< "YOU HAVE ENTERED THE WRONG NUMBER , ENTER A NUMBER BETWEEN 0 AND 10 ."<< Reset << endl << "\nWhich one do you want to buy?" << endl;
+                cin >> item;
+                if(cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
             if ( item == 0) {
                 Show_Permanent_Items();
             }
@@ -2522,6 +2530,14 @@ void Show_Permanent_Items() {
             cout << "[00]. Back" << endl;
             cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
+            while(item<0 && item>10){
+                cout <<Yellow<< "YOU HAVE ENTERED THE WRONG NUMBER , ENTER A NUMBER BETWEEN 0 AND 10 ."<< Reset << endl << "\nWhich one do you want to buy?" << endl;
+                cin >> item;
+                if(cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
             if ( item == 0) {
                 Show_Permanent_Items();
             }
@@ -2674,6 +2690,14 @@ void Shop_PermanentItems_Menu() {
             cout << "[00]. Back" << endl;
             cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
+            while(item<0 && item>10){
+                cout <<Yellow<< "YOU HAVE ENTERED THE WRONG NUMBER , ENTER A NUMBER BETWEEN 0 AND 10 ."<< Reset << endl << "\nWhich one do you want to buy?" << endl;
+                cin >> item;
+                if(cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
             if ( item == 0) {
                 Shop_PermanentItems_Menu();
             }
@@ -2690,6 +2714,14 @@ void Shop_PermanentItems_Menu() {
             cout << "[00]. Back" << endl;
             cout << "\nWhich one do you want to buy?" << endl;
             cin >> item;
+            while(item<0 && item>10){
+                cout <<Yellow<< "YOU HAVE ENTERED THE WRONG NUMBER , ENTER A NUMBER BETWEEN 0 AND 10 ."<< Reset << endl << "\nWhich one do you want to buy?" << endl;
+                cin >> item;
+                if(cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
             if ( item == 0) {
                 Shop_PermanentItems_Menu();
             }
