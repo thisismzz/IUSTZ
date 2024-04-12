@@ -1652,7 +1652,11 @@ void Throwable::showItems(){
     int n=1;
     cout <<Green<< setw(32) << left << "          NAME" << setw(20) << "   +EXP"  << setw(20) << "  LEVEL" << setw(20) << "   HARM" << "  PRICE(each)" << endl<< Reset;
     for (Throwable i : shop_items_throwable){
-        cout << "[0" << n <<"]. " << i << endl;
+        if (n < 10){
+        cout << "[0" << n <<"]. " << i << endl;} 
+        else{
+        cout << "[" << n <<"]. " << i << endl;
+        }
         n++;
     }
 }
@@ -1742,7 +1746,11 @@ void Medicine::showItems(){
     int n=1;
     cout <<Green<< setw(33) << left << "              NAME" << setw(20) << "  +HP" << "PRICE(each)" << endl<< Reset;
     for (Medicine i : shop_items_medicine){
-        cout << "[0" << n <<"]. " << i << endl;
+        if (n < 10){
+        cout << "[0" << n <<"]. " << i << endl;} 
+        else{
+        cout << "[" << n <<"]. " << i << endl;
+        }
         n++;
     }
 }
@@ -1805,7 +1813,11 @@ void Food::showItems(){
     int n=1;
     cout <<Green<< setw(33) << left << "              NAME" << setw(20) << "  +STM" << "PRICE(each)" << endl << Reset;
     for (Food i : shop_items_food){
-        cout << "[0" << n <<"]. " << i << endl;
+        if (n < 10){
+        cout << "[0" << n <<"]. " << i << endl;} 
+        else{
+        cout << "[" << n <<"]. " << i << endl;
+        }
         n++;
     }
 }
@@ -2870,6 +2882,11 @@ void Shop_PermanentItems_Menu() {
             cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
             getch(); // Wait for a key press
             ShopMenu();
+        
+        default:
+            cout << Yellow<< "\nINVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl <<Reset;
+            getch();
+            Shop_PermanentItems_Menu();
     }
 }
 
