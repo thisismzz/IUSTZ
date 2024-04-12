@@ -583,6 +583,11 @@ void intro();
 void gameOver();
 void endGame();
 void JaimeLannister();
+void JonSnow();
+void Daenerys();
+void Stannis();
+void Joffrey();
+void TheonGreyjoy();
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
