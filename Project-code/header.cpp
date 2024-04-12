@@ -2761,7 +2761,6 @@ void Show_Consumable_Items() {
     Food *food;
     cout << "CONSUMAABLE ITEMS:" << endl << "[1].MEDICINES" << endl << "[2].FOODS" << endl << "[0].BACK" << endl;
     cin>>number;
-    system("cls");
     switch(number){
         case 1: 
             system("cls");
