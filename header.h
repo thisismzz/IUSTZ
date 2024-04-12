@@ -312,7 +312,6 @@ enum class ZombieState{
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 class Zombie : public Person {
     private:
@@ -380,32 +379,6 @@ class AZ_Controller {
         ZombieState getState();
         void Attack();
         void showInfo();
-};
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Factory {
-    public:
-        static Human* createCharacter(const string&);
-
-        static BasicZombie* createBasicZombie(const int);
-
-        static AdvZombie* createAdvanceZombie(const int);
-
-    private:
-        static Human* createJonSnow(const string&);
-
-        static Human* createJaimeLannister(const string&);
-
-        static Human* createDaenerys(const string&);
-
-        static Human* createStannis(const string&);
-
-        static Human* createJoffrey(const string&);
-
-        static Human* createTheonGreyjoy(const string&);
-
 };
 
 // *----------------------------------------------------------------*
@@ -556,29 +529,56 @@ class Food : public Items {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
+class Factory {
+    public:
+        static Human* createCharacter(const string&);
+
+        static BasicZombie* createBasicZombie(const int);
+
+        static AdvZombie* createAdvanceZombie(const int);
+
+    private:
+        static Human* createJonSnow(const string&);
+
+        static Human* createJaimeLannister(const string&);
+
+        static Human* createDaenerys(const string&);
+
+        static Human* createStannis(const string&);
+
+        static Human* createJoffrey(const string&);
+
+        static Human* createTheonGreyjoy(const string&);
+
+};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
 void printWithDelay(string);
 void getUserInfo(int&, string&, string&);
-void showPlayerInfo();
-void createItem(); 
+void showPlayerInfo(); 
+void goodbye();
+void medicineMenu();
+void foodMenu();
 void playground();
+void battleGround_humanEnemy();
+void battleGround_basicZombie();
+void battleGround_advZombie();
+void BattleMenu();
 void Menu();
 void ShopMenu();
 void Show_Permanent_Items();
 void Show_Throwable_Items();
 void Show_Consumable_Items();
 void Shop_PermanentItems_Menu();
-void goodbye();
-void battleGround_humanEnemy();
-void battleGround_basicZombie();
-void battleGround_advZombie();
-void BattleMenu();
+void createItem();
 void createWarmWeapons();
 void createColdWeapons();
 void createThrowableItems();
 void createMedicines();
 void createFoods();
-void medicineMenu();
-void foodMenu();
 void intro();
 void gameOver();
 void endGame();
@@ -588,6 +588,7 @@ void Daenerys();
 void Stannis();
 void Joffrey();
 void TheonGreyjoy();
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*

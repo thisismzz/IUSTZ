@@ -107,7 +107,6 @@ int Stamina::getMaxStamina(){
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 Experience::Experience(Player *h):humanObj(h),maximum(100),currentExp(0){} // Constructor
 
@@ -145,6 +144,7 @@ int Experience::getCurrentExp(){
 int Experience :: getMaxExp() {
     return maximum;
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -187,7 +187,6 @@ int Skills::getUpgradePrice(){
     return upgradePrice;
 }
 
-
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -197,7 +196,6 @@ ColdWeaponAbility::ColdWeaponAbility(int n):Skills(n,n*15){} // Constructor
 
 ThrowableWeaponAbility::ThrowableWeaponAbility(int n):Skills(n,n*20){} // Constructor
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -233,8 +231,6 @@ void Backpack::addColdWeaponItem(const ColdWeapon coldWeaponItem){
     ColdWeaponItems.push_back(coldWeaponItem); // Adds cold weapon item
 }
 
-
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 bool Backpack::warmWeaponExistence(const WarmWeapon warmWeaponItem){
@@ -255,7 +251,6 @@ bool Backpack::coldWeaponExistence(const ColdWeapon coldWeaponItem){
     return false; // Returns false if cold weapon item does not exist
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack::removeFoodItem(const Food foodItem) {
@@ -288,7 +283,6 @@ void Backpack::useThrowableItemCount(const Throwable throwableItem) {
         removeThrowableItem(throwableItem); // Removes throwable item if count is 0
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack::showItems(){
@@ -344,7 +338,6 @@ void Backpack::showItems(){
     }
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack::showWarmWeaponItems(){
@@ -415,9 +408,6 @@ void Backpack::showUpgradeThrowable(){
     }
 }
 
-
-
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack::ConsumeMedForSurvival() {
@@ -456,8 +446,8 @@ void Backpack::ConsumeMedForSurvival() {
 }
 
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-void Backpack::ConsumeFoodForSurvival() {
+
+void Backpack::ConsumeFoodForSurvival() {   
     
     system("cls");
     
@@ -493,7 +483,6 @@ void Backpack::ConsumeFoodForSurvival() {
     }
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 Items* Backpack::useWeapons() {
@@ -614,7 +603,6 @@ Items* Backpack::useWeapons() {
 }
 
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 Items* Backpack::useConsumableItems() {
     int number;
@@ -701,6 +689,8 @@ Items* Backpack::useConsumableItems() {
     }
     return nullptr;
 }
+
+// *----------------------------------------------------------------*
 
 Items* Backpack::upgradeWeapons() {
     int number;
@@ -821,7 +811,6 @@ Items* Backpack::upgradeWeapons() {
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 BankAccount::BankAccount(int n){
     this->balance = n; // Constructor that initializes balance to n
@@ -896,7 +885,6 @@ int Human::getMaxStamina() {
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 BankAccount* Player::getBankAccount(){
     BankAccount* p = &bankAccount;
@@ -938,10 +926,8 @@ void Player::takeDamage(int amount) {
         cout <<Yellow<< "YOU HAVE BEEN DEFEATED!" << endl << Reset; // Prints a message if the player has been defeated
         state=PlayerState::DEFEATED;
     } 
-
     else 
         cout <<Yellow<< "YOU TOOK " << amount << " DAMAGE!" << endl<< Reset; // Prints a message if the player takes damage
-    
 }
 
 void Player::newLife(){
@@ -956,7 +942,6 @@ void Player::setState(PlayerState s){
     state=s;
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -1187,7 +1172,7 @@ void HE_Controller :: showInfo(){
 HE_View::HE_View(){}
 
 void HE_View::showInfo(HumanEnemy& model) {
-    cout  << Cyan << "HUMAN ENEMY'S INFO:"  << Reset<< endl << endl;
+    cout  << Pink << "HUMAN ENEMY'S INFO:"  << Reset<< endl << endl;
     cout << "    " << "Name: " << model.getName() << endl;
     cout << "    " << "Level: " << model.getLevel() << endl;
     cout << "    " << "Stamina: " << model.getStamina() << " / (" << model.getMaxStamina() << ")" << endl;
@@ -1195,15 +1180,15 @@ void HE_View::showInfo(HumanEnemy& model) {
 }
 
 void HE_View::updateHealth(string name,int amount) {
-    cout << name << "'s health increased for "<< amount << " HP!\n";
+    cout << endl << name << "'s health increased for "<< amount << " HP!\n";
 }
 
 void HE_View::updateStamina(string name,int amount) {
-    cout << name << "'s stamina increased for "<< amount << " STM!\n";
+    cout << endl << name << "'s stamina increased for "<< amount << " STM!\n";
 }
 
 void HE_View::attackView(string name,Items weapon) {
-    cout << name << " is attacking you by "<< weapon.getName() << "!" << "\n";
+    cout << endl << name << " is attacking you by "<< weapon.getName() << "!" << "\n";
 }
 
 void HE_View :: showBackpackItems() {
@@ -1211,7 +1196,6 @@ void HE_View :: showBackpackItems() {
     HE_Backpack->showItems();
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -1233,7 +1217,6 @@ ZombieState Zombie::getState(){
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 BasicZombie::BasicZombie(Zombie& zombie) : Zombie(zombie.getName(),zombie.getLevel()){}
 BasicZombie::BasicZombie(string n,int l) : Zombie(n,l){}
@@ -1244,6 +1227,7 @@ void BasicZombie :: bite() {
     player->takeDamage(this->getLevel()*5);
 }
 
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 BZ_Controller :: BZ_Controller (BasicZombie* BZ) : model(BZ) , view(BZ_View())  {}
@@ -1266,13 +1250,12 @@ void BZ_Controller :: showInfo() {
 BZ_View::BZ_View(){}
 
 void BZ_View :: showInfo(BasicZombie& model) {
-    cout <<Cyan<< "BASIC ZOMBIE'S INFO:" << Reset<< endl << endl;
+    cout <<Pink<< "BASIC ZOMBIE'S INFO:" << Reset<< endl << endl;
     cout  << "    " << "Name : " << model.getName() << endl;
     cout  << "    " << "Level : " << model.getLevel() << endl;
     cout  << "    " << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
 }
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -1323,7 +1306,7 @@ void AZ_Controller::Attack(){
 AZ_View::AZ_View(){}
 
 void AZ_View :: showInfo(AdvZombie& model) {
-    cout << Cyan << "ADVANCED ZOMBIE'S INFO:"  << Reset << endl << endl;
+    cout << Pink << "ADVANCED ZOMBIE'S INFO:"  << Reset << endl << endl;
     cout  << "    " << "Name : " << model.getName() << endl;
     cout  << "    " << "Level : " << model.getLevel() << endl;
     cout  << "    " << "Health : " << model.getHealthPoints() << " / ( " << model.getMaxHealth() << " )" << endl;
@@ -1442,7 +1425,6 @@ void WarmWeapon::Attack(Human& attacker, Person& attacked) {
     }
 }
 
-
 ostream& operator<<(ostream &os,WarmWeapon &obj){
     os << setw(30) << left << obj.name << setw(20) << obj.exp  << setw(20) << obj.wwa->getCurrentSkill() << setw(20) << obj.harm << obj.price << "$";
     return os; // Prints the warm weapon's details
@@ -1525,14 +1507,9 @@ void ColdWeapon::Attack(Human& attacker, Person& attacked) {
         if (pAttacked) {
             pAttacked->exp.setCurrentExp(damage, 0, 0); // Update attacked player's experience
             pAttacked->takeDamage(damage);
-        } else {
-            // Handle unsupported attacker type (optional)
-            // You can add custom logic here, e.g., logging an error message.
-            // For now, I'll leave this part empty.
         }
     }
 }
-
 
 ostream& operator<<(ostream& os,ColdWeapon& obj){
     os << setw(30) << left << obj.name << setw(20) << obj.exp  << setw(20) << obj.cwa->getCurrentSkill() << setw(20) << obj.harm << obj.price << "$";
@@ -1603,7 +1580,8 @@ void Throwable::Throw(Human& attacker, Person& attacked) {
             // Attacked is a Zombie
             z->takeDamage(damage); // Zombie takes damage
         }
-    } else {
+    }
+    else {
         // Attacked is a Player
         Player* pAttacked = dynamic_cast<Player*>(&attacked);
         if (pAttacked) {
@@ -1627,8 +1605,6 @@ ostream& operator<<(ostream& os,Throwable& obj) {
     os << setw(30) << left << obj.name << setw(20) << obj.exp  << setw(20) << obj.twa->getCurrentSkill() << setw(20) << obj.harm << obj.price << "$";
     return os; // Prints the throwable weapon's details
 }
-
-
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -1811,7 +1787,7 @@ AdvZombie* Factory :: createAdvanceZombie(const int level) {
     return new AdvZombie("AdvanceZombie",level); // Creates a Advance zombie
 }
 
-
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -1856,12 +1832,23 @@ void showPlayerInfo() {
     cout << "    Money: " << player->getMoney() << " $" << endl;
 }
 
-void createItem() {
-    createWarmWeapons();
-    createColdWeapons();
-    createThrowableItems();
-    createMedicines();
-    createFoods();
+void goodbye(){
+    system("cls");
+    if(player->getState()==PlayerState::DEFEATED){
+        gameOver();
+        exit(0);
+    }
+    else{
+        cout<<"Really?\n";
+        Sleep(1000);
+        cout<<"It's to soon!\n";
+        Sleep(1000);
+        cout<<"Fine i let you go :(\n";
+        Sleep(1000);
+        cout<<"Bye Bye "<<player->getUsername() << "." <<" hope to see you again:)" << endl << endl;
+        endGame();
+        exit(0);
+    }
 }
 
 void medicineMenu() {
@@ -1956,6 +1943,10 @@ void foodMenu() {
     }
 }
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
 void playground() {
     system("cls");
     srand(time(0));
@@ -1965,7 +1956,7 @@ void playground() {
 
     if (player->getState() == PlayerState::DEFEATED) {
         cout<<Yellow<<"YOU HAVE BEEN DEFEATED BY YOUR ENEMY , YOUR HP IS 0! " << endl << "TO CONTINUE THE GAME YOU NEED TO INCREASE YOUR HP..."<< endl <<Reset; 
-        cout<<Green<<"\nYou will go to your backpack and consume medicine..." << endl << Reset;
+        cout<<Green<<"\nYou will go to your backpack and consume medicine." << endl << Reset;
         getch();
         playerBackpack->ConsumeMedForSurvival();
     }
@@ -2017,7 +2008,6 @@ void playground() {
                 TheonGreyjoy();
             }
         
-            
             //show enemy's info
             cout << Cyan << "THE HUMAN ENEMY YOU ARE FACING IS : " << Reset << endl << endl;
             cout << "    " << "Name : " << humanEnemy->getName() << endl;
@@ -2091,363 +2081,6 @@ void playground() {
         }
     }
 }
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-void Menu() {
-    intro();
-
-    // just getting user info :)))
-    int age;
-    string gender,username;
-
-    system("cls");
-
-    print_with_delay("IN THE LAND OF WESTEROS, WAR AND TENSIONS AMONG POWERFUL FAMILIES HAVE ALWAYS EXISTED.\nBUT NOW, THE WRATH AND UNINVITED POWER HAVE CAST A HARSH SHADOW OVER THIS LAND.\nYOU, A HERO, ARE FACED WITH AN IMPORTANT MISSION.\nYOU MUST NAVIGATE THROUGH THE DANGERS AND IMMENSE OBSTACLES AHEAD AND CONFRONT THE LOOMING THREATS THAT MENACE THE LAND OF WESTEROS.\n\n");
-    getUserInfo(age , gender , username);
-    print_with_delay("IN THIS JOURNEY, YOU MUST CHOOSE YOUR CHARACTER.\nWILL JON SNOW, THE STRONG AND JUST COMMANDER, SEIZE THE FATE OF THE LAND?\nOR WILL YOU, INSTEAD OF HIM, TRAVEL WITH JAIME LANNISTER, THE INTELLIGENT KNIGHT AND SEASONED STRATEGIST, AND OVERCOME ALL OBSTACLES?\nOR PERHAPS WITH DAENERYS TARGARYEN, THE DANGEROUS AND POWERFUL QUEEN, YOU SEEK TO RULE OVER WESTEROS?\nYOUR DECISION CAN CHANGE THE FATE OF THE LAND. ARE YOU READY?\n");
-    cout << Pink <<"\nPress any key to continue..."<< Reset;
-    getch();
-
-    // Creating the Player's Character Choices
-    int chosenIndex;
-    int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
-    
-    while (true){
-        system("cls");
-
-        // Show all the different options a user has for the characters
-        Human *character;
-        cout << Cyan << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED: " << Reset << endl << endl;
-        for (int i = 0; i < 6; i++) {
-            character = Factory::createCharacter(characterTypes[i]);
-            cout << "[" << i+1 << "]. " << characterTypes[i] << endl;
-            cout << "     " << "Stamina : " << character->getStamina() << endl;
-            cout << "     " << "Money : " << money[i] << " $" << endl << endl;
-        }
-        // Get the user's choice
-        cin >> chosenIndex;
-        if (chosenIndex > 0 and chosenIndex < 7){
-            chosenIndex--;
-            // Create Player Character
-            character = Factory::createCharacter(characterTypes[chosenIndex]);
-            player = new Player(*character,gender,username,age,money[chosenIndex]);
-            characterTypes.erase(characterTypes.begin()+chosenIndex);
-            break;
-        }
-        else{
-            cout <<Yellow << "INVALID INDEX! PLEASE TRY AGAIN." <<Reset; 
-            cout << Pink << "\nPress any key to continue..." << Reset;
-            getch();
-        }
-    }
-
-    system("cls");
-
-    // Show the details of the Player
-    cout << Cyan <<"CHARACTER YOU HAVE CHOSEN IS: " << Reset << endl << endl;
-    cout << "     Name : " << player->getName() << endl;
-    cout << "     Level : " << player->getLevel() << endl;
-    cout << "     Experience : " << player->getExperience() << endl;
-    cout << "     Stamina : " << player->getStamina() << endl;
-    cout << "     Health : " << player->getHealthPoints() << endl;
-    cout << "     Money : " << money[chosenIndex] << " $" << endl << endl;
-
-    cout <<Green<< "Now that you have chosen your character, you will go to shop to buy weapons to fight with.\n\n" << Reset;
-    cout << Pink <<"Press any key to continue..." << Reset;
-    getch();  // Wait for a key press
-
-    createItem();
-    Shop_PermanentItems_Menu();
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-void ShopMenu() {
-    string temp;
-    while(true){
-        system("cls");
-        int number;
-        cout << Cyan <<"YOU ENTER THE SHOP!" << Reset << endl << endl << "What do you want to buy?" << endl 
-        << "[1].PERMANENT ITEMS" << endl << "[2].THROWABLE ITEMS" << endl << "[3].CONSUMABLE ITEMS" << endl << "[4].SHOW BACKPACK" << endl << "[5].EXIT SHOP" << endl << "[6].QUIT" << endl;
-        cin >> number;
-        switch(number){
-            case 1: Show_Permanent_Items(); // Shows permanent items
-                break;
-        
-            case 2: Show_Throwable_Items(); // Shows throwable items
-                break;
-        
-            case 3: Show_Consumable_Items(); // Shows consumable items
-                break;
-        
-            case 4: 
-                system("cls");
-                cout << Cyan <<"HERE ARE THE AVAILABLE ITEMS IN THE BACKPACK:" << Reset << endl;
-                player->getBackpack()->showItems();
-                cout << Pink <<"\nPress any key to go back..."<< Reset;
-                getch(); // Wait for a key press
-                ShopMenu(); // Recursive call
-                break;
-
-            case 5:
-                cout <<Yellow<< "\nYOU LEFT THE SHOP." << endl << Reset; // Exits the shop
-                cout << Pink <<"\nPress any key to continue..."<< Reset;
-                getch();  // Wait for a key press
-                playground();
-        
-            case 6:
-                cout<<"[!] ARE YOU SURE? (Y/N)";
-                cin>>temp;
-                if(temp=="Y"){
-                    goodbye();
-                }
-                else{
-                    ShopMenu();
-                }
-                break;
-
-            default: 
-                cout <<Yellow << "WRONG NUMBER" << Reset << endl << Pink <<"\nPress any key to continue..."<< Reset;
-                getch(); // Handles invalid input
-                break;
-        }
-    }
-}
-
-void Show_Permanent_Items() {
-    system("cls");
-    int number,item;
-    WarmWeapon *wweapon;
-    ColdWeapon *cweapon;
-    cout << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl << "[0].BACK" << endl;
-    cin>>number;
-    system("cls");
-    switch(number){
-        case 1: 
-            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE WARMWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
-            WarmWeapon::showItems(); // Shows warm weapons
-            cout << "[00]. Back" << endl;
-            cout << "\nWhich one do you want to buy?" << endl;
-            cin >> item;
-            if ( item == 0) {
-                Show_Permanent_Items();
-            }
-            wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
-            wweapon->buy(); // Buys a warm weapon
-            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
-            getch(); // Wait for a key press
-            break;
-        
-        case 2:
-            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE COLDWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
-            ColdWeapon::showItems(); // Shows cold weapons
-            cout << "[00]. Back" << endl;
-            cout << "\nWhich one do you want to buy?" << endl;
-            cin >> item;
-            if ( item == 0) {
-                Show_Permanent_Items();
-            }
-            cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
-            cweapon->buy(); // Buys a cold weapon
-            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
-            getch(); // Wait for a key press
-            break;
-        
-        case 0: 
-            ShopMenu(); // Returns to the previous menu
-    }
-}
-
-void Show_Throwable_Items() {
-    system("cls");
-    int item,quantity;
-    Throwable *tweapon;
-    cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE THROWABLE WEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
-    Throwable::showItems(); // Shows throwable items
-    cout << "[00]. Back" << endl;
-    cout<<"\nWhich one do you want to buy?" << endl;
-    cin >> item;
-    while(item<0 && item>10){
-        cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER BETWEEN 0 AND 5."  << Reset << endl << "\nWhich one do you want to buy?" << endl;
-        cin >> item;
-        if(cin.fail()) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
-    if ( item == 0) {
-        return;
-    }
-    cout << "How many?" << endl;
-    cin >> quantity;
-    while(quantity <= 0){
-        cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER GREATER THAN ZERO." << Reset << endl << "How many?" << endl;
-        cin >> quantity;
-        if(cin.fail()) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
-
-    tweapon=new Throwable(Throwable::shop_items_throwable.at(item-1));
-    tweapon->buy(quantity); // Buys a throwable item
-    cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
-    getch();  // Wait for a key press
-}
-
-void Show_Consumable_Items() {
-    system("cls");
-    int number,item,quantity;
-    Medicine *drug;
-    Food *food;
-    cout << "CONSUMAABLE ITEMS:" << endl << "[1].MEDICINES" << endl << "[2].FOODS" << endl << "[0].BACK" << endl;
-    cin>>number;
-    system("cls");
-    switch(number){
-        case 1: 
-            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE MEDICINES:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
-            Medicine::showItems(); // Shows medicines
-            cout << "[00]. Back" << endl;
-            cout << "\nWhich one do you want to buy?" << endl;
-            cin >> item;
-            while(item<0 && item>10){
-                cout <<Yellow<< "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER BETWEEN 0 AND 10."  <<Reset << endl << "\nWhich one do you want to buy?" << endl;
-                cin >> item;
-                if(cin.fail()) {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-            }
-            if ( item == 0) {
-                Show_Consumable_Items();
-            }
-            cout << "How many?" << endl;
-            cin >> quantity;
-            while(quantity <= 0){
-                cout <<Yellow<< "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER GREATER THAN ZERO."  << Reset<< endl << "How many?" << endl;
-                cin >> quantity;
-                if(cin.fail()) {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-            }
-            drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
-            drug->buy(quantity); // Buys a medicine
-            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
-            getch(); // Wait for a key press
-            break;
-            
-        case 2:
-            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE FOODS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
-            Food::showItems(); // Shows foods
-            cout << "[00]. Back" << endl;
-            cout << "\nWhich one do you want to buy?" << endl;
-            cin >> item;
-            while(item<0 && item>10){
-                cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER BETWEEN 0 AND 10."  <<Reset<< endl << "\nWhich one do you want to buy?" << endl;
-                cin >> item;
-                if(cin.fail()) {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-            }
-            if ( item == 0) {
-                Show_Consumable_Items();
-            }
-            cout << "How many?" << endl;
-            cin >> quantity;
-            while(quantity <= 0){
-                cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER GREATER THAN ZERO."  << Reset<< endl << "How many?" << endl;
-                cin >> quantity;
-                if(cin.fail()) {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-            }
-            food=new Food(Food::shop_items_food.at(item-1));
-            food->buy(quantity); // Buys a food
-            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
-            getch(); // Wait for a key press
-            break;
-        case 0: 
-            ShopMenu(); // Returns to the previous menu
-    }
-}
-
-void Shop_PermanentItems_Menu() {
-    system("cls");
-    int number,item;
-    WarmWeapon *wweapon;
-    ColdWeapon *cweapon;
-    cout << Cyan << "YOU ENTER THE SHOP!" << Reset << Green <<"\n\nYou should atleast buy one Permanent Item for fighting to continue the game."  << Reset << "\n\nSo... What do you want to buy?" << endl 
-    << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl;
-    cin >> number;
-    system("cls");
-    switch(number){
-        case 1: 
-            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE WARMWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
-            WarmWeapon::showItems(); // Shows warm weapons
-            cout << "[00]. Back" << endl;
-            cout << "\nWhich one do you want to buy?" << endl;
-            cin >> item;
-            if ( item == 0) {
-                Shop_PermanentItems_Menu();
-            }
-            wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
-            wweapon->buy(); // Buys a warm weapon
-            cout <<Green << "\nOk, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want.\n" << Reset;
-            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
-            getch(); // Wait for a key press
-            ShopMenu();
-        
-        case 2:
-            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE COLDWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
-            ColdWeapon::showItems(); // Shows cold weapons
-            cout << "[00]. Back" << endl;
-            cout << "\nWhich one do you want to buy?" << endl;
-            cin >> item;
-            if ( item == 0) {
-                Shop_PermanentItems_Menu();
-            }
-            cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
-            cweapon->buy(); // Buys a cold weapon
-            cout <<Green<< "\nOk, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want.\n"<< Reset;
-            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
-            getch(); // Wait for a key press
-            ShopMenu();
-    }
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-void goodbye(){
-    system("cls");
-    if(player->getState()==PlayerState::DEFEATED){
-        gameOver();
-        exit(0);
-    }
-    else{
-        cout<<"Really?\n";
-        Sleep(1000);
-        cout<<"It's to soon!\n";
-        Sleep(1000);
-        cout<<"Fine i let you go :(\n";
-        Sleep(1000);
-        cout<<"Bye Bye "<<player->getUsername() << "." <<" hope to see you again:)" << endl << endl;
-        endGame();
-        exit(0);
-    }
-}
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 void battleGround_humanEnemy(){
     int turn = 1;        //odd turn for player even turn for enemy
@@ -2591,10 +2224,6 @@ void battleGround_advZombie(){
     playground();
 }
 
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
 void BattleMenu() {
     system("cls");
     int number;
@@ -2618,7 +2247,7 @@ void BattleMenu() {
             if (player->getStamina() <= 0) {
             system("cls");
             cout<<Yellow<<"YOU HAVE TOO LITTLE STAMINA! " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..." << endl << Reset;
-            cout << Green <<"\nYou will go to your backpack and consume food..." << endl << Reset;
+            cout << Green <<"\nYou will go to your backpack and consume food." << endl << Reset;
             player->setState(PlayerState::DEFEATED);
             getch(); // Wait for a key press
             backpack->ConsumeFoodForSurvival();
@@ -2734,6 +2363,353 @@ void BattleMenu() {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
+void Menu() {
+    intro();
+
+    // just getting user info :)))
+    int age;
+    string gender,username;
+
+    system("cls");
+
+    print_with_delay("IN THE LAND OF WESTEROS, WAR AND TENSIONS AMONG POWERFUL FAMILIES HAVE ALWAYS EXISTED.\nBUT NOW, THE WRATH AND UNINVITED POWER HAVE CAST A HARSH SHADOW OVER THIS LAND.\nYOU, A HERO, ARE FACED WITH AN IMPORTANT MISSION.\nYOU MUST NAVIGATE THROUGH THE DANGERS AND IMMENSE OBSTACLES AHEAD AND CONFRONT THE LOOMING THREATS THAT MENACE THE LAND OF WESTEROS.\n\n");
+    getUserInfo(age , gender , username);
+    print_with_delay("IN THIS JOURNEY, YOU MUST CHOOSE YOUR CHARACTER.\nWILL JON SNOW, THE STRONG AND JUST COMMANDER, SEIZE THE FATE OF THE LAND?\nOR WILL YOU, INSTEAD OF HIM, TRAVEL WITH JAIME LANNISTER, THE INTELLIGENT KNIGHT AND SEASONED STRATEGIST, AND OVERCOME ALL OBSTACLES?\nOR PERHAPS WITH DAENERYS TARGARYEN, THE DANGEROUS AND POWERFUL QUEEN, YOU SEEK TO RULE OVER WESTEROS?\nYOUR DECISION CAN CHANGE THE FATE OF THE LAND. ARE YOU READY?\n");
+    cout << Pink <<"\nPress any key to continue..."<< Reset;
+    getch();
+
+    // Creating the Player's Character Choices
+    int chosenIndex;
+    int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
+    
+    while (true){
+        system("cls");
+
+        // Show all the different options a user has for the characters
+        Human *character;
+        cout << Cyan << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED: " << Reset << endl << endl;
+        for (int i = 0; i < 6; i++) {
+            character = Factory::createCharacter(characterTypes[i]);
+            cout << "[" << i+1 << "]. " << characterTypes[i] << endl;
+            cout << "     " << "Stamina : " << character->getStamina() << endl;
+            cout << "     " << "Money : " << money[i] << " $" << endl << endl;
+        }
+        // Get the user's choice
+        cin >> chosenIndex;
+        if (chosenIndex > 0 and chosenIndex < 7){
+            chosenIndex--;
+            // Create Player Character
+            character = Factory::createCharacter(characterTypes[chosenIndex]);
+            player = new Player(*character,gender,username,age,money[chosenIndex]);
+            characterTypes.erase(characterTypes.begin()+chosenIndex);
+            break;
+        }
+        else{
+            cout <<Yellow << "INVALID INDEX! PLEASE TRY AGAIN." <<Reset; 
+            cout << Pink << "\nPress any key to continue..." << Reset;
+            getch();
+        }
+    }
+
+    system("cls");
+
+    // Show the details of the Player
+    cout << Cyan <<"CHARACTER YOU HAVE CHOSEN IS: " << Reset << endl << endl;
+    cout << "     Name : " << player->getName() << endl;
+    cout << "     Level : " << player->getLevel() << endl;
+    cout << "     Experience : " << player->getExperience() << endl;
+    cout << "     Stamina : " << player->getStamina() << endl;
+    cout << "     Health : " << player->getHealthPoints() << endl;
+    cout << "     Money : " << money[chosenIndex] << " $" << endl << endl;
+
+    cout <<Green<< "Now that you have chosen your character, you will go to shop to buy weapons to fight with.\n\n" << Reset;
+    cout << Pink <<"Press any key to continue..." << Reset;
+    getch();  // Wait for a key press
+
+    createItem();
+    Shop_PermanentItems_Menu();
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+void ShopMenu() {
+    string temp;
+    while(true){
+        system("cls");
+        int number;
+        cout << Cyan <<"YOU ENTER THE SHOP!" << Reset << endl << endl << "What do you want to buy?" << endl 
+        << "[1].PERMANENT ITEMS" << endl << "[2].THROWABLE ITEMS" << endl << "[3].CONSUMABLE ITEMS" << endl << "[4].SHOW BACKPACK" << endl << "[5].EXIT SHOP" << endl << "[6].QUIT" << endl;
+        cin >> number;
+        switch(number){
+            case 1: Show_Permanent_Items(); // Shows permanent items
+                break;
+        
+            case 2: Show_Throwable_Items(); // Shows throwable items
+                break;
+        
+            case 3: Show_Consumable_Items(); // Shows consumable items
+                break;
+        
+            case 4: 
+                system("cls");
+                cout << Cyan <<"HERE ARE THE AVAILABLE ITEMS IN THE BACKPACK:" << Reset << endl;
+                player->getBackpack()->showItems();
+                cout << Pink <<"\nPress any key to go back..."<< Reset;
+                getch(); // Wait for a key press
+                ShopMenu(); // Recursive call
+                break;
+
+            case 5:
+                cout <<Yellow<< "\nYOU LEFT THE SHOP." << endl << Reset; // Exits the shop
+                cout << Pink <<"\nPress any key to continue..."<< Reset;
+                getch();  // Wait for a key press
+                playground();
+        
+            case 6:
+                cout<<"[!] ARE YOU SURE? (Y/N)";
+                cin>>temp;
+                if(temp=="Y"){
+                    goodbye();
+                }
+                else{
+                    ShopMenu();
+                }
+                break;
+
+            default: 
+                cout <<Yellow << "WRONG NUMBER" << Reset << endl << Pink <<"\nPress any key to continue..."<< Reset;
+                getch(); // Handles invalid input
+                break;
+        }
+    }
+}
+
+// *----------------------------------------------------------------*
+
+void Show_Permanent_Items() {
+    system("cls");
+    int number,item;
+    WarmWeapon *wweapon;
+    ColdWeapon *cweapon;
+    cout << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl << "[0].BACK" << endl;
+    cin>>number;
+    system("cls");
+    switch(number){
+        case 1: 
+            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE WARMWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
+            WarmWeapon::showItems(); // Shows warm weapons
+            cout << "[00]. Back" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
+            cin >> item;
+            if ( item == 0) {
+                Show_Permanent_Items();
+            }
+            wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
+            wweapon->buy(); // Buys a warm weapon
+            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
+            getch(); // Wait for a key press
+            break;
+        
+        case 2:
+            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE COLDWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
+            ColdWeapon::showItems(); // Shows cold weapons
+            cout << "[00]. Back" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
+            cin >> item;
+            if ( item == 0) {
+                Show_Permanent_Items();
+            }
+            cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
+            cweapon->buy(); // Buys a cold weapon
+            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
+            getch(); // Wait for a key press
+            break;
+        
+        case 0: 
+            ShopMenu(); // Returns to the previous menu
+    }
+}
+
+// *----------------------------------------------------------------*
+
+void Show_Throwable_Items() {
+    system("cls");
+    int item,quantity;
+    Throwable *tweapon;
+    cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE THROWABLE WEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
+    Throwable::showItems(); // Shows throwable items
+    cout << "[00]. Back" << endl;
+    cout<<"\nWhich one do you want to buy?" << endl;
+    cin >> item;
+    while(item<0 && item>10){
+        cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER BETWEEN 0 AND 5."  << Reset << endl << "\nWhich one do you want to buy?" << endl;
+        cin >> item;
+        if(cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+    if ( item == 0) {
+        return;
+    }
+    cout << "How many?" << endl;
+    cin >> quantity;
+    while(quantity <= 0){
+        cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER GREATER THAN ZERO." << Reset << endl << "How many?" << endl;
+        cin >> quantity;
+        if(cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    tweapon=new Throwable(Throwable::shop_items_throwable.at(item-1));
+    tweapon->buy(quantity); // Buys a throwable item
+    cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
+    getch();  // Wait for a key press
+}
+
+// *----------------------------------------------------------------*
+
+void Show_Consumable_Items() {
+    system("cls");
+    int number,item,quantity;
+    Medicine *drug;
+    Food *food;
+    cout << "CONSUMAABLE ITEMS:" << endl << "[1].MEDICINES" << endl << "[2].FOODS" << endl << "[0].BACK" << endl;
+    cin>>number;
+    system("cls");
+    switch(number){
+        case 1: 
+            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE MEDICINES:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
+            Medicine::showItems(); // Shows medicines
+            cout << "[00]. Back" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
+            cin >> item;
+            while(item<0 && item>10){
+                cout <<Yellow<< "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER BETWEEN 0 AND 10."  <<Reset << endl << "\nWhich one do you want to buy?" << endl;
+                cin >> item;
+                if(cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
+            if ( item == 0) {
+                Show_Consumable_Items();
+            }
+            cout << "How many?" << endl;
+            cin >> quantity;
+            while(quantity <= 0){
+                cout <<Yellow<< "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER GREATER THAN ZERO."  << Reset<< endl << "How many?" << endl;
+                cin >> quantity;
+                if(cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
+            drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
+            drug->buy(quantity); // Buys a medicine
+            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
+            getch(); // Wait for a key press
+            break;
+            
+        case 2:
+            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE FOODS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
+            Food::showItems(); // Shows foods
+            cout << "[00]. Back" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
+            cin >> item;
+            while(item<0 && item>10){
+                cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER BETWEEN 0 AND 10."  <<Reset<< endl << "\nWhich one do you want to buy?" << endl;
+                cin >> item;
+                if(cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
+            if ( item == 0) {
+                Show_Consumable_Items();
+            }
+            cout << "How many?" << endl;
+            cin >> quantity;
+            while(quantity <= 0){
+                cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER GREATER THAN ZERO."  << Reset<< endl << "How many?" << endl;
+                cin >> quantity;
+                if(cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
+            food=new Food(Food::shop_items_food.at(item-1));
+            food->buy(quantity); // Buys a food
+            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
+            getch(); // Wait for a key press
+            break;
+        case 0: 
+            ShopMenu(); // Returns to the previous menu
+    }
+}
+
+// *----------------------------------------------------------------*
+
+void Shop_PermanentItems_Menu() {
+    system("cls");
+    int number,item;
+    WarmWeapon *wweapon;
+    ColdWeapon *cweapon;
+    cout << Cyan << "YOU ENTER THE SHOP!" << Reset << Green <<"\n\nYou should atleast buy one Permanent Item for fighting to continue the game."  << Reset << "\n\nSo... What do you want to buy?" << endl 
+    << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl;
+    cin >> number;
+    system("cls");
+    switch(number){
+        case 1: 
+            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE WARMWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
+            WarmWeapon::showItems(); // Shows warm weapons
+            cout << "[00]. Back" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
+            cin >> item;
+            if ( item == 0) {
+                Shop_PermanentItems_Menu();
+            }
+            wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
+            wweapon->buy(); // Buys a warm weapon
+            cout <<Green << "\nOk, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want.\n" << Reset;
+            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
+            getch(); // Wait for a key press
+            ShopMenu();
+        
+        case 2:
+            cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE COLDWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
+            ColdWeapon::showItems(); // Shows cold weapons
+            cout << "[00]. Back" << endl;
+            cout << "\nWhich one do you want to buy?" << endl;
+            cin >> item;
+            if ( item == 0) {
+                Shop_PermanentItems_Menu();
+            }
+            cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
+            cweapon->buy(); // Buys a cold weapon
+            cout <<Green<< "\nOk, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want.\n"<< Reset;
+            cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
+            getch(); // Wait for a key press
+            ShopMenu();
+    }
+}
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+void createItem() {
+    createWarmWeapons();
+    createColdWeapons();
+    createThrowableItems();
+    createMedicines();
+    createFoods();
+}
+
 void createWarmWeapons() {
     // Creating warm weapons with their respective attributes
     WarmWeapon longclaw("Longclaw", 2800, 3, 20, 15);
@@ -2816,8 +2792,6 @@ void intro(){
 }
 
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 void gameOver(){
     cout << Red;
@@ -2830,9 +2804,6 @@ void gameOver(){
 }
 
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
 
 void endGame(){
     cout << Pink;
@@ -2843,10 +2814,8 @@ void endGame(){
     cout <<"|_____|_| \\_|____/   \\____/_/   \\_\\_|  |_|_____|"<<'\n';
     cout << Reset;
 }
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
+// *----------------------------------------------------------------*
 
 void JaimeLannister(){
 
@@ -2857,9 +2826,9 @@ void JaimeLannister(){
     cout <<"|_|\\_\\___|_| \\_|\\____|____/|_____/_/   \\_\\_| |_____|_| \\_\\ " <<endl << endl << endl;
 
 }
+
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
+
 void JonSnow(){
     cout <<" _  _____ _   _  ____   ___ _   _   _____ _   _ _____   _   _  ___  ____ _____ _   _" << endl; 
     cout <<"| |/ /_ _| \\ | |/ ___| |_ _| \\ | | |_   _| | | | ____| | \\ | |/ _ \\|  _ \\_   _| | | |"<< endl;
@@ -2867,8 +2836,7 @@ void JonSnow(){
     cout <<"| . \\ | || |\\  | |_| |  | || |\\  |   | | |  _  | |___  | |\\  | |_| |  _ < | | |  _  |"<< endl;
     cout <<"|_|\\_\\___|_| \\_|\\____| |___|_| \\_|   |_| |_| |_|_____| |_| \\_|\\___/|_| \\_\\|_| |_| |_|"<< endl <<endl << endl;
 }
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
+
 // *----------------------------------------------------------------*
 
 void Daenerys(){
@@ -2879,8 +2847,7 @@ void Daenerys(){
     cout <<"| |  | | |_| || | |  _  | |___|  _ <  | |_| |  _|   | |_| |  _ <  / ___ \\ |_| | |_| | |\\  |___) |"<< endl;
     cout <<"|_|  |_|\\___/ |_| |_| |_|_____|_| \\_\\  \\___/|_|     |____/|_| \\_\\/_/   \\_\\____|\\___/|_| \\_|____/ " << endl << endl << endl;
 }
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
+
 // *----------------------------------------------------------------*
 
 void Stannis(){
@@ -2891,8 +2858,7 @@ void Stannis(){
     cout <<"  | | |  _  | |___  | |\\  || | |_| |  _  | | |    | | ___  | | |_| / ___ \\|  _ <| . \\  " << endl;
     cout <<"  |_| |_| |_|_____| |_| \\_|___\\____|_| |_| |_|   |___|____/  |____/_/   \\_\\_| \\_\\_|\\_\\ " << endl << endl << endl;
 }
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
+
 // *----------------------------------------------------------------*
 
 void Joffrey(){
@@ -2903,8 +2869,7 @@ void Joffrey(){
     cout <<" | |   / ___ \\| |  | |  / ___ \\  | . \\ | || |\\  | |_| |"<< endl;
     cout <<"|___| /_/   \\_\\_|  |_| /_/   \\_\\ |_|\\_\\___|_| \\_|\\____|"<< endl << endl << endl;
 }
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
+
 // *----------------------------------------------------------------*
 
 void TheonGreyjoy(){
@@ -2915,6 +2880,7 @@ void TheonGreyjoy(){
     cout<<"  \\ V  V / | |___  | |_| | |_| | |\\  |   | |    ___) | |_| |\\ V  V /  " << endl;
     cout<<"   \\_/\\_/  |_____| |____/ \\___/|_| \\_|   |_|   |____/ \\___/  \\_/\\_/   " << endl << endl << endl;
 }
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
