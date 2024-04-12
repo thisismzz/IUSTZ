@@ -423,14 +423,14 @@ void Backpack::showUpgradeThrowable(){
 void Backpack::ConsumeMedForSurvival() {
     system("cls");
 
-    
     if(MedicineItems.empty()){
         cout << Yellow << "NO MEDICINE ITEM LEFT IN BACKPACK! YOUR ONLY CHANCE OF SURVIVAL IS TO GO TO SHOP AND BUY ANY MEDICINE THAT YOU CAN." << endl << endl <<Reset;
         cout << Pink << "Press any key to continue ... " << Reset;
         getch();
         medicineMenu();
     }
-
+    
+    system("cls");
     cout << Cyan << "HERE ARE THE AVAILABLE MEDICINE ITEMS IN THE BACKPACK:" << Reset << endl << endl;
     int index = 1;
     showMedicineItems();
@@ -444,6 +444,7 @@ void Backpack::ConsumeMedForSurvival() {
         Medicine* medicine = new Medicine(iter->first);
         medicine->use(*player);
         player->newLife();   //change the state from DEFEATED to ALIVE
+        cout << Green << "\nNow that the Health has increased, as you have been lost the last game, you will go back to the playground." << Reset;
         playground();
     }
     else{
@@ -466,6 +467,7 @@ void Backpack::ConsumeFoodForSurvival() {
         foodMenu();
     }
 
+    system("cls");
     cout << Cyan << "HERE ARE THE AVAILABLE FOOD ITEMS IN THE BACKPACK:" << Reset<< endl << endl;
     int index = 1;
     showFoodItems();  
@@ -479,6 +481,7 @@ void Backpack::ConsumeFoodForSurvival() {
         Food* food = new Food(iter->first);
         food->use(*player);
         player->newLife();   //change the state from DEFEATED to ALIVE
+        cout << Green << "\nNow that the stamina has increased, you will go back to the battleground and continue the last game." << Reset;
         BattleMenu();
     }
     else{
@@ -841,9 +844,8 @@ bool BankAccount::withdraw(int amount) {
 
 void BankAccount::prize(int amount){
     balance+=amount;
-    cout<<Yellow<<"YOU TOOK A "<<amount<<"$ PRIZE!"<<endl<< Reset;
+    cout<<Green<<"YOU TOOK A "<<amount<<"$ PRIZE!"<<endl<< Reset;
 }
-
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -853,7 +855,7 @@ Person::Person(string n,int l=1):name(n),level(l),hp(l){} // Constructor that in
 
 void Person::updateLevel() {
     level++; // Increases level by 1
-    cout<<Yellow<<"[!] NEW LEVEL!\t(YOUR LEVEL : "<<level << ")" <<endl<< Reset;
+    cout<<Green<<"[!] NEW LEVEL!\t(YOUR LEVEL : "<<level << ")" <<endl<< Reset;
 }
 
 int Person::getLevel() {
@@ -1960,7 +1962,7 @@ void playground() {
 
     if (player->getState() == PlayerState::DEFEATED) {
         cout<<Yellow<<"YOU HAVE BEEN DEFEATED BY YOUR ENEMY , YOUR HP IS 0! " << endl << "TO CONTINUE THE GAME YOU NEED TO INCREASE YOUR HP..."<< endl <<Reset; 
-        cout<<Yellow<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl << Reset;
+        cout<<Green<<" You will go to your backpack and consume medicine..." << endl << Reset;
         getch();
         playerBackpack->ConsumeMedForSurvival();
     }
@@ -2150,7 +2152,7 @@ void Menu() {
     cout << "     Health : " << player->getHealthPoints() << endl;
     cout << "     Money : " << money[chosenIndex] << " $" << endl << endl;
 
-    cout <<Yellow<< "Now that you have chosen your character, you will go to shop to buy weapons to fight with.\n\n" << Reset;
+    cout <<Green<< "Now that you have chosen your character, you will go to shop to buy weapons to fight with.\n\n" << Reset;
     cout << Pink <<"Press any key to continue..." << Reset;
     getch();  // Wait for a key press
 
@@ -2379,7 +2381,7 @@ void Shop_PermanentItems_Menu() {
     int number,item;
     WarmWeapon *wweapon;
     ColdWeapon *cweapon;
-    cout << Cyan << "YOU ENTER THE SHOP!" << Reset << "\n\nYou should atleast buy one Permanent Item for fighting to continue the game. \nSo... What do you want to buy?" << endl << endl 
+    cout << Cyan << "YOU ENTER THE SHOP!" << Reset << Green <<"\n\nYou should atleast buy one Permanent Item for fighting to continue the game."  << Reset << "\nSo... What do you want to buy?" << endl << endl 
     << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl;
     cin >> number;
     system("cls");
@@ -2395,7 +2397,7 @@ void Shop_PermanentItems_Menu() {
             }
             wweapon=new WarmWeapon(WarmWeapon::shop_items_permanent_warmweapon.at(item-1));
             wweapon->buy(); // Buys a warm weapon
-            cout <<Yellow << "\nOk, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want.\n" << Reset;
+            cout <<Green << "\nOk, Now that you have bought a WarmWeapon, you can continue shopping and buy other Items that you want.\n" << Reset;
             cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
             getch(); // Wait for a key press
             ShopMenu();
@@ -2411,7 +2413,7 @@ void Shop_PermanentItems_Menu() {
             }
             cweapon=new ColdWeapon(ColdWeapon::shop_items_permanent_coldweapon.at(item-1));
             cweapon->buy(); // Buys a cold weapon
-            cout <<Yellow<< "\nOk, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want.\n"<< Reset;
+            cout <<Green<< "\nOk, Now that you have bought a ColdWeapon, you can continue shopping and buy other Items that you want.\n"<< Reset;
             cout << Pink <<"\nPress any key to continue shopping..."<< Reset;
             getch(); // Wait for a key press
             ShopMenu();
@@ -2606,8 +2608,8 @@ void BattleMenu() {
         case 1: {
             if (player->getStamina() <= 0) {
             system("cls");
-            cout<<Yellow<<"YOU HAVE TOO LITTLE STAMINA! " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..." << endl; 
-            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl << Reset;
+            cout<<Yellow<<"YOU HAVE TOO LITTLE STAMINA! " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..." << endl << Reset;
+            cout << Green <<"You will go to your backpack and consume food..." << endl << Reset;
             player->setState(PlayerState::DEFEATED);
             getch(); // Wait for a key press
             backpack->ConsumeFoodForSurvival();
