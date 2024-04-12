@@ -2030,6 +2030,7 @@ void playground() {
 
                 //create basic zombie
                 basicZombie = Factory::createBasicZombie(player->getLevel());
+                show_basicZombie();
 
                 //show enemy's info
                 cout << Cyan << "THE BASIC ZOMBIE YOU ARE FACING IS : " << Reset<< endl << endl;
@@ -2049,6 +2050,7 @@ void playground() {
 
                 //create advance zombie
                 advZombie = Factory::createAdvanceZombie(player->getLevel());
+                show_advZombie();
 
                 //show enemy's info
                 cout << Cyan <<"THE ADVANCED ZOMBIE YOU ARE FACING IS : " << Reset<< endl << endl;
@@ -2884,3 +2886,23 @@ void TheonGreyjoy(){
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
+
+void show_advZombie(){
+    cout <<" _   _ ___ ____ _   _ _____   _  _____ _   _  ____" << endl; 
+    cout <<"| \\ | |_ _/ ___| | | |_   _| | |/ /_ _| \\ | |/ ___|" << endl;
+    cout <<"|  \\| || | |  _| |_| | | |   | ' / | ||  \\| | |  _" << endl;
+    cout <<"| |\\  || | |_| |  _  | | |   | . \\ | || |\\  | |_| |" << endl;
+    cout <<"|_| \\_|___\\____|_| |_| |_|   |_|\\_\\___|_| \\_|\\____|"<< endl <<endl << endl;
+}
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+void show_basicZombie(){
+
+    cout <<"__        ___   _ ___ _____ _____  __        ___    _     _  _______ ____" << endl;  
+    cout <<"\\ \\      / / | | |_ _|_   _| ____| \\ \\      / / \\  | |   | |/ / ____|  _ \\ " << endl; 
+    cout <<" \\ \\ /\\ / /| |_| || |  | | |  _|    \\ \\ /\\ / / _ \\ | |   | ' /|  _| | |_) |" << endl;
+    cout <<"  \\ V  V / |  _  || |  | | | |___    \\ V  V / ___ \\| |___| . \\| |___|  _ < " << endl;
+    cout <<"   \\_/\\_/  |_| |_|___| |_| |_____|    \\_/\\_/_/   \\_\\_____|_|\\_\\_____|_| \\_\\ " << endl << endl << endl;
+}

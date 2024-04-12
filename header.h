@@ -588,6 +588,8 @@ void Daenerys();
 void Stannis();
 void Joffrey();
 void TheonGreyjoy();
+void show_advZombie();
+void show_basicZombie();
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
