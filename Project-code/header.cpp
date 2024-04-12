@@ -1986,12 +1986,13 @@ void showPlayerInfo() {
 
 // Function to say goodbye
 void goodbye(){
-    system("cls");
+
     if(player->getState()==PlayerState::DEFEATED){
         gameOver();
         exit(0);
     }
     else{
+        system("cls");
         cout<<"Really?\n";
         Sleep(1000);
         cout<<"It's to soon!\n";
@@ -2046,6 +2047,8 @@ void medicineMenu() {
         }
     } 
     else {
+        cout << Yellow <<"NOT ENOUGH MONEY TO PURCHASE ANY MEDICINE FROM THE SHOP." << endl << Reset;
+        cout << Yellow << "SO..." << endl  << endl<< Reset;
         goodbye();
     }
 }
@@ -2092,6 +2095,8 @@ void foodMenu() {
         }
     } 
     else {
+        cout << Yellow <<"NOT ENOUGH MONEY TO PURCHASE ANY FOOD FROM THE SHOP." << endl << Reset;
+        cout << Yellow << "SO..." << endl <<endl<< Reset;
         goodbye();
     }
 }
@@ -2229,10 +2234,11 @@ void playground() {
             system("cls");
 
             cout << Cyan << "YOU ENTER THE SHOP!" << Reset << endl << endl;
-            cout <<Yellow << "YOU DON'T HAVE ENOUGH MONEY TO BUY ANY ITEMS OF THE SHOP " << endl << endl;
-            cout << "Your current balance is " << player->getMoney() << " $" << endl;
-            cout << "Continue your journey by facing an enemy and defeating them in the battle so you may collect their money..." <<Reset;
+            cout <<Yellow << "YOU DON'T HAVE ENOUGH MONEY TO BUY ANY ITEMS OF THE SHOP! " << endl;
+            cout << "YOUR CURRENT BALANCE IS " << player->getMoney() << "$." << endl  << endl << Reset;
+            cout << Green << "Continue your journey by facing an enemy and defeating them in the battle so you may collect their money..." <<Reset;
             getch();
+            playground();
         }
     }
 }
@@ -2273,7 +2279,7 @@ void battleGround_humanEnemy(){
     }
 
     if (player->getState()==PlayerState::ALIVE){
-        cout <<Yellow <<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n" << endl; 
+        cout <<Yellow <<"CONGRATULATIONS!! \nYOU HAVE WON THE MATCH.\n" << Reset; 
         player->getBankAccount()->prize(player->getLevel()*1000);
         getch();
 
@@ -2309,10 +2315,9 @@ void battleGround_basicZombie(){
         }
         else{
         //enemy turn
-            cout << Cyan << "ENEMY'S TURN:\n" <<Reset;
+            cout << Cyan << "ENEMY'S TURN:\n\n" <<Reset;
             Enemy.bite();
             cout << endl;
-			//Enemy.updateState();
             Enemy.showInfo();
             cout << endl;
             cout << Pink << "PLAYER'S INFO:" << Reset << endl << endl;
@@ -2354,8 +2359,7 @@ void battleGround_advZombie(){
         }
         else{
         //enemy turn
-        cout<<Cyan << "ENEMY'S TURN:\n" << Reset;
-			//Enemy.updateState();
+        cout<<Cyan << "ENEMY'S TURN:\n\n" << Reset;
             Enemy.Attack();
             cout << endl;
             Enemy.showInfo();
@@ -2634,7 +2638,7 @@ void ShopMenu() {
                 break;
 
             default: 
-                cout <<Yellow << "WRONG NUMBER" << Reset << endl << Pink <<"\nPress any key to continue..."<< Reset;
+                cout <<Yellow << "WRONG NUMBER!" << Reset << endl << Pink <<"\nPress any key to continue..."<< Reset;
                 getch(); // Handles invalid input
                 break;
         }
@@ -2650,9 +2654,9 @@ void Show_Permanent_Items() {
     ColdWeapon *cweapon;
     cout << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl << "[0].BACK" << endl;
     cin>>number;
-    system("cls");
     switch(number){
         case 1: 
+            system("cls");
             cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE WARMWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
             WarmWeapon::showItems(); // Shows warm weapons
             cout << "[00]. Back" << endl;
@@ -2676,6 +2680,7 @@ void Show_Permanent_Items() {
             break;
         
         case 2:
+            system("cls");
             cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE COLDWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
             ColdWeapon::showItems(); // Shows cold weapons
             cout << "[00]. Back" << endl;
@@ -2700,6 +2705,11 @@ void Show_Permanent_Items() {
         
         case 0: 
             ShopMenu(); // Returns to the previous menu
+        default :
+            cout <<Yellow<< "\nINVALID CHOICE! CHOOSE A NUMBER BETWEEN 0 AND 2." << endl<< Reset;
+            cout << Pink <<"\nPress any key to continue..."<< Reset;
+            getch();
+            Show_Permanent_Items();
     }
 }
 
@@ -2714,7 +2724,7 @@ void Show_Throwable_Items() {
     cout << "[00]. Back" << endl;
     cout<<"\nWhich one do you want to buy?" << endl;
     cin >> item;
-    while(item<0 || item>10){
+    while(item<0 || item>5){
         cout <<Yellow << "YOU HAVE ENTERED THE WRONG NUMBER, ENTER A NUMBER BETWEEN 0 AND 5."  << Reset << endl << "\nWhich one do you want to buy?" << endl;
         cin >> item;
         if(cin.fail()) {
@@ -2754,6 +2764,7 @@ void Show_Consumable_Items() {
     system("cls");
     switch(number){
         case 1: 
+            system("cls");
             cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE MEDICINES:" << "(YOUR MONEY : " << player->getMoney() << "$)" <<Reset << endl << endl;
             Medicine::showItems(); // Shows medicines
             cout << "[00]. Back" << endl;
@@ -2787,6 +2798,7 @@ void Show_Consumable_Items() {
             break;
             
         case 2:
+            system("cls");
             cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE FOODS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
             Food::showItems(); // Shows foods
             cout << "[00]. Back" << endl;
@@ -2820,6 +2832,11 @@ void Show_Consumable_Items() {
             break;
         case 0: 
             ShopMenu(); // Returns to the previous menu
+        default :
+            cout <<Yellow<< "\nINVALID CHOICE! CHOOSE A NUMBER BETWEEN 0 AND 2." << endl<< Reset;
+            cout << Pink <<"\nPress any key to continue..."<< Reset;
+            getch();
+            Show_Consumable_Items();
     }
 }
 
@@ -2833,9 +2850,9 @@ void Shop_PermanentItems_Menu() {
     cout << Cyan << "YOU ENTER THE SHOP!" << Reset << Green <<"\n\nYou should atleast buy one Permanent Item for fighting to continue the game."  << Reset << "\n\nSo... What do you want to buy?" << endl 
     << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl;
     cin >> number;
-    system("cls");
     switch(number){
         case 1: 
+            system("cls");
             cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE WARMWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
             WarmWeapon::showItems(); // Shows warm weapons
             cout << "[00]. Back" << endl;
@@ -2860,6 +2877,7 @@ void Shop_PermanentItems_Menu() {
             ShopMenu();
         
         case 2:
+            system("cls");
             cout << Cyan <<"YOU GO TO TAKE A LOOK AT THE COLDWEAPONS:" << "(YOUR MONEY : " << player->getMoney() << "$)" << Reset << endl << endl;
             ColdWeapon::showItems(); // Shows cold weapons
             cout << "[00]. Back" << endl;
@@ -2884,7 +2902,8 @@ void Shop_PermanentItems_Menu() {
             ShopMenu();
         
         default:
-            cout << Yellow<< "\nINVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl <<Reset;
+            cout <<Yellow<< "\nINVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 2." << endl<< Reset;
+            cout << Pink <<"\nPress any key to continue..."<< Reset;
             getch();
             Shop_PermanentItems_Menu();
     }
