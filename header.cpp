@@ -156,12 +156,12 @@ void Skills::upgradeSkill(BankAccount *creditcard){
             if(currentSkill<maximum){
                 creditcard->withdraw(upgradePrice); // Withdraws the upgrade price from the credit card
                 currentSkill++; // Increases the current skill level
-                cout << Yellow<< "WEAPON UPGRADE SUCCESSFULLY AND " << upgradePrice << "$ WAS DEDUCTED FROM YOUR ACCOUNT!" <<Reset;
+                cout << Yellow<< "\nWEAPON UPGRADE SUCCESSFULLY AND " << upgradePrice << "$ WAS DEDUCTED FROM YOUR ACCOUNT!" <<Reset;
                 getch(); 
                 setUpgradePrice(); // Sets the new upgrade price
             }
             else{
-                cout<< Yellow <<"WEAPON'S LEVEL IS MAXIMUM!\n"<<Reset;
+                cout<< Yellow <<"\nWEAPON'S LEVEL IS MAXIMUM!\n"<<Reset;
                 getch();  // Wait for a key press
             }
             
@@ -445,10 +445,11 @@ void Backpack::ConsumeMedForSurvival() {
         medicine->use(*player);
         player->newLife();   //change the state from DEFEATED to ALIVE
         cout << Green << "\nNow that the Health has increased, as you have been lost the last game, you will go back to the playground." << Reset;
+        getch();
         playground();
     }
     else{
-        cout << Yellow<< "INVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl <<Reset;
+        cout << Yellow<< "\nINVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl <<Reset;
         getch();
         ConsumeMedForSurvival();
     }
@@ -482,10 +483,11 @@ void Backpack::ConsumeFoodForSurvival() {
         food->use(*player);
         player->newLife();   //change the state from DEFEATED to ALIVE
         cout << Green << "\nNow that the stamina has increased, you will go back to the battleground and continue the last game." << Reset;
+        getch();
         BattleMenu();
     }
     else{
-        cout  << Yellow<< "INVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl<< Reset;
+        cout  << Yellow<< "\nINVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl<< Reset;
         getch();
         ConsumeFoodForSurvival();
     }
@@ -603,7 +605,7 @@ Items* Backpack::useWeapons() {
             break;
 
         default:
-            cout <<Yellow<< "INVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 4." << endl<< Reset; 
+            cout <<Yellow<< "\nINVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 4." << endl<< Reset; 
             cout << Pink <<"\nPress any key to continue..."<< Reset;
             getch(); // Wait for a key press
             useWeapons();
@@ -641,14 +643,14 @@ Items* Backpack::useConsumableItems() {
                         useConsumableItems();
                     }
                     else {
-                        cout <<Yellow<< "INVALID INDEX! TRY AGAIN." << endl<< Reset;
+                        cout <<Yellow<< "\nINVALID INDEX! TRY AGAIN." << endl<< Reset;
                         cout << Pink <<"\nPress any key to continue..."<< Reset;
                         getch();  // Wait for a key press
                     }
                 }
             }
             else{
-                cout <<Yellow<< "NO MEDICINE EXISTS!" << endl<< Reset;
+                cout <<Yellow<< "\nNO MEDICINE EXISTS!" << endl<< Reset;
                 cout << Pink <<"\nPress any key to continue..."<< Reset;
                 getch();  // Wait for a key press
                 useConsumableItems();
@@ -673,14 +675,14 @@ Items* Backpack::useConsumableItems() {
                         useConsumableItems();
                     }
                     else{
-                        cout <<Yellow<< "INVALID INDEX! TRY AGAIN." << endl<< Reset;
+                        cout <<Yellow<< "\nINVALID INDEX! TRY AGAIN." << endl<< Reset;
                         cout << Pink <<"\nPress any key to continue..."<< Reset;
                         getch();  // Wait for a key press
                     }
                 }
             }
             else{
-                cout <<Yellow<< "NO FOOD EXISTS!" << endl<< Reset;
+                cout <<Yellow<< "\nNO FOOD EXISTS!" << endl<< Reset;
                 cout << Pink <<"\nPress any key to continue..."<< Reset;
                 getch();  // Wait for a key press
                 useConsumableItems();
@@ -692,7 +694,7 @@ Items* Backpack::useConsumableItems() {
             break;
 
         default:
-            cout <<Yellow<< "INVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 3." << endl<< Reset;
+            cout <<Yellow<< "\nINVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 3." << endl<< Reset;
             cout << Pink <<"\nPress any key to continue..."<< Reset;
             getch(); // Wait for a key press
             useConsumableItems();
@@ -809,7 +811,7 @@ Items* Backpack::upgradeWeapons() {
             break;
 
         default:
-            cout <<Yellow<< "INVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 4." << endl<< Reset;
+            cout <<Yellow<< "\nINVALID CHOICE! CHOOSE A NUMBER BETWEEN 1 AND 4." << endl<< Reset;
             cout << Pink <<"\nPress any key to continue..."<< Reset;
             getch(); // Wait for a key press
             upgradeWeapons();
@@ -1201,7 +1203,7 @@ void HE_View::updateStamina(string name,int amount) {
 }
 
 void HE_View::attackView(string name,Items weapon) {
-    cout << name << " is attacking you by "<< weapon.getName() << "\n";
+    cout << name << " is attacking you by "<< weapon.getName() << "!" << "\n";
 }
 
 void HE_View :: showBackpackItems() {
@@ -1387,7 +1389,7 @@ void WarmWeapon::buy(){
     Backpack *backpack=player->getBackpack();
 
     if(backpack->warmWeaponExistence(*this)){
-        cout<<Yellow<<"THIS ITEM ALREADY EXISTS IN YOUR BACKPACK!\n" << Reset; // Prints a message if the item already exists in the backpack
+        cout << endl <<Yellow<<"THIS ITEM ALREADY EXISTS IN YOUR BACKPACK!\n" << Reset; // Prints a message if the item already exists in the backpack
     }
 
     else if(creditcard->withdraw(price)){
@@ -1657,7 +1659,7 @@ void Medicine::buy(int quantity){
         backpack->addMedicineItem(*this,quantity); // Adds the item to the backpack
     }
     else
-        cout<<Yellow<<"NOT ENOUGH MONEY!\n"<<Reset; // Prints a message if there's not enough money to buy the item
+        cout<<Yellow<<"\nNOT ENOUGH MONEY!\n"<<Reset; // Prints a message if there's not enough money to buy the item
 }
 
 void Medicine::addToVectors(){
@@ -1667,14 +1669,14 @@ void Medicine::addToVectors(){
 
 void Medicine::use(Human &human){
     if(human.hp.getCurrentHealth() < human.hp.getMaxHealth()){
-        cout <<Yellow<< "MEDICINE CONSUME SUCCESSFULLY." << endl<<Reset;
+        cout <<Yellow<< "\nMEDICINE CONSUME SUCCESSFULLY." << endl<<Reset;
         human.hp.increaseHealth(heal); // Increases the human's health
         Backpack *b=human.getBackpack();
         b->useMedicineItemCount(*this); // Uses a medicine item from the human's backpack
         getch();
     }
     else{
-        cout <<Yellow<< "YOUR HP IS FULL. NO NEED TO MEDICINE."<< endl<<Reset;
+        cout <<Yellow<< "\nYOUR HP IS FULL! NO NEED TO MEDICINE."<< endl<<Reset;
         getch();
     }
 }
@@ -1717,7 +1719,7 @@ void Food::buy(int quantity){
         backpack->addFoodItem(*this,quantity); // Adds the item to the backpack
     }
     else
-        cout<<Yellow<<"NOT ENOUGH MONEY!\n"<<Reset; // Prints a message if there's not enough money to buy the item
+        cout<<Yellow<<"\nNOT ENOUGH MONEY!\n"<<Reset; // Prints a message if there's not enough money to buy the item
 }
 
 void Food::addToVectors(){
@@ -1727,14 +1729,14 @@ void Food::addToVectors(){
 
 void Food::use(Human& human){
     if(human.stamina.getCurrentStamina() < human.stamina.getMaxStamina()){
-        cout <<Yellow<< "FOOD CONSUME SUCCESSFULLY." << endl<<Reset;
+        cout <<Yellow<< "\nFOOD CONSUME SUCCESSFULLY." << endl<<Reset;
         human.stamina.increaseStamina(strength); // Increases the human's stamina
         Backpack *b=human.getBackpack();
         b->useFoodItemCount(*this); // Uses a food item from the human's backpack
         getch();
     }
     else{
-        cout <<Yellow<< "YOUR STAMINA IS FULL. NO NEED TO FOOD." << endl<<Reset;
+        cout <<Yellow<< "\nYOUR STAMINA IS FULL! NO NEED TO FOOD." << endl<<Reset;
         getch();
     }
 }
@@ -1846,13 +1848,12 @@ void getUserInfo(int& age , string& gender , string& username) {
 }
 
 void showPlayerInfo() {
-    cout << Cyan << "PLAYER'S INFO:" << Reset << endl << endl;
-    cout << "    Name : " << player->getName() << endl;
-    cout << "    Level : " << player->getLevel() << endl;
-    cout << "    Experience : " << player->getExperience() << " / ( " << player->getMaxExperience() << " )" << endl;
-    cout << "    Stamina : " << player->getStamina() <<  " / ( " << player->getMaxStamina() << " )" << endl;
-    cout << "    Health : " << player->getHealthPoints() << " / ( " << player->getMaxHealth() << " )" << endl;
-    cout << "    Money : " << player->getMoney() << " $" << endl;
+    cout << "    Name: " << player->getName() << endl;
+    cout << "    Level: " << player->getLevel() << endl;
+    cout << "    Experience: " << player->getExperience() << " / ( " << player->getMaxExperience() << " )" << endl;
+    cout << "    Stamina: " << player->getStamina() <<  " / ( " << player->getMaxStamina() << " )" << endl;
+    cout << "    Health: " << player->getHealthPoints() << " / ( " << player->getMaxHealth() << " )" << endl;
+    cout << "    Money: " << player->getMoney() << " $" << endl;
 }
 
 void createItem() {
@@ -1895,6 +1896,7 @@ void medicineMenu() {
         drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
         if(player->getMoney() >= drug->getPrice() * quantity) {
             drug->buy(quantity); // Buys a medicine
+            getch();
         }
         else {
             cout <<Yellow<< "NOT ENOUGH MONEY TO PURCHASE " << quantity << " AMOUNTS OF " << drug->getName() << " ITEMS. BUY LESS ITEMS ... \n"<< Reset;
@@ -1940,6 +1942,7 @@ void foodMenu() {
         meal=new Food(Food::shop_items_food.at(item-1));
         if(player->getMoney() >= meal->getPrice() * quantity) {
             meal->buy(quantity); // Buys a food
+            getch();
         }
         else {
             cout <<Yellow<< "NOT ENOUGH MONEY TO PURCHASE  " << quantity << " AMOUNTS OF " << meal->getName() << " ITEMS. BUY LESS ITEMS ... \n"<< Reset;
@@ -1962,7 +1965,7 @@ void playground() {
 
     if (player->getState() == PlayerState::DEFEATED) {
         cout<<Yellow<<"YOU HAVE BEEN DEFEATED BY YOUR ENEMY , YOUR HP IS 0! " << endl << "TO CONTINUE THE GAME YOU NEED TO INCREASE YOUR HP..."<< endl <<Reset; 
-        cout<<Green<<" You will go to your backpack and consume medicine..." << endl << Reset;
+        cout<<Green<<"\nYou will go to your backpack and consume medicine..." << endl << Reset;
         getch();
         playerBackpack->ConsumeMedForSurvival();
     }
@@ -2192,7 +2195,7 @@ void ShopMenu() {
                 break;
 
             case 5:
-                cout <<Yellow<< "YOU LEFT THE SHOP." << endl << Reset; // Exits the shop
+                cout <<Yellow<< "\nYOU LEFT THE SHOP." << endl << Reset; // Exits the shop
                 cout << Pink <<"\nPress any key to continue..."<< Reset;
                 getch();  // Wait for a key press
                 playground();
@@ -2381,7 +2384,7 @@ void Shop_PermanentItems_Menu() {
     int number,item;
     WarmWeapon *wweapon;
     ColdWeapon *cweapon;
-    cout << Cyan << "YOU ENTER THE SHOP!" << Reset << Green <<"\n\nYou should atleast buy one Permanent Item for fighting to continue the game."  << Reset << "\nSo... What do you want to buy?" << endl << endl 
+    cout << Cyan << "YOU ENTER THE SHOP!" << Reset << Green <<"\n\nYou should atleast buy one Permanent Item for fighting to continue the game."  << Reset << "\n\nSo... What do you want to buy?" << endl 
     << "PERMANENT ITEMS:" << endl << "[1].WARMWEAPONS" << endl << "[2].COLDWEAPONS" << endl;
     cin >> number;
     system("cls");
@@ -2456,6 +2459,7 @@ void battleGround_humanEnemy(){
         //player turn
             BattleMenu();
             cout << endl;
+            cout << Pink << "PLAYER'S INFO:" << Reset << endl << endl;
             showPlayerInfo();
             cout << endl;
             Enemy.showInfo();
@@ -2469,6 +2473,7 @@ void battleGround_humanEnemy(){
             cout << endl;
             Enemy.showInfo();
             cout << endl;
+            cout << Pink << "PLAYER'S INFO:" << Reset << endl << endl;
             showPlayerInfo();
             cout << endl;
         }
@@ -2508,6 +2513,7 @@ void battleGround_basicZombie(){
         //player turn
             BattleMenu();
             cout << endl;
+            cout << Pink << "PLAYER'S INFO:" << Reset << endl << endl;
             showPlayerInfo();
             cout << endl;
             Enemy.showInfo();
@@ -2521,6 +2527,7 @@ void battleGround_basicZombie(){
 			//Enemy.updateState();
             Enemy.showInfo();
             cout << endl;
+            cout << Pink << "PLAYER'S INFO:" << Reset << endl << endl;
             showPlayerInfo();
             cout << endl;
         }
@@ -2551,6 +2558,7 @@ void battleGround_advZombie(){
         //player turn
             BattleMenu();
             cout << endl;
+            cout << Pink << "PLAYER'S INFO:" << Reset << endl << endl;
             showPlayerInfo();
             cout << endl;
             Enemy.showInfo();
@@ -2564,6 +2572,7 @@ void battleGround_advZombie(){
             cout << endl;
             Enemy.showInfo();
             cout << endl;
+            cout << Pink << "PLAYER'S INFO:" << Reset << endl << endl;
             showPlayerInfo();
             cout << endl;
         }
@@ -2609,7 +2618,7 @@ void BattleMenu() {
             if (player->getStamina() <= 0) {
             system("cls");
             cout<<Yellow<<"YOU HAVE TOO LITTLE STAMINA! " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..." << endl << Reset;
-            cout << Green <<"You will go to your backpack and consume food..." << endl << Reset;
+            cout << Green <<"\nYou will go to your backpack and consume food..." << endl << Reset;
             player->setState(PlayerState::DEFEATED);
             getch(); // Wait for a key press
             backpack->ConsumeFoodForSurvival();
@@ -2644,6 +2653,7 @@ void BattleMenu() {
 
         case 3: {
             system("cls");
+            cout << Cyan << "PLAYER'S INFO:" << Reset << endl << endl;
             showPlayerInfo();
             cout << Pink <<"\nPress any key to go back..."<< Reset;
             getch();// Wait for a key press
@@ -2712,7 +2722,7 @@ void BattleMenu() {
         }
 
         default: {
-            cout <<Yellow<< "INVALID CHOICE! PLEASE CHOOSE A NUMBER BETWEEN 1 AND 4." << endl << Reset;
+            cout <<Yellow<< "\nINVALID CHOICE! PLEASE CHOOSE A NUMBER BETWEEN 1 AND 4." << endl << Reset;
             getch();
             BattleMenu(); // Recursive call
             break;
@@ -2825,7 +2835,7 @@ void gameOver(){
 
 
 void endGame(){
-    cout << Red;
+    cout << Pink;
     cout <<" _____ _   _ ____     ____    _    __  __ _____ "<< '\n';
     cout <<"| ____| \\ | |  _ \\   / ___|  / \\  |  \\/  | ____|"<<'\n';
     cout <<"|  _| |  \\| | | | | | |  _  / _ \\ | |\\/| |  _|" <<'\n';  
