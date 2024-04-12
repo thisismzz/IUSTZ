@@ -51,7 +51,10 @@
     "streambuf": "cpp",
     "thread": "cpp",
     "typeinfo": "cpp",
-    "span": "cpp"
+    "span": "cpp",
+    "iomanip": "cpp",
+    "fstream": "cpp",
+    "sstream": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

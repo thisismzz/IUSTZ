@@ -1,10 +1,6 @@
 #ifndef HEADER
 #define HEADER
 
-// #include <string>
-// #include <vector>
-// #include <map>
-
 using namespace std;
 
 class Health;  
@@ -50,11 +46,12 @@ private:
     int currentHealth;
     int maxHealth;
 public:
-    Health();
+    Health(int);
     int getCurrentHealth();
     int getMaxHealth();
     void decreaseHealth(int);
     void increaseHealth(int);
+    void updateMaxHealth();
 };
 
 // *----------------------------------------------------------------*
@@ -65,12 +62,12 @@ class Stamina {
         int currentStamina;
         int maximum;
     public:
-        Stamina(int);
+        Stamina(int,int);
         void decreaseStamina(int);
         void increaseStamina(int);
         void updateMaximumStamina();
         int getCurrentStamina();
-        int getMaximumStamina();
+        int getMaxStamina();
 };
 
 // *----------------------------------------------------------------*
@@ -87,6 +84,7 @@ class Experience {
         void setCurrentExp(int, int, int);
         void increaseExp(int);
         int getCurrentExp();
+        int getMaxExp();
 };
 
 // *----------------------------------------------------------------*
@@ -102,6 +100,7 @@ class Skills {
         void upgradeSkill(BankAccount*);
         void setUpgradePrice();
         int getCurrentSkill();
+        int getUpgradePrice();
 };
 
 // *----------------------------------------------------------------*
@@ -157,10 +156,16 @@ class Backpack {
         void showThrowableItems();
         void showMedicineItems();
         void showFoodItems();
-        void consumeForSurvival();
+        void showUpgradeWarmWeapon();
+        void showUpgradeColdWeapon();
+        void showUpgradeThrowable();
+        void ConsumeMedForSurvival();
+        void ConsumeFoodForSurvival();
         Items* useWeapons();
         Items* useConsumableItems();
+        Items* upgradeWeapons();
 };
+
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -172,6 +177,7 @@ class BankAccount {
         int getBalance();
         void deposit(int amount);
         bool withdraw(int amount);
+        void prize(int);
 };
 
 // *----------------------------------------------------------------*
@@ -189,6 +195,7 @@ class Person {
         int getLevel();
         string getName();  // Getter for name
         int getHealthPoints();  // Getter for health points
+        int getMaxHealth();
         virtual void takeDamage(int){}  //show detail of entry damage
 };
 
@@ -203,6 +210,7 @@ class Human : public Person {
         Human(string,int,int);
         Backpack* getBackpack();
         int getStamina();
+        int getMaxStamina();
 };
 
 // *----------------------------------------------------------------*
@@ -231,17 +239,24 @@ class Player : public Human {
         string getGender();  // Getter for gender
         int getMoney();  // Getter for money
         int getExperience();  // Getter for current experience
+        int getMaxExperience();
         string getUsername();  //Getter for username
         void takeDamage(int) override;  //show detail of entry damage
         void newLife();     //set the state ALIVE
         PlayerState getState();
+        void setState(PlayerState);
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
-enum class HumanEnemyState{
-    LOW_HEALTH,LOW_POWER,FIGHT
-    ,DEFEATED,ALIVE
+enum class HumanEnemyState {
+    LOW_HEALTH,
+    LOW_POWER,
+    FIGHT
+};
+
+enum class HumanEnemyStatus{
+    DEFEATED,ALIVE
 };
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -249,48 +264,52 @@ enum class HumanEnemyState{
 class HumanEnemy : public Human {
     private:
         HumanEnemyState state;
+        HumanEnemyStatus status;
     public:
         HumanEnemy(Human&,int);
         void setState(HumanEnemyState);
         HumanEnemyState getState();
+        HumanEnemyStatus getStatus();
         void takeDamage(int) override;        //show damage amount
 };
 
 class HE_View {
     public:
         HE_View();
-        void showInfo(HumanEnemy);
+        void showInfo(HumanEnemy&);
         void updateHealth(string,int);     //prints the amount of heal
         void updateStamina(string,int);    //prints the amount of increased strength
         void attackView(string,Items);     //prints the weapon name that used to attack player
-
+        void showBackpackItems();
 };
 
 class HE_Controller {
     private:
-        HumanEnemy  model;
+        HumanEnemy  *model;
         HE_View view;
         Backpack* backpack;
         void Attack(Items*);
     public:
-        HE_Controller(HumanEnemy);
+        HE_Controller(HumanEnemy*);
         void updateState();      // Method to update the state of the human enemy
         HumanEnemyState getState();
+        HumanEnemyStatus getStatus();
         Items* chooseWeapon();
         Food* chooseFood();
         Medicine* chooseMedicine();
+        void transferItems();
         void decision();
         void showInfo();
+        void showBackpackItems();
 };
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 enum class ZombieState{
-    SCRATCH,BITE,DEFEATED,ALIVE
+    DEFEATED,ALIVE
 };
 
-// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -301,8 +320,8 @@ class Zombie : public Person {
         Zombie(string,int);
         void takeDamage(int) override;     //show damage amount
         ZombieState getState();
-        virtual void bite();
-        virtual void scratch();
+        virtual void bite(){}
+        virtual void scratch(){}
         ~Zombie(){}
 };
 
@@ -320,15 +339,15 @@ class BasicZombie : public Zombie {
 class BZ_View {
     public:
         BZ_View();
-        void showInfo(BasicZombie);
+        void showInfo(BasicZombie&);
 };
 
 class BZ_Controller {
     private:
-        BasicZombie model;
+        BasicZombie *model;
         BZ_View view;
     public:
-        BZ_Controller(BasicZombie);
+        BZ_Controller(BasicZombie*);
         ZombieState getState();
         void bite();
         void showInfo();
@@ -348,19 +367,165 @@ class AdvZombie : public Zombie {
 class AZ_View {
     public:
     AZ_View();
-    void showInfo(AdvZombie);
+    void showInfo(AdvZombie&);
 };
 
 class AZ_Controller {
     private:
-        AdvZombie model;
+        AdvZombie * model;
         AZ_View view;
     public:
-        AZ_Controller(AdvZombie);
+        AZ_Controller(AdvZombie*);
         ZombieState getState();
+        void Attack();
         void showInfo();
 };
 
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class Items {
+    protected:
+        string type;
+        string name;
+        int price;
+        static vector <Items> shop_items;
+    public:
+        Items(string,int,string);
+        virtual void addToVectors(){}                    //add the bought item to the vector
+        bool operator==(const Items&) const;             //check equality of two object based on names
+        bool operator<(const Items&) const;
+        string getName();
+        string getType();
+        int getPrice();
+        ~Items(){}
+}; 
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class Permanent : public Items {
+    protected:
+        int harm;
+        int exp;
+        static vector <Permanent> shop_items_permanent;
+        Permanent(string, int, string, int, int);
+    public:       
+        virtual void buy(){}                      //buy item and add it into player's backpack
+        virtual void Attack(Human&, Person&){}               //calculate the damage of attacker and reduce it from attacked health
+        int getHarm();
+        ~Permanent(){}
+};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class WarmWeapon : public Permanent {
+    private:
+        static vector <WarmWeapon> shop_items_permanent_warmweapon;
+        WarmWeaponAbility* wwa;
+    public:
+        WarmWeapon(string,int,int,int,int);
+        static void showItems();                     //show the available items to buy
+        void buy() override;
+        void addToVectors() override;
+        void Attack(Human&, Person&) override;
+        friend ostream& operator<<(ostream&, WarmWeapon&);
+        friend void Show_Permanent_Items();
+        friend void playground();
+        friend void Shop_PermanentItems_Menu();
+        WarmWeaponAbility* getwwa();
+        ~WarmWeapon(){}
+};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class ColdWeapon : public Permanent {
+    private:
+        static vector <ColdWeapon> shop_items_permanent_coldweapon;
+        ColdWeaponAbility* cwa;
+    public:
+        ColdWeapon(string,int,int,int,int);
+        static void showItems();                     //show the available items to buy
+        void buy() override;
+        void addToVectors() override;
+        void Attack(Human&, Person&) override;
+        friend ostream& operator<<(ostream&, ColdWeapon&);
+        friend void Show_Permanent_Items();
+        friend void playground();
+        friend void Shop_PermanentItems_Menu();
+        ColdWeaponAbility* getcwa();
+        ~ColdWeapon(){}
+};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class Throwable : public Items {
+    private:
+        int harm;
+        int exp;
+        static vector <Throwable> shop_items_throwable;
+        ThrowableWeaponAbility* twa;
+    public:
+        Throwable(string,int,int,int,int);
+        static void showItems();                     //show the available items to buy
+        void buy(int);
+        void addToVectors() override;
+        void Throw(Human&, Person&);
+        friend ostream& operator<<(ostream&, Throwable&);
+        friend void Show_Throwable_Items();
+        friend void playground();
+        ThrowableWeaponAbility* gettwa();
+        int getHarm();
+        ~Throwable(){}
+};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class Medicine : public Items {
+    private:
+        int heal;
+        static vector <Medicine> shop_items_medicine;
+    public:
+        Medicine(string,int,int);
+        static void showItems();                     //show the available items to buy
+        void buy(int);
+        void addToVectors() override;
+        void use(Human&);
+        int getHeal();
+        friend ostream& operator<<(ostream&,Medicine&);
+        friend void Show_Consumable_Items();
+        friend void playground();
+        friend void medicineMenu();
+        ~Medicine(){}
+};
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+
+class Food : public Items {
+    private:
+        int strength;
+        static vector <Food> shop_items_food;
+    public:
+        Food(string, int, int);
+        static void showItems();                     //show the available items to buy
+        void buy(int);
+        void addToVectors() override;
+        void use(Human&);
+        int getStrength();
+        friend ostream& operator<<(ostream&, Food&);
+        friend void Show_Consumable_Items();
+        friend void playground();
+        friend void foodMenu();
+        ~Food(){}
+};
+
+// *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
@@ -391,176 +556,40 @@ class Factory {
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
-class Items {
-    protected:
-        string type;
-        string name;
-        int price;
-        static vector <Items> shop_items;
-    public:
-        Items(string,int,string);
-        virtual void addToVectors(){}                    //add the bought item to the vector
-        bool operator==(const Items&) const;             //check equality of two object based on names
-        bool operator<(const Items&) const;
-        string getName();
-        string getType();
-        int getPrice();
-        ~Items(){}
-}; 
-vector <Items> Items::shop_items;     
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Permanent : public Items {
-    protected:
-        int harm;
-        int exp;
-        static vector <Permanent> shop_items_permanent;
-        Permanent(string, int, string, int, int);
-    public:       
-        virtual void buy(Player){}                      //buy item and add it into player's backpack
-        virtual void Attack(Human, Person){}               //calculate the damage of attacker and reduce it from attacked health
-        ~Permanent(){}
-};
-vector <Permanent> Permanent::shop_items_permanent;
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class WarmWeapon : public Permanent {
-    private:
-        static vector <WarmWeapon> shop_items_permanent_warmweapon;
-        WarmWeaponAbility wwa;
-    public:
-        WarmWeapon(string,int,int,int,int);
-        static void showItems();                     //show the available items to buy
-        void buy(Player) override;
-        void addToVectors() override;
-        void Attack(Human, Person) override;
-        friend ostream& operator<<(ostream&, WarmWeapon&);
-        friend void Show_Permanent_Items();
-        friend void playground();
-        friend void Shop_PermanentItems_Menu();
-        WarmWeaponAbility getwwa();
-        ~WarmWeapon(){}
-};
-vector <WarmWeapon> WarmWeapon::shop_items_permanent_warmweapon;
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class ColdWeapon : public Permanent {
-    private:
-        static vector <ColdWeapon> shop_items_permanent_coldweapon;
-        ColdWeaponAbility cwa;
-    public:
-        ColdWeapon(string,int,int,int,int);
-        static void showItems();                     //show the available items to buy
-        void buy(Player) override;
-        void addToVectors() override;
-        void Attack(Human, Person) override;
-        friend ostream& operator<<(ostream&, ColdWeapon&);
-        friend void Show_Permanent_Items();
-        friend void playground();
-        friend void Shop_PermanentItems_Menu();
-        ColdWeaponAbility getcwa();
-        ~ColdWeapon(){}
-};
-vector <ColdWeapon> ColdWeapon::shop_items_permanent_coldweapon;
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Throwable : public Items {
-    private:
-        int harm;
-        int exp;
-        static vector <Throwable> shop_items_throwable;
-        ThrowableWeaponAbility twa;
-    public:
-        Throwable(string,int,int,int,int);
-        static void showItems();                     //show the available items to buy
-        void buy(Player, int);
-        void addToVectors() override;
-        void Throw(Human, Human);
-        friend ostream& operator<<(ostream&, Throwable&);
-        friend void Show_Throwable_Items();
-        friend void playground();
-        ThrowableWeaponAbility gettwa();
-        ~Throwable(){}
-};
-vector <Throwable> Throwable::shop_items_throwable;
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Medicine : public Items {
-    private:
-        int heal;
-        static vector <Medicine> shop_items_medicine;
-    public:
-        Medicine(string,int,int);
-        static void showItems();                     //show the available items to buy
-        void buy(Player, int);
-        void addToVectors() override;
-        void use(Human);
-        int getHeal();
-        friend ostream& operator<<(ostream&,Medicine&);
-        friend void Show_Consumable_Items();
-        friend void playground();
-        friend void medicineMenu();
-        ~Medicine(){}
-};
-vector <Medicine> Medicine::shop_items_medicine;
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
-class Food : public Items {
-    private:
-        int strength;
-        static vector <Food> shop_items_food;
-    public:
-        Food(string, int, int);
-        static void showItems();                     //show the available items to buy
-        void buy(Player, int);
-        void addToVectors() override;
-        void use(Human);
-        int getStrength();
-        friend ostream& operator<<(ostream&, Food&);
-        friend void Show_Consumable_Items();
-        friend void playground();
-        ~Food(){}
-};
-vector <Food> Food::shop_items_food;
-
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-
 void printWithDelay(string);
 void getUserInfo(int&, string&, string&);
-void showPlayerInfo();
-void createItem(); 
+void showPlayerInfo(); 
+void goodbye();
+void medicineMenu();
+void foodMenu();
 void playground();
+void battleGround_humanEnemy();
+void battleGround_basicZombie();
+void battleGround_advZombie();
+void BattleMenu();
 void Menu();
 void ShopMenu();
 void Show_Permanent_Items();
 void Show_Throwable_Items();
 void Show_Consumable_Items();
 void Shop_PermanentItems_Menu();
-void goodbye();
-void battleGround_humanEnemy();
-void battleGround_basicZombie();
-void battleGround_advZombie();
-void BattleMenu();
+void createItem();
 void createWarmWeapons();
 void createColdWeapons();
 void createThrowableItems();
 void createMedicines();
 void createFoods();
-void medicineMenu();
+void intro();
+void gameOver();
+void endGame();
+void JaimeLannister();
+void JonSnow();
+void Daenerys();
+void Stannis();
+void Joffrey();
+void TheonGreyjoy();
+void show_advZombie();
+void show_basicZombie();
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
