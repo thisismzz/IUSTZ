@@ -511,14 +511,14 @@ Items* Backpack::useWeapons() {
                         useWeapons();
                     }
                     else {
-                        cout << Yellow<< "INVALID INDEX! TRY AGAIN." << endl << Reset;
+                        cout << Yellow<< "\nINVALID INDEX! TRY AGAIN." << endl << Reset;
                         cout << Pink << "\nPress any key to continue..." << Reset;
                         getch();  // Wait for a key press
                     }
                 }
             }
             else{
-                cout << Yellow<< "NO WARMWEAPON EXISTS!" << endl << Reset;
+                cout << Yellow<< "\nNO WARMWEAPON EXISTS!" << endl << Reset;
                 cout << Pink << "\nPress any key to continue..."<< Reset;
                 getch();  // Wait for a key press
                 useWeapons();
@@ -543,14 +543,14 @@ Items* Backpack::useWeapons() {
                         useWeapons();
                     }
                     else {
-                        cout <<Yellow<< "INVALID INDEX! TRY AGAIN." << endl << Reset;
+                        cout <<Yellow<< "\nINVALID INDEX! TRY AGAIN." << endl << Reset;
                         cout << Pink <<"\nPress any key to continue..."<< Reset;
                         getch();  // Wait for a key press
                     }
                 }
             }
             else{
-                cout <<Yellow<< "NO COLDWEAPON EXISTS!" << endl << Reset;
+                cout <<Yellow<< "\nNO COLDWEAPON EXISTS!" << endl << Reset;
                 cout << Pink <<"\nPress any key to continue..."<< Reset;
                 getch();  // Wait for a key press
                 useWeapons();
@@ -575,14 +575,14 @@ Items* Backpack::useWeapons() {
                         useWeapons();
                     }
                     else {
-                        cout <<Yellow<< "INVALID INDEX! TRY AGAIN." << endl<< Reset;
+                        cout <<Yellow<< "\nINVALID INDEX! TRY AGAIN." << endl<< Reset;
                         cout << Pink <<"\nPress any key to continue..."<< Reset;
                         getch();  // Wait for a key press
                     }
                 }
             }
             else{
-                cout <<Yellow<< "NO THROWABLE WEAPON EXISTS!" << endl<< Reset;
+                cout <<Yellow<< "\nNO THROWABLE WEAPON EXISTS!" << endl<< Reset;
                 cout << Pink <<"\nPress any key to continue..."<< Reset;
                 getch();  // Wait for a key press
                 useWeapons();
@@ -1962,7 +1962,7 @@ void playground() {
     }
 
     int choice;
-    if ((randomNum % 100) < 95) {
+    if ((randomNum % 100) < 70) {
     //fight ground
         randomNum=rand();
 
