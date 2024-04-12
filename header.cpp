@@ -8,6 +8,8 @@
 #include <conio.h>
 #include <windows.h>
 #include <iomanip>
+#include <cstdlib>
+#include <cctype>
 
 #include "header.h"
 
@@ -39,6 +41,13 @@ vector <Throwable> Throwable::shop_items_throwable={};
 vector <Medicine> Medicine::shop_items_medicine={};
 vector <Food> Food::shop_items_food={};
 //*****************************
+
+bool isNumber(const string& str) {
+    for (char const &c : str) {
+        if (!isdigit(c)) return false;
+    }
+    return true;
+}
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -419,68 +428,75 @@ void Backpack::showUpgradeThrowable(){
 // *----------------------------------------------------------------*
 
 void Backpack::ConsumeMedForSurvival() {
-    
+
+    system("cls");
+
     if(MedicineItems.empty()){
-        cout << "NO MEDICINE ITEM LEFT IN BACKPACK!" << endl;
+        cout << "NO MEDICINE ITEM LEFT IN BACKPACK! YOUR ONLY CHANCE OF SURVIVAL IS TO GO TO SHOP AND BUY ANY MEDICINE THAT YOU CAN." << endl << endl;
+        cout << "PRESS ANY KEY TO CONTINUE ... ";
+        getch();
         medicineMenu();
     }
 
-    system("cls");
-    cout << "Here are the available medicine items in the backpack:" << endl << endl;
+    cout << "HERE ARE THE AVAILABLE MEDICINE ITEMS IN THE BACKPACK:" << endl << endl;
     int index = 1;
     showMedicineItems();
 
+    string input;
     int choice;
-    cout << "\nEnter the number of the medicine item you want to use: ";
-    cin >> choice;
+    cout << "\nENTER THE NUMBER OF THE MEDICINE ITEM YOU WANT TO USE: ";
+    getline(cin, input);
 
-    if (choice >= 1 && choice <= MedicineItems.size()){
-        auto iter = next(MedicineItems.begin(), choice - 1);
-        Medicine* medicine = new Medicine(iter->first);
-        medicine->use(*player);
-        player->newLife();   //change the state from DEFEATED to ALIVE
-        playground();
+    while (!isNumber(input) || stoi(input) < 1 || stoi(input) > MedicineItems.size()) {
+        cout << "INVALID CHOICE! PLEASE ENTER A VALID NUMBER: ";
+        getline(cin, input);
     }
-    else{
-        cout << "INVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl;
-        getch();
-        ConsumeMedForSurvival();
-    }
-    
+    choice = stoi(input);
+
+    auto iter = next(MedicineItems.begin(), choice - 1);
+    Medicine* medicine = new Medicine(iter->first);
+    medicine->use(*player);
+    player->newLife();   //change the state from DEFEATED to ALIVE
+    playground();
 }
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
 void Backpack::ConsumeFoodForSurvival() {
 
+    system("cls");
+
     if(FoodItems.empty()){
-        cout << "NO FOOD ITEM LEFT IN BACKPACK!" << endl;
+        cout << "NO FOOD ITEM LEFT IN BACKPACK! YOUR ONLY CHANCE OF SURVIVAL IS TO GO TO SHOP AND BUY ANY FOOD THAT YOU CAN." << endl << endl;
+        cout << "PRESS ANY KEY TO CONTINUE ... ";
+        getch();
         foodMenu();
     }
 
-    system("cls");
-    cout << "Here are the available food items in the backpack:" << endl << endl;
+    cout << "HERE ARE THE AVAILABLE FOOD ITEMS IN THE BACKPACK:" << endl << endl;
     int index = 1;
-    showFoodItems();  
+    showFoodItems();
 
+    string input;
     int choice;
-    cout << "\nEnter the number of the food item you want to use: ";
-    cin >> choice;
+    cout << "\nENTER THE NUMBER OF THE FOOD ITEM YOU WANT TO USE: ";
+    getline(cin, input);
 
-    if (choice >= 1 && choice <= FoodItems.size()){
-        auto iter = next(FoodItems.begin(), choice - 1);
-        Food* food = new Food(iter->first);
-        food->use(*player);
-        player->newLife();   //change the state from DEFEATED to ALIVE
-        BattleMenu();
+    while (!isNumber(input) || stoi(input) < 1 || stoi(input) > FoodItems.size()) {
+        cout << "INVALID CHOICE! PLEASE ENTER A VALID NUMBER: ";
+        getline(cin, input);
     }
-    else{
-        cout << "INVALID CHOICE! PLEASE ENTER A VALID NUMBER." << endl;
-        getch();
-        ConsumeFoodForSurvival();
-    }
+    choice = stoi(input);
+
+    auto iter = next(FoodItems.begin(), choice - 1);
+    Food* food = new Food(iter->first);
+    food->use(*player);
+    player->newLife();   //change the state from DEFEATED to ALIVE
+    BattleMenu();
 }
+
 
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
@@ -569,7 +585,6 @@ Items* Backpack::useWeapons() {
                     if (ChosenWeapon >= 1 && ChosenWeapon <= ThrowableItems.size()) {
                         auto iter = next(ThrowableItems.begin(), ChosenWeapon - 1);
                         Throwable* tweapon = new Throwable(iter->first);
-                        //cout << *tweapon;
                         return tweapon;
                     }
                     else if(ChosenWeapon == 0){
@@ -1814,26 +1829,44 @@ void print_with_delay(string text, int delay=4) {
 }
 
 void getUserInfo(int& age , string& gender , string& username) {
-    cout << "Hello kid! I'm your guide. "<< "First of all I need to know you:" << endl;
-    cout << endl << "What they call you? (enter your name)" << endl;
-    cin >> username;
-    cout << endl << "And you are older than 15 right? If not fuck off!!! (enter your age)" << endl;
-    cin >> age;
+    string input;
+    cout << "HELLO KID! I'M YOUR GUIDE. "<< "FIRST OF ALL I NEED TO KNOW YOU:" << endl;
+
+    cout << endl << "WHAT THEY CALL YOU? (ENTER YOUR NAME)" << endl;
+    getline(cin, username);
+    while (isNumber(username)) {
+        cout << "INVALID INPUT. PLEASE ENTER A VALID NAME: ";
+        getline(cin, username);
+    }
+
+    cout << endl << "AND YOU ARE OLDER THAN 15 RIGHT? IF NOT, SORRY WE CAN'T PROCEED!!! (ENTER YOUR AGE)" << endl;
+    getline(cin, input);
+    while (!isNumber(input)) {
+        cout << "INVALID INPUT. PLEASE ENTER A VALID AGE: ";
+        getline(cin, input);
+    }
+    age = stoi(input);
+
     if (age < 15){
-        cout << endl << "Sorry kid, we don't have time to deal with your parent's complaint!" << endl << endl;
+        cout << endl << "SORRY KID, WE DON'T HAVE TIME TO DEAL WITH YOUR PARENT'S COMPLAINT!" << endl << endl;
         endGame();
         exit(0);
     }
-    cout << endl << "And the last question!" << endl << "What do you have down there?! this is the only thing matters. (enter your gender)"<<endl;
-    cin >> gender;
-    cout << endl << "Ok, you can go now. I hope you are still alive next time I see you, kid!" ;
 
-    cout << "\n\nPlease press any key to continue...";
+    cout << endl << "AND THE LAST QUESTION!" << endl << "WHAT'S YOUR GENDER? (ENTER YOUR GENDER)"<<endl;
+    getline(cin, gender);
+    while (isNumber(gender)) {
+        cout << "INVALID INPUT. PLEASE ENTER A VALID GENDER: ";
+        getline(cin, gender);
+    }
 
-    getch();
+    cout << endl << "OK, YOU CAN GO NOW. I HOPE YOU ARE STILL ALIVE NEXT TIME I SEE YOU, KID!" ;
 
-    system("cls");
+    cout << "\n\nPLEASE PRESS ANY KEY TO CONTINUE...";
+
+    system("CLS");
 }
+
 
 void showPlayerInfo() {
     cout << "PLAYER'S INFO:" << endl << endl;
@@ -1854,56 +1887,93 @@ void createItem() {
 }
 
 void medicineMenu() {
+
     system("cls");
 
     if(player->getMoney() >= 1000) {
+        string input;
         int item,quantity;
         Medicine *drug;
-        cout << "You go to take a look at the Medicines:" << "(your money : " << player->getMoney() << ")" << endl << endl;
+        cout << "YOU GO TO TAKE A LOOK AT THE MEDICINES:" << "(YOUR MONEY : " << player->getMoney() << ")" << endl << endl;
+
         Medicine::showItems(); // Shows medicines
-        cout << "\nWhich one do you want to buy?" << endl;
-        cin >> item;
-        cout << "How many?" << endl;
-        cin >> quantity;
+
+        cout << "\nWHICH ONE DO YOU WANT TO BUY?" << endl;
+        getline(cin, input);
+        while (!isNumber(input) || stoi(input) < 1) {
+            cout << "INVALID INPUT. PLEASE ENTER A VALID NUMBER: ";
+            getline(cin, input);
+        }
+        item = stoi(input);
+        cout << "HOW MANY?" << endl;
+        getline(cin, input);
+        while (!isNumber(input) || stoi(input) < 1) {
+            cout << "INVALID INPUT. PLEASE ENTER A VALID NUMBER: ";
+            getline(cin, input);
+        }
+        quantity = stoi(input);
+
         drug=new Medicine(Medicine::shop_items_medicine.at(item-1));
         if(player->getMoney() >= drug->getPrice() * quantity) {
             drug->buy(quantity); // Buys a medicine
         }
         else {
-            cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << drug->getName() << " Items. Buy Less Items ... \n";
+            cout << "NOT ENOUGH MONEY TO PURCHASE " << quantity << " AMOUNTS OF " << drug->getName() << " ITEMS. BUY LESS ITEMS ... \n";
             getch(); // Wait for a key press
             medicineMenu();
         }
     } 
     else {
+        cout << "YOU DID NOT HAVE ANY MONEY LEFT TO BUY ANY OF THE MEDICINE ITEMS IN THE SHOP AND UNFORTUNATELY YOU HAVE LOST THE GAME..." << endl << endl;
+        cout << "BETTER LUCK NEXT TIME.";
+        getch();
         //the Player Looses.
         goodbye();
     }
 }
 
+
 void foodMenu() {
+
     system("cls");
 
     if(player->getMoney() >= 1000) {
+        string input;
         int item,quantity;
         Food *meal;
-        cout << "You go to take a look at the Foods:" << "(your money : " << player->getMoney() << ")" << endl << endl;
+        cout << "YOU GO TO TAKE A LOOK AT THE FOODS:" << "(YOUR MONEY : " << player->getMoney() << ")" << endl << endl;
+
         Food::showItems(); // Shows foods
-        cout << "\nWhich one do you want to buy?" << endl;
-        cin >> item;
-        cout << "How many?" << endl;
-        cin >> quantity;
+
+        cout << "\nWHICH ONE DO YOU WANT TO BUY?" << endl;
+        getline(cin, input);
+        while (!isNumber(input) || stoi(input) < 1) {
+            cout << "INVALID INPUT. PLEASE ENTER A VALID NUMBER: ";
+            getline(cin, input);
+        }
+        item = stoi(input);
+        cout << "HOW MANY?" << endl;
+        getline(cin, input);
+        while (!isNumber(input) || stoi(input) < 1) {
+            cout << "INVALID INPUT. PLEASE ENTER A VALID NUMBER: ";
+            getline(cin, input);
+        }
+        quantity = stoi(input);
+        
         meal=new Food(Food::shop_items_food.at(item-1));
         if(player->getMoney() >= meal->getPrice() * quantity) {
             meal->buy(quantity); // Buys a food
         }
         else {
-            cout << "Not Enough Money To Purchase " << quantity << " Amounts Of " << meal->getName() << " Items. Buy Less Items ... \n";
+            cout << "NOT ENOUGH MONEY TO PURCHASE " << quantity << " AMOUNTS OF " << meal->getName() << " ITEMS. BUY LESS ITEMS ... \n";
             getch(); // Wait for a key press
             foodMenu();
         }
     } 
     else {
+        cout << "YOU DID NOT HAVE ANY MONEY LEFT TO BUY ANY OF THE FOOD ITEMS IN THE SHOP AND UNFORTUNATELY YOU HAVE LOST THE GAME..." << endl << endl;
+        cout << "BETTER LUCK NEXT TIME.";
+        getch();
         //the Player Looses.
         goodbye();
     }
@@ -1917,9 +1987,9 @@ void playground() {
     int randomNum = rand();
 
     if (player->getState() == PlayerState::DEFEATED) {
-        cout<<"YOU HAVE BEEN DEFEATED , YOUR HP IS 0! " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR HP..."; 
-        getch();
+        cout<<"YOU HAVE BEEN DEFEATED BY YOUR ENEMY , YOUR HP IS 0! " << endl << "TO CONTINUE THE GAME YOU NEED TO INCREASE YOUR HP..."; 
         cout<<"GO TO YOUR BACKPACK AND CONSUME MEDICINE..." << endl;
+        getch();
         playerBackpack->ConsumeMedForSurvival();
     }
 
@@ -2042,35 +2112,34 @@ void Menu() {
     // Creating the Player's Character Choices
     int chosenIndex;
     int money[6]={10000, 18000, 12000, 13000, 20000, 11000};
-    
+    string input;
+
     while (true){
         system("cls");
 
         // Show all the different options a user has for the characters
         Human *character;
-        cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED: " << endl;
         for (int i = 0; i < 6; i++) {
             character = Factory::createCharacter(characterTypes[i]);
             cout << "[" << i+1 << "]. " << characterTypes[i] << endl;
-            cout << "     " << "Stamina : " << character->getStamina() << endl;
-            cout << "     " << "Money : " << money[i] << " $" << endl << endl;
+            cout << "     " << "STAMINA : " << character->getStamina() << endl;
+            cout << "     " << "MONEY : " << money[i] << " $" << endl << endl;
         }
-    
+        cout << "CHOOSE THE INDEX OF THE CHARACTER YOU WANTED: " << endl;
         // Get the user's choice
-        cin >> chosenIndex;
-        if (chosenIndex > 0 and chosenIndex < 7){
-            chosenIndex--;
-            // Create Player Character
-            character = Factory::createCharacter(characterTypes[chosenIndex]);
-            player = new Player(*character,gender,username,age,money[chosenIndex]);
-            characterTypes.erase(characterTypes.begin()+chosenIndex);
-            break;
+        getline(cin, input);
+        while (!isNumber(input) || stoi(input) < 1 || stoi(input) > 6) {
+            cout << "INVALID INDEX! PLEASE ENTER A VALID NUMBER: ";
+            getline(cin, input);
         }
-        else{
-            cout << "INVALID INDEX! PLEASE TRY AGAIN."; 
-            cout << endl << "\nPlease press any key to continue...";
-            getch();
-        }
+        chosenIndex = stoi(input);
+        chosenIndex--;
+
+        // Create Player Character
+        character = Factory::createCharacter(characterTypes[chosenIndex]);
+        player = new Player(*character,gender,username,age,money[chosenIndex]);
+        characterTypes.erase(characterTypes.begin()+chosenIndex);
+        break;
     }
 
     system("cls");
@@ -2495,9 +2564,9 @@ void BattleMenu() {
         case 1: {
             if (player->getStamina() <= 0) {
             cout<<"YOU HAVE TOO LITTLE STAMINA " << endl << "TO CONTINUE YOU NEED TO INCREASE YOUR STAMINA..."; 
+            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
             player->setState(PlayerState::DEFEATED);
             getch(); // Wait for a key press
-            cout<<"GO TO YOUR BACKPACK AND CONSUME FOOD..." << endl;
             backpack->ConsumeFoodForSurvival();
             }
 

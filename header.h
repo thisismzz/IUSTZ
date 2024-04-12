@@ -1,10 +1,6 @@
 #ifndef HEADER
 #define HEADER
 
-// #include <string>
-// #include <vector>
-// #include <map>
-
 using namespace std;
 
 class Health;  
