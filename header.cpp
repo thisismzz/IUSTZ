@@ -199,6 +199,20 @@ ThrowableWeaponAbility::ThrowableWeaponAbility(int n):Skills(n,n*20){} // Constr
 // *----------------------------------------------------------------*
 // *----------------------------------------------------------------*
 
+void Backpack::removeFoodItem(const Food foodItem) {
+    FoodItems.erase(foodItem); // Removes food item
+}
+
+void Backpack::removeMedicineItem(const Medicine medicineItem) {
+    MedicineItems.erase(medicineItem); // Removes medicine item
+}
+
+void Backpack::removeThrowableItem(const Throwable throwableItem) {
+    ThrowableItems.erase(throwableItem); // Removes throwable item
+}
+
+// *----------------------------------------------------------------*
+
 void Backpack::addFoodItem(const Food foodItem, int quantity){
     if(FoodItems.find(foodItem)!=FoodItems.end()){
         FoodItems[foodItem]+=quantity; // Increases quantity if food item exists
@@ -252,18 +266,6 @@ bool Backpack::coldWeaponExistence(const ColdWeapon coldWeaponItem){
 }
 
 // *----------------------------------------------------------------*
-
-void Backpack::removeFoodItem(const Food foodItem) {
-    FoodItems.erase(foodItem); // Removes food item
-}
-
-void Backpack::removeMedicineItem(const Medicine medicineItem) {
-    MedicineItems.erase(medicineItem); // Removes medicine item
-}
-
-void Backpack::removeThrowableItem(const Throwable throwableItem) {
-    ThrowableItems.erase(throwableItem); // Removes throwable item
-}
 
 void Backpack::useFoodItemCount(const Food foodItem) {
     FoodItems[foodItem]-=1; // Decreases food item count
@@ -2102,7 +2104,7 @@ void battleGround_humanEnemy(){
         }
         else{
         //enemy turn
-            cout<<Cyan <<"ENEMY'S TURN:\n\n" << Reset;
+            cout<<Cyan <<"ENEMY'S TURN:\n" << Reset;
             Enemy.updateState();
             Enemy.decision();
             cout << endl;
@@ -2156,7 +2158,7 @@ void battleGround_basicZombie(){
         }
         else{
         //enemy turn
-            cout << Cyan << "ENEMY'S TURN:\n\n" <<Reset;
+            cout << Cyan << "ENEMY'S TURN:\n" <<Reset;
             Enemy.bite();
             cout << endl;
 			//Enemy.updateState();
@@ -2201,7 +2203,7 @@ void battleGround_advZombie(){
         }
         else{
         //enemy turn
-        cout<<Cyan << "ENEMY'S TURN:\n\n" << Reset;
+        cout<<Cyan << "ENEMY'S TURN:\n" << Reset;
 			//Enemy.updateState();
             Enemy.Attack();
             cout << endl;
@@ -2884,8 +2886,6 @@ void TheonGreyjoy(){
 }
 
 // *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
 
 void show_advZombie(){
     cout <<" _   _ ___ ____ _   _ _____   _  _____ _   _  ____" << endl; 
@@ -2894,8 +2894,7 @@ void show_advZombie(){
     cout <<"| |\\  || | |_| |  _  | | |   | . \\ | || |\\  | |_| |" << endl;
     cout <<"|_| \\_|___\\____|_| |_| |_|   |_|\\_\\___|_| \\_|\\____|"<< endl <<endl << endl;
 }
-// *----------------------------------------------------------------*
-// *----------------------------------------------------------------*
+
 // *----------------------------------------------------------------*
 
 void show_basicZombie(){
@@ -2906,3 +2905,7 @@ void show_basicZombie(){
     cout <<"  \\ V  V / |  _  || |  | | | |___    \\ V  V / ___ \\| |___| . \\| |___|  _ < " << endl;
     cout <<"   \\_/\\_/  |_| |_|___| |_| |_____|    \\_/\\_/_/   \\_\\_____|_|\\_\\_____|_| \\_\\ " << endl << endl << endl;
 }
+
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
+// *----------------------------------------------------------------*
